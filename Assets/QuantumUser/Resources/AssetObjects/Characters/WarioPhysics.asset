@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6fb56a53aa9f4db4cb9a58897a414c35, type: 3}
-  m_Name: WaluigiPhysics
+  m_Name: WarioPhysics
   m_EditorClassIdentifier: 
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Characters/WaluigiPhysics
+    Path: QuantumUser/Resources/AssetObjects/Characters/WarioPhysics
     Guid:
-      Value: 351482183966993784
+      Value: 431229628171057951
   WalkSpeedStage: 1
   RunSpeedStage: 3
   StarSpeedStage: 4
@@ -78,9 +78,9 @@ MonoBehaviour:
   SlowTurnaroundIceAcceleration:
     RawValue: 172800
   SmallHitboxHeight:
-    RawValue: 39322
+    RawValue: 24248
   LargeHitboxHeight:
-    RawValue: 73400
+    RawValue: 53739
   JumpBufferFrames: 12
   CoyoteTimeFrames: 5
   JumpVelocity:
@@ -247,16 +247,16 @@ MonoBehaviour:
     X:
       RawValue: 53248
     Y:
-      RawValue: 98304
+      RawValue: 78643
   IceBlockSmallOffset:
     X:
       RawValue: 2294
     Y:
-      RawValue: 0
+      RawValue: -3473
   IceBlockBigOffset:
     X:
       RawValue: 2294
     Y:
-      RawValue: 3473
+      RawValue: -3473
   IceBlockPickupFreezeFrames: 20
   MegaMushroomStepInterval: 18

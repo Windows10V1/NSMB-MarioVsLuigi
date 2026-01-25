@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a29518fadcd4a704abe29d73e5159d3f, type: 3}
-  m_Name: WaluigiCharacter
+  m_Name: WarioCharacter
   m_EditorClassIdentifier: 
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Characters/WaluigiCharacter
+    Path: QuantumUser/Resources/AssetObjects/Characters/WarioCharacter
     Guid:
-      Value: 271035631297267976
+      Value: 294449488703653813
   Prototype:
     Id:
-      Value: 1454782328410191449
-  SoundFolder: waluigi
-  UiString: <sprite name=hud_luigi>
-  TranslationString: character.luigi
+      Value: 1377210977726325351
+  SoundFolder: wario
+  UiString: <sprite name=hud_mario>
+  TranslationString: character.mario
   LoadingSmallSprite: {fileID: 1040450253486601905, guid: a7245cae141f3ee449147539ebd2a2c9,
     type: 3}
   LoadingLargeSprite: {fileID: -1751142936083476856, guid: a7245cae141f3ee449147539ebd2a2c9,
     type: 3}
   ReadySprite: {fileID: 7263181891274304025, guid: 70672da71d9d71a4daaf5f3fc58531e6,
     type: 3}
-  SmallOverrides: {fileID: 22100000, guid: de3ef0636b445e349a0a1a8cde9c5602, type: 2}
-  LargeOverrides: {fileID: 22100000, guid: c6267f084266e9c469fdd635e1f2d380, type: 2}
+  SmallOverrides: {fileID: 22100000, guid: 347b7f77a47c4db4b85584fbfdecf63b, type: 2}
+  LargeOverrides: {fileID: 9100000, guid: 47d3c8e961b81d940a01f61d0ea7011e, type: 2}
