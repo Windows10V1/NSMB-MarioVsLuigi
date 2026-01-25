@@ -17,9 +17,9 @@ MonoBehaviour:
     Guid:
       Value: 382817490487173616
   colors:
-  - character:
+  - Character:
       Id:
-        Value: 0
+        Value: 532063855470386108
     ShirtColor:
       R: 104
       G: 24
@@ -30,7 +30,47 @@ MonoBehaviour:
       G: 40
       B: 51
       A: 255
-    shirtColor: {r: 0.4062106, g: 0.09251513, b: 0.7264151, a: 1}
-    overallsColor: {r: 0.18039216, g: 0.15686275, b: 0.2, a: 1}
-    hatUsesOverallsColor: 0
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 485289843648077326
+    ShirtColor:
+      R: 104
+      G: 24
+      B: 185
+      A: 255
+    OverallsColor:
+      R: 46
+      G: 40
+      B: 51
+      A: 255
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 294449488703653813
+    ShirtColor:
+      R: 48
+      G: 168
+      B: 48
+      A: 255
+    OverallsColor:
+      R: 32
+      G: 48
+      B: 88
+      A: 255
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 271035631297267976
+    ShirtColor:
+      R: 48
+      G: 168
+      B: 48
+      A: 255
+    OverallsColor:
+      R: 32
+      G: 48
+      B: 88
+      A: 255
+    HatUsesOverallsColor: 0
   translationKey: skin.waluigi

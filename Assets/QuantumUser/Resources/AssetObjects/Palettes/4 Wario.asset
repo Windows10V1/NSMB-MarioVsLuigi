@@ -17,9 +17,9 @@ MonoBehaviour:
     Guid:
       Value: 439818323390480907
   colors:
-  - character:
+  - Character:
       Id:
-        Value: 0
+        Value: 532063855470386108
     ShirtColor:
       R: 231
       G: 176
@@ -30,7 +30,47 @@ MonoBehaviour:
       G: 13
       B: 140
       A: 255
-    shirtColor: {r: 0.9056604, g: 0.69068044, b: 0, a: 1}
-    overallsColor: {r: 0.41230103, g: 0.04903879, b: 0.5471698, a: 1}
-    hatUsesOverallsColor: 0
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 485289843648077326
+    ShirtColor:
+      R: 231
+      G: 176
+      B: 0
+      A: 255
+    OverallsColor:
+      R: 105
+      G: 13
+      B: 140
+      A: 255
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 294449488703653813
+    ShirtColor:
+      R: 222
+      G: 0
+      B: 0
+      A: 255
+    OverallsColor:
+      R: 8
+      G: 66
+      B: 173
+      A: 255
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 271035631297267976
+    ShirtColor:
+      R: 222
+      G: 0
+      B: 0
+      A: 255
+    OverallsColor:
+      R: 8
+      G: 66
+      B: 173
+      A: 255
+    HatUsesOverallsColor: 0
   translationKey: skin.wario
