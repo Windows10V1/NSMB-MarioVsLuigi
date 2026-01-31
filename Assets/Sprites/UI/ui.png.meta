@@ -2177,7 +2177,7 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2199,7 +2199,7 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2208,6 +2208,28 @@ TextureImporter:
       bones: []
       spriteID: a0c4073c3044209418e2f6de22b786d5
       internalID: -923475650
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hud_princess
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 153
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d2802aa0842205c4d95251f369744119
+      internalID: -1686637882
       vertices: []
       indices: 
       edges: []
@@ -2251,6 +2273,7 @@ TextureImporter:
       hud_arrow: 1388684475
       hud_luigi: -7975249404588759376
       hud_mario: 7263181891274304025
+      hud_princess: -1686637882
       hud_star: 1346584908
       hud_starcoin: -1029622304
       hud_waluigi: -923475650
