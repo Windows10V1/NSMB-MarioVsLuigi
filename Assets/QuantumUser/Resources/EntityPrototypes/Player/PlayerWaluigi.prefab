@@ -350,7 +350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4112991801343913761
 Transform:
   m_ObjectHideFlags: 0
@@ -733,8 +733,8 @@ MonoBehaviour:
   starCollectParticle: {fileID: 817659606265668166, guid: 0d07cd0662b5f394fa4d95667c1d1814,
     type: 3}
   animator: {fileID: 2254935152879088866}
-  smallAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
-  largeAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+  smallAvatar: {fileID: 9000000, guid: c00f1cc71462d79409e6445380e82fc5, type: 3}
+  largeAvatar: {fileID: 9000000, guid: 5a8233ddc7bbffe45aef17cd6cb6da46, type: 3}
   normalShader: {fileID: -6465566751694194690, guid: cc5645667770c9c44af52a452d76a115,
     type: 3}
   rainbowShader: {fileID: -6465566751694194690, guid: 51265e2a22315b048823fd06a96365a5,
@@ -809,8 +809,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4824223341387914446}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
-  m_Controller: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 5a8233ddc7bbffe45aef17cd6cb6da46, type: 3}
+  m_Controller: {fileID: 22100000, guid: c6267f084266e9c469fdd635e1f2d380, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -7314,6 +7314,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: 5a8233ddc7bbffe45aef17cd6cb6da46, type: 3}
     - target: {fileID: 6336749266169524268, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Layer
@@ -8819,6 +8824,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: c00f1cc71462d79409e6445380e82fc5, type: 3}
     - target: {fileID: 6996102739599923691, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: m_Layer
@@ -8869,8 +8879,7 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 5866666021909216657, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -6731049815828845493, guid: e0d3ef6bcff32414dbd34fc6ac031292,
@@ -9126,7 +9135,7 @@ PrefabInstance:
     - target: {fileID: 1112932331959547725, guid: da75331a116cd3b4f8a6cebc1fb26d88,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.245
+      value: 0.845
       objectReference: {fileID: 0}
     - target: {fileID: 1112932331959547725, guid: da75331a116cd3b4f8a6cebc1fb26d88,
         type: 3}
@@ -9172,6 +9181,11 @@ PrefabInstance:
         type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059777663677175449, guid: da75331a116cd3b4f8a6cebc1fb26d88,
+        type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 5.2
       objectReference: {fileID: 0}
     - target: {fileID: 8469385762470922254, guid: da75331a116cd3b4f8a6cebc1fb26d88,
         type: 3}
