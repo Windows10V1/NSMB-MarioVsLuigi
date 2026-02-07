@@ -206,7 +206,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -215,6 +215,28 @@ TextureImporter:
       bones: []
       spriteID: 052f4a170699aef4f868ebbbcb7af4ee
       internalID: 747407375
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: toad
+      rect:
+        serializedVersion: 2
+        x: 160
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69e455e5bf1c9c544946f20749092564
+      internalID: 1728164261
       vertices: []
       indices: 
       edges: []
@@ -236,6 +258,7 @@ TextureImporter:
       marioluigi_0: -1589787217
       marioluigi_1: 1263302900
       princess_peach: 747407375
+      toad: 1728164261
       wariowaluigi_0: 1112412724
       wariowaluigi_1: -1417236447
   mipmapLimitGroupName: 

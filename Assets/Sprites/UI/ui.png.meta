@@ -2221,7 +2221,7 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2230,6 +2230,28 @@ TextureImporter:
       bones: []
       spriteID: d2802aa0842205c4d95251f369744119
       internalID: -1686637882
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hud_toad
+      rect:
+        serializedVersion: 2
+        x: 118
+        y: 153
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a53c7569939b23d49b30427a4c31036a
+      internalID: -1212279718
       vertices: []
       indices: 
       edges: []
@@ -2276,6 +2298,7 @@ TextureImporter:
       hud_princess: -1686637882
       hud_star: 1346584908
       hud_starcoin: -1029622304
+      hud_toad: -1212279718
       hud_waluigi: -923475650
       hud_wario: 606692392
       hudnumber_0: -56961979

@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a29518fadcd4a704abe29d73e5159d3f, type: 3}
+  m_Name: ToadCharacter
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/AssetObjects/Characters/ToadCharacter
+    Guid:
+      Value: 500702065493592433
+  Prototype:
+    Id:
+      Value: 1518244306008464950
+  SoundFolder: toad
+  UiString: <sprite name=hud_toad>
+  TranslationString: character.toad
+  LoadingSmallSprite: {fileID: 1198815238, guid: a7245cae141f3ee449147539ebd2a2c9,
+    type: 3}
+  LoadingLargeSprite: {fileID: -1844117932, guid: a7245cae141f3ee449147539ebd2a2c9,
+    type: 3}
+  ReadySprite: {fileID: -1212279718, guid: 70672da71d9d71a4daaf5f3fc58531e6, type: 3}
+  SmallOverrides: {fileID: 22100000, guid: fbb6e72b5b3fca1429c8f1b5c8cabbca, type: 2}
+  LargeOverrides: {fileID: 22100000, guid: 996c66ad20b17dc4a91d97f7e78e0014, type: 2}

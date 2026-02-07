@@ -470,7 +470,7 @@ TextureImporter:
         width: 16
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -492,7 +492,7 @@ TextureImporter:
         width: 16
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -501,6 +501,50 @@ TextureImporter:
       bones: []
       spriteID: 4aa8303e0f38f1f4390d800124be7b8f
       internalID: 466472665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: loading-sprites_15
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 0
+        width: 16
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8a0fa36cf638ab3419c6bea56febe343
+      internalID: -1844117932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: loading-sprites_16
+      rect:
+        serializedVersion: 2
+        x: 274
+        y: 0
+        width: 14
+        height: 32
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b1ebcc9e02154f41b75111b5ac2ccd0
+      internalID: 1198815238
       vertices: []
       indices: 
       edges: []
@@ -526,6 +570,8 @@ TextureImporter:
       loading-sprites_12: 1322763292
       loading-sprites_13: 1607883807
       loading-sprites_14: 466472665
+      loading-sprites_15: -1844117932
+      loading-sprites_16: 1198815238
       loading-sprites_2: 2095781106538291052
       loading-sprites_3: 4770881905158911435
       loading-sprites_4: -3109149775861551868
