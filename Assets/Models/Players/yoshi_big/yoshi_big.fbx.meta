@@ -1,24 +1,678 @@
 fileFormatVersion: 2
-guid: 7eb259c5d7c092b4fa459872ab68b44c
+guid: 12e269eaac3c1264c98ac7b762c6016c
 ModelImporter:
   serializedVersion: 22200
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 6526803134433627612
+    second: mario_model_mg|2jmp1_mario_model_mg
+  - first:
+      74: 2746465747926291216
+    second: mario_model_mg|2jmp2_mario_model_mg
+  - first:
+      74: 503842159868916567
+    second: mario_model_mg|2jmp_b_1_mario_model_mg
+  - first:
+      74: -1395987734154348434
+    second: mario_model_mg|2jmp_b_2_mario_model_mg
+  - first:
+      74: 2579836911327356150
+    second: mario_model_mg|2jmp_c_1_mario_model_mg
+  - first:
+      74: 1708979000861537007
+    second: mario_model_mg|2jmp_c_2_mario_model_mg
+  - first:
+      74: -161306506838784590
+    second: mario_model_mg|2jmp_d_1_mario_model_mg
+  - first:
+      74: 7276147343856933009
+    second: mario_model_mg|2jmp_d_2_mario_model_mg
+  - first:
+      74: 6256140916610014131
+    second: mario_model_mg|2jmp_e_1_mario_model_mg
+  - first:
+      74: 4965801180276983706
+    second: mario_model_mg|2jmp_e_2_mario_model_mg
+  - first:
+      74: 5304300961600207028
+    second: mario_model_mg|2jump1_mario_model_mg
+  - first:
+      74: 3698728561107381714
+    second: mario_model_mg|2jump2_mario_model_mg
+  - first:
+      74: 761537080958417666
+    second: mario_model_mg|2jumped_mario_model_mg
+  - first:
+      74: -430205122887178574
+    second: mario_model_mg|attack_mario_model_mg
+  - first:
+      74: 6455120831816235746
+    second: mario_model_mg|b_dash.001_mario_model_mg
+  - first:
+      74: -10039282053607306
+    second: mario_model_mg|b_dash2_mario_model_mg
+  - first:
+      74: 2521946176606847193
+    second: mario_model_mg|b_dash_mario_model_mg
+  - first:
+      74: 4015857521763800374
+    second: mario_model_mg|big_goal_mario_model_mg
+  - first:
+      74: -3800083806335963329
+    second: mario_model_mg|big_hip_at_mario_model_mg
+  - first:
+      74: 6614608556746584815
+    second: mario_model_mg|big_hip_ed_mario_model_mg
+  - first:
+      74: 1120502897885727745
+    second: mario_model_mg|big_hip_squat_mario_model_mg
+  - first:
+      74: -1920664592570213121
+    second: mario_model_mg|big_hip_st_mario_model_mg
+  - first:
+      74: 5487298358058082282
+    second: mario_model_mg|big_jmp_2_mario_model_mg
+  - first:
+      74: -8197853627315705243
+    second: mario_model_mg|big_jump_ed_mario_model_mg
+  - first:
+      74: -4319249284445348206
+    second: mario_model_mg|big_jump_st_mario_model_mg
+  - first:
+      74: -5868900911271883546
+    second: mario_model_mg|big_wait_mario_model_mg
+  - first:
+      74: 3708145551980609297
+    second: mario_model_mg|big_walk_mario_model_mg
+  - first:
+      74: 8079544469357829192
+    second: mario_model_mg|boss_key_get_mario_model_mg
+  - first:
+      74: 1142498843127088368
+    second: mario_model_mg|bt_goal_jmp_mario_model_mg
+  - first:
+      74: -303390825474110209
+    second: mario_model_mg|bt_goal_out_mario_model_mg
+  - first:
+      74: -3393369893028161643
+    second: mario_model_mg|bt_surprise_mario_model_mg
+  - first:
+      74: -135433729743424634
+    second: mario_model_mg|bt_wait_mario_model_mg
+  - first:
+      74: 9194398601627942368
+    second: mario_model_mg|buried_damage_mario_model_mg
+  - first:
+      74: -3240149592202943398
+    second: mario_model_mg|buried_ed_mario_model_mg
+  - first:
+      74: -8963209072635164974
+    second: mario_model_mg|buried_mario_model_mg
+  - first:
+      74: -7759181420138149711
+    second: mario_model_mg|buried_st_mario_model_mg
+  - first:
+      74: 5935752697594525628
+    second: mario_model_mg|carry_pose_mario_model_mg
+  - first:
+      74: -3400600708796135680
+    second: mario_model_mg|carry_start_mario_model_mg
+  - first:
+      74: 21315015762724479
+    second: mario_model_mg|carry_throw.001_mario_model_mg
+  - first:
+      74: 1260460720118595311
+    second: mario_model_mg|carry_throw_mario_model_mg
+  - first:
+      74: 6864258345905747985
+    second: mario_model_mg|carry_wait_mario_model_mg
+  - first:
+      74: -4011327478981043815
+    second: mario_model_mg|carry_walk_mario_model_mg
+  - first:
+      74: -3338553113133413036
+    second: mario_model_mg|coin_comp_mario_model_mg
+  - first:
+      74: -8225785818066577548
+    second: mario_model_mg|course_in_mario_model_mg
+  - first:
+      74: 96641067465223777
+    second: mario_model_mg|dead_mario_model_mg
+  - first:
+      74: 3582664078388807148
+    second: mario_model_mg|dead_pose_mario_model_mg
+  - first:
+      74: -5514392963636458546
+    second: mario_model_mg|door_walk_mario_model_mg
+  - first:
+      74: 3938766976430449379
+    second: mario_model_mg|e_damage1_mario_model_mg
+  - first:
+      74: -8215730599232396350
+    second: mario_model_mg|e_damage2_mario_model_mg
+  - first:
+      74: -4979601016764864456
+    second: mario_model_mg|e_down_mario_model_mg
+  - first:
+      74: 5726763025784897203
+    second: mario_model_mg|e_shock_mario_model_mg
+  - first:
+      74: 8699694594467593921
+    second: mario_model_mg|find_loop_mario_model_mg
+  - first:
+      74: 3987819042016613341
+    second: mario_model_mg|find_mario_model_mg
+  - first:
+      74: -6834082256118351541
+    second: mario_model_mg|find_surprise_mario_model_mg
+  - first:
+      74: 5529988310570089703
+    second: mario_model_mg|fire_at_mario_model_mg
+  - first:
+      74: 8793942090897496433
+    second: mario_model_mg|firejmp.001_mario_model_mg
+  - first:
+      74: 8515700178815899920
+    second: mario_model_mg|firejmp_mario_model_mg
+  - first:
+      74: 3557936320216852664
+    second: mario_model_mg|goal_jump_ed_mario_model_mg
+  - first:
+      74: 3638009351639146512
+    second: mario_model_mg|goal_jump_mario_model_mg
+  - first:
+      74: 952719729481450131
+    second: mario_model_mg|goal_puton_cap_mario_model_mg
+  - first:
+      74: -7780259043359541884
+    second: mario_model_mg|hang_start_mario_model_mg
+  - first:
+      74: -8140895959289708991
+    second: mario_model_mg|hang_up.001_mario_model_mg
+  - first:
+      74: 576706147237612408
+    second: mario_model_mg|hang_up_mario_model_mg
+  - first:
+      74: -3986935010523797666
+    second: mario_model_mg|hang_wait_mario_model_mg
+  - first:
+      74: -3176677581292673428
+    second: mario_model_mg|hang_walk_l_mario_model_mg
+  - first:
+      74: -776663928012758559
+    second: mario_model_mg|hang_walk_r_mario_model_mg
+  - first:
+      74: 985563522561293605
+    second: mario_model_mg|hipat_mario_model_mg
+  - first:
+      74: -5758823836050490106
+    second: mario_model_mg|hiped_mario_model_mg
+  - first:
+      74: 236044150126499313
+    second: mario_model_mg|hipsr_mario_model_mg
+  - first:
+      74: 4857678256887524199
+    second: mario_model_mg|jmped_mario_model_mg
+  - first:
+      74: 3801274155851930419
+    second: mario_model_mg|jr_crear_mario_model_mg
+  - first:
+      74: -5036943952264090541
+    second: mario_model_mg|jump.001_mario_model_mg
+  - first:
+      74: -1492077425157798747
+    second: mario_model_mg|jump.002_mario_model_mg
+  - first:
+      74: -6655851124842062386
+    second: mario_model_mg|jump2_mario_model_mg
+  - first:
+      74: 6408654875929036903
+    second: mario_model_mg|jump_b_mario_model_mg
+  - first:
+      74: 9009486334238088242
+    second: mario_model_mg|jump_c_mario_model_mg
+  - first:
+      74: -2173132930687457851
+    second: mario_model_mg|jump_d_mario_model_mg
+  - first:
+      74: -4939131150409779524
+    second: mario_model_mg|jump_e_mario_model_mg
+  - first:
+      74: 185709068371293584
+    second: mario_model_mg|jump_hang_mario_model_mg
+  - first:
+      74: -1594791975795387719
+    second: mario_model_mg|jump_mario_model_mg
+  - first:
+      74: -4392543776152270989
+    second: mario_model_mg|jumped.001_mario_model_mg
+  - first:
+      74: -4109390600903834306
+    second: mario_model_mg|jumped_mario_model_mg
+  - first:
+      74: 7743541953057611311
+    second: mario_model_mg|L_run.001_mario_model_mg
+  - first:
+      74: -8078659583057658372
+    second: mario_model_mg|L_run.002_mario_model_mg
+  - first:
+      74: -6118267490169541535
+    second: mario_model_mg|L_run_mario_model_mg
+  - first:
+      74: -1036439179411476507
+    second: mario_model_mg|L_wait.001_mario_model_mg
+  - first:
+      74: 8553869589678877796
+    second: mario_model_mg|L_wait.002_mario_model_mg
+  - first:
+      74: -2475625046873759203
+    second: mario_model_mg|L_wait_mario_model_mg
+  - first:
+      74: 179323177296833747
+    second: mario_model_mg|L_walk.001_mario_model_mg
+  - first:
+      74: 1958089852017160985
+    second: mario_model_mg|L_walk.002_mario_model_mg
+  - first:
+      74: -7338049921340618940
+    second: mario_model_mg|L_walk_mario_model_mg
+  - first:
+      74: -5751637907479147579
+    second: mario_model_mg|lost_mario_model_mg
+  - first:
+      74: 8326566300357088254
+    second: mario_model_mg|low_walk_mario_model_mg
+  - first:
+      74: 7932509689903198601
+    second: mario_model_mg|m_escort_mario_model_mg
+  - first:
+      74: 6052916587092794951
+    second: mario_model_mg|m_fall_wait_mario_model_mg
+  - first:
+      74: 8942284786690488705
+    second: mario_model_mg|m_kiss_mario_model_mg
+  - first:
+      74: 7831608471050508304
+    second: mario_model_mg|m_shy_mario_model_mg
+  - first:
+      74: 7566415498300743053
+    second: mario_model_mg|monkey_l_to_r_mario_model_mg
+  - first:
+      74: 7652281811266626535
+    second: mario_model_mg|monkey_r_to_l_mario_model_mg
+  - first:
+      74: 372051566630462808
+    second: mario_model_mg|monkey_start_mario_model_mg
+  - first:
+      74: 627093368486229661
+    second: mario_model_mg|monkey_wait_l_mario_model_mg
+  - first:
+      74: 925606287064631355
+    second: mario_model_mg|monkey_wait_r_mario_model_mg
+  - first:
+      74: -8694884907346899184
+    second: mario_model_mg|move1_mario_model_mg
+  - first:
+      74: 3829853286602737876
+    second: mario_model_mg|move2_mario_model_mg
+  - first:
+      74: -6599010346550116813
+    second: mario_model_mg|net_attack_mario_model_mg
+  - first:
+      74: 1157623702963818654
+    second: mario_model_mg|net_wait_mario_model_mg
+  - first:
+      74: 2758160091474203164
+    second: mario_model_mg|net_walk1_mario_model_mg
+  - first:
+      74: 2409633576617449969
+    second: mario_model_mg|net_walk2_mario_model_mg
+  - first:
+      74: 3887658727846531285
+    second: mario_model_mg|opm_brake_mario_model_mg
+  - first:
+      74: -8862372033900810997
+    second: mario_model_mg|opm_jr_notice_mario_model_mg
+  - first:
+      74: -7040946444491685311
+    second: mario_model_mg|opm_look_up_mario_model_mg
+  - first:
+      74: 8078103030662305588
+    second: mario_model_mg|opm_noti_wait_mario_model_mg
+  - first:
+      74: 916162507628118263
+    second: mario_model_mg|opm_notice_mario_model_mg
+  - first:
+      74: -7938631786239893940
+    second: mario_model_mg|opm_person_mario_model_mg
+  - first:
+      74: 4251556447630654725
+    second: mario_model_mg|opm_surprise1_mario_model_mg
+  - first:
+      74: 3852323484118359328
+    second: mario_model_mg|opm_surprise2_mario_model_mg
+  - first:
+      74: -11200456343720887
+    second: mario_model_mg|paddle_1_mario_model_mg
+  - first:
+      74: -5982226144941614404
+    second: mario_model_mg|paddle_2_mario_model_mg
+  - first:
+      74: -9130394797644798364
+    second: mario_model_mg|paddle_carry_mario_model_mg
+  - first:
+      74: 8947632978195768459
+    second: mario_model_mg|paddle_end_mario_model_mg
+  - first:
+      74: -1030623138238921846
+    second: mario_model_mg|pea_plant_mario_model_mg
+  - first:
+      74: 7438788826134191022
+    second: mario_model_mg|pea_plant_st_mario_model_mg
+  - first:
+      74: -4939683631680825286
+    second: mario_model_mg|pea_plant_wait_mario_model_mg
+  - first:
+      74: 9132403547938976885
+    second: mario_model_mg|pipe_pose_mario_model_mg
+  - first:
+      74: 608854373147495923
+    second: mario_model_mg|push_mario_model_mg
+  - first:
+      74: 1108982160899887669
+    second: mario_model_mg|roll_jump.001_mario_model_mg
+  - first:
+      74: -7801633925373561620
+    second: mario_model_mg|roll_jump_end_mario_model_mg
+  - first:
+      74: 1369689779851070500
+    second: mario_model_mg|roll_jump_mario_model_mg
+  - first:
+      74: -5956106808263113045
+    second: mario_model_mg|roll_mario_model_mg
+  - first:
+      74: 7316381523588541009
+    second: mario_model_mg|rope_jump_ed_mario_model_mg
+  - first:
+      74: 3346842053030833089
+    second: mario_model_mg|rope_swing_mario_model_mg
+  - first:
+      74: 1187912435329771474
+    second: mario_model_mg|rope_wait2_mario_model_mg
+  - first:
+      74: -609428710537870126
+    second: mario_model_mg|rope_wait_mario_model_mg
+  - first:
+      74: 6728799126522864615
+    second: mario_model_mg|rope_walk_mario_model_mg
+  - first:
+      74: 6740399123275978479
+    second: mario_model_mg|run.001_mario_model_mg
+  - first:
+      74: 6395337971472373580
+    second: mario_model_mg|run.002_mario_model_mg
+  - first:
+      74: -483726293617546318
+    second: mario_model_mg|run_mario_model_mg
+  - first:
+      74: 5708656206422130156
+    second: mario_model_mg|scale_up_mario_model_mg
+  - first:
+      74: -3747483258408024880
+    second: mario_model_mg|sdown.001_mario_model_mg
+  - first:
+      74: -6368207487943243911
+    second: mario_model_mg|sdown_mario_model_mg
+  - first:
+      74: 3607217714139784895
+    second: mario_model_mg|sfbdn.001_mario_model_mg
+  - first:
+      74: -6739655315651484475
+    second: mario_model_mg|sfbdn_mario_model_mg
+  - first:
+      74: -606222730622956717
+    second: mario_model_mg|sffdn_mario_model_mg
+  - first:
+      74: 3389466908724262603
+    second: mario_model_mg|shell_in_mario_model_mg
+  - first:
+      74: 8830424003112048033
+    second: mario_model_mg|shell_puton_cap_mario_model_mg
+  - first:
+      74: 1569293704238665355
+    second: mario_model_mg|shell_run_mario_model_mg
+  - first:
+      74: 7974647496300294895
+    second: mario_model_mg|shell_walk_mario_model_mg
+  - first:
+      74: -3632025214071532231
+    second: mario_model_mg|shfdn_mario_model_mg
+  - first:
+      74: -8035508470257889980
+    second: mario_model_mg|shoot_mario_model_mg
+  - first:
+      74: -4883524246144893997
+    second: mario_model_mg|sldct_mario_model_mg
+  - first:
+      74: -2426943010639917990
+    second: mario_model_mg|slip_mario_model_mg
+  - first:
+      74: -5452333245361696871
+    second: mario_model_mg|sliped_mario_model_mg
+  - first:
+      74: -5679505279110639723
+    second: mario_model_mg|slpbk_mario_model_mg
+  - first:
+      74: -651237421847295540
+    second: mario_model_mg|slpla_mario_model_mg
+  - first:
+      74: 4280511111432561236
+    second: mario_model_mg|small_jumped_mario_model_mg
+  - first:
+      74: 6236925687549855136
+    second: mario_model_mg|small_wait.001_mario_model_mg
+  - first:
+      74: 4753526587231153590
+    second: mario_model_mg|small_wait_mario_model_mg
+  - first:
+      74: 970711893920912381
+    second: mario_model_mg|spin_jump2_mario_model_mg
+  - first:
+      74: 3883160425014310264
+    second: mario_model_mg|spin_jump_end_mario_model_mg
+  - first:
+      74: -4884769193553889469
+    second: mario_model_mg|spin_jump_mario_model_mg
+  - first:
+      74: -5173327027728808548
+    second: mario_model_mg|spin_jump_off_mario_model_mg
+  - first:
+      74: 5601553735753711936
+    second: mario_model_mg|spin_jump_st_mario_model_mg
+  - first:
+      74: -5419873928327414062
+    second: mario_model_mg|squat_start_mario_model_mg
+  - first:
+      74: -750860620355682747
+    second: mario_model_mg|star_roll_mario_model_mg
+  - first:
+      74: 3027515081501020813
+    second: mario_model_mg|stoop_mario_model_mg
+  - first:
+      74: -8651713946355606236
+    second: mario_model_mg|struggle_mario_model_mg
+  - first:
+      74: -2700295295402222090
+    second: mario_model_mg|swim_carry_mario_model_mg
+  - first:
+      74: 6260225766750361311
+    second: mario_model_mg|swim_dead_mario_model_mg
+  - first:
+      74: 4218927476419115477
+    second: mario_model_mg|swim_in_mario_model_mg
+  - first:
+      74: -6996624567624283022
+    second: mario_model_mg|swim_mario_model_mg
+  - first:
+      74: 7593329295483854214
+    second: mario_model_mg|swim_standing_mario_model_mg
+  - first:
+      74: -6639749099658376731
+    second: mario_model_mg|swim_throw_mario_model_mg
+  - first:
+      74: 6741526534821496499
+    second: mario_model_mg|swim_wait_mario_model_mg
+  - first:
+      74: 1899029997762392262
+    second: mario_model_mg|swim_walk_mario_model_mg
+  - first:
+      74: 5108395655857044554
+    second: mario_model_mg|tree_climb_mario_model_mg
+  - first:
+      74: 2968482096088430690
+    second: mario_model_mg|tree_pose_mario_model_mg
+  - first:
+      74: -5205324803000997510
+    second: mario_model_mg|tree_start_mario_model_mg
+  - first:
+      74: 69139799405961086
+    second: mario_model_mg|tree_wait_mario_model_mg
+  - first:
+      74: -6137667023173782246
+    second: mario_model_mg|trned.001_mario_model_mg
+  - first:
+      74: 7116477288254318498
+    second: mario_model_mg|trned.002_mario_model_mg
+  - first:
+      74: 5278005849783141010
+    second: mario_model_mg|trned_mario_model_mg
+  - first:
+      74: -4724745100310574011
+    second: mario_model_mg|turn.001_mario_model_mg
+  - first:
+      74: -3379509125221557908
+    second: mario_model_mg|turn.002_mario_model_mg
+  - first:
+      74: -8806834914126397278
+    second: mario_model_mg|turn_mario_model_mg
+  - first:
+      74: -282875677751622041
+    second: mario_model_mg|w_jump1_mario_model_mg
+  - first:
+      74: 3234907859589691996
+    second: mario_model_mg|w_jump2_mario_model_mg
+  - first:
+      74: 5495166318043064625
+    second: mario_model_mg|w_jump_ed_mario_model_mg
+  - first:
+      74: -1853722300786890590
+    second: mario_model_mg|wait.001_mario_model_mg
+  - first:
+      74: -3730154031935226871
+    second: mario_model_mg|wait1_mario_model_mg
+  - first:
+      74: -7259070559559801307
+    second: mario_model_mg|wait2_mario_model_mg
+  - first:
+      74: 6318309594519002548
+    second: mario_model_mg|wait_mario_model_mg
+  - first:
+      74: -6766284335838999291
+    second: mario_model_mg|walk.001_mario_model_mg
+  - first:
+      74: -3477633563843402521
+    second: mario_model_mg|walk.002_mario_model_mg
+  - first:
+      74: -7428763663350525389
+    second: mario_model_mg|walk.003_mario_model_mg
+  - first:
+      74: -4408943822905645113
+    second: mario_model_mg|walk_mario_model_mg
+  - first:
+      74: -5124563417981157578
+    second: mario_model_mg|wall_wait_mario_model_mg
+  - first:
+      74: 4377112118885615437
+    second: mario_model_mg|wall_walk_l_mario_model_mg
+  - first:
+      74: 7076989306178007346
+    second: mario_model_mg|wall_walk_r_mario_model_mg
+  - first:
+      74: -7211780528181729974
+    second: mario_model_mg|wjmp.001_mario_model_mg
+  - first:
+      74: -7267704058946746211
+    second: mario_model_mg|wjmp_mario_model_mg
+  - first:
+      74: -5146864069086097593
+    second: mario_model_mg|wsld_mario_model_mg
+  - first:
+      74: 3284718136830763456
+    second: mario_model_mg|Y_run_mario_model_mg
+  - first:
+      74: 2001832274755481179
+    second: mario_model_mg|Y_vs_lose_A_mario_model_mg
+  - first:
+      74: 6622982165150408331
+    second: mario_model_mg|Y_vs_lose_B_mario_model_mg
+  - first:
+      74: -770478306567829044
+    second: mario_model_mg|Y_vs_lose_C_mario_model_mg
+  - first:
+      74: -1820205331145368567
+    second: mario_model_mg|Y_vs_win_wait_mario_model_mg
+  - first:
+      74: 5049626626200593287
+    second: mario_model_mg|Y_wait_mario_model_mg
+  - first:
+      74: 8229965988682334313
+    second: mario_model_mg|zero_g_jump2_mario_model_mg
+  - first:
+      74: 2560887889026339759
+    second: mario_model_mg|zero_g_jump_ed_mario_model_mg
+  - first:
+      74: 7012642237042667242
+    second: mario_model_mg|zero_g_jump_mario_model_mg
+  - first:
+      74: -2133009574828120171
+    second: mario_model_mg|zero_g_walk_mario_model_mg
+  - first:
+      74: -6311747424275141986
+    second: mario_model_mg|shfdn_knockdown
+  - first:
+      74: -414060296179773417
+    second: mario_model_mg|shfdn_getup
+  - first:
+      74: -8166834287284216710
+    second: mario_model_mg|ice_pickup_mario_model_mg
+  - first:
+      74: 4664410561562835923
+    second: mario_model_mg|mario_model_mg.002|mario_model_mg|head_carry_wait
+  - first:
+      74: -424364194679464146
+    second: mario_model_mg|head_carry_wait
+  - first:
+      74: 7104410011021939564
+    second: mario_model_mg|head_carry_walk_mario_model_mg
+  - first:
+      74: 2459589200463975708
+    second: mario_model_mg|head_carry_wait_mario_model_mg
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_body
-    second: {fileID: 2100000, guid: 08b604697044ca042a613576d5f8c98e, type: 2}
+      name: yoshi_all_tx
+    second: {fileID: 2100000, guid: aa76d79cae9b9d446b14d0847c87c7ae, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_eye
-    second: {fileID: 2100000, guid: 33672109d5ebfae47987ccfabede307f, type: 2}
+      name: yoshi_eye_tx
+    second: {fileID: 2100000, guid: 072d2f4b9d67046409493712a2879f07, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_head
-    second: {fileID: 2100000, guid: bdeaedb82f986724abe2cadb7eb2e481, type: 2}
+      name: yoshi_eyeskin_tx
+    second: {fileID: 2100000, guid: 9c3f5199a2d38d349b2a35fe4c80d3c2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -46,67 +700,9 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: swim_damage_mario_model_mg
-      takeName: swim_damage_mario_model_mg
-      internalID: -8985365442197724302
-      firstFrame: 1
-      lastFrame: 40
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: propellerup_mario_model_mg
-      takeName: propellerup_mario_model_mg
-      internalID: 1179843881249290182
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: mario_model_mg|2jmp1_mario_model_mg
       takeName: mario_model_mg|2jmp1_mario_model_mg
-      internalID: 6526803134433627612
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -135,7 +731,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jmp2_mario_model_mg
       takeName: mario_model_mg|2jmp2_mario_model_mg
-      internalID: 2746465747926291216
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -164,7 +760,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jmp_b_1_mario_model_mg
       takeName: mario_model_mg|2jmp_b_1_mario_model_mg
-      internalID: 503842159868916567
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -193,7 +789,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jmp_b_2_mario_model_mg
       takeName: mario_model_mg|2jmp_b_2_mario_model_mg
-      internalID: -1395987734154348434
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -222,7 +818,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jmp_c_1_mario_model_mg
       takeName: mario_model_mg|2jmp_c_1_mario_model_mg
-      internalID: 2579836911327356150
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -251,7 +847,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jmp_c_2_mario_model_mg
       takeName: mario_model_mg|2jmp_c_2_mario_model_mg
-      internalID: 1708979000861537007
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -280,7 +876,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jmp_d_1_mario_model_mg
       takeName: mario_model_mg|2jmp_d_1_mario_model_mg
-      internalID: -161306506838784590
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -309,7 +905,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jmp_d_2_mario_model_mg
       takeName: mario_model_mg|2jmp_d_2_mario_model_mg
-      internalID: 7276147343856933009
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -338,7 +934,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jmp_e_1_mario_model_mg
       takeName: mario_model_mg|2jmp_e_1_mario_model_mg
-      internalID: 6256140916610014131
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -367,7 +963,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jmp_e_2_mario_model_mg
       takeName: mario_model_mg|2jmp_e_2_mario_model_mg
-      internalID: 4965801180276983706
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -396,7 +992,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jump1_mario_model_mg
       takeName: mario_model_mg|2jump1_mario_model_mg
-      internalID: 5304300961600207028
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -425,7 +1021,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jump2_mario_model_mg
       takeName: mario_model_mg|2jump2_mario_model_mg
-      internalID: 3698728561107381714
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -454,7 +1050,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|2jumped_mario_model_mg
       takeName: mario_model_mg|2jumped_mario_model_mg
-      internalID: 761537080958417666
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -483,7 +1079,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|attack_mario_model_mg
       takeName: mario_model_mg|attack_mario_model_mg
-      internalID: -430205122887178574
+      internalID: 0
       firstFrame: 0
       lastFrame: 36
       wrapMode: 0
@@ -512,7 +1108,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|b_dash.001_mario_model_mg
       takeName: mario_model_mg|b_dash.001_mario_model_mg
-      internalID: 6455120831816235746
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -521,8 +1117,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -533,21 +1129,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.08040529
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.5793918
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -555,9 +1137,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|b_dash2_mario_model_mg
       takeName: mario_model_mg|b_dash2_mario_model_mg
-      internalID: -10039282053607306
+      internalID: 0
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 23
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -577,19 +1159,19 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.08513501
+      - time: 0.107163996
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 1
         messageOptions: 0
-      - time: 0.5793918
+      - time: 0.64298403
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 1
         messageOptions: 0
       transformMask: []
       maskType: 3
@@ -598,9 +1180,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|b_dash_mario_model_mg
       takeName: mario_model_mg|b_dash_mario_model_mg
-      internalID: 2521946176606847193
+      internalID: 0
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 23
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -620,19 +1202,19 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.08513501
+      - time: 0.16044997
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 1
         messageOptions: 0
-      - time: 0.5793918
+      - time: 0.68146837
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 1
         messageOptions: 0
       transformMask: []
       maskType: 3
@@ -641,7 +1223,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_goal_mario_model_mg
       takeName: mario_model_mg|big_goal_mario_model_mg
-      internalID: 4015857521763800374
+      internalID: 0
       firstFrame: 0
       lastFrame: 62
       wrapMode: 0
@@ -670,16 +1252,16 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_hip_at_mario_model_mg
       takeName: mario_model_mg|big_hip_at_mario_model_mg
-      internalID: -3800083806335963329
+      internalID: 0
       firstFrame: 0
-      lastFrame: 0
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -699,7 +1281,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_hip_ed_mario_model_mg
       takeName: mario_model_mg|big_hip_ed_mario_model_mg
-      internalID: 6614608556746584815
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -728,7 +1310,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_hip_squat_mario_model_mg
       takeName: mario_model_mg|big_hip_squat_mario_model_mg
-      internalID: 1120502897885727745
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -757,7 +1339,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_hip_st_mario_model_mg
       takeName: mario_model_mg|big_hip_st_mario_model_mg
-      internalID: -1920664592570213121
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -786,7 +1368,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_jmp_2_mario_model_mg
       takeName: mario_model_mg|big_jmp_2_mario_model_mg
-      internalID: 5487298358058082282
+      internalID: 0
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -815,7 +1397,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_jump_ed_mario_model_mg
       takeName: mario_model_mg|big_jump_ed_mario_model_mg
-      internalID: -8197853627315705243
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -844,7 +1426,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_jump_st_mario_model_mg
       takeName: mario_model_mg|big_jump_st_mario_model_mg
-      internalID: -4319249284445348206
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -873,9 +1455,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_wait_mario_model_mg
       takeName: mario_model_mg|big_wait_mario_model_mg
-      internalID: -5868900911271883546
+      internalID: 0
       firstFrame: 0
-      lastFrame: 70
+      lastFrame: 69
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -902,7 +1484,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|big_walk_mario_model_mg
       takeName: mario_model_mg|big_walk_mario_model_mg
-      internalID: 3708145551980609297
+      internalID: 0
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -912,7 +1494,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -924,14 +1506,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
+      - time: 0.17741935
         functionName: PlayMegaFootstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.50135124
+      - time: 0.7025088
         functionName: PlayMegaFootstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -945,7 +1527,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|boss_key_get_mario_model_mg
       takeName: mario_model_mg|boss_key_get_mario_model_mg
-      internalID: 8079544469357829192
+      internalID: 0
       firstFrame: 0
       lastFrame: 42
       wrapMode: 0
@@ -974,7 +1556,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|bt_goal_jmp_mario_model_mg
       takeName: mario_model_mg|bt_goal_jmp_mario_model_mg
-      internalID: 1142498843127088368
+      internalID: 0
       firstFrame: 0
       lastFrame: 36
       wrapMode: 0
@@ -1003,7 +1585,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|bt_goal_out_mario_model_mg
       takeName: mario_model_mg|bt_goal_out_mario_model_mg
-      internalID: -303390825474110209
+      internalID: 0
       firstFrame: 0
       lastFrame: 34
       wrapMode: 0
@@ -1032,7 +1614,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|bt_surprise_mario_model_mg
       takeName: mario_model_mg|bt_surprise_mario_model_mg
-      internalID: -3393369893028161643
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -1061,7 +1643,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|bt_wait_mario_model_mg
       takeName: mario_model_mg|bt_wait_mario_model_mg
-      internalID: -135433729743424634
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 0
@@ -1090,7 +1672,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|buried_damage_mario_model_mg
       takeName: mario_model_mg|buried_damage_mario_model_mg
-      internalID: 9194398601627942368
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -1119,7 +1701,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|buried_ed_mario_model_mg
       takeName: mario_model_mg|buried_ed_mario_model_mg
-      internalID: -3240149592202943398
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -1148,7 +1730,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|buried_mario_model_mg
       takeName: mario_model_mg|buried_mario_model_mg
-      internalID: -8963209072635164974
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -1177,7 +1759,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|buried_st_mario_model_mg
       takeName: mario_model_mg|buried_st_mario_model_mg
-      internalID: -7759181420138149711
+      internalID: 0
       firstFrame: 0
       lastFrame: 9
       wrapMode: 0
@@ -1206,7 +1788,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|carry_pose_mario_model_mg
       takeName: mario_model_mg|carry_pose_mario_model_mg
-      internalID: 5935752697594525628
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -1235,7 +1817,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|carry_start_mario_model_mg
       takeName: mario_model_mg|carry_start_mario_model_mg
-      internalID: -3400600708796135680
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -1244,7 +1826,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1264,7 +1846,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|carry_throw.001_mario_model_mg
       takeName: mario_model_mg|carry_throw.001_mario_model_mg
-      internalID: 21315015762724479
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -1293,7 +1875,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|carry_throw_mario_model_mg
       takeName: mario_model_mg|carry_throw_mario_model_mg
-      internalID: 1260460720118595311
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -1302,7 +1884,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1322,7 +1904,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|carry_wait_mario_model_mg
       takeName: mario_model_mg|carry_wait_mario_model_mg
-      internalID: 6864258345905747985
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 0
@@ -1351,9 +1933,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|carry_walk_mario_model_mg
       takeName: mario_model_mg|carry_walk_mario_model_mg
-      internalID: -4011327478981043815
+      internalID: 0
       firstFrame: 0
-      lastFrame: 23
+      lastFrame: 22
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -1373,14 +1955,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.25304043
+      - time: 0.25503355
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.7449323
+      - time: 0.74161077
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -1394,7 +1976,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|coin_comp_mario_model_mg
       takeName: mario_model_mg|coin_comp_mario_model_mg
-      internalID: -3338553113133413036
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1423,7 +2005,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|course_in_mario_model_mg
       takeName: mario_model_mg|course_in_mario_model_mg
-      internalID: -8225785818066577548
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -1452,7 +2034,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|dead_mario_model_mg
       takeName: mario_model_mg|dead_mario_model_mg
-      internalID: 96641067465223777
+      internalID: 0
       firstFrame: 0
       lastFrame: 64
       wrapMode: 0
@@ -1481,7 +2063,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|dead_pose_mario_model_mg
       takeName: mario_model_mg|dead_pose_mario_model_mg
-      internalID: 3582664078388807148
+      internalID: 0
       firstFrame: 0
       lastFrame: 9
       wrapMode: 0
@@ -1491,7 +2073,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -1510,7 +2092,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|door_walk_mario_model_mg
       takeName: mario_model_mg|door_walk_mario_model_mg
-      internalID: -5514392963636458546
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -1539,7 +2121,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|e_damage1_mario_model_mg
       takeName: mario_model_mg|e_damage1_mario_model_mg
-      internalID: 3938766976430449379
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -1568,7 +2150,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|e_damage2_mario_model_mg
       takeName: mario_model_mg|e_damage2_mario_model_mg
-      internalID: -8215730599232396350
+      internalID: 0
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -1597,7 +2179,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|e_down_mario_model_mg
       takeName: mario_model_mg|e_down_mario_model_mg
-      internalID: -4979601016764864456
+      internalID: 0
       firstFrame: 0
       lastFrame: 31
       wrapMode: 0
@@ -1626,7 +2208,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|e_shock_mario_model_mg
       takeName: mario_model_mg|e_shock_mario_model_mg
-      internalID: 5726763025784897203
+      internalID: 0
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -1655,7 +2237,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|find_loop_mario_model_mg
       takeName: mario_model_mg|find_loop_mario_model_mg
-      internalID: 8699694594467593921
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -1684,7 +2266,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|find_mario_model_mg
       takeName: mario_model_mg|find_mario_model_mg
-      internalID: 3987819042016613341
+      internalID: 0
       firstFrame: 0
       lastFrame: 38
       wrapMode: 0
@@ -1713,7 +2295,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|find_surprise_mario_model_mg
       takeName: mario_model_mg|find_surprise_mario_model_mg
-      internalID: -6834082256118351541
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 0
@@ -1742,7 +2324,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|fire_at_mario_model_mg
       takeName: mario_model_mg|fire_at_mario_model_mg
-      internalID: 5529988310570089703
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -1771,9 +2353,38 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|firejmp.001_mario_model_mg
       takeName: mario_model_mg|firejmp.001_mario_model_mg
-      internalID: 8793942090897496433
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: mario_model_mg|firejmp_mario_model_mg
+      takeName: mario_model_mg|firejmp_mario_model_mg
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 2
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -1798,38 +2409,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: mario_model_mg|firejmp_mario_model_mg
-      takeName: mario_model_mg|firejmp_mario_model_mg
-      internalID: 8515700178815899920
-      firstFrame: 0
-      lastFrame: 2
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: mario_model_mg|goal_jump_ed_mario_model_mg
       takeName: mario_model_mg|goal_jump_ed_mario_model_mg
-      internalID: 3557936320216852664
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -1858,7 +2440,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|goal_jump_mario_model_mg
       takeName: mario_model_mg|goal_jump_mario_model_mg
-      internalID: 3638009351639146512
+      internalID: 0
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -1887,7 +2469,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|goal_puton_cap_mario_model_mg
       takeName: mario_model_mg|goal_puton_cap_mario_model_mg
-      internalID: 952719729481450131
+      internalID: 0
       firstFrame: 0
       lastFrame: 50
       wrapMode: 0
@@ -1916,7 +2498,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|hang_start_mario_model_mg
       takeName: mario_model_mg|hang_start_mario_model_mg
-      internalID: -7780259043359541884
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -1945,7 +2527,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|hang_up.001_mario_model_mg
       takeName: mario_model_mg|hang_up.001_mario_model_mg
-      internalID: -8140895959289708991
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -1974,7 +2556,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|hang_up_mario_model_mg
       takeName: mario_model_mg|hang_up_mario_model_mg
-      internalID: 576706147237612408
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -2003,7 +2585,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|hang_wait_mario_model_mg
       takeName: mario_model_mg|hang_wait_mario_model_mg
-      internalID: -3986935010523797666
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -2032,7 +2614,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|hang_walk_l_mario_model_mg
       takeName: mario_model_mg|hang_walk_l_mario_model_mg
-      internalID: -3176677581292673428
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -2061,7 +2643,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|hang_walk_r_mario_model_mg
       takeName: mario_model_mg|hang_walk_r_mario_model_mg
-      internalID: -776663928012758559
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -2088,81 +2670,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: mario_model_mg|head_carry_wait_mario_model_mg
-      takeName: mario_model_mg|head_carry_wait_mario_model_mg
-      internalID: 2459589200463975708
-      firstFrame: 0
-      lastFrame: 32
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: mario_model_mg|head_carry_walk_mario_model_mg
-      takeName: mario_model_mg|head_carry_walk_mario_model_mg
-      internalID: 7104410011021939564
-      firstFrame: 0
-      lastFrame: 23
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0.24831069
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.7520269
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: mario_model_mg|hipat_mario_model_mg
       takeName: mario_model_mg|hipat_mario_model_mg
-      internalID: 985563522561293605
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -2191,7 +2701,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|hiped_mario_model_mg
       takeName: mario_model_mg|hiped_mario_model_mg
-      internalID: -5758823836050490106
+      internalID: 0
       firstFrame: 0
       lastFrame: 2
       wrapMode: 0
@@ -2220,38 +2730,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|hipsr_mario_model_mg
       takeName: mario_model_mg|hipsr_mario_model_mg
-      internalID: 236044150126499313
+      internalID: 0
       firstFrame: 0
-      lastFrame: 4
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: mario_model_mg|ice_pickup_mario_model_mg
-      takeName: mario_model_mg|ice_pickup_mario_model_mg
-      internalID: -8166834287284216710
-      firstFrame: 0
-      lastFrame: 17
+      lastFrame: 3
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -2278,7 +2759,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jmped_mario_model_mg
       takeName: mario_model_mg|jmped_mario_model_mg
-      internalID: 4857678256887524199
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -2307,7 +2788,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jr_crear_mario_model_mg
       takeName: mario_model_mg|jr_crear_mario_model_mg
-      internalID: 3801274155851930419
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 0
@@ -2336,7 +2817,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jump.001_mario_model_mg
       takeName: mario_model_mg|jump.001_mario_model_mg
-      internalID: -5036943952264090541
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2365,7 +2846,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jump.002_mario_model_mg
       takeName: mario_model_mg|jump.002_mario_model_mg
-      internalID: -1492077425157798747
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2394,9 +2875,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jump2_mario_model_mg
       takeName: mario_model_mg|jump2_mario_model_mg
-      internalID: -6655851124842062386
+      internalID: 0
       firstFrame: 0
-      lastFrame: 2
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -2423,7 +2904,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jump_b_mario_model_mg
       takeName: mario_model_mg|jump_b_mario_model_mg
-      internalID: 6408654875929036903
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -2452,7 +2933,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jump_c_mario_model_mg
       takeName: mario_model_mg|jump_c_mario_model_mg
-      internalID: 9009486334238088242
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -2481,7 +2962,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jump_d_mario_model_mg
       takeName: mario_model_mg|jump_d_mario_model_mg
-      internalID: -2173132930687457851
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2510,7 +2991,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jump_e_mario_model_mg
       takeName: mario_model_mg|jump_e_mario_model_mg
-      internalID: -4939131150409779524
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2539,7 +3020,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jump_hang_mario_model_mg
       takeName: mario_model_mg|jump_hang_mario_model_mg
-      internalID: 185709068371293584
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -2568,7 +3049,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jump_mario_model_mg
       takeName: mario_model_mg|jump_mario_model_mg
-      internalID: -1594791975795387719
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2597,7 +3078,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jumped.001_mario_model_mg
       takeName: mario_model_mg|jumped.001_mario_model_mg
-      internalID: -4392543776152270989
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -2626,7 +3107,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|jumped_mario_model_mg
       takeName: mario_model_mg|jumped_mario_model_mg
-      internalID: -4109390600903834306
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -2655,7 +3136,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|L_run.001_mario_model_mg
       takeName: mario_model_mg|L_run.001_mario_model_mg
-      internalID: 7743541953057611311
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2684,7 +3165,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|L_run.002_mario_model_mg
       takeName: mario_model_mg|L_run.002_mario_model_mg
-      internalID: -8078659583057658372
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2713,7 +3194,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|L_run_mario_model_mg
       takeName: mario_model_mg|L_run_mario_model_mg
-      internalID: -6118267490169541535
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2722,8 +3203,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -2734,7 +3215,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.16606498
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6425993
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -2742,9 +3237,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|L_wait.001_mario_model_mg
       takeName: mario_model_mg|L_wait.001_mario_model_mg
-      internalID: -1036439179411476507
+      internalID: 0
       firstFrame: 0
-      lastFrame: 70
+      lastFrame: 69
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -2771,7 +3266,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|L_wait.002_mario_model_mg
       takeName: mario_model_mg|L_wait.002_mario_model_mg
-      internalID: 8553869589678877796
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -2800,17 +3295,17 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|L_wait_mario_model_mg
       takeName: mario_model_mg|L_wait_mario_model_mg
-      internalID: -2475625046873759203
+      internalID: 0
       firstFrame: 0
-      lastFrame: 70
+      lastFrame: 69
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -2829,7 +3324,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|L_walk.001_mario_model_mg
       takeName: mario_model_mg|L_walk.001_mario_model_mg
-      internalID: 179323177296833747
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2858,7 +3353,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|L_walk.002_mario_model_mg
       takeName: mario_model_mg|L_walk.002_mario_model_mg
-      internalID: 1958089852017160985
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2887,7 +3382,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|L_walk_mario_model_mg
       takeName: mario_model_mg|L_walk_mario_model_mg
-      internalID: -7338049921340618940
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2896,7 +3391,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -2916,7 +3411,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|lost_mario_model_mg
       takeName: mario_model_mg|lost_mario_model_mg
-      internalID: -5751637907479147579
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -2945,7 +3440,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|low_walk_mario_model_mg
       takeName: mario_model_mg|low_walk_mario_model_mg
-      internalID: 8326566300357088254
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2974,7 +3469,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|m_escort_mario_model_mg
       takeName: mario_model_mg|m_escort_mario_model_mg
-      internalID: 7932509689903198601
+      internalID: 0
       firstFrame: 0
       lastFrame: 60
       wrapMode: 0
@@ -3003,7 +3498,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|m_fall_wait_mario_model_mg
       takeName: mario_model_mg|m_fall_wait_mario_model_mg
-      internalID: 6052916587092794951
+      internalID: 0
       firstFrame: 0
       lastFrame: 91
       wrapMode: 0
@@ -3032,7 +3527,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|m_kiss_mario_model_mg
       takeName: mario_model_mg|m_kiss_mario_model_mg
-      internalID: 8942284786690488705
+      internalID: 0
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -3061,7 +3556,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|m_shy_mario_model_mg
       takeName: mario_model_mg|m_shy_mario_model_mg
-      internalID: 7831608471050508304
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -3090,7 +3585,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|monkey_l_to_r_mario_model_mg
       takeName: mario_model_mg|monkey_l_to_r_mario_model_mg
-      internalID: 7566415498300743053
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -3119,7 +3614,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|monkey_r_to_l_mario_model_mg
       takeName: mario_model_mg|monkey_r_to_l_mario_model_mg
-      internalID: 7652281811266626535
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -3148,7 +3643,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|monkey_start_mario_model_mg
       takeName: mario_model_mg|monkey_start_mario_model_mg
-      internalID: 372051566630462808
+      internalID: 0
       firstFrame: 0
       lastFrame: 18
       wrapMode: 0
@@ -3177,7 +3672,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|monkey_wait_l_mario_model_mg
       takeName: mario_model_mg|monkey_wait_l_mario_model_mg
-      internalID: 627093368486229661
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -3206,7 +3701,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|monkey_wait_r_mario_model_mg
       takeName: mario_model_mg|monkey_wait_r_mario_model_mg
-      internalID: 925606287064631355
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -3235,7 +3730,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|move1_mario_model_mg
       takeName: mario_model_mg|move1_mario_model_mg
-      internalID: -8694884907346899184
+      internalID: 0
       firstFrame: 0
       lastFrame: 17
       wrapMode: 0
@@ -3264,7 +3759,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|move2_mario_model_mg
       takeName: mario_model_mg|move2_mario_model_mg
-      internalID: 3829853286602737876
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -3293,7 +3788,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|net_attack_mario_model_mg
       takeName: mario_model_mg|net_attack_mario_model_mg
-      internalID: -6599010346550116813
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -3322,7 +3817,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|net_wait_mario_model_mg
       takeName: mario_model_mg|net_wait_mario_model_mg
-      internalID: 1157623702963818654
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -3351,7 +3846,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|net_walk1_mario_model_mg
       takeName: mario_model_mg|net_walk1_mario_model_mg
-      internalID: 2758160091474203164
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -3380,7 +3875,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|net_walk2_mario_model_mg
       takeName: mario_model_mg|net_walk2_mario_model_mg
-      internalID: 2409633576617449969
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -3409,7 +3904,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|opm_brake_mario_model_mg
       takeName: mario_model_mg|opm_brake_mario_model_mg
-      internalID: 3887658727846531285
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -3438,7 +3933,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|opm_jr_notice_mario_model_mg
       takeName: mario_model_mg|opm_jr_notice_mario_model_mg
-      internalID: -8862372033900810997
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -3467,7 +3962,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|opm_look_up_mario_model_mg
       takeName: mario_model_mg|opm_look_up_mario_model_mg
-      internalID: -7040946444491685311
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -3496,7 +3991,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|opm_noti_wait_mario_model_mg
       takeName: mario_model_mg|opm_noti_wait_mario_model_mg
-      internalID: 8078103030662305588
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -3525,7 +4020,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|opm_notice_mario_model_mg
       takeName: mario_model_mg|opm_notice_mario_model_mg
-      internalID: 916162507628118263
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -3554,7 +4049,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|opm_person_mario_model_mg
       takeName: mario_model_mg|opm_person_mario_model_mg
-      internalID: -7938631786239893940
+      internalID: 0
       firstFrame: 0
       lastFrame: 18
       wrapMode: 0
@@ -3583,7 +4078,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|opm_surprise1_mario_model_mg
       takeName: mario_model_mg|opm_surprise1_mario_model_mg
-      internalID: 4251556447630654725
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 0
@@ -3612,7 +4107,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|opm_surprise2_mario_model_mg
       takeName: mario_model_mg|opm_surprise2_mario_model_mg
-      internalID: 3852323484118359328
+      internalID: 0
       firstFrame: 0
       lastFrame: 31
       wrapMode: 0
@@ -3641,7 +4136,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|paddle_1_mario_model_mg
       takeName: mario_model_mg|paddle_1_mario_model_mg
-      internalID: -11200456343720887
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -3670,7 +4165,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|paddle_2_mario_model_mg
       takeName: mario_model_mg|paddle_2_mario_model_mg
-      internalID: -5982226144941614404
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -3699,7 +4194,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|paddle_carry_mario_model_mg
       takeName: mario_model_mg|paddle_carry_mario_model_mg
-      internalID: -9130394797644798364
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -3728,7 +4223,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|paddle_end_mario_model_mg
       takeName: mario_model_mg|paddle_end_mario_model_mg
-      internalID: 8947632978195768459
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -3757,7 +4252,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|pea_plant_mario_model_mg
       takeName: mario_model_mg|pea_plant_mario_model_mg
-      internalID: -1030623138238921846
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -3786,7 +4281,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|pea_plant_st_mario_model_mg
       takeName: mario_model_mg|pea_plant_st_mario_model_mg
-      internalID: 7438788826134191022
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -3815,7 +4310,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|pea_plant_wait_mario_model_mg
       takeName: mario_model_mg|pea_plant_wait_mario_model_mg
-      internalID: -4939683631680825286
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 0
@@ -3844,79 +4339,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|pipe_pose_mario_model_mg
       takeName: mario_model_mg|pipe_pose_mario_model_mg
-      internalID: 9132403547938976885
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: mario_model_mg|propellerflail_mario_model_mg
-      takeName: mario_model_mg|propellerflail_mario_model_mg
-      internalID: -156799363668517931
-      firstFrame: 0
-      lastFrame: 24
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0.07804042
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.58175665
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: mario_model_mg|propellerup_mario_model_mg
-      takeName: mario_model_mg|propellerup_mario_model_mg
-      internalID: 7015212021679080888
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -3945,7 +4368,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|push_mario_model_mg
       takeName: mario_model_mg|push_mario_model_mg
-      internalID: 608854373147495923
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -3974,7 +4397,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|roll_jump.001_mario_model_mg
       takeName: mario_model_mg|roll_jump.001_mario_model_mg
-      internalID: 1108982160899887669
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -4003,7 +4426,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|roll_jump_end_mario_model_mg
       takeName: mario_model_mg|roll_jump_end_mario_model_mg
-      internalID: -7801633925373561620
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -4032,7 +4455,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|roll_jump_mario_model_mg
       takeName: mario_model_mg|roll_jump_mario_model_mg
-      internalID: 1369689779851070500
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -4061,7 +4484,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|roll_mario_model_mg
       takeName: mario_model_mg|roll_mario_model_mg
-      internalID: -5956106808263113045
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -4090,7 +4513,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|rope_jump_ed_mario_model_mg
       takeName: mario_model_mg|rope_jump_ed_mario_model_mg
-      internalID: 7316381523588541009
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -4119,7 +4542,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|rope_swing_mario_model_mg
       takeName: mario_model_mg|rope_swing_mario_model_mg
-      internalID: 3346842053030833089
+      internalID: 0
       firstFrame: 0
       lastFrame: 50
       wrapMode: 0
@@ -4148,7 +4571,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|rope_wait2_mario_model_mg
       takeName: mario_model_mg|rope_wait2_mario_model_mg
-      internalID: 1187912435329771474
+      internalID: 0
       firstFrame: 0
       lastFrame: 38
       wrapMode: 0
@@ -4177,7 +4600,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|rope_wait_mario_model_mg
       takeName: mario_model_mg|rope_wait_mario_model_mg
-      internalID: -609428710537870126
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -4206,7 +4629,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|rope_walk_mario_model_mg
       takeName: mario_model_mg|rope_walk_mario_model_mg
-      internalID: 6728799126522864615
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -4233,9 +4656,38 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: mario_model_mg|run.001_mario_model_mg
+      takeName: mario_model_mg|run.001_mario_model_mg
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: mario_model_mg|run.002_mario_model_mg
       takeName: mario_model_mg|run.002_mario_model_mg
-      internalID: 6395337971472373580
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -4264,7 +4716,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|run_mario_model_mg
       takeName: mario_model_mg|run_mario_model_mg
-      internalID: -483726293617546318
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -4273,7 +4725,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -4285,7 +4737,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.1545293
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
+      - time: 0.6282377
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 1
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -4293,7 +4759,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|scale_up_mario_model_mg
       takeName: mario_model_mg|scale_up_mario_model_mg
-      internalID: 5708656206422130156
+      internalID: 0
       firstFrame: 0
       lastFrame: 37
       wrapMode: 0
@@ -4320,9 +4786,38 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: mario_model_mg|sdown_mario_model_mg
+      takeName: mario_model_mg|sdown_mario_model_mg
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 3
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: mario_model_mg|sfbdn.001_mario_model_mg
       takeName: mario_model_mg|sfbdn.001_mario_model_mg
-      internalID: 3607217714139784895
+      internalID: 0
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -4351,7 +4846,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|sfbdn_mario_model_mg
       takeName: mario_model_mg|sfbdn_mario_model_mg
-      internalID: -6739655315651484475
+      internalID: 0
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -4380,7 +4875,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|sffdn_mario_model_mg
       takeName: mario_model_mg|sffdn_mario_model_mg
-      internalID: -606222730622956717
+      internalID: 0
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -4409,7 +4904,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|shell_in_mario_model_mg
       takeName: mario_model_mg|shell_in_mario_model_mg
-      internalID: 3389466908724262603
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -4438,7 +4933,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|shell_puton_cap_mario_model_mg
       takeName: mario_model_mg|shell_puton_cap_mario_model_mg
-      internalID: 8830424003112048033
+      internalID: 0
       firstFrame: 0
       lastFrame: 51
       wrapMode: 0
@@ -4467,7 +4962,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|shell_run_mario_model_mg
       takeName: mario_model_mg|shell_run_mario_model_mg
-      internalID: 1569293704238665355
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -4477,7 +4972,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -4489,19 +4984,19 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
+      - time: 0.020864684
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 1
         messageOptions: 0
-      - time: 0.49425665
+      - time: 0.52606916
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
-        intParameter: 0
+        intParameter: 1
         messageOptions: 0
       transformMask: []
       maskType: 3
@@ -4510,9 +5005,38 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|shell_walk_mario_model_mg
       takeName: mario_model_mg|shell_walk_mario_model_mg
-      internalID: 7974647496300294895
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: mario_model_mg|shfdn_mario_model_mg
+      takeName: mario_model_mg|shfdn_mario_model_mg
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 10
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -4539,7 +5063,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|shoot_mario_model_mg
       takeName: mario_model_mg|shoot_mario_model_mg
-      internalID: -8035508470257889980
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -4568,7 +5092,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|sldct_mario_model_mg
       takeName: mario_model_mg|sldct_mario_model_mg
-      internalID: -4883524246144893997
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -4597,7 +5121,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|slip_mario_model_mg
       takeName: mario_model_mg|slip_mario_model_mg
-      internalID: -2426943010639917990
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -4626,7 +5150,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|sliped_mario_model_mg
       takeName: mario_model_mg|sliped_mario_model_mg
-      internalID: -5452333245361696871
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -4655,7 +5179,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|slpbk_mario_model_mg
       takeName: mario_model_mg|slpbk_mario_model_mg
-      internalID: -5679505279110639723
+      internalID: 0
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -4684,7 +5208,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|slpla_mario_model_mg
       takeName: mario_model_mg|slpla_mario_model_mg
-      internalID: -651237421847295540
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -4713,7 +5237,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|small_jumped_mario_model_mg
       takeName: mario_model_mg|small_jumped_mario_model_mg
-      internalID: 4280511111432561236
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -4742,7 +5266,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|small_wait.001_mario_model_mg
       takeName: mario_model_mg|small_wait.001_mario_model_mg
-      internalID: 6236925687549855136
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -4771,7 +5295,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|small_wait_mario_model_mg
       takeName: mario_model_mg|small_wait_mario_model_mg
-      internalID: 4753526587231153590
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -4800,7 +5324,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|spin_jump2_mario_model_mg
       takeName: mario_model_mg|spin_jump2_mario_model_mg
-      internalID: 970711893920912381
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -4829,7 +5353,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|spin_jump_end_mario_model_mg
       takeName: mario_model_mg|spin_jump_end_mario_model_mg
-      internalID: 3883160425014310264
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -4858,7 +5382,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|spin_jump_mario_model_mg
       takeName: mario_model_mg|spin_jump_mario_model_mg
-      internalID: -4884769193553889469
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -4887,7 +5411,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|spin_jump_off_mario_model_mg
       takeName: mario_model_mg|spin_jump_off_mario_model_mg
-      internalID: -5173327027728808548
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -4914,11 +5438,40 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: mario_model_mg|spin_jump_st_mario_model_mg
+      takeName: mario_model_mg|spin_jump_st_mario_model_mg
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 2
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: mario_model_mg|squat_start_mario_model_mg
       takeName: mario_model_mg|squat_start_mario_model_mg
-      internalID: -5419873928327414062
+      internalID: 0
       firstFrame: 0
-      lastFrame: 1
+      lastFrame: 0
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -4945,17 +5498,17 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|star_roll_mario_model_mg
       takeName: mario_model_mg|star_roll_mario_model_mg
-      internalID: -750860620355682747
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
-      cycleOffset: 0
+      cycleOffset: 1
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -4974,7 +5527,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|stoop_mario_model_mg
       takeName: mario_model_mg|stoop_mario_model_mg
-      internalID: 3027515081501020813
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -5003,7 +5556,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|struggle_mario_model_mg
       takeName: mario_model_mg|struggle_mario_model_mg
-      internalID: -8651713946355606236
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -5032,7 +5585,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|swim_carry_mario_model_mg
       takeName: mario_model_mg|swim_carry_mario_model_mg
-      internalID: -2700295295402222090
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -5061,7 +5614,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|swim_dead_mario_model_mg
       takeName: mario_model_mg|swim_dead_mario_model_mg
-      internalID: 6260225766750361311
+      internalID: 0
       firstFrame: 0
       lastFrame: 64
       wrapMode: 0
@@ -5090,7 +5643,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|swim_in_mario_model_mg
       takeName: mario_model_mg|swim_in_mario_model_mg
-      internalID: 4218927476419115477
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -5119,7 +5672,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|swim_mario_model_mg
       takeName: mario_model_mg|swim_mario_model_mg
-      internalID: -6996624567624283022
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -5148,7 +5701,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|swim_standing_mario_model_mg
       takeName: mario_model_mg|swim_standing_mario_model_mg
-      internalID: 7593329295483854214
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -5177,7 +5730,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|swim_throw_mario_model_mg
       takeName: mario_model_mg|swim_throw_mario_model_mg
-      internalID: -6639749099658376731
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -5206,7 +5759,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|swim_wait_mario_model_mg
       takeName: mario_model_mg|swim_wait_mario_model_mg
-      internalID: 6741526534821496499
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -5235,7 +5788,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|swim_walk_mario_model_mg
       takeName: mario_model_mg|swim_walk_mario_model_mg
-      internalID: 1899029997762392262
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -5264,7 +5817,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|tree_climb_mario_model_mg
       takeName: mario_model_mg|tree_climb_mario_model_mg
-      internalID: 5108395655857044554
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -5293,7 +5846,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|tree_pose_mario_model_mg
       takeName: mario_model_mg|tree_pose_mario_model_mg
-      internalID: 2968482096088430690
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -5322,7 +5875,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|tree_start_mario_model_mg
       takeName: mario_model_mg|tree_start_mario_model_mg
-      internalID: -5205324803000997510
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -5351,7 +5904,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|tree_wait_mario_model_mg
       takeName: mario_model_mg|tree_wait_mario_model_mg
-      internalID: 69139799405961086
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 0
@@ -5380,7 +5933,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|trned.001_mario_model_mg
       takeName: mario_model_mg|trned.001_mario_model_mg
-      internalID: -6137667023173782246
+      internalID: 0
       firstFrame: 0
       lastFrame: 2
       wrapMode: 0
@@ -5409,7 +5962,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|trned.002_mario_model_mg
       takeName: mario_model_mg|trned.002_mario_model_mg
-      internalID: 7116477288254318498
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -5438,7 +5991,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|trned_mario_model_mg
       takeName: mario_model_mg|trned_mario_model_mg
-      internalID: 5278005849783141010
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -5467,7 +6020,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|turn.001_mario_model_mg
       takeName: mario_model_mg|turn.001_mario_model_mg
-      internalID: -4724745100310574011
+      internalID: 0
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -5496,7 +6049,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|turn.002_mario_model_mg
       takeName: mario_model_mg|turn.002_mario_model_mg
-      internalID: -3379509125221557908
+      internalID: 0
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -5525,9 +6078,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|turn_mario_model_mg
       takeName: mario_model_mg|turn_mario_model_mg
-      internalID: -8806834914126397278
+      internalID: 0
       firstFrame: 0
-      lastFrame: 7
+      lastFrame: 0
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -5554,7 +6107,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|w_jump1_mario_model_mg
       takeName: mario_model_mg|w_jump1_mario_model_mg
-      internalID: -282875677751622041
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -5583,7 +6136,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|w_jump2_mario_model_mg
       takeName: mario_model_mg|w_jump2_mario_model_mg
-      internalID: 3234907859589691996
+      internalID: 0
       firstFrame: 0
       lastFrame: 2
       wrapMode: 0
@@ -5612,7 +6165,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|w_jump_ed_mario_model_mg
       takeName: mario_model_mg|w_jump_ed_mario_model_mg
-      internalID: 5495166318043064625
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -5641,7 +6194,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wait.001_mario_model_mg
       takeName: mario_model_mg|wait.001_mario_model_mg
-      internalID: -1853722300786890590
+      internalID: 0
       firstFrame: 0
       lastFrame: 61
       wrapMode: 0
@@ -5670,7 +6223,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wait1_mario_model_mg
       takeName: mario_model_mg|wait1_mario_model_mg
-      internalID: -3730154031935226871
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -5699,7 +6252,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wait2_mario_model_mg
       takeName: mario_model_mg|wait2_mario_model_mg
-      internalID: -7259070559559801307
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -5728,17 +6281,17 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wait_mario_model_mg
       takeName: mario_model_mg|wait_mario_model_mg
-      internalID: 6318309594519002548
+      internalID: 0
       firstFrame: 0
-      lastFrame: 62
+      lastFrame: 61
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -5757,7 +6310,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|walk.001_mario_model_mg
       takeName: mario_model_mg|walk.001_mario_model_mg
-      internalID: -6766284335838999291
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -5786,7 +6339,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|walk.002_mario_model_mg
       takeName: mario_model_mg|walk.002_mario_model_mg
-      internalID: -3477633563843402521
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -5815,7 +6368,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|walk.003_mario_model_mg
       takeName: mario_model_mg|walk.003_mario_model_mg
-      internalID: -7428763663350525389
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -5824,8 +6377,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -5844,7 +6397,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|walk_mario_model_mg
       takeName: mario_model_mg|walk_mario_model_mg
-      internalID: -4408943822905645113
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -5873,7 +6426,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wall_wait_mario_model_mg
       takeName: mario_model_mg|wall_wait_mario_model_mg
-      internalID: -5124563417981157578
+      internalID: 0
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -5902,7 +6455,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wall_walk_l_mario_model_mg
       takeName: mario_model_mg|wall_walk_l_mario_model_mg
-      internalID: 4377112118885615437
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -5931,7 +6484,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wall_walk_r_mario_model_mg
       takeName: mario_model_mg|wall_walk_r_mario_model_mg
-      internalID: 7076989306178007346
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -5960,7 +6513,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wjmp.001_mario_model_mg
       takeName: mario_model_mg|wjmp.001_mario_model_mg
-      internalID: -7211780528181729974
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -5989,7 +6542,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wjmp_mario_model_mg
       takeName: mario_model_mg|wjmp_mario_model_mg
-      internalID: -7267704058946746211
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -6018,9 +6571,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|wsld_mario_model_mg
       takeName: mario_model_mg|wsld_mario_model_mg
-      internalID: -5146864069086097593
+      internalID: 0
       firstFrame: 0
-      lastFrame: 2
+      lastFrame: 0.46
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -6047,7 +6600,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|Y_run_mario_model_mg
       takeName: mario_model_mg|Y_run_mario_model_mg
-      internalID: 3284718136830763456
+      internalID: 0
       firstFrame: 0
       lastFrame: 12
       wrapMode: 0
@@ -6076,7 +6629,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|Y_vs_lose_A_mario_model_mg
       takeName: mario_model_mg|Y_vs_lose_A_mario_model_mg
-      internalID: 2001832274755481179
+      internalID: 0
       firstFrame: 0
       lastFrame: 18
       wrapMode: 0
@@ -6105,7 +6658,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|Y_vs_lose_B_mario_model_mg
       takeName: mario_model_mg|Y_vs_lose_B_mario_model_mg
-      internalID: 6622982165150408331
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -6134,7 +6687,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|Y_vs_lose_C_mario_model_mg
       takeName: mario_model_mg|Y_vs_lose_C_mario_model_mg
-      internalID: -770478306567829044
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -6163,7 +6716,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|Y_vs_win_wait_mario_model_mg
       takeName: mario_model_mg|Y_vs_win_wait_mario_model_mg
-      internalID: -1820205331145368567
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -6192,7 +6745,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|Y_wait_mario_model_mg
       takeName: mario_model_mg|Y_wait_mario_model_mg
-      internalID: 5049626626200593287
+      internalID: 0
       firstFrame: 0
       lastFrame: 36
       wrapMode: 0
@@ -6221,7 +6774,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|zero_g_jump2_mario_model_mg
       takeName: mario_model_mg|zero_g_jump2_mario_model_mg
-      internalID: 8229965988682334313
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -6230,8 +6783,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -6250,7 +6803,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|zero_g_jump_ed_mario_model_mg
       takeName: mario_model_mg|zero_g_jump_ed_mario_model_mg
-      internalID: 2560887889026339759
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -6279,7 +6832,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|zero_g_jump_mario_model_mg
       takeName: mario_model_mg|zero_g_jump_mario_model_mg
-      internalID: 7012642237042667242
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -6308,7 +6861,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|zero_g_walk_mario_model_mg
       takeName: mario_model_mg|zero_g_walk_mario_model_mg
-      internalID: -2133009574828120171
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -6335,11 +6888,170 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: mario_model_mg|sdown_knockdown_mario_model_mg
-      takeName: mario_model_mg|sdown_mario_model_mg
-      internalID: -4541342783143528880
+      name: mario_model_mg|shfdn_knockdown
+      takeName: mario_model_mg|shfdn_mario_model_mg
+      internalID: 0
       firstFrame: 0
-      lastFrame: 3
+      lastFrame: 5
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: mario_model_mg|shfdn_getup
+      takeName: mario_model_mg|shfdn_mario_model_mg
+      internalID: 0
+      firstFrame: 5
+      lastFrame: 10
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: mario_model_mg|head_carry_walk_mario_model_mg
+      takeName: mario_model_mg|head_carry_walk_mario_model_mg
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.23489933
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.7718121
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: mario_model_mg|ice_pickup_mario_model_mg
+      takeName: mario_model_mg|ice_pickup_mario_model_mg
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: mario_model_mg|head_carry_wait_mario_model_mg
+      takeName: mario_model_mg|head_carry_wait_mario_model_mg
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: swim_damage_mario_model_mg
+      takeName: swim_damage_mario_model_mg
+      internalID: 4722362898397132817
+      firstFrame: 0
+      lastFrame: 40
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -6366,139 +7078,9 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|sdown_getup_mario_model_mg
       takeName: mario_model_mg|sdown_mario_model_mg
-      internalID: -6705211633728764389
+      internalID: 3103477577296725161
       firstFrame: 3
       lastFrame: 11
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: mario_model_mg|shfdn_knockdown_mario_model_mg
-      takeName: mario_model_mg|shfdn_mario_model_mg
-      internalID: -3557368923398202284
-      firstFrame: 0
-      lastFrame: 4
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: mario_model_mg|shfdn_getup_mario_model_mg
-      takeName: mario_model_mg|shfdn_mario_model_mg
-      internalID: 1982284567637706476
-      firstFrame: 4
-      lastFrame: 10
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: mario_model_mg|wario_walk_mario_model_mg
-      takeName: mario_model_mg|big_walk_mario_model_mg
-      internalID: 3595499248022687606
-      firstFrame: 0
-      lastFrame: 16
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.49898636
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: mario_model_mg|big_hip_at_WARIO_mario_model_mg
-      takeName: mario_model_mg|big_hip_at_WARIO_mario_model_mg
-      internalID: 5901954344066783998
-      firstFrame: 0
-      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -6535,7 +7117,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    nodeNameCollisionStrategy: 1
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -6590,9 +7172,9 @@ ModelImporter:
   animationType: 2
   humanoidOversampling: 1
   avatarSetup: 1
-  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
   importBlendShapeDeformPercent: 0
-  remapMaterialsIfMaterialImportModeIsNone: 0
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 

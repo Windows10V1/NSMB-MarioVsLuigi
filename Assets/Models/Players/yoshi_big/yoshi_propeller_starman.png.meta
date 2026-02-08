@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d6fa11c722df8c245a6ca48664463032
+guid: 4450171677c817241ae42faa318897f3
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1588306069623405132
-    second: starman-toon_0
+      213: -5508064908096213432
+    second: yoshi_propeller_starman_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,9 +40,9 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -96,30 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: starman-toon_0
+      name: yoshi_propeller_starman_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 71
-        height: 1
+        width: 256
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4b5008d7b0435f9e0800000000000000
-      internalID: -1588306069623405132
+      spriteID: 84e6129262c6f83b0800000000000000
+      internalID: -5508064908096213432
       vertices: []
       indices: 
       edges: []
@@ -148,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      starman-toon_0: -1588306069623405132
+      yoshi_propeller_starman_0: -5508064908096213432
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
