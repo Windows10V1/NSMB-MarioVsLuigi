@@ -245,6 +245,20 @@
         {
             "m_OutputSlot": {
                 "m_Node": {
+                    "m_Id": "1b9822acd0d9470faa517f45b83c682c"
+                },
+                "m_SlotId": 7
+            },
+            "m_InputSlot": {
+                "m_Node": {
+                    "m_Id": "35c74944cab041048f7975cc51e31e0e"
+                },
+                "m_SlotId": 0
+            }
+        },
+        {
+            "m_OutputSlot": {
+                "m_Node": {
                     "m_Id": "32bbce15b7504b6d8596447bd6244927"
                 },
                 "m_SlotId": 0
@@ -939,7 +953,7 @@
     "m_ObjectId": "10922283de80436d85b401f210153bc6",
     "m_Title": "EyeTextures",
     "m_Position": {
-        "x": -207.0001678466797,
+        "x": -207.0,
         "y": -175.0
     }
 }
@@ -2066,12 +2080,12 @@
         "m_Id": "84845c1d020b464da2cfd7460d1da933"
     },
     "m_AllowMaterialOverride": false,
-    "m_SurfaceType": 0,
+    "m_SurfaceType": 1,
     "m_ZTestMode": 4,
     "m_ZWriteControl": 1,
     "m_AlphaMode": 0,
     "m_RenderFace": 2,
-    "m_AlphaClip": false,
+    "m_AlphaClip": true,
     "m_CastShadows": false,
     "m_ReceiveShadows": false,
     "m_DisableTint": false,
@@ -2163,7 +2177,7 @@
     "m_Title": "Texture Index Start Selector",
     "m_Position": {
         "x": -1800.0,
-        "y": 87.00001525878906
+        "y": 87.0
     }
 }
 
@@ -2624,7 +2638,7 @@
     "m_Title": "Shirt Recolorer",
     "m_Position": {
         "x": -1104.0,
-        "y": 63.00002670288086
+        "y": 63.0
     }
 }
 
@@ -2724,7 +2738,7 @@
     "m_Title": "Overalls Recolorer",
     "m_Position": {
         "x": -1117.0,
-        "y": 499.00006103515627
+        "y": 499.0
     }
 }
 
@@ -2960,7 +2974,7 @@
     "m_Title": "Base Texture Sampler",
     "m_Position": {
         "x": -1130.0,
-        "y": -402.0000305175781
+        "y": -402.0
     }
 }
 
@@ -3048,8 +3062,8 @@
     "m_ObjectId": "90f11075e3af4ab785d04dbab12df8c9",
     "m_Title": "Combine Recolored Textures",
     "m_Position": {
-        "x": -683.9998779296875,
-        "y": 296.0000915527344
+        "x": -684.0,
+        "y": 296.0
     }
 }
 
@@ -3391,7 +3405,7 @@
     "m_Title": "Hat Recolorer",
     "m_Position": {
         "x": -1371.0,
-        "y": 940.9998168945313
+        "y": 941.0
     }
 }
 
@@ -4920,8 +4934,8 @@
     "m_ObjectId": "f77952b1fed443ba8200177e4cac9866",
     "m_Title": "Overlay Recolored Textures",
     "m_Position": {
-        "x": -102.00016784667969,
-        "y": 290.0000915527344
+        "x": -102.0,
+        "y": 290.0
     }
 }
 

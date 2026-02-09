@@ -154,7 +154,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wariowaluigi_0
+      name: wario_icon
       rect:
         serializedVersion: 2
         x: 64
@@ -176,7 +176,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wariowaluigi_1
+      name: waluigi_icon
       rect:
         serializedVersion: 2
         x: 96
@@ -198,7 +198,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: princess_peach
+      name: princess_peach_icon
       rect:
         serializedVersion: 2
         x: 128
@@ -220,7 +220,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: toad
+      name: toad_icon
       rect:
         serializedVersion: 2
         x: 160
@@ -228,7 +228,7 @@ TextureImporter:
         width: 32
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -237,6 +237,28 @@ TextureImporter:
       bones: []
       spriteID: 69e455e5bf1c9c544946f20749092564
       internalID: 1728164261
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_icon
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 0
+        width: 32
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 006961a8a900e0148839401536824e29
+      internalID: -1472106767
       vertices: []
       indices: 
       edges: []
@@ -257,10 +279,11 @@ TextureImporter:
     nameFileIdTable:
       marioluigi_0: -1589787217
       marioluigi_1: 1263302900
-      princess_peach: 747407375
-      toad: 1728164261
-      wariowaluigi_0: 1112412724
-      wariowaluigi_1: -1417236447
+      princess_peach_icon: 747407375
+      toad_icon: 1728164261
+      waluigi_icon: -1417236447
+      wario_icon: 1112412724
+      yoshi_icon: -1472106767
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
