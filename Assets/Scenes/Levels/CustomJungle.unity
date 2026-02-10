@@ -1536,6 +1536,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1942555963}
     m_Modifications:
+    - target: {fileID: 79918617084146557, guid: a037cbad216a9be43a13c2a43ccd59b1,
+        type: 3}
+      propertyPath: character
+      value: 
+      objectReference: {fileID: 11400000, guid: 1e19bcf06c5937c47b8e235407f6e2d9,
+        type: 2}
     - target: {fileID: 148468707364900969, guid: 1ce5864bde999014a92015b065520add,
         type: 3}
       propertyPath: Prototype.Spawnpoint.X.RawValue
@@ -1637,12 +1643,6 @@ PrefabInstance:
       propertyPath: 'NetworkGuid.RawGuidValue.Array.data[1]'
       value: 5516449517828404630
       objectReference: {fileID: 0}
-    - target: {fileID: 79918617084146557, guid: a037cbad216a9be43a13c2a43ccd59b1,
-        type: 3}
-      propertyPath: character
-      value: 
-      objectReference: {fileID: 11400000, guid: 1e19bcf06c5937c47b8e235407f6e2d9,
-        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -12791,7 +12791,7 @@ PrefabInstance:
     - target: {fileID: 781690564328931067, guid: f0fedafdb23ab6044bba0ac1de9e2d3a,
         type: 3}
       propertyPath: m_Size.y
-      value: 2.1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2430942710556662978, guid: f0fedafdb23ab6044bba0ac1de9e2d3a,
         type: 3}
