@@ -401,7 +401,7 @@ TextureImporter:
         serializedVersion: 2
         x: 170
         y: 0
-        width: 20
+        width: 16
         height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
@@ -421,7 +421,7 @@ TextureImporter:
       name: loading-sprites_11
       rect:
         serializedVersion: 2
-        x: 191
+        x: 187
         y: 0
         width: 16
         height: 32
@@ -443,10 +443,10 @@ TextureImporter:
       name: loading-sprites_12
       rect:
         serializedVersion: 2
-        x: 208
+        x: 204
         y: 0
-        width: 15
-        height: 39
+        width: 16
+        height: 32
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -465,7 +465,7 @@ TextureImporter:
       name: loading-sprites_13
       rect:
         serializedVersion: 2
-        x: 223
+        x: 221
         y: 0
         width: 16
         height: 32
@@ -487,7 +487,7 @@ TextureImporter:
       name: loading-sprites_14
       rect:
         serializedVersion: 2
-        x: 240
+        x: 238
         y: 0
         width: 16
         height: 32
@@ -509,12 +509,12 @@ TextureImporter:
       name: loading-sprites_15
       rect:
         serializedVersion: 2
-        x: 257
+        x: 255
         y: 0
         width: 16
         height: 32
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -531,9 +531,31 @@ TextureImporter:
       name: loading-sprites_16
       rect:
         serializedVersion: 2
-        x: 274
+        x: 272
         y: 0
-        width: 14
+        width: 19
+        height: 32
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8b1ebcc9e02154f41b75111b5ac2ccd0
+      internalID: 1198815238
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: loading-sprites_17
+      rect:
+        serializedVersion: 2
+        x: 292
+        y: 0
+        width: 19
         height: 32
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -543,8 +565,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8b1ebcc9e02154f41b75111b5ac2ccd0
-      internalID: 1198815238
+      spriteID: 4eda582eea0d30d4fb3c3322d0df8a79
+      internalID: -1062608284
       vertices: []
       indices: 
       edges: []
@@ -572,6 +594,7 @@ TextureImporter:
       loading-sprites_14: 466472665
       loading-sprites_15: -1844117932
       loading-sprites_16: 1198815238
+      loading-sprites_17: -1062608284
       loading-sprites_2: 2095781106538291052
       loading-sprites_3: 4770881905158911435
       loading-sprites_4: -3109149775861551868
