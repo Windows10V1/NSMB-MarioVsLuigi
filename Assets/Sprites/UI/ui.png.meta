@@ -2243,7 +2243,7 @@ TextureImporter:
         width: 20
         height: 20
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2252,6 +2252,28 @@ TextureImporter:
       bones: []
       spriteID: a53c7569939b23d49b30427a4c31036a
       internalID: -1212279718
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hud_yoshi
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 153
+        width: 20
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dfa670c2bc5c2b24d8ec8487a9c785c3
+      internalID: -769062495
       vertices: []
       indices: 
       edges: []
@@ -2301,6 +2323,7 @@ TextureImporter:
       hud_toad: -1212279718
       hud_waluigi: -923475650
       hud_wario: 606692392
+      hud_yoshi: -769062495
       hudnumber_0: -56961979
       hudnumber_1: -146918758
       hudnumber_2: -1355574207

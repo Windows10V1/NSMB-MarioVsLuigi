@@ -167,7 +167,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 880582643022226802}
-  m_Mesh: {fileID: 3359012600009374119, guid: 406f1baab95a7e347a7ec86b83503728, type: 3}
+  m_Mesh: {fileID: 0}
 --- !u!23 &1673238236750234791
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -190,9 +190,7 @@ MeshRenderer:
   m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 76c06a5e93a0a0740814bcfa7bb829b3, type: 2}
-  - {fileID: 2100000, guid: 49ac98ccce83c884f926e06d76d6f7d5, type: 2}
+  m_Materials: []
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -454,7 +452,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4112991801343913761
 Transform:
   m_ObjectHideFlags: 0
@@ -914,7 +912,7 @@ Animator:
   m_GameObject: {fileID: 4824223341387914446}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 12e269eaac3c1264c98ac7b762c6016c, type: 3}
-  m_Controller: {fileID: 22100000, guid: fb25f222d56ef1646bd5326898c648e2, type: 2}
+  m_Controller: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -6670,7 +6668,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8335105316509437993
 Transform:
   m_ObjectHideFlags: 0
@@ -6681,7 +6679,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.79116255, y: -8.644023e-10, z: -0.000000010504488, w: 0.61160594}
   m_LocalPosition: {x: -7.6312665e-11, y: 0.0363841, z: 0.007497805}
-  m_LocalScale: {x: 0.018, y: 0.0163, z: 0.0186}
+  m_LocalScale: {x: 0.018, y: 0.018, z: 0.018}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2943551738180556700}
@@ -7532,6 +7530,11 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: 12e269eaac3c1264c98ac7b762c6016c, type: 3}
+    - target: {fileID: 5866666021909216657, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
     - target: {fileID: 6336749266169524268, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Layer
