@@ -6366,7 +6366,7 @@ SkinnedMeshRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8209010025986269902}
   m_Enabled: 1
-  m_CastShadows: 1
+  m_CastShadows: 0
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
@@ -6406,7 +6406,7 @@ SkinnedMeshRenderer:
   m_Quality: 0
   m_UpdateWhenOffscreen: 0
   m_SkinnedMotionVectors: 1
-  m_Mesh: {fileID: -8670151273213183110, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
+  m_Mesh: {fileID: -5187909856458295677, guid: 7cb3cdb2065d7a646b583e441c03ed93, type: 3}
   m_Bones:
   - {fileID: 3897660870367462082}
   - {fileID: 7663531625310918394}
@@ -9011,6 +9011,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -2030150629543310802, guid: 7cb3cdb2065d7a646b583e441c03ed93,
+        type: 3}
+    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 2100000, guid: aa76d79cae9b9d446b14d0847c87c7ae, type: 2}
@@ -9123,7 +9129,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 3743ce995ffeccf44a4dc10c0c4e5200, type: 3}
+      objectReference: {fileID: 9000000, guid: 7cb3cdb2065d7a646b583e441c03ed93, type: 3}
     - target: {fileID: 6996102739599923691, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: m_Layer
