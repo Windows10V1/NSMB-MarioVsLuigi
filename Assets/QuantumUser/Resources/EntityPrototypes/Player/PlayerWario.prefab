@@ -810,7 +810,7 @@ Animator:
   m_GameObject: {fileID: 4824223341387914446}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 7eb259c5d7c092b4fa459872ab68b44c, type: 3}
-  m_Controller: {fileID: 9100000, guid: 47d3c8e961b81d940a01f61d0ea7011e, type: 2}
+  m_Controller: {fileID: 22100000, guid: 4a0c2129ff499ec40a489dddd0c0200a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -7329,6 +7329,12 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: 7eb259c5d7c092b4fa459872ab68b44c, type: 3}
+    - target: {fileID: 5866666021909216657, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 4a0c2129ff499ec40a489dddd0c0200a,
+        type: 2}
     - target: {fileID: 6336749266169524268, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Layer
@@ -8844,6 +8850,12 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: 3743ce995ffeccf44a4dc10c0c4e5200, type: 3}
+    - target: {fileID: 5866666021909216657, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: 5465cfee3f28465488b4cbb489dd7874,
+        type: 2}
     - target: {fileID: 6996102739599923691, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: m_Layer
