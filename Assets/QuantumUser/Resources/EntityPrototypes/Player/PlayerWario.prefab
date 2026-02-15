@@ -7335,6 +7335,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 22100000, guid: 4a0c2129ff499ec40a489dddd0c0200a,
         type: 2}
+    - target: {fileID: 5866666021909216657, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6336749266169524268, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Layer
@@ -7715,7 +7725,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: -163.243
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 8189757122026107490, guid: 024ceb223bceebd488dbc425555f4df0,
