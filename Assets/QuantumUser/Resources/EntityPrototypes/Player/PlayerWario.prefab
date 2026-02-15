@@ -721,7 +721,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wasTurnaround: 0
   models: {fileID: 8422425992379838812}
-  character: {fileID: 11400000, guid: 37002951987492f448bad09ef269e41f, type: 2}
+  character: {fileID: 11400000, guid: 3eb2fc6c4d3d5334580517a6e3c8d8b1, type: 2}
   playerElementsPrefab: {fileID: 2058053739306675502, guid: 18c3a33796560c4448895ccfbe44362c,
     type: 3}
   coinNumberParticle: {fileID: 4677531960176377302, guid: 818e60315a414df48a229c8d1186ce98,
@@ -1054,7 +1054,7 @@ MonoBehaviour:
         Value: 431229628171057951
     CharacterAsset:
       Id:
-        Value: 294449488703653813
+        Value: 481718137741932148
 --- !u!114 &8682297443920381521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8906,7 +8906,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -6731049815828845493, guid: e0d3ef6bcff32414dbd34fc6ac031292,

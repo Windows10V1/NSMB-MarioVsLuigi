@@ -823,7 +823,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   wasTurnaround: 0
   models: {fileID: 8422425992379838812}
-  character: {fileID: 11400000, guid: effafc17c17cfb047acb97d131ae0887, type: 2}
+  character: {fileID: 11400000, guid: a4bceeba90d3bf84f80d3b70e4e2c041, type: 2}
   playerElementsPrefab: {fileID: 2058053739306675502, guid: 18c3a33796560c4448895ccfbe44362c,
     type: 3}
   coinNumberParticle: {fileID: 4677531960176377302, guid: 818e60315a414df48a229c8d1186ce98,
@@ -1156,7 +1156,7 @@ MonoBehaviour:
         Value: 475395563268589810
     CharacterAsset:
       Id:
-        Value: 398798004233546818
+        Value: 443373764369209934
 --- !u!114 &8682297443920381521
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7530,6 +7530,12 @@ PrefabInstance:
       propertyPath: m_Avatar
       value: 
       objectReference: {fileID: 9000000, guid: 12e269eaac3c1264c98ac7b762c6016c, type: 3}
+    - target: {fileID: 5866666021909216657, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 22100000, guid: fb25f222d56ef1646bd5326898c648e2,
+        type: 2}
     - target: {fileID: 6336749266169524268, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Layer
@@ -9178,7 +9184,8 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: e0d3ef6bcff32414dbd34fc6ac031292,
