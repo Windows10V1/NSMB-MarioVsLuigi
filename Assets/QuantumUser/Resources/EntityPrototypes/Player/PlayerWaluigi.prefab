@@ -1197,9 +1197,9 @@ MonoBehaviour:
       X:
         RawValue: 0
       Y:
-        RawValue: 344064
+        RawValue: 147456
     BroadRadius:
-      RawValue: 393216
+      RawValue: 196608
 --- !u!114 &3667490148193712935
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7114,6 +7114,21 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -7592359134467880492, guid: 5a8233ddc7bbffe45aef17cd6cb6da46,
         type: 3}
+    - target: {fileID: 1811992120372893020, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 0.19162151
+      objectReference: {fileID: 0}
+    - target: {fileID: 1811992120372893020, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0.18293512
+      objectReference: {fileID: 0}
+    - target: {fileID: 1811992120372893020, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_UpdateWhenOffscreen
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1811992120372893020, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
