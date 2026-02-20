@@ -1,7 +1,25 @@
 fileFormatVersion: 2
-guid: 66a50f8ce62e8954a977cf86df786637
+guid: dec8145771107694d8ed0c2baa8bfe36
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: -1909266866290446193
+    second: ui_characters_0
+  - first:
+      213: -2332681576220796874
+    second: ui_characters_1
+  - first:
+      213: 693552045848250261
+    second: ui_characters_2
+  - first:
+      213: 6183047845042728702
+    second: ui_characters_3
+  - first:
+      213: 5677915020336759655
+    second: ui_characters_4
+  - first:
+      213: 979873859016210690
+    second: ui_characters_5
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -93,172 +111,137 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: marioluigi_0
+      name: hud_wario
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 859c287a05a34174495ece3b34875424
-      internalID: -1589787217
+      spriteID: f80b55d96ebe085e0800000000000000
+      internalID: -1909266866290446193
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: marioluigi_1
+      name: hud_waluigi
       rect:
         serializedVersion: 2
-        x: 32
+        x: 65
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9900035d2b9129048a3587f733496f3a
-      internalID: 1263302900
+      spriteID: 903611db4254dff48be709b6105cf39d
+      internalID: -1206200352
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_icon
+      name: hud_toad
       rect:
         serializedVersion: 2
-        x: 64
+        x: 130
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e41eacb7a1459fd4f9e37b3d3bfc09bd
-      internalID: 1112412724
+      spriteID: 9f455681d5a689e4fb20f7e8c8794bed
+      internalID: 1338536311
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: waluigi_icon
+      name: hud_toadette
       rect:
         serializedVersion: 2
-        x: 96
+        x: 195
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: f704f6ebdd697584285d9d835eced49f
-      internalID: -1417236447
+      spriteID: eba63a740f179b44bb0761550e86a9cd
+      internalID: -1337057855
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: princess_peach_icon
+      name: hud_yoshi
       rect:
         serializedVersion: 2
-        x: 128
+        x: 260
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 052f4a170699aef4f868ebbbcb7af4ee
-      internalID: 747407375
+      spriteID: 01131b1fd9f56a144bce85e1075a205a
+      internalID: -1446837559
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: toad_icon
+      name: hud_princess
       rect:
         serializedVersion: 2
-        x: 160
+        x: 325
         y: 0
-        width: 32
-        height: 32
+        width: 64
+        height: 64
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 69e455e5bf1c9c544946f20749092564
-      internalID: 1728164261
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: yoshi_icon
-      rect:
-        serializedVersion: 2
-        x: 192
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 006961a8a900e0148839401536824e29
-      internalID: -1472106767
+      spriteID: 36e6d8f5c55af844d9aee68b327197b6
+      internalID: -1223089863
       vertices: []
       indices: 
       edges: []
@@ -267,7 +250,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 089c131811968d8488b3cd410b1a042f
     internalID: 0
     vertices: []
     indices: 
@@ -277,13 +260,17 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      marioluigi_0: -1589787217
-      marioluigi_1: 1263302900
-      princess_peach_icon: 747407375
-      toad_icon: 1728164261
-      waluigi_icon: -1417236447
-      wario_icon: 1112412724
-      yoshi_icon: -1472106767
+      hud_princess: -1223089863
+      hud_toad: 1338536311
+      hud_toadette: -1337057855
+      hud_waluigi: -1206200352
+      hud_wario: -1909266866290446193
+      hud_yoshi: -1446837559
+      ui_characters_1: -2332681576220796874
+      ui_characters_2: 693552045848250261
+      ui_characters_3: 6183047845042728702
+      ui_characters_4: 5677915020336759655
+      ui_characters_5: 979873859016210690
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
