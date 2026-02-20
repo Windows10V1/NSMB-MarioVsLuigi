@@ -134,9 +134,6 @@
         },
         {
             "m_Id": "f5c292ee5df0465699cab0c4d8486ef0"
-        },
-        {
-            "m_Id": "bf08bbedcde34ed5a27f60faca62539e"
         }
     ],
     "m_GroupDatas": [
@@ -484,9 +481,6 @@
             },
             {
                 "m_Id": "f4bb821ad16b4e10bf890aa7c3b4321a"
-            },
-            {
-                "m_Id": "bf08bbedcde34ed5a27f60faca62539e"
             }
         ]
     },
@@ -1541,7 +1535,7 @@
         "m_Id": "8ec04457a357486cab529adf8a497b70"
     },
     "m_AllowMaterialOverride": true,
-    "m_SurfaceType": 0,
+    "m_SurfaceType": 1,
     "m_ZTestMode": 4,
     "m_ZWriteControl": 1,
     "m_AlphaMode": 0,
@@ -3044,40 +3038,6 @@
 
 {
     "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.BlockNode",
-    "m_ObjectId": "bf08bbedcde34ed5a27f60faca62539e",
-    "m_Group": {
-        "m_Id": ""
-    },
-    "m_Name": "SurfaceDescription.Occlusion",
-    "m_DrawState": {
-        "m_Expanded": true,
-        "m_Position": {
-            "serializedVersion": "2",
-            "x": 0.0,
-            "y": 0.0,
-            "width": 0.0,
-            "height": 0.0
-        }
-    },
-    "m_Slots": [
-        {
-            "m_Id": "cabd6347d5a24676a3ecb2da721cbea7"
-        }
-    ],
-    "synonyms": [],
-    "m_Precision": 0,
-    "m_PreviewExpanded": true,
-    "m_DismissedVersion": 0,
-    "m_PreviewMode": 0,
-    "m_CustomColors": {
-        "m_SerializableColors": []
-    },
-    "m_SerializedDescriptor": "SurfaceDescription.Occlusion"
-}
-
-{
-    "m_SGVersion": 0,
     "m_Type": "UnityEditor.ShaderGraph.GroupData",
     "m_ObjectId": "c1e9130aeaaf4f9e8862e6ea77ebcea2",
     "m_Title": "RAINBOWS!!!!",
@@ -3137,21 +3097,6 @@
     "m_ShaderOutputName": "Out",
     "m_StageCapability": 3,
     "m_BareResource": false
-}
-
-{
-    "m_SGVersion": 0,
-    "m_Type": "UnityEditor.ShaderGraph.Vector1MaterialSlot",
-    "m_ObjectId": "cabd6347d5a24676a3ecb2da721cbea7",
-    "m_Id": 0,
-    "m_DisplayName": "Ambient Occlusion",
-    "m_SlotType": 0,
-    "m_Hidden": false,
-    "m_ShaderOutputName": "Occlusion",
-    "m_StageCapability": 2,
-    "m_Value": 1.0,
-    "m_DefaultValue": 1.0,
-    "m_Labels": []
 }
 
 {
