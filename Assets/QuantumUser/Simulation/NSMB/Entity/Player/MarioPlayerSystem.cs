@@ -1439,7 +1439,7 @@ namespace Quantum {
 
                 mario->PropellerLaunchFrames = physics.PropellerLaunchFrames;
                 mario->UsedPropellerThisJump = true;
-                mario->PropellerDrillCooldown = 30;
+                mario->PropellerDrillCooldown = 15;
 
                 mario->IsPropellerFlying = true;
                 mario->IsSpinnerFlying = false;
@@ -2573,16 +2573,17 @@ namespace Quantum {
             KnockbackStrength strength = KnockbackStrength.Normal;
             switch (breakReason) {
             case IceBlockBreakReason.HitWall:
-            case IceBlockBreakReason.BlockBump:
             case IceBlockBreakReason.Fireball:
             case IceBlockBreakReason.Other:
-                // Soft knockback, 1 star
                 damaged = mario->DoKnockback(f, entity, mario->FacingRight, 1, (strength = KnockbackStrength.FireballBump), brokenIceBlock);
                 break;
 
+            case IceBlockBreakReason.BlockBump:
+                damaged = mario->DoKnockback(f, entity, mario->FacingRight, 1, (strength = KnockbackStrength.Normal), brokenIceBlock);
+                break;
+
             case IceBlockBreakReason.Groundpounded:
-                // Hard knockback, 2 stars
-                damaged = mario->DoKnockback(f, entity, mario->FacingRight, 2, (strength = KnockbackStrength.Normal), brokenIceBlock);
+                damaged = mario->DoKnockback(f, entity, mario->FacingRight, 2, (strength = KnockbackStrength.Groundpound), brokenIceBlock);
                 break;
 
             case IceBlockBreakReason.Timer:
@@ -2597,7 +2598,7 @@ namespace Quantum {
                 break;
             }
 
-            mario->DamageInvincibilityFrames = 120;
+                mario->DamageInvincibilityFrames = 120;
             if (damaged) {
                 FPVector2 particlePos = f.Unsafe.GetPointer<Transform2D>(brokenIceBlock)->Position;
                 particlePos.Y += iceBlock->Size.Y / 2;
