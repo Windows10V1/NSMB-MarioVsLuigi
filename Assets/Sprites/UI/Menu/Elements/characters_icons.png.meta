@@ -115,7 +115,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wariowaluigi_0
+      name: wario_icon
       rect:
         serializedVersion: 2
         x: 0
@@ -137,7 +137,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wariowaluigi_1
+      name: waluigi_icon
       rect:
         serializedVersion: 2
         x: 32
@@ -159,7 +159,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: toadtoadette_0
+      name: toad_icon
       rect:
         serializedVersion: 2
         x: 64
@@ -181,32 +181,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: toadtoadette_1
+      name: yoshi_icon
       rect:
         serializedVersion: 2
         x: 96
-        y: 0
-        width: 32
-        height: 32
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3dae1d501a3f93a40800000000000000
-      internalID: 5348573905392102099
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: yoshiprincess_0
-      rect:
-        serializedVersion: 2
-        x: 128
         y: 0
         width: 32
         height: 32
@@ -225,10 +203,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: yoshiprincess_1
+      name: princess_icon
       rect:
         serializedVersion: 2
-        x: 160
+        x: 128
         y: 0
         width: 32
         height: 32
@@ -260,12 +238,12 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      toadtoadette_0: 8370428798134778319
+      princess_icon: 8073848939918559619
+      toad_icon: 8370428798134778319
       toadtoadette_1: 5348573905392102099
-      wariowaluigi_0: 8623762524538012915
-      wariowaluigi_1: 7719631808529669151
-      yoshiprincess_0: 543320379698016716
-      yoshiprincess_1: 8073848939918559619
+      waluigi_icon: 7719631808529669151
+      wario_icon: 8623762524538012915
+      yoshi_icon: 543320379698016716
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
