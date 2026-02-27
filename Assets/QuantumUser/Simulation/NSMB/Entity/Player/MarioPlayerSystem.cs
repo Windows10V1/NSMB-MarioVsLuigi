@@ -2573,32 +2573,37 @@ namespace Quantum {
             KnockbackStrength strength = KnockbackStrength.Normal;
             switch (breakReason) {
             case IceBlockBreakReason.HitWall:
-            case IceBlockBreakReason.Fireball:
             case IceBlockBreakReason.Other:
+                // Weak knockback, i-frames.
                 damaged = mario->DoKnockback(f, entity, mario->FacingRight, 1, (strength = KnockbackStrength.FireballBump), brokenIceBlock);
+                mario->DamageInvincibilityFrames = 120;
                 break;
 
             case IceBlockBreakReason.BlockBump:
+                // Soft knockback, no i-frames.
                 damaged = mario->DoKnockback(f, entity, mario->FacingRight, 1, (strength = KnockbackStrength.Normal), brokenIceBlock);
                 break;
 
             case IceBlockBreakReason.Groundpounded:
+                // Hard knockback, i-frames.
                 damaged = mario->DoKnockback(f, entity, mario->FacingRight, 2, (strength = KnockbackStrength.Groundpound), brokenIceBlock);
+                mario->DamageInvincibilityFrames = 120;
                 break;
 
             case IceBlockBreakReason.Timer:
                 // Damage holder, if we can.
                 var iceBlockHoldable = f.Unsafe.GetPointer<Holdable>(brokenIceBlock);
                 if (f.Unsafe.TryGetPointer(iceBlockHoldable->Holder, out MarioPlayer* holderMario)) {
+                    mario->DamageInvincibilityFrames = 120;
                     OnMarioMarioInteraction(f, entity, iceBlockHoldable->Holder);
                 }
+                mario->DamageInvincibilityFrames = 120;
                 break;
             default:
                 // Fall through.
                 break;
             }
 
-                mario->DamageInvincibilityFrames = 120;
             if (damaged) {
                 FPVector2 particlePos = f.Unsafe.GetPointer<Transform2D>(brokenIceBlock)->Position;
                 particlePos.Y += iceBlock->Size.Y / 2;
