@@ -2021,6 +2021,7 @@ namespace Quantum {
             }
 
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
+            var marioPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
             var projectileAsset = f.FindAsset(projectile->Asset);
             bool dropStars = true;
 
@@ -2031,7 +2032,7 @@ namespace Quantum {
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && mario->IsDamageable
-                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
+                && !((mario->IsCrouchedInShell || mario->IsInShell) || (mario->CurrentPowerupState == PowerupState.HammerSuit && marioPhysics->IsTouchingGround && mario->IsCrouching) && projectileAsset.DoesntEffectBlueShell);
 
             if (damageable) {
                 bool didKnockback = false;
@@ -2399,15 +2400,6 @@ namespace Quantum {
                     defenderMario->DoKnockback(f, defender, !fromRight, 0, KnockbackStrength.Groundpound, attacker);
                 }
                 attackerMario->DoEntityBounce = false;
-            } else if (defenderMario->CurrentPowerupState == PowerupState.HammerSuit && defenderPhysicsObject->IsTouchingGround && defenderMario->IsCrouching && !groundpounded) {
-                // Bounce
-                var attackerPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(attacker);
-                if (FPMath.Abs(attackerPhysicsObject->Velocity.X) < 2) {
-                    attackerPhysicsObject->Velocity.X = fromRight ? -2 : 2;
-                }
-                attackerPhysicsObject->Velocity.Y = 4;
-                attackerMario->DoEntityBounce = false;
-                f.Events.EnemyKicked(defender, false);
             } else {
                 // Normal knockbacks
                 if (defenderMario->CurrentPowerupState == PowerupState.MiniMushroom && groundpounded) {
