@@ -668,6 +668,16 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: mat_kinopio_eye
     second: {fileID: 2100000, guid: 35cd649504be4b144a6e6e1b0391b141, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: toad_all_tx
+    second: {fileID: 2100000, guid: 3c76f3c5322b6834cb282b86917496e1, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: toad_eye_tx
+    second: {fileID: 2100000, guid: 35cd649504be4b144a6e6e1b0391b141, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -1125,14 +1135,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.107163996
+      - time: 0.08424733
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 1
         messageOptions: 0
-      - time: 0.64298403
+      - time: 0.64923406
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -1168,14 +1178,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.16044997
+      - time: 0.13336663
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 1
         messageOptions: 0
-      - time: 0.68146837
+      - time: 0.65021837
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -1431,7 +1441,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -1443,14 +1453,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.17741935
+      - time: 0
         functionName: PlayMegaFootstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.7025088
+      - time: 0.50042546
         functionName: PlayMegaFootstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -1892,14 +1902,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.25503355
+      - time: 0.2758669
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.74161077
+      - time: 0.82494414
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -5358,7 +5368,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -6820,14 +6830,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.23489933
+      - time: 0.31614932
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.7718121
+      - time: 0.8301454
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -6984,35 +6994,6 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: squat_start_mario_model_mg
-      takeName: squat_start_mario_model_mg.001
-      internalID: 3839851179066686511
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: mario_model_mg|toad_wait_mario_model_mg
       takeName: mario_model_mg|toad_wait_mario_model_mg
       internalID: -6814815232306296804
@@ -7054,7 +7035,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -7066,14 +7047,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0
+      - time: 0.09375
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.49804923
+      - time: 0.5459659
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -7085,9 +7066,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: big_hip_at_TOAD_mario_model_mg
-      takeName: big_hip_at_TOAD_mario_model_mg.001
-      internalID: -1563676406518039891
+      name: mario_model_mg|propeller_up_mario_model_mg
+      takeName: mario_model_mg|propeller_up_mario_model_mg
+      internalID: -3162881447696071343
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -7114,9 +7095,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: mario_model_mg|propellerflail-V2_mario_model_mg
-      takeName: mario_model_mg|propellerflail-V2_mario_model_mg
-      internalID: -3775519609909744915
+      name: mario_model_mg|propellerflail_mario_model_mg
+      takeName: mario_model_mg|propellerflail_mario_model_mg
+      internalID: -4304019962504833794
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -7126,7 +7107,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 0
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -7138,14 +7119,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.61911446
+      - time: 0.13060796
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.1224622
+      - time: 0.62825626
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -7157,11 +7138,40 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: mario_model_mg|propellerup-V2_mario_model_mg
-      takeName: mario_model_mg|propellerup-V2_mario_model_mg
-      internalID: 5379123830918177784
+      name: mario_model_mg|squat_start_mario_model_mg
+      takeName: mario_model_mg|squat_start_mario_model_mg
+      internalID: 7143062788091976152
       firstFrame: 0
       lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: mario_model_mg|big_hip_at_mario_model_mg
+      takeName: mario_model_mg|big_hip_at_mario_model_mg
+      internalID: 4774916208321254344
+      firstFrame: 0
+      lastFrame: 0
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -7189,7 +7199,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 2
+    meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
@@ -7223,10 +7233,10 @@ ModelImporter:
     useFileScale: 1
     strictVertexDataChecks: 0
   tangentSpace:
-    normalSmoothAngle: 80
-    normalImportMode: 0
+    normalSmoothAngle: 180
+    normalImportMode: 1
     tangentImportMode: 3
-    normalCalculationMode: 0
+    normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
@@ -7254,7 +7264,7 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 1
   addHumanoidExtraRootOnlyWhenUsingAvatar: 0
-  importBlendShapeDeformPercent: 0
+  importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
