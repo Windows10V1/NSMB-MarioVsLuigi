@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 05d5d41710511164bbdd099f177585b4
+guid: fa349d4c4ad478446bbfd1cd2fc4cd4f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6278484400601350182
-    second: wario_head_starman_0
+      213: 3248713775008608717
+    second: wario_big_starman_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,9 +40,9 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 2
-    wrapV: 2
-    wrapW: 2
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -100,12 +100,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wario_head_starman_0
+      name: wario_big_starman_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 64
+        width: 128
         height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: adf3356d3b75ed8a0800000000000000
-      internalID: -6278484400601350182
+      spriteID: dc17e4847ffb51d20800000000000000
+      internalID: 3248713775008608717
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      wario_head_starman_0: -6278484400601350182
+      wario_big_starman_0: 3248713775008608717
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

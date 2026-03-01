@@ -1,76 +1,73 @@
 fileFormatVersion: 2
-guid: 7a6bf1f70c322b6489b8cae97b95e010
+guid: 2d3cff813295f3448a54b68e0b241c00
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3745953681787617588
-    second: wario_body_0
+      213: 7343967553546669086
+    second: wario_big_0
   - first:
-      213: 4646556318609393903
-    second: wario_body_1
+      213: 2219105442403202165
+    second: wario_big_1
   - first:
-      213: -9060733984632093993
-    second: wario_body_2
+      213: -4462237773868905542
+    second: wario_big_2
   - first:
-      213: -8189590392888667470
-    second: wario_body_3
+      213: 6615193891688291720
+    second: wario_big_3
   - first:
-      213: 1550510045921555266
-    second: wario_body_4
+      213: 6924863709466514911
+    second: wario_big_4
   - first:
-      213: 8643894564363853561
-    second: wario_body_5
+      213: 6580820418756542332
+    second: wario_big_5
   - first:
-      213: 5584198827787952375
-    second: wario_body_6
+      213: 5347990326266521655
+    second: wario_big_6
   - first:
-      213: -1989555327622280808
-    second: wario_body_7
+      213: 3073236669771196833
+    second: wario_big_7
   - first:
-      213: -5487270515004919256
-    second: wario_body_8
+      213: -7546884379267923984
+    second: wario_big_8
   - first:
-      213: -5180212608933130062
-    second: wario_body_9
+      213: -7610830271037397458
+    second: wario_big_9
   - first:
-      213: -7242710890249372768
-    second: wario_body_10
+      213: -4425386676667303655
+    second: wario_big_10
   - first:
-      213: -8551849983000875575
-    second: wario_body_11
+      213: 7342711723560105306
+    second: wario_big_11
   - first:
-      213: 4626758437173892113
-    second: wario_body_12
+      213: -8731416135300560631
+    second: wario_big_12
   - first:
-      213: -221033936657104007
-    second: wario_body_13
+      213: 1279682122642132767
+    second: wario_big_13
   - first:
-      213: 1978893334208801936
-    second: wario_body_14
+      213: -4446376959289216344
+    second: wario_big_14
   - first:
-      213: 4895847814025933487
-    second: wario_body_15
+      213: -4771841846123015179
+    second: wario_big_15
   - first:
-      213: -253412705431144990
-    second: wario_body_16
+      213: 3127450012078646887
+    second: wario_big_16
   - first:
-      213: 5740479647469128280
-    second: wario_body_17
+      213: 9143135771240046416
+    second: wario_big_17
   - first:
-      213: 8174754991932786943
-    second: wario_body_18
+      213: 6897816512716594071
+    second: wario_big_18
   - first:
-      213: -8599194881189387741
-    second: wario_body_19
+      213: -8567122900878867772
+    second: wario_big_19
   - first:
-      213: 3744559800199387743
-    second: wario_body_20
+      213: -3575600965912670546
+    second: wario_big_20
   - first:
-      213: -2875165950972631247
-    second: wario_body_21
-  - first:
-      213: -5414017911641109443
-    second: wario_body_22
+      213: -1878934033446128775
+    second: wario_big_21
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -106,9 +103,9 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 2
-    wrapV: 2
-    wrapW: 2
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -166,12 +163,12 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: wario_body_0
+      name: wario_big_0
       rect:
         serializedVersion: 2
         x: 0
         y: 1215
-        width: 64
+        width: 128
         height: 65
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -181,18 +178,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4318404d60d4cf330800000000000000
-      internalID: 3745953681787617588
+      spriteID: e1cc42774930be560800000000000000
+      internalID: 7343967553546669086
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_1
+      name: wario_big_1
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1152
+        x: 67
+        y: 1170
         width: 61
         height: 46
       alignment: 0
@@ -203,217 +200,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fe84f8f6a52eb7040800000000000000
-      internalID: 4646556318609393903
+      spriteID: 574349d74a8dbce10800000000000000
+      internalID: 2219105442403202165
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_2
+      name: wario_big_2
       rect:
         serializedVersion: 2
-        x: 3
-        y: 1088
-        width: 14
-        height: 27
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7d2c1b1627ec14280800000000000000
-      internalID: -9060733984632093993
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_3
-      rect:
-        serializedVersion: 2
-        x: 15
-        y: 1087
-        width: 36
-        height: 38
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2b25bef8deab85e80800000000000000
-      internalID: -8189590392888667470
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_4
-      rect:
-        serializedVersion: 2
-        x: 41
-        y: 1087
-        width: 16
-        height: 17
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 24334dbfba4848510800000000000000
-      internalID: 1550510045921555266
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_5
-      rect:
-        serializedVersion: 2
-        x: 50
-        y: 1092
-        width: 14
-        height: 33
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9fe56d81f4845f770800000000000000
-      internalID: 8643894564363853561
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_6
-      rect:
-        serializedVersion: 2
-        x: 55
-        y: 1074
-        width: 8
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 7f0247d5f3f0f7d40800000000000000
-      internalID: 5584198827787952375
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_7
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 959
-        width: 64
-        height: 66
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 899861c78fda364e0800000000000000
-      internalID: -1989555327622280808
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_8
-      rect:
-        serializedVersion: 2
-        x: 55
-        y: 882
-        width: 8
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 82238a61a8c49d3b0800000000000000
-      internalID: -5487270515004919256
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_9
-      rect:
-        serializedVersion: 2
-        x: 3
-        y: 832
-        width: 61
-        height: 46
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2b09a8ff3103c18b0800000000000000
-      internalID: -5180212608933130062
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_10
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 684
-        width: 64
-        height: 85
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 0ab35df91d8bc7b90800000000000000
-      internalID: -7242710890249372768
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_11
-      rect:
-        serializedVersion: 2
-        x: 3
-        y: 575
-        width: 61
+        x: 63
+        y: 1106
+        width: 65
         height: 47
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -423,18 +222,84 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9cd6dc600c9b15980800000000000000
-      internalID: -8551849983000875575
+      spriteID: abbc639f262f212c0800000000000000
+      internalID: -4462237773868905542
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_12
+      name: wario_big_3
       rect:
         serializedVersion: 2
-        x: 55
-        y: 562
+        x: 80
+        y: 1092
+        width: 9
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 88d1a62bbc3edcb50800000000000000
+      internalID: 6615193891688291720
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_4
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 1062
+        width: 37
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd5deb0bade0a1060800000000000000
+      internalID: 6924863709466514911
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_5
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 1062
+        width: 10
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c7ffe9edd45c35b50800000000000000
+      internalID: 6580820418756542332
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_6
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 1031
         width: 8
         height: 7
       alignment: 0
@@ -445,19 +310,19 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1149a45f84c853040800000000000000
-      internalID: 4626758437173892113
+      spriteID: 738675bedd0e73a40800000000000000
+      internalID: 5347990326266521655
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_13
+      name: wario_big_7
       rect:
         serializedVersion: 2
         x: 0
-        y: 447
-        width: 64
+        y: 959
+        width: 128
         height: 66
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -467,40 +332,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9734f324ecabeecf0800000000000000
-      internalID: -221033936657104007
+      spriteID: 1a9aa6ce77456aa20800000000000000
+      internalID: 3073236669771196833
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_14
+      name: wario_big_8
       rect:
         serializedVersion: 2
-        x: 55
-        y: 370
-        width: 8
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 09c67e9b001767b10800000000000000
-      internalID: 1978893334208801936
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_15
-      rect:
-        serializedVersion: 2
-        x: 3
-        y: 320
+        x: 67
+        y: 850
         width: 61
         height: 46
       alignment: 0
@@ -511,20 +354,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: fa27365c5ab81f340800000000000000
-      internalID: 4895847814025933487
+      spriteID: 0ff7ac464a4144790800000000000000
+      internalID: -7546884379267923984
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_16
+      name: wario_big_9
       rect:
         serializedVersion: 2
-        x: 0
-        y: 191
-        width: 64
-        height: 66
+        x: 31
+        y: 809
+        width: 10
+        height: 19
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -533,40 +376,18 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2e5b43fac72bb7cf0800000000000000
-      internalID: -253412705431144990
+      spriteID: e26a6014136e06690800000000000000
+      internalID: -7610830271037397458
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_17
+      name: wario_big_10
       rect:
         serializedVersion: 2
-        x: 0
-        y: 108
-        width: 33
-        height: 21
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 85ac1c333d74aaf40800000000000000
-      internalID: 5740479647469128280
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: wario_body_18
-      rect:
-        serializedVersion: 2
-        x: 55
-        y: 114
+        x: 88
+        y: 775
         width: 8
         height: 7
       alignment: 0
@@ -577,20 +398,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ff8410c7a50927170800000000000000
-      internalID: 8174754991932786943
+      spriteID: 919bf77a34ed592c0800000000000000
+      internalID: -4425386676667303655
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_19
+      name: wario_big_11
       rect:
         serializedVersion: 2
-        x: 3
-        y: 64
-        width: 14
-        height: 27
+        x: 0
+        y: 703
+        width: 128
+        height: 66
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -599,20 +420,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3226958e0d589a880800000000000000
-      internalID: -8599194881189387741
+      spriteID: a5575e2c86d86e560800000000000000
+      internalID: 7342711723560105306
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_20
+      name: wario_big_12
       rect:
         serializedVersion: 2
-        x: 15
-        y: 63
-        width: 36
-        height: 38
+        x: 0
+        y: 594
+        width: 128
+        height: 79
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -621,20 +442,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f5a971b7c4957f330800000000000000
-      internalID: 3744559800199387743
+      spriteID: 909cb453947c3d680800000000000000
+      internalID: -8731416135300560631
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_21
+      name: wario_big_13
       rect:
         serializedVersion: 2
-        x: 41
-        y: 63
-        width: 16
-        height: 17
+        x: 80
+        y: 580
+        width: 9
+        height: 11
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -643,20 +464,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1376af50dcb5918d0800000000000000
-      internalID: -2875165950972631247
+      spriteID: f1f80894c1852c110800000000000000
+      internalID: 1279682122642132767
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: wario_body_22
+      name: wario_big_14
       rect:
         serializedVersion: 2
-        x: 50
-        y: 68
-        width: 14
-        height: 33
+        x: 88
+        y: 583
+        width: 8
+        height: 7
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -665,8 +486,162 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: d3c8701e46b8dd4b0800000000000000
-      internalID: -5414017911641109443
+      spriteID: 8a2b514a6bb4b42c0800000000000000
+      internalID: -4446376959289216344
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 447
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5f35e7d8f1307cdb0800000000000000
+      internalID: -4771841846123015179
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_16
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 338
+        width: 61
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7662dbe473fe66b20800000000000000
+      internalID: 3127450012078646887
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_17
+      rect:
+        serializedVersion: 2
+        x: 31
+        y: 297
+        width: 10
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 05f1ee1aa81f2ee70800000000000000
+      internalID: 9143135771240046416
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_18
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 263
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 79bdb467297f9bf50800000000000000
+      internalID: 6897816512716594071
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_19
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 191
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4c2400abc177b1980800000000000000
+      internalID: -8567122900878867772
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_20
+      rect:
+        serializedVersion: 2
+        x: 67
+        y: 82
+        width: 61
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: eae4b38add9e06ec0800000000000000
+      internalID: -3575600965912670546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: wario_big_21
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 71
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9733d0c937face5e0800000000000000
+      internalID: -1878934033446128775
       vertices: []
       indices: 
       edges: []
@@ -684,30 +659,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      wario_body_0: 3745953681787617588
-      wario_body_1: 4646556318609393903
-      wario_body_10: -7242710890249372768
-      wario_body_11: -8551849983000875575
-      wario_body_12: 4626758437173892113
-      wario_body_13: -221033936657104007
-      wario_body_14: 1978893334208801936
-      wario_body_15: 4895847814025933487
-      wario_body_16: -253412705431144990
-      wario_body_17: 5740479647469128280
-      wario_body_18: 8174754991932786943
-      wario_body_19: -8599194881189387741
-      wario_body_2: -9060733984632093993
-      wario_body_20: 3744559800199387743
-      wario_body_21: -2875165950972631247
-      wario_body_22: -5414017911641109443
-      wario_body_3: -8189590392888667470
-      wario_body_4: 1550510045921555266
-      wario_body_5: 8643894564363853561
-      wario_body_6: 5584198827787952375
-      wario_body_7: -1989555327622280808
-      wario_body_8: -5487270515004919256
-      wario_body_9: -5180212608933130062
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

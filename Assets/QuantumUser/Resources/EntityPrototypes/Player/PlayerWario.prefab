@@ -155,7 +155,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.44440308, y: -0.5586722, z: -0.520064, w: 0.4689614}
   m_LocalPosition: {x: 0.0005, y: 0.0108, z: -0.018}
-  m_LocalScale: {x: -0.7000001, y: 0.69999987, z: 0.65}
+  m_LocalScale: {x: -0.7, y: 0.7, z: 0.65}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7192167547613311844}
@@ -350,7 +350,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4112991801343913761
 Transform:
   m_ObjectHideFlags: 0
@@ -360,7 +360,7 @@ Transform:
   m_GameObject: {fileID: 3629787967981286811}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5129171, y: -0.4867402, z: -0.5129171, w: 0.4867402}
-  m_LocalPosition: {x: 0, y: 0.01, z: -0.0104}
+  m_LocalPosition: {x: 0, y: 0.01, z: -0.0132}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -436,7 +436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3675207471616807129
 Transform:
   m_ObjectHideFlags: 0
@@ -446,8 +446,8 @@ Transform:
   m_GameObject: {fileID: 4056376664574429795}
   serializedVersion: 2
   m_LocalRotation: {x: -0.92918384, y: 0.002103237, z: -0.009821523, w: -0.36948153}
-  m_LocalPosition: {x: 0, y: 0.00339999, z: -0.042000055}
-  m_LocalScale: {x: 1.13, y: 1.065, z: 1.07}
+  m_LocalPosition: {x: 0.00018, y: 0.00946, z: -0.04315}
+  m_LocalScale: {x: 1.1227496, y: 0.97966164, z: 1.07}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4179535912005182115}
@@ -6472,8 +6472,8 @@ Transform:
   m_GameObject: {fileID: 8712194458326895251}
   serializedVersion: 2
   m_LocalRotation: {x: -0.79116255, y: -8.644023e-10, z: -0.000000010504488, w: 0.61160594}
-  m_LocalPosition: {x: -0.0004, y: 0.0276, z: 0.0207}
-  m_LocalScale: {x: 0.018, y: 0.018, z: 0.018}
+  m_LocalPosition: {x: -0.0004, y: 0.0276, z: 0.013}
+  m_LocalScale: {x: 0.017, y: 0.0164, z: 0.0155}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2943551738180556700}
@@ -7117,7 +7117,7 @@ PrefabInstance:
     - target: {fileID: 1811992120372893020, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1811992120372893020, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
@@ -7128,7 +7128,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
-      objectReference: {fileID: 2100000, guid: bdeaedb82f986724abe2cadb7eb2e481, type: 2}
+      objectReference: {fileID: 2100000, guid: 33672109d5ebfae47987ccfabede307f, type: 2}
     - target: {fileID: 1811992120372893020, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
@@ -8617,6 +8617,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -231537852577957333, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
+      propertyPath: m_Name
+      value: wario_small
+      objectReference: {fileID: 0}
+    - target: {fileID: -231537852577957333, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
@@ -8739,13 +8744,13 @@ PrefabInstance:
     - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
-      objectReference: {fileID: 2100000, guid: bdeaedb82f986724abe2cadb7eb2e481, type: 2}
+      objectReference: {fileID: 2100000, guid: 08b604697044ca042a613576d5f8c98e, type: 2}
     - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: 'm_Materials.Array.data[1]'
