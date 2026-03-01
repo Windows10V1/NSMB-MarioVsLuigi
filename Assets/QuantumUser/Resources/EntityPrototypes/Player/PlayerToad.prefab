@@ -144,7 +144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &536954831534211016
 Transform:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.44440308, y: -0.5586722, z: -0.520064, w: 0.4689614}
   m_LocalPosition: {x: 0.0005, y: 0.0025, z: -0.0045}
-  m_LocalScale: {x: -0.6, y: 0.6, z: 0.65}
+  m_LocalScale: {x: -0.5, y: 0.5, z: 0.45}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7192167547613311844}
@@ -436,7 +436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &3675207471616807129
 Transform:
   m_ObjectHideFlags: 0
@@ -446,8 +446,8 @@ Transform:
   m_GameObject: {fileID: 4056376664574429795}
   serializedVersion: 2
   m_LocalRotation: {x: -0.87369955, y: 0.0016519417, z: -0.009445923, w: -0.4863715}
-  m_LocalPosition: {x: 0.00043, y: -0.02003, z: -0.06794}
-  m_LocalScale: {x: 1.45958, y: 1.3023819, z: 1.1669245}
+  m_LocalPosition: {x: 0.00056, y: -0.02171, z: -0.07592}
+  m_LocalScale: {x: 1.45958, y: 1.3700176, z: 1.2188728}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4179535912005182115}
@@ -6473,7 +6473,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0.79116255, y: -8.644023e-10, z: -0.000000010504488, w: 0.61160594}
   m_LocalPosition: {x: -7.6312665e-11, y: 0.0203841, z: 0.007497805}
-  m_LocalScale: {x: 0.024, y: 0.02, z: 0.022}
+  m_LocalScale: {x: 0.022, y: 0.023, z: 0.022}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2943551738180556700}
@@ -7114,11 +7114,6 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -6344112039927707681, guid: e6474701602a38f4a90d81b0d568aba0,
         type: 3}
-    - target: {fileID: 1811992120372893020, guid: 024ceb223bceebd488dbc425555f4df0,
-        type: 3}
-      propertyPath: m_Materials.Array.size
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 1811992120372893020, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
