@@ -864,7 +864,7 @@ namespace Quantum {
             }
 
             if (mario->IsDrilling && mario->IsPropellerFlying && inputs.Down.IsDown) {
-                mario->PropellerDrillHoldFrames = 15;
+                mario->PropellerDrillHoldFrames = 30;
             }
 
             if (QuantumUtils.Decrement(ref mario->PropellerDrillHoldFrames) && mario->IsPropellerFlying && mario->IsDrilling) {
@@ -2586,8 +2586,8 @@ namespace Quantum {
                 // Damage holder, if we can.
                 var iceBlockHoldable = f.Unsafe.GetPointer<Holdable>(brokenIceBlock);
                 if (f.Unsafe.TryGetPointer(iceBlockHoldable->Holder, out MarioPlayer* holderMario)) {
-                    mario->DamageInvincibilityFrames = 120;
                     OnMarioMarioInteraction(f, entity, iceBlockHoldable->Holder);
+                    mario->DamageInvincibilityFrames = 120;
                 }
                 mario->DamageInvincibilityFrames = 120;
                 break;

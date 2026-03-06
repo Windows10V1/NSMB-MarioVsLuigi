@@ -144,7 +144,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &536954831534211016
 Transform:
   m_ObjectHideFlags: 0
@@ -155,7 +155,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.44440308, y: -0.5586722, z: -0.520064, w: 0.4689614}
   m_LocalPosition: {x: 0.0005, y: 0.0108, z: -0.018}
-  m_LocalScale: {x: -0.7, y: 0.7, z: 0.65}
+  m_LocalScale: {x: -0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7192167547613311844}
@@ -436,7 +436,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3675207471616807129
 Transform:
   m_ObjectHideFlags: 0
@@ -6462,7 +6462,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8335105316509437993
 Transform:
   m_ObjectHideFlags: 0
@@ -8744,7 +8744,7 @@ PrefabInstance:
     - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: m_Materials.Array.size
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
@@ -8760,7 +8760,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'm_Materials.Array.data[2]'
       value: 
-      objectReference: {fileID: 2100000, guid: 08b604697044ca042a613576d5f8c98e, type: 2}
+      objectReference: {fileID: 2100000, guid: 33672109d5ebfae47987ccfabede307f, type: 2}
     - target: {fileID: 4440606206216256326, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: m_Layer
