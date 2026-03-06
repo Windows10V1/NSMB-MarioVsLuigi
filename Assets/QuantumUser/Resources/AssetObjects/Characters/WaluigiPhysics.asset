@@ -78,9 +78,9 @@ MonoBehaviour:
   SlowTurnaroundIceAcceleration:
     RawValue: 172800
   SmallHitboxHeight:
-    RawValue: 34079
+    RawValue: 27853
   LargeHitboxHeight:
-    RawValue: 76677
+    RawValue: 73400
   JumpBufferFrames: 12
   CoyoteTimeFrames: 5
   JumpVelocity:
@@ -245,7 +245,7 @@ MonoBehaviour:
       RawValue: 45548
   IceBlockBigSize:
     X:
-      RawValue: 57344
+      RawValue: 53084
     Y:
       RawValue: 91750
   IceBlockSmallOffset:
@@ -255,8 +255,8 @@ MonoBehaviour:
       RawValue: 0
   IceBlockBigOffset:
     X:
-      RawValue: 1311
+      RawValue: 655
     Y:
-      RawValue: 2294
+      RawValue: 1638
   IceBlockPickupFreezeFrames: 20
   MegaMushroomStepInterval: 18
