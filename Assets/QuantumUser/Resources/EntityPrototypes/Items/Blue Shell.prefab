@@ -4937,6 +4937,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2834573260081099437, guid: 794bc215dd02bf34ab2cfae7702bfdfd,
         type: 3}
+    - target: {fileID: 8637938864149294636, guid: 9bcb5effadc837a45b61571768c543cf,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 405c9b100eae27243807a3f0ea8e853b, type: 2}
     - target: {fileID: 9121724411283337017, guid: 9bcb5effadc837a45b61571768c543cf,
         type: 3}
       propertyPath: childAnimator

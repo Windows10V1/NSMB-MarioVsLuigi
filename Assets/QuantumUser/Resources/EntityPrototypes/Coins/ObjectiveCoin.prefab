@@ -57,7 +57,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 405c9b100eae27243807a3f0ea8e853b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -212,8 +212,6 @@ MonoBehaviour:
   sparkles: {fileID: 7191599241214066530}
   looseCoin: 1
   objectiveCoin: 1
-  spinSpeed: 300
-  minimumSpinSpeed: 300
 --- !u!114 &1839046130397998528
 MonoBehaviour:
   m_ObjectHideFlags: 0

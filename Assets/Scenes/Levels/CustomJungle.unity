@@ -882,7 +882,7 @@ Transform:
   m_GameObject: {fileID: 580939795}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.5, z: -7}
+  m_LocalPosition: {x: 0, y: 2.5, z: -8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -931,7 +931,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -755315459
   m_SortingLayer: 1
-  m_SortingOrder: 653
+  m_SortingOrder: 99
   m_Sprite: {fileID: 21300000, guid: 53912a8ada9d56d41832b52892da8496, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.023529412}
   m_FlipX: 0
@@ -1626,38 +1626,11 @@ PrefabInstance:
       propertyPath: frame
       value: 4
       objectReference: {fileID: 0}
-    - target: {fileID: 7821411591339125535, guid: 1ce5864bde999014a92015b065520add,
+    - target: {fileID: 7523289063499453450, guid: 1ce5864bde999014a92015b065520add,
         type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 8044139085597164931, guid: b455056ca00f84e48a8040f94ae8170d,
-        type: 3}
-    - target: {fileID: 8059900885248764230, guid: 1ce5864bde999014a92015b065520add,
-        type: 3}
-      propertyPath: Flags
-      value: 264705
+      propertyPath: m_Name
+      value: Goomba
       objectReference: {fileID: 0}
-    - target: {fileID: 8059900885248764230, guid: 1ce5864bde999014a92015b065520add,
-        type: 3}
-      propertyPath: SortKey
-      value: 4260716450
-      objectReference: {fileID: 0}
-    - target: {fileID: 8059900885248764230, guid: 1ce5864bde999014a92015b065520add,
-        type: 3}
-      propertyPath: 'NetworkGuid.RawGuidValue.Array.data[0]'
-      value: -8842533617547794939
-      objectReference: {fileID: 0}
-    - target: {fileID: 8059900885248764230, guid: 1ce5864bde999014a92015b065520add,
-        type: 3}
-      propertyPath: 'NetworkGuid.RawGuidValue.Array.data[1]'
-      value: 5516449517828404630
-      objectReference: {fileID: 0}
-    - target: {fileID: 79918617084146557, guid: 8dcf98824096b2b4193c46867996f963,
-        type: 3}
-      propertyPath: character
-      value: 
-      objectReference: {fileID: 11400000, guid: e19e8d0d7c91f79408bc640c85ca26c6,
-        type: 2}
     - target: {fileID: 7523289063499453456, guid: 1ce5864bde999014a92015b065520add,
         type: 3}
       propertyPath: m_RootOrder
@@ -1713,11 +1686,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7523289063499453450, guid: 1ce5864bde999014a92015b065520add,
+    - target: {fileID: 7821411591339125535, guid: 1ce5864bde999014a92015b065520add,
         type: 3}
-      propertyPath: m_Name
-      value: Goomba
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 8044139085597164931, guid: b455056ca00f84e48a8040f94ae8170d,
+        type: 3}
+    - target: {fileID: 8059900885248764230, guid: 1ce5864bde999014a92015b065520add,
+        type: 3}
+      propertyPath: Flags
+      value: 264705
       objectReference: {fileID: 0}
+    - target: {fileID: 8059900885248764230, guid: 1ce5864bde999014a92015b065520add,
+        type: 3}
+      propertyPath: SortKey
+      value: 4260716450
+      objectReference: {fileID: 0}
+    - target: {fileID: 8059900885248764230, guid: 1ce5864bde999014a92015b065520add,
+        type: 3}
+      propertyPath: 'NetworkGuid.RawGuidValue.Array.data[0]'
+      value: -8842533617547794939
+      objectReference: {fileID: 0}
+    - target: {fileID: 8059900885248764230, guid: 1ce5864bde999014a92015b065520add,
+        type: 3}
+      propertyPath: 'NetworkGuid.RawGuidValue.Array.data[1]'
+      value: 5516449517828404630
+      objectReference: {fileID: 0}
+    - target: {fileID: 79918617084146557, guid: 8dcf98824096b2b4193c46867996f963,
+        type: 3}
+      propertyPath: character
+      value: 
+      objectReference: {fileID: 11400000, guid: e19e8d0d7c91f79408bc640c85ca26c6,
+        type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2335,7 +2335,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 405c9b100eae27243807a3f0ea8e853b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -12825,7 +12825,7 @@ Tilemap:
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 0.8745098, g: 0.8745098, b: 0.8745098, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -63, y: -12, z: -1}
   m_Size: {x: 126, y: 20, z: 2}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
@@ -13456,7 +13456,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -755315459
   m_SortingLayer: 1
-  m_SortingOrder: 654
+  m_SortingOrder: 100
   m_Sprite: {fileID: 21300000, guid: 53912a8ada9d56d41832b52892da8496, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.07058824}
   m_FlipX: 0
@@ -13804,7 +13804,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6b697c4d4b7da5a40abd13a9fd27ed46, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -18118,7 +18118,7 @@ Tilemap:
     m_Data: {r: 1, g: 1, b: 1, a: 1}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 0.3254902, g: 0.3254902, b: 0.3254902, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -66, y: -16, z: 0}
   m_Size: {x: 151, y: 25, z: 1}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}

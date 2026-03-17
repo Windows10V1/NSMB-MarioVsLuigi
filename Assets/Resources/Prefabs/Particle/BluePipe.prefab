@@ -4834,6 +4834,9 @@ ParticleSystemRenderer:
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -4970,6 +4973,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -8359218312643153770, guid: b73add24eb026c844b85593f8bab1f8c,
     type: 2}
   m_audioClip: {fileID: 8300000, guid: cc76ebd60b562a44ca887fe96def4818, type: 3}
+  m_Resource: {fileID: 8300000, guid: cc76ebd60b562a44ca887fe96def4818, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
@@ -5121,10 +5125,13 @@ SpriteRenderer:
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
   m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 405c9b100eae27243807a3f0ea8e853b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

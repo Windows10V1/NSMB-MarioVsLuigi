@@ -385,13 +385,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 121915674}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.2840153, y: 0, z: 0, w: 0.95881975}
+  m_LocalRotation: {x: 0.27231947, y: 0.27231947, z: -0.08066469, w: 0.9193353}
   m_LocalPosition: {x: 0, y: 5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 33, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 33, y: 33, z: 0}
 --- !u!1 &133657841
 GameObject:
   m_ObjectHideFlags: 0
@@ -2529,7 +2529,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 636b4785eb3351542b1821c4cfa72b5e, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -3988,7 +3988,7 @@ Tilemap:
     m_Data: {r: NaN, g: NaN, b: NaN, a: NaN}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
-  m_Color: {r: 0.496, g: 0.496, b: 0.496, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Origin: {x: -29, y: -13, z: -1}
   m_Size: {x: 65, y: 33, z: 3}
   m_TileAnchor: {x: 0.5, y: 0.5, z: 0}
@@ -4320,7 +4320,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 405c9b100eae27243807a3f0ea8e853b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8832,7 +8832,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 405c9b100eae27243807a3f0ea8e853b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
