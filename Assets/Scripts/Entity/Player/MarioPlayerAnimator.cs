@@ -125,7 +125,7 @@ namespace NSMB.Entities.Player {
 
         [Header("Particle Systems")]
         [SerializeField] private ParticleSystem dust;
-        [SerializeField] private ParticleSystem sparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
+        [SerializeField] private ParticleSystem sparkles, drillParticle, propellerLaunchParticle, propellerSpinParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
 
         //---Components
         private readonly List<Renderer> renderers = new();
@@ -261,6 +261,8 @@ namespace NSMB.Entities.Player {
                 animator.speed = 0;
                 models.SetActive(!mario->IsRespawning);
                 SetParticleEmission(drillParticle, false);
+                SetParticleEmission(propellerLaunchParticle, false);
+                SetParticleEmission(propellerSpinParticle, false);
                 SetParticleEmission(sparkles, false);
                 SetParticleEmission(iceSkiddingParticle, false);
                 SetParticleEmission(waterSkiddingParticle, false);
@@ -311,6 +313,8 @@ namespace NSMB.Entities.Player {
             }
 
             SetParticleEmission(drillParticle, !disableParticles && mario->IsDrilling);
+            SetParticleEmission(propellerLaunchParticle, !disableParticles && mario->IsPropellerFlying && mario->PropellerLaunchFrames > 0);
+            SetParticleEmission(propellerSpinParticle, !disableParticles && mario->IsPropellerFlying && mario->PropellerSpinFrames > 0);
             SetParticleEmission(sparkles, !disableParticles && mario->IsStarmanInvincible);
             SetParticleEmission(iceSkiddingParticle, !disableParticles && physicsObject->IsOnSlipperyGround && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterSkiddingParticle, !disableParticles && onWater && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
@@ -334,6 +338,8 @@ namespace NSMB.Entities.Player {
             dustPlayer.SetSoundData((mario->IsInShell || mario->IsSliding || mario->IsCrouchedInShell) ? shellSlideData : wallSlideData);
             drillPlayer.SetSoundData(mario->IsPropellerFlying ? propellerDrillData : spinnerDrillData);
             bubblesParticle.transform.localPosition = new(bubblesParticle.transform.localPosition.x, physicsCollider->Shape.Box.Extents.Y.AsFloat * 2);
+            propellerLaunchParticle.transform.localPosition = new(propellerLaunchParticle.transform.localPosition.x, physicsCollider->Shape.Box.Extents.Y.AsFloat * 2);
+            propellerSpinParticle.transform.localPosition = new(propellerSpinParticle.transform.localPosition.x, physicsCollider->Shape.Box.Extents.Y.AsFloat * 2);
 
             if (!mario->IsDead) {
                 var waterColliders = f.ResolveHashSet(physicsObject->LiquidContacts);
@@ -977,6 +983,7 @@ namespace NSMB.Entities.Player {
             }
 
             PlaySound(SoundEffect.Powerup_PropellerMushroom_Start);
+            PlaySound(SoundEffect.Player_Voice_WallJump);
         }
 
         private void OnMarioPlayerShotProjectile(EventMarioPlayerShotProjectile e) {
