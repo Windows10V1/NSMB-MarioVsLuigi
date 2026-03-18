@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 7eb259c5d7c092b4fa459872ab68b44c
+guid: 5a8233ddc7bbffe45aef17cd6cb6da46
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -7,28 +7,13 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_body
-    second: {fileID: 2100000, guid: 08b604697044ca042a613576d5f8c98e, type: 2}
+      name: waluigi_all_tx
+    second: {fileID: 2100000, guid: 08d8cc9c461439f49a3dae37aa26afe1, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: mat_eye
-    second: {fileID: 2100000, guid: 33672109d5ebfae47987ccfabede307f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: mat_head
-    second: {fileID: 2100000, guid: bdeaedb82f986724abe2cadb7eb2e481, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: wario_all_tx
-    second: {fileID: 2100000, guid: 08b604697044ca042a613576d5f8c98e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: wario_eye_tx
-    second: {fileID: 2100000, guid: 33672109d5ebfae47987ccfabede307f, type: 2}
+      name: waluigi_eye_tx
+    second: {fileID: 2100000, guid: 0f589003d798ee848aaeba826fa96e38, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -37,7 +22,7 @@ ModelImporter:
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
-    resampleCurves: 0
+    resampleCurves: 1
     optimizeGameObjects: 0
     removeConstantScaleCurves: 0
     motionNodeName: 
@@ -59,8 +44,37 @@ ModelImporter:
       name: swim_damage_mario_model_mg
       takeName: swim_damage_mario_model_mg
       internalID: -8985365442197724302
-      firstFrame: 1
+      firstFrame: 0
       lastFrame: 40
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: propellerflail_mario_model_mg
+      takeName: propellerflail_mario_model_mg
+      internalID: -1113351457805347146
+      firstFrame: 0
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -515,14 +529,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.07977787
+      - time: 0.07892353
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.6293918
+      - time: 0.62526244
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -558,14 +572,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.07706358
+      - time: 0.08089141
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.62260604
+      - time: 0.62038916
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -869,7 +883,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.50135124
+      - time: 0.49411765
         functionName: PlayMegaFootstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -1311,14 +1325,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.16704044
+      - time: 0.16793212
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.8329323
+      - time: 0.82628506
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -2079,14 +2093,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.17231068
+      - time: 0.17143439
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.8280269
+      - time: 0.83142984
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -4139,8 +4153,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -4151,21 +4165,7 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events:
-      - time: 0.17011172
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.6628491
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
+      events: []
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -4376,7 +4376,7 @@ ModelImporter:
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.49425665
+      - time: 0.49411765
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -4660,8 +4660,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -4794,8 +4794,8 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: squat_start_WARIO_mario_model_mg
-      takeName: squat_start_WARIO_mario_model_mg
+      name: mario_model_mg|squat_start_mario_model_mg
+      takeName: mario_model_mg|squat_start_mario_model_mg
       internalID: -5419873928327414062
       firstFrame: 0
       lastFrame: 1
@@ -5009,7 +5009,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -5617,8 +5617,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -5733,8 +5733,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -5745,7 +5745,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.49886876
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -6217,7 +6231,7 @@ ModelImporter:
     - serializedVersion: 16
       name: mario_model_mg|sdown_knockdown_mario_model_mg
       takeName: mario_model_mg|sdown_mario_model_mg
-      internalID: -4541342783143528880
+      internalID: 9108515554297849598
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -6331,9 +6345,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: mario_model_mg|big_hip_at_WARIO_mario_model_mg
-      takeName: mario_model_mg|big_hip_at_WARIO_mario_model_mg
-      internalID: 5901954344066783998
+      name: mario_model_mg|big_hip_at_WALUIGI_mario_model_mg
+      takeName: mario_model_mg|big_hip_at_WALUIGI_mario_model_mg
+      internalID: 8733338162873836811
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0

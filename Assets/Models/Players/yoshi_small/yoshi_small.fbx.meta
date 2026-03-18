@@ -1,19 +1,678 @@
 fileFormatVersion: 2
-guid: c00f1cc71462d79409e6445380e82fc5
+guid: 7cb3cdb2065d7a646b583e441c03ed93
 ModelImporter:
   serializedVersion: 22200
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: 7936476158259880078
+    second: small_model|2jmp1_small_model
+  - first:
+      74: -6639942427629169614
+    second: small_model|2jmp2_small_model
+  - first:
+      74: 7699966397248795634
+    second: small_model|2jmp_b_1_small_model
+  - first:
+      74: -8969870314571355361
+    second: small_model|2jmp_b_2_small_model
+  - first:
+      74: 8419052139562869826
+    second: small_model|2jmp_c_1_small_model
+  - first:
+      74: 4160601144243102020
+    second: small_model|2jmp_c_2_small_model
+  - first:
+      74: -4754633320589427335
+    second: small_model|2jmp_d_1_small_model
+  - first:
+      74: 7480476736449432889
+    second: small_model|2jmp_d_2_small_model
+  - first:
+      74: 2498910735832237851
+    second: small_model|2jmp_e_1_small_model
+  - first:
+      74: -2924956034205866454
+    second: small_model|2jmp_e_2_small_model
+  - first:
+      74: -2151110872859412887
+    second: small_model|2jump1_small_model
+  - first:
+      74: -1537112494762962389
+    second: small_model|2jump2_small_model
+  - first:
+      74: 1412296139127706353
+    second: small_model|2jumped_small_model
+  - first:
+      74: -7162211266807783020
+    second: small_model|attack_small_model
+  - first:
+      74: -52972709486961553
+    second: small_model|b_dash.001_small_model
+  - first:
+      74: -1924426181260180765
+    second: small_model|b_dash2_small_model
+  - first:
+      74: 260706077939130250
+    second: small_model|b_dash_small_model
+  - first:
+      74: -512889097398413721
+    second: small_model|big_goal_small_model
+  - first:
+      74: -6354498825522892707
+    second: small_model|big_hip_at_small_model
+  - first:
+      74: 2594209376928735925
+    second: small_model|big_hip_ed_small_model
+  - first:
+      74: -6440208053847755642
+    second: small_model|big_hip_squat_small_model
+  - first:
+      74: -6381754872607530736
+    second: small_model|big_hip_st_small_model
+  - first:
+      74: 2215250688942907302
+    second: small_model|big_jmp_2_small_model
+  - first:
+      74: 6280934751958031832
+    second: small_model|big_jump_ed_small_model
+  - first:
+      74: -1345341436771645040
+    second: small_model|big_jump_st_small_model
+  - first:
+      74: -9217855143133706902
+    second: small_model|big_wait_small_model
+  - first:
+      74: 1096643599403292869
+    second: small_model|big_walk_small_model
+  - first:
+      74: 89013481578005799
+    second: small_model|boss_key_get_small_model
+  - first:
+      74: -4038178438070670725
+    second: small_model|bt_goal_jmp_small_model
+  - first:
+      74: -555896859292758498
+    second: small_model|bt_goal_out_small_model
+  - first:
+      74: -6909954984475992176
+    second: small_model|bt_surprise_small_model
+  - first:
+      74: 8963183691879282650
+    second: small_model|bt_wait_small_model
+  - first:
+      74: -7693308462220482985
+    second: small_model|buried_damage_small_model
+  - first:
+      74: -2738989493842277428
+    second: small_model|buried_ed_small_model
+  - first:
+      74: 1916510837601583417
+    second: small_model|buried_small_model
+  - first:
+      74: -4551274836903085042
+    second: small_model|buried_st_small_model
+  - first:
+      74: 811358110652670183
+    second: small_model|carry_pose_small_model
+  - first:
+      74: -1793997947394056756
+    second: small_model|carry_start_small_model
+  - first:
+      74: 7886267423451820335
+    second: small_model|carry_throw.001_small_model
+  - first:
+      74: 5948526577055480938
+    second: small_model|carry_throw_small_model
+  - first:
+      74: 7003237198640996264
+    second: small_model|carry_wait_small_model
+  - first:
+      74: -1835024565755934109
+    second: small_model|carry_walk_small_model
+  - first:
+      74: -3603314070675947977
+    second: small_model|coin_comp_small_model
+  - first:
+      74: 7446725847768108327
+    second: small_model|course_in_small_model
+  - first:
+      74: -640440574317787726
+    second: small_model|dead_pose_small_model
+  - first:
+      74: 6375383926091036412
+    second: small_model|dead_small_model
+  - first:
+      74: 6443310717821990193
+    second: small_model|door_walk_small_model
+  - first:
+      74: -9118509795334661285
+    second: small_model|e_damage1_small_model
+  - first:
+      74: 373676986686793347
+    second: small_model|e_damage2_small_model
+  - first:
+      74: 1003954972444245905
+    second: small_model|e_down_small_model
+  - first:
+      74: -3763231738054466654
+    second: small_model|e_shock_small_model
+  - first:
+      74: -1610155098777347149
+    second: small_model|find_loop_small_model
+  - first:
+      74: 2398574656149711739
+    second: small_model|find_small_model
+  - first:
+      74: -8791565305058366542
+    second: small_model|find_surprise_small_model
+  - first:
+      74: 6546792754202268191
+    second: small_model|fire_at_small_model
+  - first:
+      74: -6504954987964277701
+    second: small_model|firejmp.001_small_model
+  - first:
+      74: 6887249865480955562
+    second: small_model|firejmp_small_model
+  - first:
+      74: 6405167943055810712
+    second: small_model|goal_jump_ed_small_model
+  - first:
+      74: 4472664096138522212
+    second: small_model|goal_jump_small_model
+  - first:
+      74: 1719766384787957522
+    second: small_model|goal_puton_cap_small_model
+  - first:
+      74: -7434923069459320267
+    second: small_model|hang_start_small_model
+  - first:
+      74: -2367052930249552917
+    second: small_model|hang_up.001_small_model
+  - first:
+      74: 3486693602990094512
+    second: small_model|hang_up_small_model
+  - first:
+      74: -1901547555313687713
+    second: small_model|hang_wait_small_model
+  - first:
+      74: 6888807895600586730
+    second: small_model|hang_walk_l_small_model
+  - first:
+      74: 5241355653440503129
+    second: small_model|hang_walk_r_small_model
+  - first:
+      74: 7515403095619481644
+    second: small_model|hipat_small_model
+  - first:
+      74: -3698275467366424441
+    second: small_model|hiped_small_model
+  - first:
+      74: 4780964270251140306
+    second: small_model|hipsr_small_model
+  - first:
+      74: 1432315855629459717
+    second: small_model|jmped_small_model
+  - first:
+      74: -2589900523734449944
+    second: small_model|jr_crear_small_model
+  - first:
+      74: 3691073933460726598
+    second: small_model|jump.001_small_model
+  - first:
+      74: -3522646275187565555
+    second: small_model|jump.002_small_model
+  - first:
+      74: -377952458914106669
+    second: small_model|jump2_small_model
+  - first:
+      74: -8665081022964605464
+    second: small_model|jump_b_small_model
+  - first:
+      74: -4830381737848772983
+    second: small_model|jump_c_small_model
+  - first:
+      74: 6780692395485953647
+    second: small_model|jump_d_small_model
+  - first:
+      74: 7982092972226932072
+    second: small_model|jump_e_small_model
+  - first:
+      74: 8569991810129339349
+    second: small_model|jump_hang_small_model
+  - first:
+      74: 4624056914225141925
+    second: small_model|jump_small_model
+  - first:
+      74: -7488660409206856488
+    second: small_model|jumped.001_small_model
+  - first:
+      74: -1732358660349452388
+    second: small_model|jumped_small_model
+  - first:
+      74: 9132251433522413156
+    second: small_model|L_run.001_small_model
+  - first:
+      74: -430917681480016655
+    second: small_model|L_run.002_small_model
+  - first:
+      74: 2371622749205818100
+    second: small_model|L_run_small_model
+  - first:
+      74: 2432398820511013772
+    second: small_model|L_wait.001_small_model
+  - first:
+      74: 3510553818048241034
+    second: small_model|L_wait.002_small_model
+  - first:
+      74: 8033881327150838690
+    second: small_model|L_wait_small_model
+  - first:
+      74: -8089680189926646965
+    second: small_model|L_walk.001_small_model
+  - first:
+      74: -8105061269104856668
+    second: small_model|L_walk.002_small_model
+  - first:
+      74: -5258488889800978005
+    second: small_model|L_walk_small_model
+  - first:
+      74: 7462946426669348551
+    second: small_model|lost_small_model
+  - first:
+      74: -8962043991467221727
+    second: small_model|low_walk_small_model
+  - first:
+      74: -6219252557755891220
+    second: small_model|m_escort_small_model
+  - first:
+      74: -6538762818865036041
+    second: small_model|m_fall_wait_small_model
+  - first:
+      74: 5107367479195303991
+    second: small_model|m_kiss_small_model
+  - first:
+      74: 7791433446465310632
+    second: small_model|m_shy_small_model
+  - first:
+      74: 8508316647722158827
+    second: small_model|monkey_l_to_r_small_model
+  - first:
+      74: 4231306977853867151
+    second: small_model|monkey_r_to_l_small_model
+  - first:
+      74: -7290194685497377359
+    second: small_model|monkey_start_small_model
+  - first:
+      74: 4791470956763856970
+    second: small_model|monkey_wait_l_small_model
+  - first:
+      74: -517724137996205203
+    second: small_model|monkey_wait_r_small_model
+  - first:
+      74: -3827122007066024379
+    second: small_model|move1_small_model
+  - first:
+      74: -3205463521191486540
+    second: small_model|move2_small_model
+  - first:
+      74: -427087757921689309
+    second: small_model|net_attack_small_model
+  - first:
+      74: -7217331606826724638
+    second: small_model|net_wait_small_model
+  - first:
+      74: -430307565415842194
+    second: small_model|net_walk1_small_model
+  - first:
+      74: -6144912346451620848
+    second: small_model|net_walk2_small_model
+  - first:
+      74: 3336576483582413294
+    second: small_model|opm_brake_small_model
+  - first:
+      74: -1241352521065714865
+    second: small_model|opm_jr_notice_small_model
+  - first:
+      74: -1548258312088327192
+    second: small_model|opm_look_up_small_model
+  - first:
+      74: 1670060025623168910
+    second: small_model|opm_noti_wait_small_model
+  - first:
+      74: -4906585524409082412
+    second: small_model|opm_notice_small_model
+  - first:
+      74: -7786313736109694354
+    second: small_model|opm_person_small_model
+  - first:
+      74: -7328446667716093684
+    second: small_model|opm_surprise1_small_model
+  - first:
+      74: 5338808450718018685
+    second: small_model|opm_surprise2_small_model
+  - first:
+      74: 9129952639957435728
+    second: small_model|paddle_1_small_model
+  - first:
+      74: -1450800138159677020
+    second: small_model|paddle_2_small_model
+  - first:
+      74: -5130526267198538221
+    second: small_model|paddle_carry_small_model
+  - first:
+      74: -1714981660976019192
+    second: small_model|paddle_end_small_model
+  - first:
+      74: -2408297327929252295
+    second: small_model|pea_plant_small_model
+  - first:
+      74: -1077555419079226275
+    second: small_model|pea_plant_st_small_model
+  - first:
+      74: 9051584508887010740
+    second: small_model|pea_plant_wait_small_model
+  - first:
+      74: -4962251184426679145
+    second: small_model|pipe_pose_small_model
+  - first:
+      74: -99453128320597628
+    second: small_model|push_small_model
+  - first:
+      74: 7864121712295505746
+    second: small_model|roll_jump.001_small_model
+  - first:
+      74: 8856784474666852019
+    second: small_model|roll_jump_end_small_model
+  - first:
+      74: -6129758935914687026
+    second: small_model|roll_jump_small_model
+  - first:
+      74: 8352197684581130756
+    second: small_model|roll_small_model
+  - first:
+      74: -7340670706018965402
+    second: small_model|rope_jump_ed_small_model
+  - first:
+      74: -7865130279563191891
+    second: small_model|rope_swing_small_model
+  - first:
+      74: 4204739689981056537
+    second: small_model|rope_wait2_small_model
+  - first:
+      74: -2584359463438857776
+    second: small_model|rope_wait_small_model
+  - first:
+      74: 7202830435218497296
+    second: small_model|rope_walk_small_model
+  - first:
+      74: 5078285246594252001
+    second: small_model|run.001_small_model
+  - first:
+      74: -5801790274841104781
+    second: small_model|run.002_small_model
+  - first:
+      74: 5409230535341655534
+    second: small_model|run_small_model
+  - first:
+      74: 402656025695855544
+    second: small_model|scale_up_small_model
+  - first:
+      74: -8348716127769688250
+    second: small_model|sdown.001_small_model
+  - first:
+      74: -7497526177137761964
+    second: small_model|sdown_small_model
+  - first:
+      74: 6224909437318610329
+    second: small_model|sfbdn.001_small_model
+  - first:
+      74: -1364823488104787703
+    second: small_model|sfbdn_small_model
+  - first:
+      74: 1755432936616918175
+    second: small_model|sffdn_small_model
+  - first:
+      74: -4586896965948262971
+    second: small_model|shell_in_small_model
+  - first:
+      74: -9008695362798734905
+    second: small_model|shell_puton_cap_small_model
+  - first:
+      74: 16642518191945113
+    second: small_model|shell_run_small_model
+  - first:
+      74: -2040972002263389457
+    second: small_model|shell_walk_small_model
+  - first:
+      74: 3249054709511704380
+    second: small_model|shfdn_small_model
+  - first:
+      74: 3346481249106753661
+    second: small_model|shoot_small_model
+  - first:
+      74: -4088976587014476991
+    second: small_model|sldct_small_model
+  - first:
+      74: -747683311231444747
+    second: small_model|slip_small_model
+  - first:
+      74: 1211943790510962727
+    second: small_model|sliped_small_model
+  - first:
+      74: -3453307289983948327
+    second: small_model|slpbk_small_model
+  - first:
+      74: 8960043577428907392
+    second: small_model|slpla_small_model
+  - first:
+      74: 4020693698225016504
+    second: small_model|small_jumped_small_model
+  - first:
+      74: 243643990169188179
+    second: small_model|small_wait.001_small_model
+  - first:
+      74: 6202542967663376441
+    second: small_model|small_wait_small_model
+  - first:
+      74: -5503484127282722008
+    second: small_model|spin_jump2_small_model
+  - first:
+      74: -1368532675737174877
+    second: small_model|spin_jump_end_small_model
+  - first:
+      74: -2551347513794941686
+    second: small_model|spin_jump_off_small_model
+  - first:
+      74: -1481294355513415535
+    second: small_model|spin_jump_small_model
+  - first:
+      74: 4923090873536843850
+    second: small_model|spin_jump_st_small_model
+  - first:
+      74: -2542958352768806341
+    second: small_model|squat_start_small_model
+  - first:
+      74: 3560171144541046011
+    second: small_model|star_roll_small_model
+  - first:
+      74: 322023833197727488
+    second: small_model|stoop_small_model
+  - first:
+      74: 1595368942753365984
+    second: small_model|struggle_small_model
+  - first:
+      74: 619522883305048403
+    second: small_model|swim_carry_small_model
+  - first:
+      74: -1864605977965360569
+    second: small_model|swim_dead_small_model
+  - first:
+      74: 4470249552013099663
+    second: small_model|swim_in_small_model
+  - first:
+      74: -1738986643369669577
+    second: small_model|swim_small_model
+  - first:
+      74: 857365722258276877
+    second: small_model|swim_standing_small_model
+  - first:
+      74: 7799610590480670819
+    second: small_model|swim_throw_small_model
+  - first:
+      74: 7895174424702449073
+    second: small_model|swim_wait_small_model
+  - first:
+      74: 8230929000990782752
+    second: small_model|swim_walk_small_model
+  - first:
+      74: -5054360054508461738
+    second: small_model|tree_climb_small_model
+  - first:
+      74: 7993257879210697999
+    second: small_model|tree_pose_small_model
+  - first:
+      74: 6187457823744630647
+    second: small_model|tree_start_small_model
+  - first:
+      74: 307752299928823724
+    second: small_model|tree_wait_small_model
+  - first:
+      74: 2895927467342860945
+    second: small_model|trned.001_small_model
+  - first:
+      74: -4688439969703827836
+    second: small_model|trned.002_small_model
+  - first:
+      74: -7789720605928042146
+    second: small_model|trned_small_model
+  - first:
+      74: 7207938471918191830
+    second: small_model|turn.001_small_model
+  - first:
+      74: 2123559365010944008
+    second: small_model|turn.002_small_model
+  - first:
+      74: 8943216577534994318
+    second: small_model|turn_small_model
+  - first:
+      74: -5901927716123923169
+    second: small_model|w_jump1_small_model
+  - first:
+      74: 9128479992526849734
+    second: small_model|w_jump2_small_model
+  - first:
+      74: -930031154798981397
+    second: small_model|w_jump_ed_small_model
+  - first:
+      74: -8258578285814891613
+    second: small_model|wait.001_small_model
+  - first:
+      74: -8483421991573250095
+    second: small_model|wait1_small_model
+  - first:
+      74: 290226059193128198
+    second: small_model|wait2_small_model
+  - first:
+      74: 5557143905499695693
+    second: small_model|wait_small_model
+  - first:
+      74: 7390272466520957865
+    second: small_model|walk.001_small_model
+  - first:
+      74: -8559657422799023689
+    second: small_model|walk.002_small_model
+  - first:
+      74: -2663693128504642509
+    second: small_model|walk.003_small_model
+  - first:
+      74: -9050529476152615225
+    second: small_model|walk_small_model
+  - first:
+      74: 3476737784410960049
+    second: small_model|wall_wait_small_model
+  - first:
+      74: -8922544193166278594
+    second: small_model|wall_walk_l_small_model
+  - first:
+      74: -3144660328596340507
+    second: small_model|wall_walk_r_small_model
+  - first:
+      74: 1133448241266618264
+    second: small_model|wjmp.001_small_model
+  - first:
+      74: -2348336868829445558
+    second: small_model|wjmp_small_model
+  - first:
+      74: -4201825508877912255
+    second: small_model|wsld_small_model
+  - first:
+      74: -6597220401461031306
+    second: small_model|Y_run_small_model
+  - first:
+      74: 1318652830790664921
+    second: small_model|Y_vs_lose_A_small_model
+  - first:
+      74: -1643183509320756249
+    second: small_model|Y_vs_lose_B_small_model
+  - first:
+      74: 3945362201621947764
+    second: small_model|Y_vs_lose_C_small_model
+  - first:
+      74: -3142103507113181749
+    second: small_model|Y_vs_win_wait_small_model
+  - first:
+      74: -308898678611544316
+    second: small_model|Y_wait_small_model
+  - first:
+      74: -607855662789579490
+    second: small_model|zero_g_jump2_small_model
+  - first:
+      74: -4824347878234702167
+    second: small_model|zero_g_jump_ed_small_model
+  - first:
+      74: -7010635871915262554
+    second: small_model|zero_g_jump_small_model
+  - first:
+      74: -2598022806238239279
+    second: small_model|zero_g_walk_small_model
+  - first:
+      74: -1810016331125947321
+    second: small_model|b_dash.001_small_model (1)
+  - first:
+      74: -3229569389255740034
+    second: small_model|shfdn_knockdown
+  - first:
+      74: -7677944236119783192
+    second: small_model|shfdn_getup
+  - first:
+      74: -2279589505200434635
+    second: small_model|head_carry_pose_small_model
+  - first:
+      74: 116821452103137984
+    second: small_model|head_carry_walk_small_model
+  - first:
+      74: 919199880223466054
+    second: small_model|head_carry_wait_small_model
+  - first:
+      74: 5065212865619135653
+    second: small_model|ice_pickup
   externalObjects:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: waluigi_all_tx
-    second: {fileID: 2100000, guid: 08d8cc9c461439f49a3dae37aa26afe1, type: 2}
+      name: yoshi_all_tx
+    second: {fileID: 2100000, guid: aa76d79cae9b9d446b14d0847c87c7ae, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: waluigi_eye_tx
-    second: {fileID: 2100000, guid: 0f589003d798ee848aaeba826fa96e38, type: 2}
+      name: yoshi_eye_tx
+    second: {fileID: 2100000, guid: 072d2f4b9d67046409493712a2879f07, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: yoshi_eyeskin_tx
+    second: {fileID: 2100000, guid: 9c3f5199a2d38d349b2a35fe4c80d3c2, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
@@ -43,7 +702,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp1_small_model
       takeName: small_model|2jmp1_small_model
-      internalID: 7936476158259880078
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -72,7 +731,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp2_small_model
       takeName: small_model|2jmp2_small_model
-      internalID: -6639942427629169614
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -101,7 +760,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp_b_1_small_model
       takeName: small_model|2jmp_b_1_small_model
-      internalID: 7699966397248795634
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -130,7 +789,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp_b_2_small_model
       takeName: small_model|2jmp_b_2_small_model
-      internalID: -8969870314571355361
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -159,7 +818,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp_c_1_small_model
       takeName: small_model|2jmp_c_1_small_model
-      internalID: 8419052139562869826
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -188,7 +847,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp_c_2_small_model
       takeName: small_model|2jmp_c_2_small_model
-      internalID: 4160601144243102020
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -217,7 +876,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp_d_1_small_model
       takeName: small_model|2jmp_d_1_small_model
-      internalID: -4754633320589427335
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -246,7 +905,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp_d_2_small_model
       takeName: small_model|2jmp_d_2_small_model
-      internalID: 7480476736449432889
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -275,7 +934,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp_e_1_small_model
       takeName: small_model|2jmp_e_1_small_model
-      internalID: 2498910735832237851
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -304,7 +963,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jmp_e_2_small_model
       takeName: small_model|2jmp_e_2_small_model
-      internalID: -2924956034205866454
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -333,7 +992,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jump1_small_model
       takeName: small_model|2jump1_small_model
-      internalID: -2151110872859412887
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -362,7 +1021,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jump2_small_model
       takeName: small_model|2jump2_small_model
-      internalID: -1537112494762962389
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -391,7 +1050,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|2jumped_small_model
       takeName: small_model|2jumped_small_model
-      internalID: 1412296139127706353
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -420,7 +1079,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|attack_small_model
       takeName: small_model|attack_small_model
-      internalID: -7162211266807783020
+      internalID: 0
       firstFrame: 0
       lastFrame: 36
       wrapMode: 0
@@ -449,7 +1108,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|b_dash.001_small_model
       takeName: small_model|b_dash.001_small_model
-      internalID: -52972709486961553
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -458,8 +1117,94 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.10815451
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.627056
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: small_model|b_dash2_small_model
+      takeName: small_model|b_dash2_small_model
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.09527897
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.71592474
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: small_model|b_dash_small_model
+      takeName: small_model|b_dash_small_model
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 24
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -476,95 +1221,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|b_dash2_small_model
-      takeName: small_model|b_dash2_small_model
-      internalID: -1924426181260180765
-      firstFrame: 0
-      lastFrame: 24
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0.08189593
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.62363803
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: small_model|b_dash_small_model
-      takeName: small_model|b_dash_small_model
-      internalID: 260706077939130250
-      firstFrame: 0
-      lastFrame: 24
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0.0791448
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.62295824
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: small_model|big_goal_small_model
       takeName: small_model|big_goal_small_model
-      internalID: -512889097398413721
+      internalID: 0
       firstFrame: 0
       lastFrame: 62
       wrapMode: 0
@@ -593,7 +1252,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|big_hip_at_small_model
       takeName: small_model|big_hip_at_small_model
-      internalID: -6354498825522892707
+      internalID: 0
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -622,7 +1281,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|big_hip_ed_small_model
       takeName: small_model|big_hip_ed_small_model
-      internalID: 2594209376928735925
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -651,7 +1310,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|big_hip_squat_small_model
       takeName: small_model|big_hip_squat_small_model
-      internalID: -6440208053847755642
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -680,7 +1339,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|big_hip_st_small_model
       takeName: small_model|big_hip_st_small_model
-      internalID: -6381754872607530736
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -709,7 +1368,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|big_jmp_2_small_model
       takeName: small_model|big_jmp_2_small_model
-      internalID: 2215250688942907302
+      internalID: 0
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -738,7 +1397,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|big_jump_ed_small_model
       takeName: small_model|big_jump_ed_small_model
-      internalID: 6280934751958031832
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -767,7 +1426,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|big_jump_st_small_model
       takeName: small_model|big_jump_st_small_model
-      internalID: -1345341436771645040
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -796,7 +1455,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|big_wait_small_model
       takeName: small_model|big_wait_small_model
-      internalID: -9217855143133706902
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -825,7 +1484,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|big_walk_small_model
       takeName: small_model|big_walk_small_model
-      internalID: 1096643599403292869
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -854,7 +1513,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|boss_key_get_small_model
       takeName: small_model|boss_key_get_small_model
-      internalID: 89013481578005799
+      internalID: 0
       firstFrame: 0
       lastFrame: 42
       wrapMode: 0
@@ -883,7 +1542,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|bt_goal_jmp_small_model
       takeName: small_model|bt_goal_jmp_small_model
-      internalID: -4038178438070670725
+      internalID: 0
       firstFrame: 0
       lastFrame: 36
       wrapMode: 0
@@ -912,7 +1571,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|bt_goal_out_small_model
       takeName: small_model|bt_goal_out_small_model
-      internalID: -555896859292758498
+      internalID: 0
       firstFrame: 0
       lastFrame: 34
       wrapMode: 0
@@ -941,7 +1600,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|bt_surprise_small_model
       takeName: small_model|bt_surprise_small_model
-      internalID: -6909954984475992176
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -970,7 +1629,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|bt_wait_small_model
       takeName: small_model|bt_wait_small_model
-      internalID: 8963183691879282650
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 0
@@ -999,7 +1658,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|buried_damage_small_model
       takeName: small_model|buried_damage_small_model
-      internalID: -7693308462220482985
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -1028,7 +1687,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|buried_ed_small_model
       takeName: small_model|buried_ed_small_model
-      internalID: -2738989493842277428
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -1057,7 +1716,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|buried_small_model
       takeName: small_model|buried_small_model
-      internalID: 1916510837601583417
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -1086,7 +1745,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|buried_st_small_model
       takeName: small_model|buried_st_small_model
-      internalID: -4551274836903085042
+      internalID: 0
       firstFrame: 0
       lastFrame: 9
       wrapMode: 0
@@ -1115,7 +1774,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|carry_pose_small_model
       takeName: small_model|carry_pose_small_model
-      internalID: 811358110652670183
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -1144,7 +1803,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|carry_start_small_model
       takeName: small_model|carry_start_small_model
-      internalID: -1793997947394056756
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -1173,7 +1832,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|carry_throw.001_small_model
       takeName: small_model|carry_throw.001_small_model
-      internalID: 7886267423451820335
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -1202,7 +1861,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|carry_throw_small_model
       takeName: small_model|carry_throw_small_model
-      internalID: 5948526577055480938
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -1231,7 +1890,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|carry_wait_small_model
       takeName: small_model|carry_wait_small_model
-      internalID: 7003237198640996264
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 0
@@ -1241,7 +1900,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -1260,7 +1919,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|carry_walk_small_model
       takeName: small_model|carry_walk_small_model
-      internalID: -1835024565755934109
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -1270,7 +1929,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -1282,14 +1941,14 @@ ModelImporter:
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
       events:
-      - time: 0.17301369
+      - time: 0.21612135
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
-      - time: 0.8279451
+      - time: 0.770892
         functionName: Footstep
         data: 
         objectReferenceParameter: {instanceID: 0}
@@ -1303,7 +1962,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|coin_comp_small_model
       takeName: small_model|coin_comp_small_model
-      internalID: -3603314070675947977
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -1332,7 +1991,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|course_in_small_model
       takeName: small_model|course_in_small_model
-      internalID: 7446725847768108327
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -1361,7 +2020,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|dead_pose_small_model
       takeName: small_model|dead_pose_small_model
-      internalID: -640440574317787726
+      internalID: 0
       firstFrame: 0
       lastFrame: 9
       wrapMode: 0
@@ -1371,7 +2030,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -1390,16 +2049,16 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|dead_small_model
       takeName: small_model|dead_small_model
-      internalID: 6375383926091036412
+      internalID: 0
       firstFrame: 0
       lastFrame: 62
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
-      cycleOffset: 0
+      cycleOffset: 49
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -1419,7 +2078,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|door_walk_small_model
       takeName: small_model|door_walk_small_model
-      internalID: 6443310717821990193
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -1448,7 +2107,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|e_damage1_small_model
       takeName: small_model|e_damage1_small_model
-      internalID: -9118509795334661285
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -1477,7 +2136,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|e_damage2_small_model
       takeName: small_model|e_damage2_small_model
-      internalID: 373676986686793347
+      internalID: 0
       firstFrame: 0
       lastFrame: 25
       wrapMode: 0
@@ -1506,7 +2165,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|e_down_small_model
       takeName: small_model|e_down_small_model
-      internalID: 1003954972444245905
+      internalID: 0
       firstFrame: 0
       lastFrame: 31
       wrapMode: 0
@@ -1535,7 +2194,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|e_shock_small_model
       takeName: small_model|e_shock_small_model
-      internalID: -3763231738054466654
+      internalID: 0
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -1564,7 +2223,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|find_loop_small_model
       takeName: small_model|find_loop_small_model
-      internalID: -1610155098777347149
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -1593,7 +2252,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|find_small_model
       takeName: small_model|find_small_model
-      internalID: 2398574656149711739
+      internalID: 0
       firstFrame: 0
       lastFrame: 38
       wrapMode: 0
@@ -1622,7 +2281,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|find_surprise_small_model
       takeName: small_model|find_surprise_small_model
-      internalID: -8791565305058366542
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 0
@@ -1651,7 +2310,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|fire_at_small_model
       takeName: small_model|fire_at_small_model
-      internalID: 6546792754202268191
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -1680,9 +2339,38 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|firejmp.001_small_model
       takeName: small_model|firejmp.001_small_model
-      internalID: -6504954987964277701
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: small_model|firejmp_small_model
+      takeName: small_model|firejmp_small_model
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 2
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -1707,38 +2395,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|firejmp_small_model
-      takeName: small_model|firejmp_small_model
-      internalID: 6887249865480955562
-      firstFrame: 0
-      lastFrame: 2
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: small_model|goal_jump_ed_small_model
       takeName: small_model|goal_jump_ed_small_model
-      internalID: 6405167943055810712
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -1767,7 +2426,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|goal_jump_small_model
       takeName: small_model|goal_jump_small_model
-      internalID: 4472664096138522212
+      internalID: 0
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -1796,7 +2455,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|goal_puton_cap_small_model
       takeName: small_model|goal_puton_cap_small_model
-      internalID: 1719766384787957522
+      internalID: 0
       firstFrame: 0
       lastFrame: 50
       wrapMode: 0
@@ -1825,7 +2484,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|hang_start_small_model
       takeName: small_model|hang_start_small_model
-      internalID: -7434923069459320267
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -1854,7 +2513,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|hang_up.001_small_model
       takeName: small_model|hang_up.001_small_model
-      internalID: -2367052930249552917
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -1883,7 +2542,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|hang_up_small_model
       takeName: small_model|hang_up_small_model
-      internalID: 3486693602990094512
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -1912,7 +2571,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|hang_wait_small_model
       takeName: small_model|hang_wait_small_model
-      internalID: -1901547555313687713
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -1941,7 +2600,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|hang_walk_l_small_model
       takeName: small_model|hang_walk_l_small_model
-      internalID: 6888807895600586730
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -1970,7 +2629,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|hang_walk_r_small_model
       takeName: small_model|hang_walk_r_small_model
-      internalID: 5241355653440503129
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -1997,110 +2656,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|head_carry_pose_small_model
-      takeName: small_model|head_carry_pose_small_model
-      internalID: -3456356032971510730
-      firstFrame: 0
-      lastFrame: 1
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: small_model|head_carry_wait_small_model
-      takeName: small_model|head_carry_wait_small_model
-      internalID: 919199880223466054
-      firstFrame: 0
-      lastFrame: 29
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: small_model|head_carry_walk_small_model
-      takeName: small_model|head_carry_walk_small_model
-      internalID: 116821452103137984
-      firstFrame: 0
-      lastFrame: 22
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0.17131504
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.8295479
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: small_model|hipat_small_model
       takeName: small_model|hipat_small_model
-      internalID: 7515403095619481644
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -2129,7 +2687,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|hiped_small_model
       takeName: small_model|hiped_small_model
-      internalID: -3698275467366424441
+      internalID: 0
       firstFrame: 0
       lastFrame: 2
       wrapMode: 0
@@ -2158,38 +2716,9 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|hipsr_small_model
       takeName: small_model|hipsr_small_model
-      internalID: 4780964270251140306
+      internalID: 0
       firstFrame: 0
-      lastFrame: 4
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: small_model|ice_pickup
-      takeName: small_model|ice_pickup
-      internalID: 5065212865619135653
-      firstFrame: 0
-      lastFrame: 24
+      lastFrame: 5
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -2216,7 +2745,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jmped_small_model
       takeName: small_model|jmped_small_model
-      internalID: 1432315855629459717
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -2245,7 +2774,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jr_crear_small_model
       takeName: small_model|jr_crear_small_model
-      internalID: -2589900523734449944
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 0
@@ -2274,7 +2803,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jump.001_small_model
       takeName: small_model|jump.001_small_model
-      internalID: 3691073933460726598
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2303,7 +2832,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jump.002_small_model
       takeName: small_model|jump.002_small_model
-      internalID: -3522646275187565555
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2332,7 +2861,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jump2_small_model
       takeName: small_model|jump2_small_model
-      internalID: -377952458914106669
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -2361,7 +2890,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jump_b_small_model
       takeName: small_model|jump_b_small_model
-      internalID: -8665081022964605464
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -2390,7 +2919,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jump_c_small_model
       takeName: small_model|jump_c_small_model
-      internalID: -4830381737848772983
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -2419,7 +2948,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jump_d_small_model
       takeName: small_model|jump_d_small_model
-      internalID: 6780692395485953647
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2448,7 +2977,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jump_e_small_model
       takeName: small_model|jump_e_small_model
-      internalID: 7982092972226932072
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2477,7 +3006,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jump_hang_small_model
       takeName: small_model|jump_hang_small_model
-      internalID: 8569991810129339349
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -2506,7 +3035,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jump_small_model
       takeName: small_model|jump_small_model
-      internalID: 4624056914225141925
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -2535,7 +3064,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jumped.001_small_model
       takeName: small_model|jumped.001_small_model
-      internalID: -7488660409206856488
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -2564,7 +3093,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|jumped_small_model
       takeName: small_model|jumped_small_model
-      internalID: -1732358660349452388
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -2593,7 +3122,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|L_run.001_small_model
       takeName: small_model|L_run.001_small_model
-      internalID: 9132251433522413156
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2622,7 +3151,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|L_run.002_small_model
       takeName: small_model|L_run.002_small_model
-      internalID: -430917681480016655
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2651,7 +3180,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|L_run_small_model
       takeName: small_model|L_run_small_model
-      internalID: 2371622749205818100
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2660,7 +3189,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -2672,7 +3201,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.13087249
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6912751
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -2680,7 +3223,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|L_wait.001_small_model
       takeName: small_model|L_wait.001_small_model
-      internalID: 2432398820511013772
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -2709,7 +3252,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|L_wait.002_small_model
       takeName: small_model|L_wait.002_small_model
-      internalID: 3510553818048241034
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -2738,17 +3281,17 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|L_wait_small_model
       takeName: small_model|L_wait_small_model
-      internalID: 8033881327150838690
+      internalID: 0
       firstFrame: 0
-      lastFrame: 70
+      lastFrame: 69
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -2767,7 +3310,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|L_walk.001_small_model
       takeName: small_model|L_walk.001_small_model
-      internalID: -8089680189926646965
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2796,7 +3339,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|L_walk.002_small_model
       takeName: small_model|L_walk.002_small_model
-      internalID: -8105061269104856668
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2825,7 +3368,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|L_walk_small_model
       takeName: small_model|L_walk_small_model
-      internalID: -5258488889800978005
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2854,7 +3397,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|lost_small_model
       takeName: small_model|lost_small_model
-      internalID: 7462946426669348551
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -2883,7 +3426,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|low_walk_small_model
       takeName: small_model|low_walk_small_model
-      internalID: -8962043991467221727
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -2912,7 +3455,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|m_escort_small_model
       takeName: small_model|m_escort_small_model
-      internalID: -6219252557755891220
+      internalID: 0
       firstFrame: 0
       lastFrame: 60
       wrapMode: 0
@@ -2941,7 +3484,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|m_fall_wait_small_model
       takeName: small_model|m_fall_wait_small_model
-      internalID: -6538762818865036041
+      internalID: 0
       firstFrame: 0
       lastFrame: 91
       wrapMode: 0
@@ -2970,7 +3513,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|m_kiss_small_model
       takeName: small_model|m_kiss_small_model
-      internalID: 5107367479195303991
+      internalID: 0
       firstFrame: 0
       lastFrame: 16
       wrapMode: 0
@@ -2999,7 +3542,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|m_shy_small_model
       takeName: small_model|m_shy_small_model
-      internalID: 7791433446465310632
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -3028,7 +3571,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|monkey_l_to_r_small_model
       takeName: small_model|monkey_l_to_r_small_model
-      internalID: 8508316647722158827
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -3057,7 +3600,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|monkey_r_to_l_small_model
       takeName: small_model|monkey_r_to_l_small_model
-      internalID: 4231306977853867151
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -3086,7 +3629,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|monkey_start_small_model
       takeName: small_model|monkey_start_small_model
-      internalID: -7290194685497377359
+      internalID: 0
       firstFrame: 0
       lastFrame: 18
       wrapMode: 0
@@ -3115,7 +3658,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|monkey_wait_l_small_model
       takeName: small_model|monkey_wait_l_small_model
-      internalID: 4791470956763856970
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -3144,7 +3687,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|monkey_wait_r_small_model
       takeName: small_model|monkey_wait_r_small_model
-      internalID: -517724137996205203
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -3173,7 +3716,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|move1_small_model
       takeName: small_model|move1_small_model
-      internalID: -3827122007066024379
+      internalID: 0
       firstFrame: 0
       lastFrame: 17
       wrapMode: 0
@@ -3202,7 +3745,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|move2_small_model
       takeName: small_model|move2_small_model
-      internalID: -3205463521191486540
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -3231,7 +3774,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|net_attack_small_model
       takeName: small_model|net_attack_small_model
-      internalID: -427087757921689309
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -3260,7 +3803,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|net_wait_small_model
       takeName: small_model|net_wait_small_model
-      internalID: -7217331606826724638
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -3289,7 +3832,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|net_walk1_small_model
       takeName: small_model|net_walk1_small_model
-      internalID: -430307565415842194
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -3318,7 +3861,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|net_walk2_small_model
       takeName: small_model|net_walk2_small_model
-      internalID: -6144912346451620848
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -3347,7 +3890,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|opm_brake_small_model
       takeName: small_model|opm_brake_small_model
-      internalID: 3336576483582413294
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -3376,7 +3919,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|opm_jr_notice_small_model
       takeName: small_model|opm_jr_notice_small_model
-      internalID: -1241352521065714865
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -3405,7 +3948,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|opm_look_up_small_model
       takeName: small_model|opm_look_up_small_model
-      internalID: -1548258312088327192
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -3434,7 +3977,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|opm_noti_wait_small_model
       takeName: small_model|opm_noti_wait_small_model
-      internalID: 1670060025623168910
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -3463,7 +4006,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|opm_notice_small_model
       takeName: small_model|opm_notice_small_model
-      internalID: -4906585524409082412
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -3492,7 +4035,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|opm_person_small_model
       takeName: small_model|opm_person_small_model
-      internalID: -7786313736109694354
+      internalID: 0
       firstFrame: 0
       lastFrame: 18
       wrapMode: 0
@@ -3521,7 +4064,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|opm_surprise1_small_model
       takeName: small_model|opm_surprise1_small_model
-      internalID: -7328446667716093684
+      internalID: 0
       firstFrame: 0
       lastFrame: 39
       wrapMode: 0
@@ -3550,7 +4093,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|opm_surprise2_small_model
       takeName: small_model|opm_surprise2_small_model
-      internalID: 5338808450718018685
+      internalID: 0
       firstFrame: 0
       lastFrame: 31
       wrapMode: 0
@@ -3579,7 +4122,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|paddle_1_small_model
       takeName: small_model|paddle_1_small_model
-      internalID: 9129952639957435728
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -3608,7 +4151,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|paddle_2_small_model
       takeName: small_model|paddle_2_small_model
-      internalID: -1450800138159677020
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -3637,7 +4180,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|paddle_carry_small_model
       takeName: small_model|paddle_carry_small_model
-      internalID: -5130526267198538221
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -3646,8 +4189,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -3666,7 +4209,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|paddle_end_small_model
       takeName: small_model|paddle_end_small_model
-      internalID: -1714981660976019192
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -3695,7 +4238,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|pea_plant_small_model
       takeName: small_model|pea_plant_small_model
-      internalID: -2408297327929252295
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -3724,7 +4267,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|pea_plant_st_small_model
       takeName: small_model|pea_plant_st_small_model
-      internalID: -1077555419079226275
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -3753,7 +4296,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|pea_plant_wait_small_model
       takeName: small_model|pea_plant_wait_small_model
-      internalID: 9051584508887010740
+      internalID: 0
       firstFrame: 0
       lastFrame: 19
       wrapMode: 0
@@ -3782,7 +4325,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|pipe_pose_small_model
       takeName: small_model|pipe_pose_small_model
-      internalID: -4962251184426679145
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -3811,7 +4354,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|push_small_model
       takeName: small_model|push_small_model
-      internalID: -99453128320597628
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -3821,7 +4364,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -3840,7 +4383,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|roll_jump.001_small_model
       takeName: small_model|roll_jump.001_small_model
-      internalID: 7864121712295505746
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -3869,7 +4412,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|roll_jump_end_small_model
       takeName: small_model|roll_jump_end_small_model
-      internalID: 8856784474666852019
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -3898,7 +4441,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|roll_jump_small_model
       takeName: small_model|roll_jump_small_model
-      internalID: -6129758935914687026
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -3927,7 +4470,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|roll_small_model
       takeName: small_model|roll_small_model
-      internalID: 8352197684581130756
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -3956,7 +4499,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|rope_jump_ed_small_model
       takeName: small_model|rope_jump_ed_small_model
-      internalID: -7340670706018965402
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -3985,7 +4528,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|rope_swing_small_model
       takeName: small_model|rope_swing_small_model
-      internalID: -7865130279563191891
+      internalID: 0
       firstFrame: 0
       lastFrame: 50
       wrapMode: 0
@@ -4014,7 +4557,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|rope_wait2_small_model
       takeName: small_model|rope_wait2_small_model
-      internalID: 4204739689981056537
+      internalID: 0
       firstFrame: 0
       lastFrame: 38
       wrapMode: 0
@@ -4043,7 +4586,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|rope_wait_small_model
       takeName: small_model|rope_wait_small_model
-      internalID: -2584359463438857776
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -4072,7 +4615,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|rope_walk_small_model
       takeName: small_model|rope_walk_small_model
-      internalID: 7202830435218497296
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -4101,17 +4644,17 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|run.001_small_model
       takeName: small_model|run.001_small_model
-      internalID: 5078285246594252001
+      internalID: 0
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 23
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -4122,7 +4665,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.17682402
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.623176
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -4130,7 +4687,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|run.002_small_model
       takeName: small_model|run.002_small_model
-      internalID: -5801790274841104781
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -4157,9 +4714,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|run_small_model
-      takeName: small_model|run_small_model
-      internalID: 5409230535341655534
+      name: small_model|b_dash.001_small_model (1)
+      takeName: small_model|b_dash.001_small_model
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -4168,7 +4725,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -4180,7 +4737,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.18111587
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.6832618
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -4188,7 +4759,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|scale_up_small_model
       takeName: small_model|scale_up_small_model
-      internalID: 402656025695855544
+      internalID: 0
       firstFrame: 0
       lastFrame: 37
       wrapMode: 0
@@ -4215,11 +4786,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|sfbdn.001_small_model
-      takeName: small_model|sfbdn.001_small_model
-      internalID: 6224909437318610329
+      name: small_model|sdown_small_model
+      takeName: small_model|sdown_small_model
+      internalID: 0
       firstFrame: 0
-      lastFrame: 8
+      lastFrame: 3
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -4244,9 +4815,45 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
+      name: small_model|sfbdn.001_small_model
+      takeName: small_model|sfbdn.001_small_model
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 8
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.9985434
+        functionName: ResetKnockbackFromAnim
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
       name: small_model|sfbdn_small_model
       takeName: small_model|sfbdn_small_model
-      internalID: -1364823488104787703
+      internalID: 0
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -4275,7 +4882,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|sffdn_small_model
       takeName: small_model|sffdn_small_model
-      internalID: 1755432936616918175
+      internalID: 0
       firstFrame: 0
       lastFrame: 8
       wrapMode: 0
@@ -4304,7 +4911,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|shell_in_small_model
       takeName: small_model|shell_in_small_model
-      internalID: -4586896965948262971
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -4333,7 +4940,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|shell_puton_cap_small_model
       takeName: small_model|shell_puton_cap_small_model
-      internalID: -9008695362798734905
+      internalID: 0
       firstFrame: 0
       lastFrame: 51
       wrapMode: 0
@@ -4362,7 +4969,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|shell_run_small_model
       takeName: small_model|shell_run_small_model
-      internalID: 16642518191945113
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -4371,7 +4978,50 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.02962963
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.5148148
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: small_model|shell_walk_small_model
+      takeName: small_model|shell_walk_small_model
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 23
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -4389,11 +5039,11 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|shell_walk_small_model
-      takeName: small_model|shell_walk_small_model
-      internalID: -2040972002263389457
+      name: small_model|shfdn_small_model
+      takeName: small_model|shfdn_small_model
+      internalID: 0
       firstFrame: 0
-      lastFrame: 23
+      lastFrame: 10
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -4420,7 +5070,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|shoot_small_model
       takeName: small_model|shoot_small_model
-      internalID: 3346481249106753661
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -4449,7 +5099,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|sldct_small_model
       takeName: small_model|sldct_small_model
-      internalID: -4088976587014476991
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -4478,7 +5128,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|slip_small_model
       takeName: small_model|slip_small_model
-      internalID: -747683311231444747
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -4507,7 +5157,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|sliped_small_model
       takeName: small_model|sliped_small_model
-      internalID: 1211943790510962727
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -4536,7 +5186,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|slpbk_small_model
       takeName: small_model|slpbk_small_model
-      internalID: -3453307289983948327
+      internalID: 0
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -4565,7 +5215,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|slpla_small_model
       takeName: small_model|slpla_small_model
-      internalID: 8960043577428907392
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -4594,7 +5244,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|small_jumped_small_model
       takeName: small_model|small_jumped_small_model
-      internalID: 4020693698225016504
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -4623,7 +5273,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|small_wait.001_small_model
       takeName: small_model|small_wait.001_small_model
-      internalID: 243643990169188179
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -4652,7 +5302,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|small_wait_small_model
       takeName: small_model|small_wait_small_model
-      internalID: 6202542967663376441
+      internalID: 0
       firstFrame: 0
       lastFrame: 70
       wrapMode: 0
@@ -4661,8 +5311,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
+      loopTime: 0
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -4681,7 +5331,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|spin_jump2_small_model
       takeName: small_model|spin_jump2_small_model
-      internalID: -5503484127282722008
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -4710,7 +5360,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|spin_jump_end_small_model
       takeName: small_model|spin_jump_end_small_model
-      internalID: -1368532675737174877
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -4739,7 +5389,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|spin_jump_off_small_model
       takeName: small_model|spin_jump_off_small_model
-      internalID: -2551347513794941686
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -4768,7 +5418,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|spin_jump_small_model
       takeName: small_model|spin_jump_small_model
-      internalID: -1481294355513415535
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -4797,7 +5447,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|spin_jump_st_small_model
       takeName: small_model|spin_jump_st_small_model
-      internalID: 4923090873536843850
+      internalID: 0
       firstFrame: 0
       lastFrame: 2
       wrapMode: 0
@@ -4826,9 +5476,9 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|squat_start_small_model
       takeName: small_model|squat_start_small_model
-      internalID: -2542958352768806341
+      internalID: 0
       firstFrame: 0
-      lastFrame: 1
+      lastFrame: 0
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -4855,7 +5505,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|star_roll_small_model
       takeName: small_model|star_roll_small_model
-      internalID: 3560171144541046011
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -4865,7 +5515,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -4884,7 +5534,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|stoop_small_model
       takeName: small_model|stoop_small_model
-      internalID: 322023833197727488
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -4913,7 +5563,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|struggle_small_model
       takeName: small_model|struggle_small_model
-      internalID: 1595368942753365984
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -4942,7 +5592,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|swim_carry_small_model
       takeName: small_model|swim_carry_small_model
-      internalID: 619522883305048403
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -4951,7 +5601,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -4971,7 +5621,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|swim_dead_small_model
       takeName: small_model|swim_dead_small_model
-      internalID: -1864605977965360569
+      internalID: 0
       firstFrame: 0
       lastFrame: 64
       wrapMode: 0
@@ -5000,7 +5650,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|swim_in_small_model
       takeName: small_model|swim_in_small_model
-      internalID: 4470249552013099663
+      internalID: 0
       firstFrame: 0
       lastFrame: 4
       wrapMode: 0
@@ -5029,7 +5679,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|swim_small_model
       takeName: small_model|swim_small_model
-      internalID: -1738986643369669577
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -5039,7 +5689,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -5058,9 +5708,9 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|swim_standing_small_model
       takeName: small_model|swim_standing_small_model
-      internalID: 857365722258276877
+      internalID: 0
       firstFrame: 0
-      lastFrame: 22
+      lastFrame: 21
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -5087,7 +5737,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|swim_throw_small_model
       takeName: small_model|swim_throw_small_model
-      internalID: 7799610590480670819
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -5116,7 +5766,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|swim_wait_small_model
       takeName: small_model|swim_wait_small_model
-      internalID: 7895174424702449073
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -5126,7 +5776,7 @@ ModelImporter:
       loop: 0
       hasAdditiveReferencePose: 0
       loopTime: 1
-      loopBlend: 1
+      loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -5145,7 +5795,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|swim_walk_small_model
       takeName: small_model|swim_walk_small_model
-      internalID: 8230929000990782752
+      internalID: 0
       firstFrame: 0
       lastFrame: 23
       wrapMode: 0
@@ -5174,7 +5824,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|tree_climb_small_model
       takeName: small_model|tree_climb_small_model
-      internalID: -5054360054508461738
+      internalID: 0
       firstFrame: 0
       lastFrame: 7
       wrapMode: 0
@@ -5203,7 +5853,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|tree_pose_small_model
       takeName: small_model|tree_pose_small_model
-      internalID: 7993257879210697999
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -5232,7 +5882,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|tree_start_small_model
       takeName: small_model|tree_start_small_model
-      internalID: 6187457823744630647
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -5261,7 +5911,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|tree_wait_small_model
       takeName: small_model|tree_wait_small_model
-      internalID: 307752299928823724
+      internalID: 0
       firstFrame: 0
       lastFrame: 29
       wrapMode: 0
@@ -5290,7 +5940,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|trned.001_small_model
       takeName: small_model|trned.001_small_model
-      internalID: 2895927467342860945
+      internalID: 0
       firstFrame: 0
       lastFrame: 2
       wrapMode: 0
@@ -5319,7 +5969,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|trned.002_small_model
       takeName: small_model|trned.002_small_model
-      internalID: -4688439969703827836
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -5348,7 +5998,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|trned_small_model
       takeName: small_model|trned_small_model
-      internalID: -7789720605928042146
+      internalID: 0
       firstFrame: 0
       lastFrame: 10
       wrapMode: 0
@@ -5377,7 +6027,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|turn.001_small_model
       takeName: small_model|turn.001_small_model
-      internalID: 7207938471918191830
+      internalID: 0
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -5406,7 +6056,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|turn.002_small_model
       takeName: small_model|turn.002_small_model
-      internalID: 2123559365010944008
+      internalID: 0
       firstFrame: 0
       lastFrame: 0
       wrapMode: 0
@@ -5435,9 +6085,9 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|turn_small_model
       takeName: small_model|turn_small_model
-      internalID: 8943216577534994318
+      internalID: 0
       firstFrame: 0
-      lastFrame: 0
+      lastFrame: 1
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -5464,7 +6114,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|w_jump1_small_model
       takeName: small_model|w_jump1_small_model
-      internalID: -5901927716123923169
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -5493,7 +6143,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|w_jump2_small_model
       takeName: small_model|w_jump2_small_model
-      internalID: 9128479992526849734
+      internalID: 0
       firstFrame: 0
       lastFrame: 2
       wrapMode: 0
@@ -5522,7 +6172,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|w_jump_ed_small_model
       takeName: small_model|w_jump_ed_small_model
-      internalID: -930031154798981397
+      internalID: 0
       firstFrame: 0
       lastFrame: 3
       wrapMode: 0
@@ -5551,7 +6201,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|wait.001_small_model
       takeName: small_model|wait.001_small_model
-      internalID: -8258578285814891613
+      internalID: 0
       firstFrame: 0
       lastFrame: 61
       wrapMode: 0
@@ -5580,7 +6230,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|wait1_small_model
       takeName: small_model|wait1_small_model
-      internalID: -8483421991573250095
+      internalID: 0
       firstFrame: 0
       lastFrame: 30
       wrapMode: 0
@@ -5609,7 +6259,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|wait2_small_model
       takeName: small_model|wait2_small_model
-      internalID: 290226059193128198
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -5638,7 +6288,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|wait_small_model
       takeName: small_model|wait_small_model
-      internalID: 5557143905499695693
+      internalID: 0
       firstFrame: 0
       lastFrame: 61
       wrapMode: 0
@@ -5647,8 +6297,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -5667,7 +6317,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|walk.001_small_model
       takeName: small_model|walk.001_small_model
-      internalID: 7390272466520957865
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -5676,7 +6326,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -5696,7 +6346,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|walk.002_small_model
       takeName: small_model|walk.002_small_model
-      internalID: -8559657422799023689
+      internalID: 0
       firstFrame: 0
       lastFrame: 24
       wrapMode: 0
@@ -5705,7 +6355,7 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
+      loopTime: 1
       loopBlend: 0
       loopBlendOrientation: 0
       loopBlendPositionY: 0
@@ -5725,9 +6375,38 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|walk.003_small_model
       takeName: small_model|walk.003_small_model
-      internalID: -2663693128504642509
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: small_model|walk_small_model
+      takeName: small_model|walk_small_model
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -5752,52 +6431,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|walk_small_model
-      takeName: small_model|walk_small_model
-      internalID: -9050529476152615225
-      firstFrame: 0
-      lastFrame: 24
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 1
-      loopBlend: 1
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events:
-      - time: 0
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      - time: 0.49886876
-        functionName: Footstep
-        data: 
-        objectReferenceParameter: {instanceID: 0}
-        floatParameter: 0
-        intParameter: 0
-        messageOptions: 0
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
       name: small_model|wall_wait_small_model
       takeName: small_model|wall_wait_small_model
-      internalID: 3476737784410960049
+      internalID: 0
       firstFrame: 0
       lastFrame: 35
       wrapMode: 0
@@ -5826,7 +6462,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|wall_walk_l_small_model
       takeName: small_model|wall_walk_l_small_model
-      internalID: -8922544193166278594
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -5855,7 +6491,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|wall_walk_r_small_model
       takeName: small_model|wall_walk_r_small_model
-      internalID: -3144660328596340507
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -5884,7 +6520,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|wjmp.001_small_model
       takeName: small_model|wjmp.001_small_model
-      internalID: 1133448241266618264
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -5913,7 +6549,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|wjmp_small_model
       takeName: small_model|wjmp_small_model
-      internalID: -2348336868829445558
+      internalID: 0
       firstFrame: 0
       lastFrame: 6
       wrapMode: 0
@@ -5942,7 +6578,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|wsld_small_model
       takeName: small_model|wsld_small_model
-      internalID: -4201825508877912255
+      internalID: 0
       firstFrame: 0
       lastFrame: 1
       wrapMode: 0
@@ -5971,17 +6607,17 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|Y_run_small_model
       takeName: small_model|Y_run_small_model
-      internalID: -6597220401461031306
+      internalID: 0
       firstFrame: 0
-      lastFrame: 12
+      lastFrame: 29
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -5992,7 +6628,21 @@ ModelImporter:
       mirror: 0
       bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
       curves: []
-      events: []
+      events:
+      - time: 0.17310193
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.66507584
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
       transformMask: []
       maskType: 3
       maskSource: {instanceID: 0}
@@ -6000,7 +6650,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|Y_vs_lose_A_small_model
       takeName: small_model|Y_vs_lose_A_small_model
-      internalID: 1318652830790664921
+      internalID: 0
       firstFrame: 0
       lastFrame: 18
       wrapMode: 0
@@ -6029,7 +6679,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|Y_vs_lose_B_small_model
       takeName: small_model|Y_vs_lose_B_small_model
-      internalID: -1643183509320756249
+      internalID: 0
       firstFrame: 0
       lastFrame: 15
       wrapMode: 0
@@ -6058,7 +6708,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|Y_vs_lose_C_small_model
       takeName: small_model|Y_vs_lose_C_small_model
-      internalID: 3945362201621947764
+      internalID: 0
       firstFrame: 0
       lastFrame: 14
       wrapMode: 0
@@ -6087,7 +6737,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|Y_vs_win_wait_small_model
       takeName: small_model|Y_vs_win_wait_small_model
-      internalID: -3142103507113181749
+      internalID: 0
       firstFrame: 0
       lastFrame: 13
       wrapMode: 0
@@ -6116,7 +6766,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|Y_wait_small_model
       takeName: small_model|Y_wait_small_model
-      internalID: -308898678611544316
+      internalID: 0
       firstFrame: 0
       lastFrame: 36
       wrapMode: 0
@@ -6125,8 +6775,8 @@ ModelImporter:
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
+      loopTime: 1
+      loopBlend: 1
       loopBlendOrientation: 0
       loopBlendPositionY: 0
       loopBlendPositionXZ: 0
@@ -6145,9 +6795,9 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|zero_g_jump2_small_model
       takeName: small_model|zero_g_jump2_small_model
-      internalID: -607855662789579490
+      internalID: 0
       firstFrame: 0
-      lastFrame: 22
+      lastFrame: 21
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -6174,7 +6824,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|zero_g_jump_ed_small_model
       takeName: small_model|zero_g_jump_ed_small_model
-      internalID: -4824347878234702167
+      internalID: 0
       firstFrame: 0
       lastFrame: 11
       wrapMode: 0
@@ -6203,7 +6853,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|zero_g_jump_small_model
       takeName: small_model|zero_g_jump_small_model
-      internalID: -7010635871915262554
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -6232,7 +6882,7 @@ ModelImporter:
     - serializedVersion: 16
       name: small_model|zero_g_walk_small_model
       takeName: small_model|zero_g_walk_small_model
-      internalID: -2598022806238239279
+      internalID: 0
       firstFrame: 0
       lastFrame: 22
       wrapMode: 0
@@ -6259,67 +6909,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|sdown_knockdown_small_model
-      takeName: small_model|sdown_small_model
-      internalID: 2681078696441290351
-      firstFrame: 0
-      lastFrame: 3
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: small_model|sdown_getup_small_model
-      takeName: small_model|sdown_small_model
-      internalID: 8449922687716842635
-      firstFrame: 3
-      lastFrame: 11
-      wrapMode: 0
-      orientationOffsetY: 0
-      level: 0
-      cycleOffset: 0
-      loop: 0
-      hasAdditiveReferencePose: 0
-      loopTime: 0
-      loopBlend: 0
-      loopBlendOrientation: 0
-      loopBlendPositionY: 0
-      loopBlendPositionXZ: 0
-      keepOriginalOrientation: 0
-      keepOriginalPositionY: 1
-      keepOriginalPositionXZ: 0
-      heightFromFeet: 0
-      mirror: 0
-      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
-      curves: []
-      events: []
-      transformMask: []
-      maskType: 3
-      maskSource: {instanceID: 0}
-      additiveReferencePoseFrame: 0
-    - serializedVersion: 16
-      name: small_model|shfdn_knockdown_small_model
+      name: small_model|shfdn_knockdown
       takeName: small_model|shfdn_small_model
-      internalID: -2500715046533353489
+      internalID: 0
       firstFrame: 0
       lastFrame: 5
       wrapMode: 0
@@ -6346,9 +6938,9 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|shfdn_getup_small_model
+      name: small_model|shfdn_getup
       takeName: small_model|shfdn_small_model
-      internalID: 9160736825355305318
+      internalID: 0
       firstFrame: 5
       lastFrame: 10
       wrapMode: 0
@@ -6375,11 +6967,112 @@ ModelImporter:
       maskSource: {instanceID: 0}
       additiveReferencePoseFrame: 0
     - serializedVersion: 16
-      name: small_model|b_dash_small_model (1)
-      takeName: small_model|b_dash_small_model
-      internalID: 3369136929319972986
+      name: small_model|head_carry_pose_small_model
+      takeName: small_model|head_carry_pose_small_model
+      internalID: 0
       firstFrame: 0
-      lastFrame: 24
+      lastFrame: 1
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: small_model|head_carry_walk_small_model
+      takeName: small_model|head_carry_walk_small_model
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 22
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events:
+      - time: 0.19127516
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      - time: 0.76510066
+        functionName: Footstep
+        data: 
+        objectReferenceParameter: {instanceID: 0}
+        floatParameter: 0
+        intParameter: 0
+        messageOptions: 0
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: small_model|head_carry_wait_small_model
+      takeName: small_model|head_carry_wait_small_model
+      internalID: 0
+      firstFrame: 0
+      lastFrame: 29
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    - serializedVersion: 16
+      name: small_model|sdown_getup_small_model
+      takeName: small_model|sdown_small_model
+      internalID: -2500715046533353489
+      firstFrame: 3
+      lastFrame: 10
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
@@ -6407,7 +7100,7 @@ ModelImporter:
   meshes:
     lODScreenPercentages: []
     globalScale: 1
-    meshCompression: 2
+    meshCompression: 0
     addColliders: 0
     useSRGBMaterialColor: 1
     sortHierarchyByName: 1
@@ -6416,7 +7109,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    nodeNameCollisionStrategy: 1
+    nodeNameCollisionStrategy: 0
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -6426,7 +7119,7 @@ ModelImporter:
     bakeAxisConversion: 0
     preserveHierarchy: 0
     skinWeightsMode: 0
-    maxBonesPerVertex: 4
+    maxBonesPerVertex: 255
     minBoneWeight: 0.001
     optimizeBones: 1
     meshOptimizationFlags: -1
@@ -6587,9 +7280,9 @@ ModelImporter:
   animationType: 2
   humanoidOversampling: 1
   avatarSetup: 1
-  addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-  importBlendShapeDeformPercent: 0
-  remapMaterialsIfMaterialImportModeIsNone: 0
+  addHumanoidExtraRootOnlyWhenUsingAvatar: 0
+  importBlendShapeDeformPercent: 1
+  remapMaterialsIfMaterialImportModeIsNone: 1
   additionalBone: 0
   userData: 
   assetBundleName: 
