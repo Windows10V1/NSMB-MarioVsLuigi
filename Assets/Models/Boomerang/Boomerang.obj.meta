@@ -9,6 +9,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: defaultMat
     second: {fileID: 2100000, guid: b9df4e7ba557fc74dab2bfa96ef7435e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: mt_ItemBoomerang
+    second: {fileID: 2100000, guid: b9df4e7ba557fc74dab2bfa96ef7435e, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

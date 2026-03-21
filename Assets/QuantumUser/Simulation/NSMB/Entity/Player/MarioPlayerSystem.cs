@@ -1430,7 +1430,7 @@ namespace Quantum {
 
             if (!(inputs.PowerupAction.WasPressed
                 || (state == PowerupState.PropellerMushroom && inputs.PropellerPowerupAction.WasPressed && !physicsObject->IsTouchingGround && !mario->IsWallsliding)
-                || ((state == PowerupState.FireFlower || state == PowerupState.IceFlower || state == PowerupState.HammerSuit) && inputs.FireballPowerupAction.WasPressed))) {
+                || ((state == PowerupState.FireFlower || state == PowerupState.IceFlower || state == PowerupState.HammerSuit || state == PowerupState.BoomerangFlower) && inputs.FireballPowerupAction.WasPressed))) {
                 return;
             }
 
@@ -1442,7 +1442,8 @@ namespace Quantum {
             switch (mario->CurrentPowerupState) {
             case PowerupState.IceFlower:
             case PowerupState.FireFlower:
-            case PowerupState.HammerSuit: {
+            case PowerupState.HammerSuit:
+            case PowerupState.BoomerangFlower: {
 
                 if (mario->ProjectileDelayFrames > 0 || mario->IsWallsliding || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
                     || mario->IsSpinnerFlying || mario->IsDrilling || mario->IsSkidding || mario->IsTurnaround) {
@@ -1470,7 +1471,7 @@ namespace Quantum {
                 mario->ProjectileVolleyFrames = physics.ProjectileVolleyFrames;
 
                 Projectile* projectile;
-                if (mario->CurrentPowerupState == PowerupState.HammerSuit) {
+                if (mario->CurrentPowerupState == PowerupState.HammerSuit || mario->CurrentPowerupState == PowerupState.BoomerangFlower) {
                     projectile = ShootHammerProjectile(f, ref filter, physics);
                 } else {
                     projectile = ShootNormalProjectile(f, ref filter, physics);
@@ -1522,7 +1523,9 @@ namespace Quantum {
             var physicsObject = filter.PhysicsObject;
 
             FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40);
-            EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
+            EntityRef newEntity = f.Create(mario->CurrentPowerupState == PowerupState.BoomerangFlower
+                ? f.SimulationConfig.BoomerangPrototype
+                : f.SimulationConfig.HammerPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, false /* filter.Inputs.Up.IsDown */);
