@@ -19,7 +19,7 @@ MonoBehaviour:
   Effect: 2
   Bounce: 0
   Speed:
-    RawValue: 278528
+    RawValue: 425984
   BounceStrength:
     RawValue: 0
   Gravity:
@@ -33,6 +33,7 @@ MonoBehaviour:
   InheritShooterVelocity: 1
   HasCollision: 1
   DoesntEffectBlueShell: 0
+  CollectCoins: 1
   DestroyParticleEffect: 8
   ShootSound: 106
   SfxOverrides: []

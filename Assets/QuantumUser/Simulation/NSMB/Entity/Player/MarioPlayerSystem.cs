@@ -1455,6 +1455,10 @@ namespace Quantum {
                     return;
                 }
 
+                if (mario->CurrentPowerupState == PowerupState.BoomerangFlower && activeProjectiles > 0) {
+                    return;
+                }
+
                 if (activeProjectiles < 2) {
                     // Always allow if < 2
                     mario->CurrentVolley = (byte) (activeProjectiles + 1);

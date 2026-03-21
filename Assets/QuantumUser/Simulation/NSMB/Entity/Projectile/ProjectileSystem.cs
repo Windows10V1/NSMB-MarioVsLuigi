@@ -12,6 +12,8 @@ namespace Quantum {
 
         public override void OnInit(Frame f) {
             f.Context.Interactions.Register<Projectile, Projectile>(f, OnProjectileProjectileInteraction);
+            f.Context.Interactions.Register<Projectile, Coin>(f, OnProjectileCoinInteraction);
+            f.Context.Interactions.Register<Projectile, ObjectiveCoin>(f, OnProjectileObjectiveCoinInteraction);
         }
 
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
@@ -122,6 +124,24 @@ namespace Quantum {
                 if (projectile->Speed < 1) {
                     Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
                 }
+            }
+        }
+
+        private static void OnProjectileCoinInteraction(Frame f, EntityRef projectileEntity, EntityRef coinEntity) {
+            var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
+            var projectileAsset = f.FindAsset(projectile->Asset);
+
+            if (projectileAsset.CollectCoins) {
+                CoinSystem.TryCollectCoin(f, coinEntity, projectile->Owner);
+            }
+        }
+
+        private static void OnProjectileObjectiveCoinInteraction(Frame f, EntityRef projectileEntity, EntityRef objectiveCoinEntity) {
+            var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
+            var projectileAsset = f.FindAsset(projectile->Asset);
+
+            if (projectileAsset.CollectCoins) {
+                CoinSystem.TryCollectCoin(f, objectiveCoinEntity, projectile->Owner);
             }
         }
     }
