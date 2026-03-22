@@ -37,3 +37,8 @@ MonoBehaviour:
   DestroyParticleEffect: 8
   ShootSound: 106
   SfxOverrides: []
+  IsBoomerang: 1
+  BoomerangReturnDelay:
+    RawValue: 32768
+  BoomerangReturnAcceleration:
+    RawValue: 131072

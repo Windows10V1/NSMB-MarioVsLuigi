@@ -28,9 +28,16 @@ namespace Quantum {
             var projectile = filter.Projectile;
             var asset = f.FindAsset(projectile->Asset);
 
-            if (projectile->Lifetime > 0 && QuantumUtils.Decrement(ref projectile->Lifetime)) {
-                // Despawn via timer
-                Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+            // Handle boomerang-specific logic
+            if (asset.IsBoomerang) {
+                HandleBoomerangUpdate(f, ref filter, asset);
+            } else {
+                // Normal projectile lifetime handling
+                if (projectile->Lifetime > 0 && QuantumUtils.Decrement(ref projectile->Lifetime)) {
+                    // Despawn via timer
+                    Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                    return;
+                }
             }
 
             var physicsObject = filter.PhysicsObject;
@@ -46,16 +53,118 @@ namespace Quantum {
 
             HandleTileCollision(f, ref filter, asset);
 
-            physicsObject->Velocity.X = projectile->Speed * (projectile->FacingRight ? 1 : -1);
+            // For boomerangs, check if pull force should be applied
+            bool boomerangPullForceActive = false;
+            if (asset.IsBoomerang) {
+                if (projectile->IsReturning()) {
+                    boomerangPullForceActive = true;
+                } else {
+                    FP elapsedTime = (FP)projectile->Lifetime / 60;
+                    boomerangPullForceActive = elapsedTime >= asset.BoomerangReturnDelay;
+                }
+            }
+
+            // Don't override velocity if boomerang pull force is active (it's controlled by the pull force)
+            if (!boomerangPullForceActive) {
+                physicsObject->Velocity.X = projectile->Speed * (projectile->FacingRight ? 1 : -1);
+            }
 
             if (asset.LockTo45Degrees) {
                 physicsObject->TerminalVelocity = -projectile->Speed;
             }
         }
 
+        private void HandleBoomerangUpdate(Frame f, ref Filter filter, ProjectileAsset asset) {
+            var projectile = filter.Projectile;
+            var physicsObject = filter.PhysicsObject;
+            var transform = filter.Transform;
+
+            // Increment frame counter
+            projectile->Lifetime++;
+
+            // Check if we should be returning
+            if (!projectile->IsReturning()) {
+                // Still in "going" phase - check if it's time to start pulling back
+                FP elapsedTime = (FP)projectile->Lifetime / 60; // Assuming 60 FPS
+
+                if (elapsedTime >= asset.BoomerangReturnDelay) {
+                    // Time to start the return force
+                    FP timeIntoReturn = elapsedTime - asset.BoomerangReturnDelay;
+                    ApplyBoomerangPullForce(f, ref filter, asset, timeIntoReturn);
+                }
+            } else {
+                // Already returning - apply max pull force
+                ApplyBoomerangPullForce(f, ref filter, asset, FP.MaxValue); // Max value triggers peak force
+            }
+        }
+
+        private void ApplyBoomerangPullForce(Frame f, ref Filter filter, ProjectileAsset asset, FP timeIntoReturn) {
+            var projectile = filter.Projectile;
+            var physicsObject = filter.PhysicsObject;
+            var transform = filter.Transform;
+
+            if (!f.Unsafe.TryGetPointer(projectile->Owner, out Transform2D* ownerTransform)) {
+                return;
+            }
+
+            FPVector2 directionToOwner = ownerTransform->Position - transform->Position;
+            FP distanceToOwner = directionToOwner.Magnitude;
+
+            if (distanceToOwner < FP.FromString("0.5")) {
+                // Very close to owner - despawn without particle
+                Destroy(f, filter.Entity, ParticleEffect.None);
+                return;
+            }
+
+            directionToOwner = directionToOwner.Normalized;
+
+            // Calculate pull force strength based on time
+            // Starts at 0 and gradually increases to peak (equals projectile speed)
+            FP pullForceStrength;
+            if (timeIntoReturn >= FP.MaxValue || projectile->IsReturning()) {
+                // Peak force - same speed as projectile moving toward owner
+                pullForceStrength = asset.Speed;
+            } else {
+                // Gradually increase from 0 to peak over time
+                // Using acceleration factor to control ramp-up
+                pullForceStrength = timeIntoReturn * asset.BoomerangReturnAcceleration * asset.Speed;
+                if (pullForceStrength > asset.Speed) {
+                    pullForceStrength = asset.Speed;
+                }
+            }
+
+            // Apply force toward owner
+            FPVector2 pullForce = directionToOwner * pullForceStrength;
+            
+            // Set velocity to the pull force (direction toward owner at the calculated magnitude)
+            physicsObject->Velocity.X = pullForce.X;
+            physicsObject->Velocity.Y = pullForce.Y;
+
+            // Disable gravity while returning
+            physicsObject->Gravity = FPVector2.Zero;
+        }
+
+
         public void HandleTileCollision(Frame f, ref Filter filter, ProjectileAsset asset) {
             var projectile = filter.Projectile;
             var physicsObject = filter.PhysicsObject;
+
+            // Check for terrain collision
+            bool hasTerrainCollision = false;
+            if (!physicsObject->DisableCollision) {
+                hasTerrainCollision = physicsObject->IsTouchingLeftWall
+                    || physicsObject->IsTouchingRightWall
+                    || physicsObject->IsTouchingCeiling
+                    || physicsObject->IsTouchingGround
+                    || PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape);
+            }
+
+            // Special handling for boomerangs: switch to returning mode on terrain hit
+            if (asset.IsBoomerang && hasTerrainCollision && !projectile->IsReturning()) {
+                projectile->SetReturning();
+                projectile->Lifetime = 0; // Reset frame counter for return phase with peak force
+                return; // Don't despawn, just switch to return mode
+            }
 
             // Despawn
             if (!physicsObject->DisableCollision) {

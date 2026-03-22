@@ -20,6 +20,11 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
     public ParticleEffect DestroyParticleEffect = ParticleEffect.None;
     public SoundEffect ShootSound = SoundEffect.Powerup_Fireball_Shoot;
 
+    // Boomerang-specific properties
+    public bool IsBoomerang = false;
+    public FP BoomerangReturnDelay = FP.FromString("0.5"); // Delay before return force activates
+    public FP BoomerangReturnAcceleration = FP.FromString("0.5"); // How quickly force ramps up
+
     public SoundEffectOverride[] SfxOverrides;
 
     [NonSerialized] private Dictionary<SoundEffect, SoundEffectOverride> overridesDict;

@@ -3,6 +3,12 @@ using Photon.Deterministic;
 namespace Quantum {
     public unsafe partial struct Projectile {
 
+        // Boomerang state tracking using Combo byte
+        // 0 = not a boomerang
+        // 1 = boomerang in "going" phase
+        // 2 = boomerang in "returning" phase
+        // Lifetime is used as a frame counter for boomerangs
+
         public void Initialize(Frame f, EntityRef thisEntity, EntityRef owner, FPVector2 spawnpoint, bool right) {
             var asset = f.FindAsset(Asset);
             var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
@@ -30,6 +36,12 @@ namespace Quantum {
             // Physics
             transform->Position = spawnpoint;
             physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), -Speed);
+
+            // Initialize boomerang state if applicable
+            if (asset.IsBoomerang) {
+                Combo = 1; // Boomerang in "going" phase
+                Lifetime = 0; // Reset frame counter
+            }
         }
 
         public void InitializeHammer(Frame f, EntityRef thisEntity, EntityRef owner, FPVector2 spawnpoint, bool right, bool playerHoldingUp) {
@@ -49,6 +61,20 @@ namespace Quantum {
             transform->Position = spawnpoint;
             physicsObject->Velocity = velocity;
             physicsObject->Gravity = FPVector2.Up * (playerHoldingUp ? FP.FromString("-37.512") : FP.FromString("-28.125"));
+        }
+
+        // Helper methods for boomerang state
+        public bool IsBoomerang() {
+            return Combo > 0;
+        }
+
+        public bool IsReturning() {
+            return Combo == 2;
+        }
+
+        public void SetReturning() {
+            Combo = 2;
+            Lifetime = 0; // Reset frame counter for return phase
         }
     }
 }
