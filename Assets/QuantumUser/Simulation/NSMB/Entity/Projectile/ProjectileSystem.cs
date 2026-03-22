@@ -119,26 +119,35 @@ namespace Quantum {
             directionToOwner = directionToOwner.Normalized;
 
             // Calculate pull force strength based on time
-            // Starts at 0 and gradually increases to peak (equals projectile speed)
+            // Gradually ramp up from 0 to peak speed
             FP pullForceStrength;
             if (timeIntoReturn >= FP.MaxValue || projectile->IsReturning()) {
                 // Peak force - same speed as projectile moving toward owner
                 pullForceStrength = asset.Speed;
             } else {
                 // Gradually increase from 0 to peak over time
-                // Using acceleration factor to control ramp-up
                 pullForceStrength = timeIntoReturn * asset.BoomerangReturnAcceleration * asset.Speed;
                 if (pullForceStrength > asset.Speed) {
                     pullForceStrength = asset.Speed;
                 }
             }
 
-            // Apply force toward owner
-            FPVector2 pullForce = directionToOwner * pullForceStrength;
+            // Calculate target velocity (toward owner at pull force strength)
+            FPVector2 targetVelocity = directionToOwner * pullForceStrength;
             
-            // Set velocity to the pull force (direction toward owner at the calculated magnitude)
-            physicsObject->Velocity.X = pullForce.X;
-            physicsObject->Velocity.Y = pullForce.Y;
+            // Smoothly transition current velocity to target velocity over time
+            // This creates a smooth slowdown and reversal effect
+            FP transitionTime = FP.FromString("1.0"); // 1 second to fully transition
+            FP transitionProgress = FPMath.Min(timeIntoReturn / transitionTime, FP._1);
+            
+            FPVector2 currentVelocity = physicsObject->Velocity;
+            // Lerp between current and target: current * (1 - t) + target * t
+            FPVector2 smoothVelocity = new FPVector2(
+                currentVelocity.X * (FP._1 - transitionProgress) + targetVelocity.X * transitionProgress,
+                currentVelocity.Y * (FP._1 - transitionProgress) + targetVelocity.Y * transitionProgress
+            );
+            
+            physicsObject->Velocity = smoothVelocity;
 
             // Disable gravity while returning
             physicsObject->Gravity = FPVector2.Zero;
