@@ -120,7 +120,7 @@ Material:
     - _MultiPowerupMaterial: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.005
-    - _QueueControl: 0
+    - _QueueControl: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
     - _Smoothness: 0.5
@@ -134,8 +134,8 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - MultiplyColor: {r: 1, g: 1, b: 1, a: 0}
-    - OverallsColor: {r: 1, g: 1, b: 1, a: 0}
-    - ShirtColor: {r: 1, g: 1, b: 1, a: 0}
+    - OverallsColor: {r: 0, g: 0, b: 0, a: 0}
+    - ShirtColor: {r: 0, g: 0, b: 0, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
