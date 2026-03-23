@@ -21,6 +21,16 @@ public unsafe class CoinTile : BreakableBrickTile {
             f.Unsafe.TryGetPointer(holdable->PreviousHolder, out mario);
             entity = holdable->PreviousHolder;
             allowSelfDamage = true;
+
+        } else if (f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
+            var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
+            if (asset.IsBoomerang) {
+
+                // Talk to my son, his name is boomerang :)
+                f.Unsafe.TryGetPointer(projectile->Owner, out mario);
+                entity = projectile->Owner;
+                allowSelfDamage = true;
+            }
         }
 
         if (mario == null) {
