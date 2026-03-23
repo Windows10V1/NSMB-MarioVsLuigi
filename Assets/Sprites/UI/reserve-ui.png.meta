@@ -430,6 +430,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: reserve-cloud
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c31cf796263eece44b2c347292a3abff
+      internalID: 37558163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -447,6 +469,7 @@ TextureImporter:
       reserve-bg: -6080119536613256813
       reserve-blueshell: 2664608197882872095
       reserve-boomerang: 1954154672
+      reserve-cloud: 37558163
       reserve-empty: -4773353537684922170
       reserve-fireflower: 2690215448161037315
       reserve-frame: 7194109699264141795

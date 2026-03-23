@@ -1520,6 +1520,29 @@ namespace Quantum {
                 f.Events.MarioPlayerUsedPropeller(filter.Entity);
                 break;
             }
+            case PowerupState.CloudFlower: {
+                // Count active cloud blocks for this player
+                int activeCount = CloudBlockSystem.CountCloudBlocksForPlayer(f, filter.Entity);
+                
+                // Get the powerup asset to check max blocks and duration
+                var powerupAsset = QuantumUtils.FindPowerupAsset(f, PowerupState.CloudFlower);
+                if (powerupAsset != null && powerupAsset.MaxCloudBlocks > 0 && activeCount < powerupAsset.MaxCloudBlocks) {
+                    // Spawn position is slightly above and in front of the player
+                    FPVector2 spawnPos = filter.Transform->Position;
+                    spawnPos.Y += powerupAsset.CloudBlockSpawnVerticalOffset;
+                    
+                    if (mario->FacingRight) {
+                        spawnPos.X += powerupAsset.CloudBlockSpawnHorizontalOffset;
+                    } else {
+                        spawnPos.X -= powerupAsset.CloudBlockSpawnHorizontalOffset;
+                    }
+
+                    // Spawn the cloud block
+                    FP lifetimeDuration = powerupAsset.CloudBlockDuration * f.UpdateRate;
+                    CloudBlockSystem.SpawnCloudBlock(f, spawnPos, filter.Entity, lifetimeDuration);
+                }
+                break;
+            }
             }
         }
 

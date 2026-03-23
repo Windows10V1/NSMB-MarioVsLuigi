@@ -401,6 +401,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: CloudFlower
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5f899963860e6fb488e631d001bfeae5
+      internalID: -386398983
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -418,6 +440,7 @@ TextureImporter:
       1-Up: -7415331047110381915
       BoomerangFlower: -1320901436
       CatSuit: -1629917848
+      CloudFlower: -386398983
       FireFlower: -6090384608550177697
       HammerSuit: -1109677166
       IceFlower: 4928671260392873470

@@ -110,6 +110,7 @@ namespace Quantum {
     BlueShell,
     HammerSuit,
     BoomerangFlower,
+    CloudFlower,
     MegaMushroom,
   }
   public enum StageTileFlags : byte {

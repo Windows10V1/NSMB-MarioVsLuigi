@@ -63,7 +63,7 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
             var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
             if (asset.IsBoomerang) {
                 doBreak = BreakingRules.HasFlag(BreakableBy.Boomerangs);
-                doBump = true;
+                doBump = false;
                 bumpOwner = projectile->Owner;
                 allowSelfDamage = true;
             }
