@@ -6,6 +6,10 @@ namespace Quantum {
             ChompFrames = 0;
             WaitingFrames = 216;
             PopupAnimationTime = 0;
+
+            var enemy = f.Unsafe.GetPointer<Enemy>(entity);
+            enemy->IsDead = false;
+            enemy->IsActive = true;
         }
 
         public void Kill(Frame f, EntityRef piranhaPlantEntity, EntityRef killerEntity, EnemyKillReason reason) {

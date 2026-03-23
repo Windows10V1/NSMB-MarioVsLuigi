@@ -587,6 +587,8 @@ MonoBehaviour:
       Value: 1
     DisableRespawning:
       Value: 0
+    StayAtHomeWhenOffscreen:
+      Value: 0
 --- !u!114 &1515450150619802232
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -695,4 +697,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sfxOverrides: []
-  source: {fileID: 0}
+  source: {fileID: 7558042822839980312}

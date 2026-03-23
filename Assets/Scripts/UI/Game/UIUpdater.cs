@@ -200,17 +200,33 @@ namespace NSMB.UI.Game {
             }
             if (playAnimation) {
                 if (powerup) {
-                    reserveAnimation.Play("reserve-in");
                     itemReserve.sprite = powerup.ReserveSprite;
+                    reserveSummonCoroutine = StartCoroutine(PlayThenWait("reserve-in", () => {
+                        reserveAnimation.Play("reserve-idle");
+                    }));
                 } else {
-                    reserveAnimation.Play("reserve-out");
-                    reserveSummonCoroutine = StartCoroutine(ReserveSummonCoroutine());
+                    reserveSummonCoroutine = StartCoroutine(PlayThenWait("reserve-out", () => {
+                        itemReserve.sprite = storedItemNull;
+                        reserveAnimation.Play("reserve-empty");
+                    }));
                 }
             } else {
-                itemReserve.sprite = (powerup && powerup.ReserveSprite) ? powerup.ReserveSprite : storedItemNull;
-                reserveAnimation.Play();
+                if (powerup && powerup.ReserveSprite) {
+                    itemReserve.sprite = powerup.ReserveSprite;
+                    reserveAnimation.Play("reserve-idle");
+                } else {
+                    itemReserve.sprite = storedItemNull;
+                    reserveAnimation.Play("reserve-empty");
+                }
             }
             previousPowerup = powerup;
+        }
+
+        private IEnumerator PlayThenWait(string clipName, Action callback) {
+            reserveAnimation.Play(clipName);
+            yield return new WaitForSeconds(reserveAnimation.GetClip(clipName).length);
+            reserveSummonCoroutine = null;
+            callback();
         }
 
         private void UpdateElementVisibility(Frame f, bool marioExists) {
@@ -220,13 +236,6 @@ namespace NSMB.UI.Game {
             coinsParent.SetActive(marioExists);
             timerParent.SetActive(f.Global->Rules.IsTimerEnabled);
             reserveItemBox.SetActive(marioExists);
-        }
-
-        private IEnumerator ReserveSummonCoroutine() {
-            yield return new WaitForSeconds(reserveAnimation.GetClip("reserve-out").length);
-            itemReserve.sprite = storedItemNull;
-            reserveAnimation.Play();
-            reserveSummonCoroutine = null;
         }
 
         private void OnStartCameraFadeOut(EventStartCameraFadeOut e) {

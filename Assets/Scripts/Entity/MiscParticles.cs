@@ -19,7 +19,6 @@ namespace NSMB.Particles {
             QuantumEvent.Subscribe<EventCollectableDespawned>(this, OnCollectableDespawned, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyDespawnedOffscreen>(this, OnEnemyDespawnedOffscreen, FilterOutReplayFastForward);
-            QuantumEvent.Subscribe<EventEnemyAfterDelayedRespawn>(this, OnEventEnemyAfterDelayedRespawn, FilterOutReplayFastForward);
         }
 
         private bool TryGetParticlePair(ParticleEffect particleEffect, out ParticlePair particlePair) {
@@ -62,12 +61,6 @@ namespace NSMB.Particles {
         private void OnEnemyDespawnedOffscreen(EventEnemyDespawnedOffscreen e) {
             Play(ParticleEffect.Puff, e.Position.ToUnityVector3());
         }
-
-        private void OnEventEnemyAfterDelayedRespawn(EventEnemyAfterDelayedRespawn e) {
-            var enemy = PredictedFrame.Unsafe.GetPointer<Enemy>(e.Entity);
-            Play(ParticleEffect.Puff, enemy->Spawnpoint.ToUnityVector3() + (Vector3.up * 0.25f));
-        }
-
 
         [Serializable]
         public class ParticlePair {

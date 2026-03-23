@@ -73,11 +73,11 @@ namespace NSMB.Sound {
             SetFloat(key, -80f);
         }
 
-        private static float ToLinearScale(float x) {
+        public static float ToLinearScale(float x) {
             return Mathf.Pow(10, x / 20);
         }
 
-        private static float ToLogScale(float x) {
+        public static float ToLogScale(float x) {
             return 20 * Mathf.Log10(x);
         }
     }

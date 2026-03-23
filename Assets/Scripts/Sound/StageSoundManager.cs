@@ -2,6 +2,9 @@ using NSMB.Quantum;
 using NSMB.Utilities.Extensions;
 using Photon.Deterministic;
 using Quantum;
+using System;
+using System.Collections;
+using System.Linq;
 using UnityEngine;
 using static NSMB.Utilities.QuantumViewUtils;
 
@@ -11,10 +14,12 @@ namespace NSMB.Sound {
         //---Serialized Variables
         [SerializeField] private AudioSource sfx;
         [SerializeField] private LoopingMusicPlayer musicPlayer;
+        [SerializeField] private MusicManager musicManager;
 
         //---Private Variables
         private bool playedHurryUp;
         private int previousTimer;
+        private Coroutine hurryUpCoroutine;
 
         public void OnValidate() {
             this.SetIfNull(ref sfx);
@@ -37,7 +42,8 @@ namespace NSMB.Sound {
                 FP timer = f.Global->Timer;
 
                 if (!playedHurryUp && timer <= 60) {
-                    sfx.PlayOneShot(SoundEffect.UI_HurryUp);
+                    this.StopCoroutineNullable(ref hurryUpCoroutine);
+                    hurryUpCoroutine = StartCoroutine(HurryUpCoroutine());
                     playedHurryUp = true;
                 }
 
@@ -45,7 +51,6 @@ namespace NSMB.Sound {
                 if (timerHalfSeconds != previousTimer && timerHalfSeconds > 0) {
                     if (timerHalfSeconds <= 6) {
                         sfx.PlayOneShot(SoundEffect.UI_Countdown_0);
-
                     } else if (timerHalfSeconds <= 20 && (timerHalfSeconds % 2) == 0) {
                         sfx.PlayOneShot(SoundEffect.UI_Countdown_0);
                     }
@@ -54,12 +59,36 @@ namespace NSMB.Sound {
             }
         }
 
+        private IEnumerator HurryUpCoroutine() {
+            var playedSounds = sfx.PlayOneShot(SoundEffect.UI_HurryUp);
+            if (playedSounds.Count <= 0) {
+                // No sounds played, no need to fade out/in.
+                yield break;
+            }
+
+            float duration = playedSounds.Max(ac => ac.length);
+            musicPlayer.AudioSource.volume = 0;
+            yield return new WaitForSecondsRealtime(duration);
+
+            // Fade back in
+            const float fadeDuration = 0.5f;
+            float timer = fadeDuration;
+            while ((timer -= Time.deltaTime) > 0) {
+                musicPlayer.AudioSource.volume =  1 - (timer / fadeDuration);
+                yield return null;
+            }
+            musicPlayer.AudioSource.volume = 1;
+            hurryUpCoroutine = null;
+        }
+
         private void OnGameResynced(CallbackGameResynced e) {
             Frame f = PredictedFrame;
             if (f.Global->Rules.IsTimerEnabled && f.Global->Timer < 60) {
                 playedHurryUp = true;
             }
             previousTimer = 0;
+            musicPlayer.AudioSource.volume = 1;
+            this.StopCoroutineNullable(ref hurryUpCoroutine);
         }
 
         private void OnTimerExpired(EventTimerExpired e) {

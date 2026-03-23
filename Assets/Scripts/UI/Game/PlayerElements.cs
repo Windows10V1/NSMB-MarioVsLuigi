@@ -188,7 +188,7 @@ namespace NSMB.UI.Game {
             OnCameraFocusChanged?.Invoke();
 
             if (f.Global->GameState == GameState.Playing) {
-                FindFirstObjectByType<MusicManager>().HandleMusic(Game, true);
+                FindFirstObjectByType<MusicManager>().HandleMusic(true);
             }
         }
 

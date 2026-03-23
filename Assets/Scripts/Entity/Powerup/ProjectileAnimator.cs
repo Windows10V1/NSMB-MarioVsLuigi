@@ -40,6 +40,11 @@ namespace NSMB.Entities.CoinItems {
         }
 
         public override unsafe void OnUpdateView() {
+            if (PredictedFrame.Unsafe.TryGetPointer(EntityRef, out Projectile* projectile)) {
+                // Fixes EntityRef hijacking. Hopefully.
+                owner = projectile->Owner;
+            }
+
             if (animator) {
                 animator.enabled = PredictedFrame.Global->GameState == GameState.Playing;
             }

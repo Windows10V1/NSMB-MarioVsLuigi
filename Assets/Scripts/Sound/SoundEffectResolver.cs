@@ -1,5 +1,6 @@
 using JimmysUnityUtilities;
 using NSMB.Utilities.Extensions;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -63,7 +64,7 @@ namespace NSMB.Sound {
             return null;
         }
 
-        public float PlayOneShot(AudioSource localSfxSource, SoundEffect sfx, IList<ISoundOverrideProvider> extraProviders, int? variant = null, float volume = 1) {
+        public IList<AudioClip> PlayOneShot(AudioSource localSfxSource, SoundEffect sfx, IList<ISoundOverrideProvider> extraProviders, int? variant = null, float volume = 1) {
             List<ISoundOverrideProvider> allProviders = new();
             if (extraProviders != null) {
                 allProviders.AddRange(extraProviders);
@@ -85,51 +86,62 @@ namespace NSMB.Sound {
 
             if (sortedOverrides.Count == 0) {
                 // Invalid sound effect, maybe?
-                return 0;
+                return Array.Empty<AudioClip>();
             }
 
+            List<AudioClip> clips = new();
+            AudioClip clip;
             var mode = sortedOverrides[0].Mode;
             switch (mode) {
             case SoundEffectOverride.OverrideMode.Single:
                 // Pick first only
-                return PlayOverride(localSfxSource, sortedOverrides[0], variant, volume);
+                clip = PlayOverride(localSfxSource, sortedOverrides[0], variant, volume);
+                if (clip) {
+                    clips.Add(clip);
+                }
+                break;
             case SoundEffectOverride.OverrideMode.Random:
                 // Pick one random from all potential sounds.
                 var randomOverride = sortedOverrides
                     .Where(o => o.Mode == mode)
                     .GetRandomElement();
 
-                return PlayOverride(localSfxSource, randomOverride, variant, volume);
+                clip = PlayOverride(localSfxSource, randomOverride, variant, volume);
+                if (clip) {
+                    clips.Add(clip);
+                }
+                break;
             case SoundEffectOverride.OverrideMode.Layered:
                 // Play all with "layered" at once.
-                float max = 0;
                 foreach (var sfxOverride in sortedOverrides.Where(o => o.Mode == mode)) {
-                    float len = PlayOverride(localSfxSource, sfxOverride, variant, volume);
-                    max = Mathf.Max(max, len);
+                    clip = PlayOverride(localSfxSource, sfxOverride, variant, volume);
+                    if (clip) {
+                        clips.Add(clip);
+                    }
                 }
-                return max;
+                return clips;
             }
-            return 0;
+            return clips;
         }
 
-        private float PlayOverride(AudioSource localSfxSource, SoundEffectOverride sfxOverride, int? variant, float volume) {
+        private AudioClip PlayOverride(AudioSource localSfxSource, SoundEffectOverride sfxOverride, int? variant, float volume) {
             var clips = sfxOverride.AudioClips;
             if (clips == null || clips.Length == 0) {
-                return 0;
+                return null;
             }
 
             var source = sfxOverride.PlayGlobally ? globalSfxSource : localSfxSource;
             if (!source || !source.isActiveAndEnabled) {
-                return 0;
+                return null;
             }
 
-            variant ??= Random.Range(0, clips.Length);
+            variant ??= UnityEngine.Random.Range(0, clips.Length);
             var randomClip = clips[QuantumUtils.Modulo(variant.Value, clips.Length)];
             if (randomClip) {
                 source.PlayOneShot(randomClip, volume);
-                return randomClip.length;
+                return randomClip;
             } else {
-                return 0;
+                return null;
             }
         }
     }

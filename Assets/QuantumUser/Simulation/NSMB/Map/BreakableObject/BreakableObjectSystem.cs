@@ -30,19 +30,21 @@ namespace Quantum {
 
             FP dot = FPVector2.Dot(effectiveNormal, breakableUp);
 
-            if (dot > Constants.PhysicsGroundMaxAngleCos ) {
+            if (dot > Constants.PhysicsGroundMaxAngleCos) {
                 // Hit the top of a pipe
                 // Shrink by 1, if we can.
-                if (!breakable->IsDestroyed && breakable->CurrentHeight >= breakable->MinimumHeight + 1 && (breakable->CurrentHeight - 1 > 0)) {
-                    if (mario->JumpState != JumpState.None) {
-                        // Single stomp
-                        ChangeHeight(f, breakableObjectEntity, breakable, breakableCollider, breakable->CurrentHeight - 1, null);
-                        mario->JumpState = JumpState.None;
-                        return true;
-                    } else if (mario->IsGroundpoundActive) {
+                if (!breakable->IsDestroyed && breakable->CurrentHeight >= breakable->MinimumHeight + 1 && (breakable->CurrentHeight - 1 > 0)) {    
+                    if (mario->IsGroundpoundActive) {
                         // Groundpound
                         ChangeHeight(f, breakableObjectEntity, breakable, breakableCollider, breakable->CurrentHeight - 1, null);
                         return false;
+                    }
+
+                    var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
+                    if (physicsObject->Velocity.Y < -8) { // TODO: magic value
+                        // Single stomp
+                        ChangeHeight(f, breakableObjectEntity, breakable, breakableCollider, breakable->CurrentHeight - 1, null);
+                        return true;
                     }
                 }
                 return true;

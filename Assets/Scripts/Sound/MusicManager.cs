@@ -1,8 +1,6 @@
 using NSMB.Quantum;
 using NSMB.Replay;
-using NSMB.UI.Game;
 using NSMB.UI.Loading;
-using NSMB.Utilities;
 using NSMB.Utilities.Extensions;
 using Quantum;
 using UnityEngine;
@@ -14,7 +12,7 @@ namespace NSMB.Sound {
 
         //---Serialized Variables
         [SerializeField] private LoopingMusicPlayer musicPlayer;
-        [SerializeField] private AudioMixer mixer; 
+        [SerializeField] private AudioMixer mixer;
 
         public void OnValidate() {
             this.SetIfNull(ref musicPlayer);
@@ -31,16 +29,6 @@ namespace NSMB.Sound {
             ActiveReplayManager.OnReplayFastForwardEnded += OnReplayFastForwardEnded;
             LoadingCanvas.OnLoadingEnded += OnLoadingEnded;
             AudioMixerManager.OnAudioMixerValueChanged += OnAudioMixerValueChanged;
-
-            var game = QuantumRunner.DefaultGame;
-            Frame f;
-            if (game != null && (f = game.Frames.Predicted) != null) {
-                GameState state = f.Global->GameState;
-                if (state == GameState.Starting || state == GameState.Playing) {
-                    // Already in a game
-                    HandleMusic(game, true);
-                }
-            }
         }
 
         public void OnDestroy() {
@@ -49,14 +37,28 @@ namespace NSMB.Sound {
             AudioMixerManager.OnAudioMixerValueChanged -= OnAudioMixerValueChanged;
         }
 
-        public void OnUpdateView(CallbackUpdateView e) {
-            if (e.Game.Frames.Predicted.Global->GameState == GameState.Playing) {
-                HandleMusic(e.Game, false);
+        public override void OnActivate(Frame f) {
+            GameState state = f.Global->GameState;
+            if (state == GameState.Starting || state == GameState.Playing) {
+                // Already in a game
+                HandleMusic(true);
             }
         }
 
-        public void HandleMusic(QuantumGame game, bool force) {
-            Frame f = game.Frames.Predicted;
+        public override void OnUpdateView() {
+            Frame f = PredictedFrame;
+            if (f.Global->GameState == GameState.Playing) {
+                HandleMusic(false);
+            }
+        }
+
+        public void OnUpdateView(CallbackUpdateView e) {
+            if (e.Game.Frames.Predicted.Global->GameState == GameState.Playing) {
+            }
+        }
+
+        public void HandleMusic(bool force) {
+            Frame f = PredictedFrame;
             ref var rules = ref f.Global->Rules;
 
             if (!force && !musicPlayer.IsPlaying) {
@@ -97,7 +99,7 @@ namespace NSMB.Sound {
 
         private void OnMarioPlayerRespawned(EventMarioPlayerRespawned e) {
             if (IsMarioLocal(e.Entity) && !musicPlayer.IsPlaying) {
-                HandleMusic(e.Game, true);
+                HandleMusic(true);
             }
         }
 
@@ -108,20 +110,20 @@ namespace NSMB.Sound {
         }
 
         private void OnGameResynced(CallbackGameResynced e) {
-            if (e.Game.Frames.Predicted.Global->GameState == GameState.Playing) {
-                HandleMusic(e.Game, true);
+            if (PredictedFrame.Global->GameState == GameState.Playing) {
+                HandleMusic(true);
             }
         }
 
         private void OnReplayFastForwardEnded(ActiveReplayManager arm) {
-            if (Game.Frames.Predicted.Global->GameState == GameState.Playing) {
-                HandleMusic(Game, true);
+            if (PredictedFrame.Global->GameState == GameState.Playing) {
+                HandleMusic(true);
             }
         }
 
         private void OnLoadingEnded(bool longIntro) {
             if (!longIntro && Game != null) {
-                HandleMusic(Game, true);
+                HandleMusic(true);
             }
         }
 
@@ -130,8 +132,8 @@ namespace NSMB.Sound {
         }
 
         private void OnGameStateChanged(EventGameStateChanged e) {
-            if (Game.Frames.Predicted.Global->GameState == GameState.Playing) {
-                HandleMusic(Game, true);
+            if (PredictedFrame.Global->GameState == GameState.Playing) {
+                HandleMusic(true);
             }
         }
     }

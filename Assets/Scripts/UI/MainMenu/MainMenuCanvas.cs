@@ -233,11 +233,11 @@ namespace NSMB.UI.MainMenu {
             ShowHideMainPanel();
         }
 
-        public float PlaySound(SoundEffect sound) {
+        public IList<AudioClip> PlaySound(SoundEffect sound) {
             return sfx.PlayOneShot(sound);
         }
 
-        public float PlaySound(SoundEffect sound, IList<ISoundOverrideProvider> extraProviders, int? variant = null, float volume = 1) {
+        public IList<AudioClip> PlaySound(SoundEffect sound, IList<ISoundOverrideProvider> extraProviders, int? variant = null, float volume = 1) {
             return sfx.PlayOneShot(sound, extraProviders, variant, volume);
         }
 

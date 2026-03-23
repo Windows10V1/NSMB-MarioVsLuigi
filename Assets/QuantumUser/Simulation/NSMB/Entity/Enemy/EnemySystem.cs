@@ -86,9 +86,8 @@ namespace Quantum {
                 enemy->Respawn(f, filter.Entity);
                 f.Events.EnemyAfterDelayedRespawn(filter.Entity);
                 f.Signals.OnEnemyRespawned(filter.Entity);
-            }
 
-            if (enemy->RespawnTimer == enemy->RespawnSparklesTimer && enemy->RespawnSparklesTimer != 0) {
+            } else if (enemy->RespawnTimer == enemy->RespawnSparklesTimer && enemy->RespawnSparklesTimer != 0) {
                 filter.Transform->Teleport(f, enemy->Spawnpoint);
                 f.Events.EnemyPreRespawned(filter.Entity);
             }

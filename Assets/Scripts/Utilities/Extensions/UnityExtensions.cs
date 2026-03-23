@@ -102,7 +102,7 @@ namespace NSMB.Utilities.Extensions {
         }
 
         //easy sound clips
-        public static float PlayOneShot(this AudioSource source, SoundEffect sfx, IList<ISoundOverrideProvider> extraProviders = null, int? variant = null, float volume = 1f) {
+        public static IList<AudioClip> PlayOneShot(this AudioSource source, SoundEffect sfx, IList<ISoundOverrideProvider> extraProviders = null, int? variant = null, float volume = 1f) {
             return SoundEffectResolver.Instance.PlayOneShot(source, sfx, extraProviders, variant, volume);
         }
 

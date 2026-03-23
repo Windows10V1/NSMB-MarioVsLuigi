@@ -1,3 +1,4 @@
+using NSMB.Particles;
 using NSMB.Utilities.Extensions;
 using Quantum;
 using UnityEngine;
@@ -20,6 +21,7 @@ namespace NSMB.Entities.Enemies {
 
         public void Start() {
             QuantumEvent.Subscribe<EventEnemyPreRespawned>(this, OnEnemyPreRespawned, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventEnemyAfterDelayedRespawn>(this, OnEnemyAfterDelayedRespawn, FilterOutReplayFastForward);
         }
 
         private void OnEnemyPreRespawned(EventEnemyPreRespawned e) {
@@ -41,6 +43,15 @@ namespace NSMB.Entities.Enemies {
             }
 
             sfx.PlayOneShot(SoundEffect.Player_Sound_Respawn, volume: 0.4f);
+        }
+
+        private void OnEnemyAfterDelayedRespawn(EventEnemyAfterDelayedRespawn e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            var enemy = PredictedFrame.Unsafe.GetPointer<Enemy>(e.Entity);
+            MiscParticles.Instance.Play(ParticleEffect.Puff, enemy->Spawnpoint.ToUnityVector3() + (Vector3.up * 0.25f));
         }
     }
 }

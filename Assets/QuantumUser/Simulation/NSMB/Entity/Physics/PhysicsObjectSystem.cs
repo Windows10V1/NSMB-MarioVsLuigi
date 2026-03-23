@@ -313,7 +313,7 @@ namespace Quantum {
                 FPVector2 raycastTranslation = new FPVector2(0, velocityY) + (directionVector * (Constants.PhysicsRaycastSkin * 2 + Constants.PhysicsSkin));
 
                 var mask = f.Context.ExcludeEntityAndPlayerMask;
-                var physicsHits = f.Physics2D.ShapeCastAll(raycastOrigin, 0, shape, raycastTranslation, mask, QueryOptions.HitKinematics | QueryOptions.HitTriggers | QueryOptions.ComputeDetailedInfo);
+                var physicsHits = f.Physics2D.ShapeCastAll(raycastOrigin, 0, shape, raycastTranslation, mask, QueryOptions.DetectOverlapsAtCastOrigin | QueryOptions.HitKinematics | QueryOptions.HitTriggers | QueryOptions.ComputeDetailedInfo);
 
                 if (stage.IsWrappingLevel) {
                     FP center = position.X + shape->Centroid.X;
@@ -336,7 +336,7 @@ namespace Quantum {
                         FPVector2 wrappedRaycastOrigin = raycastOrigin;
                         wrappedRaycastOrigin.X += stage.TileDimensions.X * FP._0_50 * wrapDirection;
 
-                        var wrappedHits = f.Physics2D.ShapeCastAll(wrappedRaycastOrigin, 0, shape, raycastTranslation, mask, QueryOptions.HitKinematics | QueryOptions.HitTriggers | QueryOptions.ComputeDetailedInfo);
+                        var wrappedHits = f.Physics2D.ShapeCastAll(wrappedRaycastOrigin, 0, shape, raycastTranslation, mask, QueryOptions.DetectOverlapsAtCastOrigin | QueryOptions.HitKinematics | QueryOptions.HitTriggers | QueryOptions.ComputeDetailedInfo);
                         for (int i = 0; i < wrappedHits.Count; i++) {
                             physicsHits.Add(wrappedHits[i], f.Context);
                         }
@@ -414,7 +414,7 @@ namespace Quantum {
                             continue;
                         }
                         if (hit.IsDynamic) {
-                            if (!f.Exists(hit.Entity) || f.DestroyPending(hit.Entity)) {
+                            if (!f.Exists(hit.Entity) || f.DestroyPending(hit.Entity) || filter.Entity == hit.Entity) {
                                 continue;
                             }
                             if (f.Unsafe.TryGetPointer(hit.Entity, out Liquid* liquid)) {
@@ -551,7 +551,7 @@ namespace Quantum {
 
                 var mask = f.Context.ExcludeEntityAndPlayerMask;
 
-                var physicsHits = f.Physics2D.ShapeCastAll(raycastOrigin, 0, shape, raycastTranslation, mask, QueryOptions.HitKinematics | QueryOptions.HitTriggers | QueryOptions.ComputeDetailedInfo);
+                var physicsHits = f.Physics2D.ShapeCastAll(raycastOrigin, 0, shape, raycastTranslation, mask, QueryOptions.DetectOverlapsAtCastOrigin | QueryOptions.HitKinematics | QueryOptions.HitTriggers | QueryOptions.ComputeDetailedInfo);
 
                 if (stage.IsWrappingLevel) {
                     FP center = position.X + shape->Centroid.X;
@@ -573,10 +573,8 @@ namespace Quantum {
                         FP wrapDirection = hitboxPosClosestEdge > stage.StageWorldMidpoint.X ? -1 : 1;
                         FPVector2 wrappedRaycastOrigin = raycastOrigin;
                         wrappedRaycastOrigin.X += stage.TileDimensions.X * FP._0_50 * wrapDirection;
-                        Draw.Rectangle(wrappedRaycastOrigin.XY + shape->Centroid, shape->Box.Extents.XY * 2, 0, ColorRGBA.Yellow);
-                        Draw.Rectangle(wrappedRaycastOrigin.XY + shape->Centroid + raycastTranslation, shape->Box.Extents.XY * 2, 0, ColorRGBA.Red);
-
-                        var wrappedHits = f.Physics2D.ShapeCastAll(wrappedRaycastOrigin, 0, shape, raycastTranslation, mask, QueryOptions.HitKinematics | QueryOptions.HitTriggers | QueryOptions.ComputeDetailedInfo);
+                        
+                        var wrappedHits = f.Physics2D.ShapeCastAll(wrappedRaycastOrigin, 0, shape, raycastTranslation, mask, QueryOptions.DetectOverlapsAtCastOrigin | QueryOptions.HitKinematics | QueryOptions.HitTriggers | QueryOptions.ComputeDetailedInfo);
                         for (int i = 0; i < wrappedHits.Count; i++) {
                             physicsHits.Add(wrappedHits[i], f.Context);
                         }
@@ -649,11 +647,12 @@ namespace Quantum {
                         FPVector2 wrappedHit = QuantumUtils.WrapWorld(stage, hit.Point, out _);
                         FPVector2 wrappedTile = QuantumUtils.WrapWorld(stage, new FPVector2(x, 0), out _);
                         if (wrappedHit.X < wrappedTile.X || wrappedHit.X > wrappedTile.X + FP._0_50) {
+                            UnityEngine.Debug.Log($"TODOfailed to hit: {wrappedHit.X} is not within {wrappedTile.X} - {wrappedTile.X + FP._0_50}");
                             // Not a valid hit (for this tile)
                             continue;
                         }
                         if (hit.IsDynamic) {
-                            if (!f.Exists(hit.Entity) || f.DestroyPending(hit.Entity)) {
+                            if (!f.Exists(hit.Entity) || f.DestroyPending(hit.Entity) || filter.Entity == hit.Entity) {
                                 continue;
                             }
                             if (f.Unsafe.TryGetPointer(hit.Entity, out Liquid* liquid)) {
