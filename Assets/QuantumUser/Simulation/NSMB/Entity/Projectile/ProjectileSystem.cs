@@ -107,7 +107,7 @@ namespace Quantum {
                 return;
             }
 
-            FPVector2 directionToOwner = ownerTransform->Position - transform->Position;
+            FPVector2 directionToOwner = (ownerTransform->Position + (FPVector2.Up * Constants._0_40)) - transform->Position;
             FP distanceToOwner = directionToOwner.Magnitude;
 
             if (distanceToOwner < FP.FromString("0.5")) {
