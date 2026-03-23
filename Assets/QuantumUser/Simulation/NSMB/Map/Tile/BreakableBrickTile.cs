@@ -7,7 +7,7 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
 #if QUANTUM_UNITY
     public UnityEngine.Color ParticleColor;
 #endif
-    public BreakableBy BreakingRules = BreakableBy.SmallMarioDrill | BreakableBy.LargeMario | BreakableBy.LargeMarioGroundpound | BreakableBy.LargeMarioDrill | BreakableBy.MegaMario | BreakableBy.Shells | BreakableBy.Bombs;
+    public BreakableBy BreakingRules = BreakableBy.SmallMarioDrill | BreakableBy.LargeMario | BreakableBy.LargeMarioGroundpound | BreakableBy.LargeMarioDrill | BreakableBy.MegaMario | BreakableBy.Shells | BreakableBy.Bombs | BreakableBy.Boomerangs;
     public bool BumpIfNotBroken;
     public FPVector2 BumpSize = new FPVector2(FP._0_50, FP._0_50);
     public FPVector2 BumpOffset = FPVector2.Zero;
@@ -58,6 +58,15 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
         } else if (f.Has<Bobomb>(entity)) {
              doBreak = BreakingRules.HasFlag(BreakableBy.Bombs);
              doBump = false;
+
+        } else if (f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
+            var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
+            if (asset.IsBoomerang) {
+                doBreak = BreakingRules.HasFlag(BreakableBy.Boomerangs);
+                doBump = true;
+                bumpOwner = projectile->Owner;
+                allowSelfDamage = true;
+            }
         }
 
         var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
@@ -119,5 +128,6 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
         MegaMario = 1 << 6,
         Shells = 1 << 7,
         Bombs = 1 << 8,
+        Boomerangs = 1 << 9
     }
 }

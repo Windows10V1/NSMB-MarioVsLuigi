@@ -161,6 +161,7 @@ namespace Quantum {
         public void HandleTileCollision(Frame f, ref Filter filter, ProjectileAsset asset) {
             var projectile = filter.Projectile;
             var physicsObject = filter.PhysicsObject;
+            var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
 
             // Check for terrain collision
             bool hasTerrainCollision = false;
@@ -170,6 +171,36 @@ namespace Quantum {
                     || physicsObject->IsTouchingCeiling
                     || physicsObject->IsTouchingGround
                     || PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape);
+            }
+
+            // Try to interact with tiles (for breaking blocks, etc.)
+            if (hasTerrainCollision && !physicsObject->DisableCollision) {
+                foreach (var contact in f.ResolveList(physicsObject->Contacts)) {
+                    // Only process tile contacts (no entity)
+                    if (f.Exists(contact.Entity)) {
+                        continue;
+                    }
+
+                    StageTileInstance tileInstance = stage.GetTileRelative(f, contact.Tile);
+                    StageTile tile = f.FindAsset(tileInstance.Tile);
+                    
+                    if (tile is IInteractableTile it) {
+                        // Determine interaction direction based on contact normal
+                        InteractionDirection direction = InteractionDirection.Up;
+                        if (FPVector2.Dot(contact.Normal, FPVector2.Up) > FP.FromString("0.5")) {
+                            direction = InteractionDirection.Down; // Hit from above
+                        } else if (FPVector2.Dot(contact.Normal, FPVector2.Down) > FP.FromString("0.5")) {
+                            direction = InteractionDirection.Up; // Hit from below
+                        } else if (FPVector2.Dot(contact.Normal, FPVector2.Right) > FP.FromString("0.5")) {
+                            direction = InteractionDirection.Left; // Hit from right
+                        } else if (FPVector2.Dot(contact.Normal, FPVector2.Left) > FP.FromString("0.5")) {
+                            direction = InteractionDirection.Right; // Hit from left
+                        }
+
+                        // Call interact on the tile
+                        it.Interact(f, filter.Entity, direction, contact.Tile, tileInstance, out _);
+                    }
+                }
             }
 
             // Special handling for boomerangs: switch to returning mode on terrain hit
