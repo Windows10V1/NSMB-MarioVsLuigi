@@ -136,16 +136,20 @@ namespace Quantum {
             FPVector2 targetVelocity = directionToOwner * pullForceStrength;
             
             // Smoothly transition current velocity to target velocity over time
-            // This creates a smooth slowdown and reversal effect
-            FP transitionTime = FP.FromString("1.0"); // 1 second to fully transition
-            FP transitionProgress = FPMath.Min(timeIntoReturn / transitionTime, FP._1);
-            
-            FPVector2 currentVelocity = physicsObject->Velocity;
-            // Lerp between current and target: current * (1 - t) + target * t
-            FPVector2 smoothVelocity = new FPVector2(
-                currentVelocity.X * (FP._1 - transitionProgress) + targetVelocity.X * transitionProgress,
-                currentVelocity.Y * (FP._1 - transitionProgress) + targetVelocity.Y * transitionProgress
-            );
+            // Only apply smooth transition when returning due to timer, not when hitting terrain
+            FPVector2 smoothVelocity = targetVelocity;
+            if (timeIntoReturn < FP.MaxValue && !projectile->IsReturning()) {
+                // Natural countdown phase - use smooth transition
+                FP transitionTime = FP.FromString("1.0"); // 1 second to fully transition
+                FP transitionProgress = FPMath.Min(timeIntoReturn / transitionTime, FP._1);
+                
+                FPVector2 currentVelocity = physicsObject->Velocity;
+                // Lerp between current and target: current * (1 - t) + target * t
+                smoothVelocity = new FPVector2(
+                    currentVelocity.X * (FP._1 - transitionProgress) + targetVelocity.X * transitionProgress,
+                    currentVelocity.Y * (FP._1 - transitionProgress) + targetVelocity.Y * transitionProgress
+                );
+            }
             
             physicsObject->Velocity = smoothVelocity;
 
@@ -172,6 +176,8 @@ namespace Quantum {
             if (asset.IsBoomerang && hasTerrainCollision && !projectile->IsReturning()) {
                 projectile->SetReturning();
                 projectile->Lifetime = 0; // Reset frame counter for return phase with peak force
+                // Apply max pull force immediately when hitting terrain
+                ApplyBoomerangPullForce(f, ref filter, asset, FP.MaxValue);
                 return; // Don't despawn, just switch to return mode
             }
 
