@@ -2598,7 +2598,7 @@ namespace Quantum {
     public AssetRef<MarioPlayerPhysicsInfo> PhysicsAsset;
     [FieldOffset(88)]
     public AssetRef<CharacterAsset> CharacterAsset;
-    [FieldOffset(64)]
+    [FieldOffset(68)]
     [ExcludeFromPrototype()]
     public PlayerRef PlayerRef;
     [FieldOffset(34)]
@@ -2625,16 +2625,16 @@ namespace Quantum {
     [FieldOffset(16)]
     [ExcludeFromPrototype()]
     public Byte Lives;
-    [FieldOffset(68)]
-    [ExcludeFromPrototype()]
-    public QBoolean Disconnected;
-    [FieldOffset(76)]
-    [ExcludeFromPrototype()]
-    public QBoolean IsDead;
     [FieldOffset(72)]
     [ExcludeFromPrototype()]
-    public QBoolean FireDeath;
+    public QBoolean Disconnected;
     [FieldOffset(80)]
+    [ExcludeFromPrototype()]
+    public QBoolean IsDead;
+    [FieldOffset(76)]
+    [ExcludeFromPrototype()]
+    public QBoolean FireDeath;
+    [FieldOffset(84)]
     [ExcludeFromPrototype()]
     public QBoolean IsRespawning;
     [FieldOffset(7)]
@@ -2658,7 +2658,7 @@ namespace Quantum {
     [FieldOffset(33)]
     [ExcludeFromPrototype()]
     public Byte SlowTurnaroundFrames;
-    [FieldOffset(60)]
+    [FieldOffset(64)]
     [ExcludeFromPrototype()]
     public Int32 LastPushingFrame;
     [FieldOffset(35)]
@@ -2679,7 +2679,7 @@ namespace Quantum {
     [FieldOffset(2)]
     [ExcludeFromPrototype()]
     public Byte CoyoteTimeFrames;
-    [FieldOffset(56)]
+    [FieldOffset(60)]
     [ExcludeFromPrototype()]
     public Int32 LandedFrame;
     [FieldOffset(9)]
@@ -2706,7 +2706,7 @@ namespace Quantum {
     [FieldOffset(40)]
     [ExcludeFromPrototype()]
     public KnockbackStrength CurrentKnockback;
-    [FieldOffset(52)]
+    [FieldOffset(56)]
     [ExcludeFromPrototype()]
     public Int32 KnockbackTick;
     [FieldOffset(6)]
@@ -2721,13 +2721,13 @@ namespace Quantum {
     [FieldOffset(144)]
     [ExcludeFromPrototype()]
     public EntityRef LastAttacker;
-    [FieldOffset(44)]
+    [FieldOffset(46)]
     [ExcludeFromPrototype()]
     public UInt16 InvincibilityFrames;
     [FieldOffset(19)]
     [ExcludeFromPrototype()]
     public Byte MegaMushroomStartFrames;
-    [FieldOffset(46)]
+    [FieldOffset(48)]
     [ExcludeFromPrototype()]
     public UInt16 MegaMushroomFrames;
     [FieldOffset(17)]
@@ -2766,10 +2766,13 @@ namespace Quantum {
     [FieldOffset(27)]
     [ExcludeFromPrototype()]
     public Byte PropellerDrillHoldFrames;
+    [FieldOffset(44)]
+    [ExcludeFromPrototype()]
+    public UInt16 CloudFlowerCooldownFrames;
     [FieldOffset(136)]
     [ExcludeFromPrototype()]
     public EntityRef HeldEntity;
-    [FieldOffset(48)]
+    [FieldOffset(52)]
     [ExcludeFromPrototype()]
     public Int32 HoldStartFrame;
     [FieldOffset(120)]
@@ -2848,6 +2851,7 @@ namespace Quantum {
         hash = hash * 31 + PropellerSpinFrames.GetHashCode();
         hash = hash * 31 + PropellerDrillCooldown.GetHashCode();
         hash = hash * 31 + PropellerDrillHoldFrames.GetHashCode();
+        hash = hash * 31 + CloudFlowerCooldownFrames.GetHashCode();
         hash = hash * 31 + HeldEntity.GetHashCode();
         hash = hash * 31 + HoldStartFrame.GetHashCode();
         hash = hash * 31 + CurrentPipe.GetHashCode();
@@ -2903,6 +2907,7 @@ namespace Quantum {
         serializer.Stream.Serialize((Byte*)&p->CurrentKnockback);
         serializer.Stream.Serialize((Byte*)&p->CurrentPowerupState);
         serializer.Stream.Serialize((Byte*)&p->PreviousPowerupState);
+        serializer.Stream.Serialize(&p->CloudFlowerCooldownFrames);
         serializer.Stream.Serialize(&p->InvincibilityFrames);
         serializer.Stream.Serialize(&p->MegaMushroomFrames);
         serializer.Stream.Serialize(&p->HoldStartFrame);

@@ -874,6 +874,7 @@ namespace Quantum {
             bool allowGroundpoundStart = mario->GroundpoundCooldownFrames == 1 || mario->IsPropellerFlying || mario->IsSpinnerFlying;
             QuantumUtils.Decrement(ref mario->GroundpoundCooldownFrames);
             QuantumUtils.Decrement(ref mario->PropellerDrillCooldown);
+            QuantumUtils.Decrement(ref mario->CloudFlowerCooldownFrames);
 
             if (inputs.Down.IsDown && allowGroundpoundStart) {
                 TryStartGroundpound(f, ref filter, physics, stage);
@@ -1447,6 +1448,11 @@ namespace Quantum {
 
                 if (mario->ProjectileDelayFrames > 0 || mario->IsWallsliding || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
                     || mario->IsSpinnerFlying || mario->IsDrilling || mario->IsSkidding || mario->IsTurnaround) {
+                    return;
+                }
+
+                // Cloud flower specific cooldown check
+                if (mario->CurrentPowerupState == PowerupState.CloudFlower && mario->CloudFlowerCooldownFrames > 0) {
                     return;
                 }
 

@@ -116,6 +116,8 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte PropellerDrillCooldown;
 	[ExcludeFromPrototype] byte PropellerDrillHoldFrames;
 
+	[ExcludeFromPrototype] ushort CloudFlowerCooldownFrames;
+
     [ExcludeFromPrototype] EntityRef HeldEntity;
 	[ExcludeFromPrototype] int HoldStartFrame;
 
