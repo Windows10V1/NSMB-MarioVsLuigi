@@ -75,5 +75,12 @@ MonoBehaviour:
     Keys: []
   StatePriority: 2
   ItemPriority: 2
-  EnterReserveIfOverridden: 1
+  EnterReserveIfOverridden: 0
+  MaxCloudBlocks: 0
+  CloudBlockDuration:
+    RawValue: 0
+  CloudBlockSpawnVerticalOffset:
+    RawValue: 0
+  CloudBlockSpawnHorizontalOffset:
+    RawValue: 0
   SfxOverrides: []

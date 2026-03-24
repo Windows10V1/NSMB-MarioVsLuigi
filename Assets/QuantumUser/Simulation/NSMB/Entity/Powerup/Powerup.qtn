@@ -11,12 +11,12 @@ enum PowerupState : Byte {
     NoPowerup,
     MiniMushroom,
     Mushroom,
+    BoomerangFlower,
     FireFlower,
     IceFlower,
     PropellerMushroom,
     BlueShell,
 	HammerSuit,
-    BoomerangFlower,
     CloudFlower,
     MegaMushroom
 }

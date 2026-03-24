@@ -104,12 +104,12 @@ namespace Quantum {
     NoPowerup,
     MiniMushroom,
     Mushroom,
+    BoomerangFlower,
     FireFlower,
     IceFlower,
     PropellerMushroom,
     BlueShell,
     HammerSuit,
-    BoomerangFlower,
     CloudFlower,
     MegaMushroom,
   }

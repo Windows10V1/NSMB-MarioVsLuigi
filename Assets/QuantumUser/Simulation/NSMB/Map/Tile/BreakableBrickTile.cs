@@ -66,6 +66,8 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
                 doBump = false;
                 bumpOwner = projectile->Owner;
                 allowSelfDamage = true;
+            } else {
+                return true;
             }
         }
 
