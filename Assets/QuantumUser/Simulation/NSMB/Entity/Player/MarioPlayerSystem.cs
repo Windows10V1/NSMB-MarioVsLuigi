@@ -1478,6 +1478,8 @@ namespace Quantum {
                     projectile = ShootHammerProjectile(f, ref filter, physics);
                 } else if (mario->CurrentPowerupState == PowerupState.BoomerangFlower) {
                     projectile = ShootBoomerangProjectile(f, ref filter, physics);
+                } else if (mario->CurrentPowerupState == PowerupState.CloudFlower) {
+                    projectile = ShootCloudProjectile(f, ref filter, physics);
                 } else {
                     projectile = ShootNormalProjectile(f, ref filter, physics);
                 }
@@ -1522,6 +1524,19 @@ namespace Quantum {
             }
         }
     }
+
+        private Projectile* ShootCloudProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
+            var mario = filter.MarioPlayer;
+            var physicsObject = filter.PhysicsObject;
+
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50);
+
+            EntityRef newEntity = f.Create(f.SimulationConfig.CloudPrototype);
+
+            var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
+            return projectile;
+        }
 
         private Projectile* ShootBoomerangProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
             var mario = filter.MarioPlayer;
