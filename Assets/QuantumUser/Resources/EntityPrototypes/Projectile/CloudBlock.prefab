@@ -4892,6 +4892,11 @@ GameObject:
   - component: {fileID: 8010249587145537842}
   - component: {fileID: 6774445834162848449}
   - component: {fileID: 128866428235369491}
+  - component: {fileID: 3667974533863622642}
+  - component: {fileID: -3666527222284582322}
+  - component: {fileID: 5404140305981615203}
+  - component: {fileID: 6632058151646472582}
+  - component: {fileID: -4922457863048937646}
   m_Layer: 20
   m_Name: CloudBlock
   m_TagString: platform
@@ -5179,6 +5184,104 @@ MonoBehaviour:
   OnEntityDestroyed:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &3667974533863622642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010249587145537848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 385320c580a374c44b3da48163df570b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypePhysicsObject
+  Prototype:
+    Gravity:
+      X:
+        RawValue: 0
+      Y:
+        RawValue: 0
+    TerminalVelocity:
+      RawValue: 0
+    IsFrozen:
+      Value: 0
+    DisableCollision:
+      Value: 0
+    SlowInLiquids:
+      Value: 0
+    IsWaterSolid:
+      Value: 0
+    BreakMegaObjects:
+      Value: 0
+--- !u!114 &-3666527222284582322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010249587145537848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e64dab71434552b4cb3f460dc92213d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypeProjectile
+  Prototype:
+    Asset:
+      Id:
+        Value: 0
+    Speed:
+      RawValue: 0
+    Lifetime: 255
+--- !u!114 &5404140305981615203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010249587145537848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb5ba24fc1efae4bab9294e76e613fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypeWrappingObject
+  Prototype:
+    _empty_prototype_dummy_field_: 0
+--- !u!114 &6632058151646472582
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010249587145537848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dab5e18d9c39ba740adf6c085821a1a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypeInteractable
+  Prototype:
+    ColliderDisabled:
+      Value: 0
+--- !u!114 &-4922457863048937646
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8010249587145537848}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21a5b2dd50d714a40812a36b547124b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypeCullable
+  Prototype:
+    Offset:
+      X:
+        RawValue: 0
+      Y:
+        RawValue: 9830
+    BroadRadius:
+      RawValue: 131072
 --- !u!1001 &1159980504268623263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5210,7 +5313,7 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: a284b9e564c6f9a4ba0fb3f184efc633,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.00000074505795
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a284b9e564c6f9a4ba0fb3f184efc633,
         type: 3}
