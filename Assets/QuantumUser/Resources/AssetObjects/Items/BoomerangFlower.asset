@@ -76,11 +76,10 @@ MonoBehaviour:
   StatePriority: 2
   ItemPriority: 2
   EnterReserveIfOverridden: 1
-  MaxCloudBlocks: 0
-  CloudBlockDuration:
+  MaxInstantProjectiles: 1
+  MaxProjectileCount: 1
+  ProjectileSpawnHorizontalOffset:
     RawValue: 0
-  CloudBlockSpawnVerticalOffset:
-    RawValue: 0
-  CloudBlockSpawnHorizontalOffset:
+  ProjectileSpawnVerticalOffset:
     RawValue: 0
   SfxOverrides: []

@@ -1429,7 +1429,7 @@ namespace Quantum {
 
             if (!(inputs.PowerupAction.WasPressed
                 || (state == PowerupState.PropellerMushroom && inputs.PropellerPowerupAction.WasPressed && !physicsObject->IsTouchingGround && !mario->IsWallsliding)
-                || ((state == PowerupState.FireFlower || state == PowerupState.IceFlower || state == PowerupState.HammerSuit || state == PowerupState.BoomerangFlower) && inputs.FireballPowerupAction.WasPressed))) {
+                || ((state == PowerupState.FireFlower || state == PowerupState.IceFlower || state == PowerupState.HammerSuit || state == PowerupState.BoomerangFlower || state == PowerupState.CloudFlower) && inputs.FireballPowerupAction.WasPressed))) {
                 return;
             }
 
@@ -1442,7 +1442,8 @@ namespace Quantum {
             case PowerupState.IceFlower:
             case PowerupState.FireFlower:
             case PowerupState.HammerSuit:
-            case PowerupState.BoomerangFlower: {
+            case PowerupState.BoomerangFlower:
+            case PowerupState.CloudFlower: {
 
                 if (mario->ProjectileDelayFrames > 0 || mario->IsWallsliding || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
                     || mario->IsSpinnerFlying || mario->IsDrilling || mario->IsSkidding || mario->IsTurnaround) {
@@ -1450,7 +1451,22 @@ namespace Quantum {
                 }
 
                 byte activeProjectiles = mario->CurrentProjectiles;
-                if (activeProjectiles >= physics.MaxProjecitles) {
+                
+                // Get powerup asset to check for custom limits
+                PowerupAsset powerupAsset = QuantumUtils.FindPowerupAsset(f, mario->CurrentPowerupState);
+                byte maxInstantProjectiles = 2; // Default for most projectiles
+                byte maxProjectiles = physics.MaxProjecitles; // Default max
+                
+                if (powerupAsset != null) {
+                    if (powerupAsset.MaxInstantProjectiles > 0) {
+                        maxInstantProjectiles = powerupAsset.MaxInstantProjectiles;
+                    }
+                    if (powerupAsset.MaxProjectileCount > 0) {
+                        maxProjectiles = powerupAsset.MaxProjectileCount;
+                    }
+                }
+                
+                if (activeProjectiles >= maxProjectiles) {
                     return;
                 }
 
@@ -1458,8 +1474,8 @@ namespace Quantum {
                     return;
                 }
 
-                if (activeProjectiles < 2) {
-                    // Always allow if < 2
+                if (activeProjectiles < maxInstantProjectiles) {
+                    // Always allow if < maxInstantProjectiles
                     mario->CurrentVolley = (byte) (activeProjectiles + 1);
                 } else if (mario->CurrentVolley < physics.ProjectileVolleySize) {
                     // Allow in this volley
@@ -1479,7 +1495,7 @@ namespace Quantum {
                 } else if (mario->CurrentPowerupState == PowerupState.BoomerangFlower) {
                     projectile = ShootBoomerangProjectile(f, ref filter, physics);
                 } else if (mario->CurrentPowerupState == PowerupState.CloudFlower) {
-                    projectile = ShootCloudProjectile(f, ref filter, physics);
+                    projectile = ShootCloudProjectile(f, ref filter, physics, powerupAsset);
                 } else {
                     projectile = ShootNormalProjectile(f, ref filter, physics);
                 }
@@ -1525,11 +1541,24 @@ namespace Quantum {
         }
     }
 
-        private Projectile* ShootCloudProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
+        private Projectile* ShootCloudProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics, PowerupAsset powerupAsset) {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50);
+            FP horizontalOffset = mario->FacingRight ? FP._0_25 : -FP._0_25;
+            FP verticalOffset = FP._0_50;
+
+            // Use custom offsets from powerupAsset if available
+            if (powerupAsset != null) {
+                horizontalOffset = mario->FacingRight ? powerupAsset.ProjectileSpawnHorizontalOffset : -powerupAsset.ProjectileSpawnHorizontalOffset;
+                verticalOffset = powerupAsset.ProjectileSpawnVerticalOffset;
+            }
+
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(horizontalOffset, verticalOffset);
+
+            // Reset momentum and add upward bounce when shooting cloud projectile
+            physicsObject->Velocity.X = 0;
+            physicsObject->Velocity.Y = FP.FromString("3.0");
 
             EntityRef newEntity = f.Create(f.SimulationConfig.CloudPrototype);
 

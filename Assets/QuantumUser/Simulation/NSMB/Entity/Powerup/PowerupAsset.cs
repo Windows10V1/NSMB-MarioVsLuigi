@@ -29,11 +29,12 @@ public unsafe class PowerupAsset : CoinItemAsset, ISoundOverrideProvider {
     public sbyte StatePriority = -1, ItemPriority = -1;
     public bool EnterReserveIfOverridden = true;
 
-    // Cloud Flower specific settings
-    public int MaxCloudBlocks = 0;
-    public FP CloudBlockDuration = 0;
-    public FP CloudBlockSpawnVerticalOffset = 0;
-    public FP CloudBlockSpawnHorizontalOffset = 0;
+
+    // Projectile-specific limits (0 = use global defaults)
+    public byte MaxInstantProjectiles = 0;
+    public byte MaxProjectileCount = 0;
+    public FP ProjectileSpawnHorizontalOffset = 0;
+    public FP ProjectileSpawnVerticalOffset = 0;
 
     public SoundEffectOverride[] SfxOverrides;
 
