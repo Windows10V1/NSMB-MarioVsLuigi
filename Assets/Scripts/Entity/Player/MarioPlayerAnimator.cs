@@ -101,7 +101,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeShellExclude, blueShell, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuck, boomerangHelmet, boomerangShell;
+        [SerializeField] private GameObject smallModel, largeModel, largeShellExclude, blueShell, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuck, boomerangHelmet, boomerangShell, cloudHead, cloudScarf;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -611,6 +611,8 @@ namespace NSMB.Entities.Player {
             HammerTuck.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit && mario->IsCrouching && !f.Exists(mario->CurrentPipe));
             boomerangHelmet.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             boomerangShell.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
+            cloudHead.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
+            cloudScarf.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;
             bool changedAvatar = animator.avatar != targetAvatar;
