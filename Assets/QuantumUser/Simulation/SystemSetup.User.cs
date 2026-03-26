@@ -38,6 +38,7 @@ namespace Quantum {
                     new CoinItemSystem(),
                     new PowerupSystem(),
                     new BlockBumpSystem(),
+                    new BreakableObjectSystem(),
                     new MarioPlayerSystem(),
                     new CoinSystem(),
                     new GoldBlockSystem(),
@@ -48,7 +49,6 @@ namespace Quantum {
                     new IceBlockSystem(),
                     new CameraSystem(),
                     new LiquidSystem(),
-                    new BreakableObjectSystem(),
                     new MarioBrosPlatformSystem(),
                     new EnterablePipeSystem(),
                     new InvisibleBlockSystem()

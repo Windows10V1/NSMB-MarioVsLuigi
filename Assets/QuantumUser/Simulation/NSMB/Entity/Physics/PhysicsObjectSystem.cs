@@ -647,7 +647,6 @@ namespace Quantum {
                         FPVector2 wrappedHit = QuantumUtils.WrapWorld(stage, hit.Point, out _);
                         FPVector2 wrappedTile = QuantumUtils.WrapWorld(stage, new FPVector2(x, 0), out _);
                         if (wrappedHit.X < wrappedTile.X || wrappedHit.X > wrappedTile.X + FP._0_50) {
-                            UnityEngine.Debug.Log($"TODOfailed to hit: {wrappedHit.X} is not within {wrappedTile.X} - {wrappedTile.X + FP._0_50}");
                             // Not a valid hit (for this tile)
                             continue;
                         }

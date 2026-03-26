@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using NSMB.UI.Translation;
+using NSMB.Utilities;
 using Quantum;
 using Quantum.Prototypes;
 using System;
@@ -12,7 +13,6 @@ namespace NSMB.Replay {
     public class BinaryReplayHeader {
 
         //---Helpers
-        private static GameVersion CachedCurrentVersion;
         private static int MagicHeaderLength => Encoding.ASCII.GetByteCount(MagicHeader);
         private static readonly byte[] MagicBuffer = new byte[MagicHeaderLength];
 
@@ -23,7 +23,7 @@ namespace NSMB.Replay {
         public int InitialFrameNumber;
         public int ReplayLengthInFrames;
         public string CustomName = "";
-        public bool IsCompatible => Version.EqualsIgnoreHotfix(GetCurrentVersion()); // Major.Minor.Patch.Hotfix -> hotfix is for backwards compatible fixes.
+        public bool IsCompatible => Version.EqualsIgnoreHotfix(GameVersion.Current); // Major.Minor.Patch.Hotfix -> hotfix is for backwards compatible fixes.
 
         // Rules
         public GameRulesPrototype Rules;
@@ -34,12 +34,6 @@ namespace NSMB.Replay {
 
         // Addons
         public List<Guid> AddonGuids = new();
-
-
-        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
-        public static void ResetCachedVersion() {
-            CachedCurrentVersion = GameVersion.Parse(Application.version);
-        }
 
         internal long WriteToStream(Stream output) {
             using BinaryWriter writer = new(output, Encoding.UTF8, true);
@@ -146,11 +140,6 @@ namespace NSMB.Replay {
             }
 
             return null;
-        }
-
-
-        public static GameVersion GetCurrentVersion() {
-            return CachedCurrentVersion;
         }
     }
 }

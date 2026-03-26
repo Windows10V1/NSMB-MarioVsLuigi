@@ -1,4 +1,5 @@
 using NSMB.Addons;
+using NSMB.Utilities;
 using NSMB.Utilities.Extensions;
 using System.Collections;
 using System.Collections.Generic;
@@ -102,7 +103,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts.Addons {
                         GlobalController.Instance.PlaySound(SoundEffect.UI_Error);
                         if (LoadResultTranslationKeys.TryGetValue(loadAddonResult.Result, out var translationKey)) {
                             var text = GlobalController.Instance.translationManager.GetTranslationWithReplacements(translationKey,
-                                "version", GameVersion.Parse(Application.version).ToStringIgnoreHotfix() + ".X",
+                                "version", GameVersion.Current.ToStringIgnoreHotfix() + ".X",
                                 "addon", loadAddonResult.IncompatibleWith?.Definition?.FullName);
                             stateText.text = text;
                             if (blankStateTextCoroutine != null) {

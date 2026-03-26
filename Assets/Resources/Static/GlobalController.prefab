@@ -19540,36 +19540,6 @@ MonoBehaviour:
   defaultCharacter:
     Id:
       Value: 532063855470386108
-  legacyCharacterList:
-  - Id:
-      Value: 532063855470386108
-  - Id:
-      Value: 485289843648077326
-  legacyPaletteList:
-  - Id:
-      Value: 0
-  - Id:
-      Value: 520065536123357703
-  - Id:
-      Value: 359165249679469206
-  - Id:
-      Value: 454459291395690797
-  - Id:
-      Value: 439818323390480907
-  - Id:
-      Value: 382817490487173616
-  - Id:
-      Value: 523410392730610906
-  - Id:
-      Value: 524740824993114785
-  - Id:
-      Value: 531445013469831101
-  - Id:
-      Value: 425669587075414699
-  - Id:
-      Value: 451175776753330594
-  - Id:
-      Value: 305528157120426054
 --- !u!114 &1217248114408797113
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19632,6 +19602,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b206f0897e0840545bca58962f5ec592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  buildIdentifierAsset: {fileID: 4900000, guid: 9547f238d531bef47a15e7b61abf719a,
+    type: 3}
 --- !u!114 &2477416830814354373
 MonoBehaviour:
   m_ObjectHideFlags: 0

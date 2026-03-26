@@ -151,7 +151,7 @@ namespace NSMB.Replay {
 
                 ref GameRules rules = ref f.Global->Rules;
                 BinaryReplayHeader header = new() {
-                    Version = BinaryReplayHeader.GetCurrentVersion(),
+                    Version = GameVersion.Current,
                     UnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
                     InitialFrameNumber = jsonReplay.InitialTick,
                     ReplayLengthInFrames = jsonReplay.LastTick - jsonReplay.InitialTick,

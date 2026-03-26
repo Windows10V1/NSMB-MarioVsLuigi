@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using NSMB.Utilities;
 using System;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -8,10 +9,12 @@ namespace NSMB.Networking {
 
         private static readonly string ApiURL = "https://api.github.com/repos/ipodtouch0218/NSMB-MarioVsLuigi/releases/latest";
 
+        public delegate void UpdateCallback(bool upToDate, string latestGithubVersion);
+
         /// <summary>
         /// Returns if we're up to date, OR newer, compared to the latest GitHub release version number
         /// </summary>
-        public async static void IsUpToDate(Action<bool, string> callback) {
+        public async static void IsUpToDate(UpdateCallback callback) {
             // Get http results from the GitHub API
             using UnityWebRequest request = UnityWebRequest.Get(ApiURL);
             request.SetRequestHeader("Accept", "application/json");

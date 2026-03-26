@@ -1,5 +1,6 @@
 using NSMB.Networking;
 using NSMB.Replay;
+using NSMB.Utilities;
 using NSMB.Utilities.Extensions;
 using Photon.Client;
 using Photon.Deterministic;
@@ -35,6 +36,9 @@ namespace NSMB.Networking {
         public static QuantumGame Game => Runner?.Game ?? QuantumRunner.DefaultGame;
         public static IEnumerable<Region> Regions => Client?.RegionHandler?.EnabledRegions?.OrderBy(r => r.Code);
         public static string Region => Client?.CurrentRegion ?? Instance.lastRegion;
+
+        //---Serialized Variables
+        [SerializeField] private TextAsset buildIdentifierAsset;
 
         //---Private Variables
         private RealtimeClient realtimeClient;
@@ -143,9 +147,23 @@ namespace NSMB.Networking {
             }
 
             try {
+                string buildIdentifier = "";
+                if (Instance.buildIdentifierAsset) {
+                    foreach (var line in Instance.buildIdentifierAsset.text.Split('\n', StringSplitOptions.RemoveEmptyEntries)) {
+                        var trimmedLine = line.Trim();
+                        if (trimmedLine.Length == 0
+                            || trimmedLine.StartsWith('#')) {
+                            continue;
+                        }
+
+                        buildIdentifier = "-" + trimmedLine;
+                        break;
+                    }
+                }
+
                 await Client.ConnectUsingSettingsAsync(new AppSettings {
                     AppIdQuantum = "6b4b72d0-57c3-4991-96c1-f3f36f9548e5",
-                    AppVersion = GameVersion.Parse(Application.version).ToStringIgnoreHotfix(),
+                    AppVersion = GameVersion.Current.ToStringIgnoreHotfix() + buildIdentifier,
                     EnableLobbyStatistics = true,
                     AuthMode = AuthModeOption.Auth,
                     FixedRegion = region,

@@ -10,23 +10,14 @@ namespace Quantum {
         private HashSet<EntityRefPair> alreadyInteracted = new(16);
 
         public override void Update(Frame f) {
+            // Safety.
+            alreadyInteracted.Clear();
+
             foreach ((var entity, var initiator) in f.Unsafe.GetComponentBlockIterator<InteractionInitiator>()) {
                 if ((f.Unsafe.TryGetPointer(entity, out Interactable* interactable) && interactable->ColliderDisabled)
                     || (f.Unsafe.TryGetPointer(entity, out Enemy* enemy) && enemy->IsDead)
                     || (f.Unsafe.TryGetPointer(entity, out Freezable* freezable) && f.Exists(freezable->FrozenCubeEntity))) {
                     continue;
-                }
-
-                // Collide with hitboxes
-                if (f.Physics2D.TryGetQueryHits(initiator->OverlapQueryRef, out HitCollection hits)) {
-                    for (int i = 0; i < hits.Count; i++) {
-                        CollideWithHitbox(f, entity, hits[i].Entity);
-                    }
-                }
-                if (f.Physics2D.TryGetQueryHits(initiator->OverlapLevelSeamQueryRef, out hits)) {
-                    for (int i = 0; i < hits.Count; i++) {
-                        CollideWithHitbox(f, entity, hits[i].Entity);
-                    }
                 }
 
                 // Collide with physical objects
@@ -39,6 +30,18 @@ namespace Quantum {
                         }
 
                         CollideWithPlatform(f, entity, contact.Entity, contact);
+                    }
+                }
+
+                // Collide with hitboxes
+                if (f.Physics2D.TryGetQueryHits(initiator->OverlapQueryRef, out HitCollection hits)) {
+                    for (int i = 0; i < hits.Count; i++) {
+                        CollideWithHitbox(f, entity, hits[i].Entity);
+                    }
+                }
+                if (f.Physics2D.TryGetQueryHits(initiator->OverlapLevelSeamQueryRef, out hits)) {
+                    for (int i = 0; i < hits.Count; i++) {
+                        CollideWithHitbox(f, entity, hits[i].Entity);
                     }
                 }
             }

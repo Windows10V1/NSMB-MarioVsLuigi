@@ -45,10 +45,12 @@ namespace Quantum {
             var shape = filter.Collider->Shape;
 
             Transform2D transformCopy = *filter.Transform;
+            /*
             if (f.Unsafe.TryGetPointer(filter.Entity, out PhysicsObject* physicsObject)) {
                 transformCopy.Position += physicsObject->Velocity * f.DeltaTime;
             }
-
+            */
+            
             // Normal query
             interactable->OverlapQueryRef = f.Physics2D.AddOverlapShapeQuery(transformCopy, shape);
 

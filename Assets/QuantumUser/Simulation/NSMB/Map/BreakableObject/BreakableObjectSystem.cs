@@ -8,7 +8,7 @@ namespace Quantum {
             f.Context.RegisterPreContactCallback(f, OnMarioBreakableObjectPreContact);
         }
 
-        private static bool TryInteraction(Frame f, EntityRef marioEntity, EntityRef breakableObjectEntity, in PhysicsContact? contact = null) {
+        public static bool TryInteraction(Frame f, EntityRef marioEntity, EntityRef breakableObjectEntity, in PhysicsContact? contact = null) {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
             if (mario->CurrentPowerupState != PowerupState.MegaMushroom || mario->IsDead) {
                 return true;
@@ -29,7 +29,6 @@ namespace Quantum {
             }
 
             FP dot = FPVector2.Dot(effectiveNormal, breakableUp);
-
             if (dot > Constants.PhysicsGroundMaxAngleCos) {
                 // Hit the top of a pipe
                 // Shrink by 1, if we can.
@@ -41,7 +40,7 @@ namespace Quantum {
                     }
 
                     var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
-                    if (physicsObject->Velocity.Y < -8) { // TODO: magic value
+                    if (FPVector2.Dot(breakableUp, physicsObject->Velocity) > 8) { // TODO: magic value
                         // Single stomp
                         ChangeHeight(f, breakableObjectEntity, breakable, breakableCollider, breakable->CurrentHeight - 1, null);
                         return true;
@@ -79,7 +78,7 @@ namespace Quantum {
 
         #region Interactions
         private void OnMarioBreakableObjectInteract(Frame f, EntityRef marioEntity, EntityRef breakableEntity) {
-            //TryInteraction(f, marioEntity, breakableEntity);
+            TryInteraction(f, marioEntity, breakableEntity);
         }
 
         private void OnMarioBreakableObjectPreContact(Frame f, VersusStageData stage, EntityRef entity, PhysicsContact contact, ref bool keepContacts) {
