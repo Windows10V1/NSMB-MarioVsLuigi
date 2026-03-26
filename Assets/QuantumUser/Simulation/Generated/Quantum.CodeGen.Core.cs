@@ -106,12 +106,12 @@ namespace Quantum {
     Mushroom,
     BoomerangFlower,
     FireFlower,
-    SuperBallFlower,
     IceFlower,
     PropellerMushroom,
     BlueShell,
     HammerSuit,
     CloudFlower,
+    SuperBallFlower,
     MegaMushroom,
   }
   public enum StageTileFlags : byte {
