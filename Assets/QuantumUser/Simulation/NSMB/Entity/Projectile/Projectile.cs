@@ -20,6 +20,35 @@ namespace Quantum {
 
             // Speed
             Speed = asset.Speed;
+            
+            // Super Ball uses its own physics system
+            if (asset.IsSuperBall) {
+                // Super Ball moves at 45 degrees diagonally
+                // Disable physics completely - we'll move it manually
+                physicsObject->Gravity = FPVector2.Zero;
+                physicsObject->DisableCollision = true;  // Disable physics collisions, we handle manually
+                
+                // Set position
+                transform->Position = spawnpoint;
+                // Set velocity to zero - we'll move manually
+                physicsObject->Velocity = FPVector2.Zero;
+                
+                // Store diagonal direction:
+                // Combo bits: bit 0-1 = horizontal direction (0=left, 1=right)
+                //             bit 2-3 = vertical direction (0=down, 1=up)
+                byte dirByte = 0;
+                if (right) dirByte |= 1;  // bit 0 = horizontal
+                dirByte |= 2;             // bit 1 = vertical (always start going up)
+                Combo = dirByte;
+                
+                // Initialize boomerang state if applicable (Super Ball can also be a boomerang)
+                if (asset.IsBoomerang) {
+                    // Already set in Combo, just mark lifetime
+                    Lifetime = 0;
+                }
+                return;
+            }
+
             physicsObject->Gravity = asset.Gravity;
             if (asset.InheritShooterVelocity
                 && f.Unsafe.TryGetPointer(owner, out PhysicsObject* ownerPhysicsObject)

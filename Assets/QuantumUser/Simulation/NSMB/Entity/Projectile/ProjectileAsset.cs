@@ -25,6 +25,9 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
     public FP BoomerangReturnDelay = FP.FromString("0.5"); // Delay before return force activates
     public FP BoomerangReturnAcceleration = FP.FromString("0.5"); // How quickly force ramps up
 
+    // Super Ball-specific properties
+    public bool IsSuperBall = false; // When true, uses custom 45-degree bounce physics
+
     public SoundEffectOverride[] SfxOverrides;
 
     [NonSerialized] private Dictionary<SoundEffect, SoundEffectOverride> overridesDict;

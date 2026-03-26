@@ -28,6 +28,12 @@ namespace Quantum {
             var projectile = filter.Projectile;
             var asset = f.FindAsset(projectile->Asset);
 
+            // Super Ball has its own physics system - skip normal update logic
+            if (asset.IsSuperBall) {
+                HandleSuperBallUpdate(f, ref filter, asset);
+                return;
+            }
+
             // Handle boomerang-specific logic
             if (asset.IsBoomerang) {
                 HandleBoomerangUpdate(f, ref filter, asset);
@@ -157,11 +163,157 @@ namespace Quantum {
             physicsObject->Gravity = FPVector2.Zero;
         }
 
+        private void HandleSuperBallUpdate(Frame f, ref Filter filter, ProjectileAsset asset) {
+            var projectile = filter.Projectile;
+            var physicsObject = filter.PhysicsObject;
+            var transform = filter.Transform;
+            var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+            var collider = filter.PhysicsCollider;
+
+            // Handle Super Ball lifetime (if any)
+            if (projectile->Lifetime > 0 && QuantumUtils.Decrement(ref projectile->Lifetime)) {
+                // Despawn via timer
+                Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                return;
+            }
+
+            // Check to instant-despawn if spawned inside a wall
+            if (!projectile->CheckedCollision) {
+                if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
+                    Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                    return;
+                }
+                projectile->CheckedCollision = true;
+            }
+
+            // Extract direction from Combo byte:
+            // bit 0 = horizontal (0=left, 1=right)
+            // bit 1 = vertical (0=down, 1=up)
+            bool goingRight = (projectile->Combo & 1) != 0;
+            bool goingUp = (projectile->Combo & 2) != 0;
+
+            // Calculate velocity components (constant magnitude at 45 degrees)
+            FP speedComponent = projectile->Speed;
+            FP velocityX = goingRight ? speedComponent : -speedComponent;
+            FP velocityY = goingUp ? -speedComponent : speedComponent;  // Negative = up
+
+            // Move the projectile manually
+            FPVector2 newPosition = transform->Position + new FPVector2(velocityX, velocityY) / 60;  // 60 FPS
+
+            // Check for terrain collisions
+            bool hitGround = false;
+            bool hitCeiling = false;
+            bool hitLeftWall = false;
+            bool hitRightWall = false;
+
+            // Simple collision detection: check if new position would be in terrain
+            if (PhysicsObjectSystem.BoxInGround(f, newPosition, collider->Shape)) {
+                // We hit something - figure out what
+                // Try moving only X
+                FPVector2 posX = new(newPosition.X, transform->Position.Y);
+                if (!PhysicsObjectSystem.BoxInGround(f, posX, collider->Shape)) {
+                    // Can move in X but not Y - hit ceiling or ground
+                    if (velocityY > 0) {
+                        hitGround = true;
+                    } else {
+                        hitCeiling = true;
+                    }
+                    newPosition.X = posX.X;
+                } else {
+                    // Try moving only Y
+                    FPVector2 posY = new(transform->Position.X, newPosition.Y);
+                    if (!PhysicsObjectSystem.BoxInGround(f, posY, collider->Shape)) {
+                        // Can move in Y but not X - hit wall
+                        if (velocityX < 0) {
+                            hitLeftWall = true;
+                        } else {
+                            hitRightWall = true;
+                        }
+                        newPosition.Y = posY.Y;
+                    } else {
+                        // Both blocked, stuck in corner - bounce off both
+                        if (velocityX < 0) {
+                            hitLeftWall = true;
+                        } else {
+                            hitRightWall = true;
+                        }
+                        if (velocityY > 0) {
+                            hitGround = true;
+                        } else {
+                            hitCeiling = true;
+                        }
+                        // Stay at current position
+                        newPosition = transform->Position;
+                    }
+                }
+            }
+
+            // Update position
+            transform->Position = newPosition;
+
+            // Handle bounces - reverse appropriate velocity components
+            if (hitGround) {
+                // Flip vertical direction - set bit 1 (go UP after hitting ground)
+                projectile->Combo |= 2;
+                goingUp = true;
+            }
+            if (hitCeiling) {
+                // Flip vertical direction - clear bit 1 (go DOWN after hitting ceiling)
+                projectile->Combo = (byte)(projectile->Combo & 0xFD);  // 11111101
+                goingUp = false;
+            }
+            if (hitLeftWall) {
+                // Flip horizontal direction - set bit 0 (go right)
+                projectile->Combo |= 1;
+                goingRight = true;
+            }
+            if (hitRightWall) {
+                // Flip horizontal direction - clear bit 0 (go left)
+                projectile->Combo = (byte)(projectile->Combo & 0xFE);  // 11111110
+                goingRight = false;
+            }
+
+            // Try to interact with tiles (for breaking blocks, etc.)
+            bool anyCollision = hitGround || hitCeiling || hitLeftWall || hitRightWall;
+            if (anyCollision) {
+                foreach (var contact in f.ResolveList(physicsObject->Contacts)) {
+                    // Only process tile contacts (no entity)
+                    if (f.Exists(contact.Entity)) {
+                        continue;
+                    }
+
+                    StageTileInstance tileInstance = stage.GetTileRelative(f, contact.Tile);
+                    StageTile tile = f.FindAsset(tileInstance.Tile);
+                    
+                    if (tile is IInteractableTile it) {
+                        // Determine interaction direction based on what we hit
+                        InteractionDirection direction = InteractionDirection.Up;
+                        if (hitGround) {
+                            direction = InteractionDirection.Down;
+                        } else if (hitCeiling) {
+                            direction = InteractionDirection.Up;
+                        } else if (hitLeftWall) {
+                            direction = InteractionDirection.Left;
+                        } else if (hitRightWall) {
+                            direction = InteractionDirection.Right;
+                        }
+
+                        // Call interact on the tile
+                        it.Interact(f, filter.Entity, direction, contact.Tile, tileInstance, out _);
+                    }
+                }
+            }
+        }
 
         public void HandleTileCollision(Frame f, ref Filter filter, ProjectileAsset asset) {
             var projectile = filter.Projectile;
             var physicsObject = filter.PhysicsObject;
             var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+
+            // Super Ball uses its own collision handling
+            if (asset.IsSuperBall) {
+                return;
+            }
 
             // Check for terrain collision
             bool hasTerrainCollision = false;
