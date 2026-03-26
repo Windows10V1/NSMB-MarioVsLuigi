@@ -35,7 +35,7 @@ MonoBehaviour:
       RawValue: 110100
   MaxMatchingPowerStates: 0
   MaxMatchingReserveState: 0
-  State: 7
+  State: 8
   SoundPlaysEverywhere: 0
   SoundEffect: 16
   ReserveSprite: {fileID: 2664608197882872095, guid: a87d3b028baa82640b06b88398a8c4f0,
@@ -77,11 +77,10 @@ MonoBehaviour:
   StatePriority: 2
   ItemPriority: 2
   EnterReserveIfOverridden: 1
-  MaxCloudBlocks: 0
-  CloudBlockDuration:
+  MaxInstantProjectiles: 0
+  MaxProjectileCount: 0
+  ProjectileSpawnHorizontalOffset:
     RawValue: 0
-  CloudBlockSpawnVerticalOffset:
-    RawValue: 0
-  CloudBlockSpawnHorizontalOffset:
+  ProjectileSpawnVerticalOffset:
     RawValue: 0
   SfxOverrides: []

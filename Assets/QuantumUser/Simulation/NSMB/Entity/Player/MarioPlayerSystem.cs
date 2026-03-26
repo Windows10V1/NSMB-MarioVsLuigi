@@ -1444,7 +1444,8 @@ namespace Quantum {
             case PowerupState.FireFlower:
             case PowerupState.HammerSuit:
             case PowerupState.BoomerangFlower:
-            case PowerupState.CloudFlower: {
+            case PowerupState.CloudFlower:
+            case PowerupState.SuperBallFlower: {
 
                 if (mario->ProjectileDelayFrames > 0 || mario->IsWallsliding || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
                     || mario->IsSpinnerFlying || mario->IsDrilling || mario->IsSkidding || mario->IsTurnaround) {
@@ -1605,7 +1606,9 @@ namespace Quantum {
 
             FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35);
 
-            EntityRef newEntity = f.Create(mario->CurrentPowerupState == PowerupState.IceFlower
+            EntityRef newEntity = f.Create(mario->CurrentPowerupState == PowerupState.SuperBallFlower
+                ? f.SimulationConfig.SuperballPrototype
+                : mario->CurrentPowerupState == PowerupState.IceFlower
                 ? f.SimulationConfig.IceballPrototype
                 : f.SimulationConfig.FireballPrototype);
 

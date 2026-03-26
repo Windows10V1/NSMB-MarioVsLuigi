@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a77651c98eb177748a49241e377f4457, type: 3}
-  m_Name: CloudFlower
+  m_Name: SuperBallFlower
   m_EditorClassIdentifier: 
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Items/CloudFlower
+    Path: QuantumUser/Resources/AssetObjects/Items/SuperBallFlower
     Guid:
-      Value: 301199286238400872
+      Value: 470294933914742271
   Prefab:
     Id:
-      Value: 1383126763358375215
+      Value: 1370706980870389132
   SpawnChance:
-    RawValue: 98304
+    RawValue: 65536
   AboveAverageBonus:
-    RawValue: 49152
+    RawValue: -57344
   BelowAverageBonus:
-    RawValue: -65536
+    RawValue: 65536
   BlockSpawnSoundEffect: 69
-  Flags: 23
+  Flags: 19
   MaxNumberOfItems: 0
   CameraSpawnOffset:
     X:
@@ -35,10 +35,10 @@ MonoBehaviour:
       RawValue: 110100
   MaxMatchingPowerStates: 0
   MaxMatchingReserveState: 0
-  State: 10
+  State: 5
   SoundPlaysEverywhere: 0
   SoundEffect: 16
-  ReserveSprite: {fileID: 37558163, guid: a87d3b028baa82640b06b88398a8c4f0, type: 3}
+  ReserveSprite: {fileID: -200762186, guid: a87d3b028baa82640b06b88398a8c4f0, type: 3}
   AvoidPlayers: 0
   Speed:
     RawValue: 0
@@ -76,10 +76,10 @@ MonoBehaviour:
   StatePriority: 2
   ItemPriority: 2
   EnterReserveIfOverridden: 1
-  MaxInstantProjectiles: 1
-  MaxProjectileCount: 1
+  MaxInstantProjectiles: 2
+  MaxProjectileCount: 2
   ProjectileSpawnHorizontalOffset:
     RawValue: 0
   ProjectileSpawnVerticalOffset:
-    RawValue: -16384
+    RawValue: 0
   SfxOverrides: []

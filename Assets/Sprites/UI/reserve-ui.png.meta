@@ -439,7 +439,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -448,6 +448,28 @@ TextureImporter:
       bones: []
       spriteID: c31cf796263eece44b2c347292a3abff
       internalID: 37558163
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: reserve-ball
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 93ebf0ca97d54474db324239badfa30c
+      internalID: -200762186
       vertices: []
       indices: 
       edges: []
@@ -466,6 +488,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
+      reserve-ball: -200762186
       reserve-bg: -6080119536613256813
       reserve-blueshell: 2664608197882872095
       reserve-boomerang: 1954154672
