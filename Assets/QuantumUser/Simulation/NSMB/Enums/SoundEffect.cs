@@ -1,5 +1,5 @@
 public enum SoundEffect : byte {
-    //CURRENT HIGHEST NUMBER: 123 (use 124 next)
+    //CURRENT HIGHEST NUMBER: 128 (use 129 next)
     //Enemy
     Enemy_Generic_Freeze = 0,
     Enemy_Generic_FreezeShatter = 1,
@@ -33,6 +33,7 @@ public enum SoundEffect : byte {
     Player_Sound_LavaHiss = 90,
     Player_Sound_PowerupCollect = 16,
     Player_Sound_PowerupCollect_Superball = 123,
+    Player_Sound_PowerupCollect_Goldflower = 124,
     Player_Sound_PowerupReserveStore = 25,
     Player_Sound_PowerupReserveUse = 26,
     Player_Sound_Powerdown = 27,
@@ -70,6 +71,9 @@ public enum SoundEffect : byte {
     Powerup_Superball_Shoot = 121,
     Powerup_Iceball_Break = 46,
     Powerup_Iceball_Shoot = 47,
+    Powerup_Goldball_Break = 125,
+    Powerup_Goldball_Shoot = 126,
+    Powerup_Goldball_Emit = 128,
     Powerup_MegaMushroom_Break_Block = 48,
     Powerup_MegaMushroom_Break_Pipe = 49,
     Powerup_MegaMushroom_End = 50,
@@ -118,6 +122,7 @@ public enum SoundEffect : byte {
     World_Block_Bump = 68,
     World_Block_Powerup = 69,
     World_Block_Powerup_Superball = 122,
+    World_Block_Powerup_Goldflower = 127,
     World_Block_Powerup_Mega = 99,
     World_Coin_Collect = 70,
     World_Coin_Drop = 91,

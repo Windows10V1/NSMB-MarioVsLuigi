@@ -424,15 +424,15 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: SuperBallFlower
+      name: GoldFlower
       rect:
         serializedVersion: 2
         x: 80
         y: 16
         width: 16
         height: 16
-      alignment: 0
-      pivot: {x: 0, y: 0}
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -464,6 +464,7 @@ TextureImporter:
       CatSuit: -1629917848
       CloudFlower: -386398983
       FireFlower: -6090384608550177697
+      GoldFlower: 51403895
       HammerSuit: -1109677166
       IceFlower: 4928671260392873470
       JumpSuit: 1662652401
@@ -472,7 +473,6 @@ TextureImporter:
       Shell: 2834573260081099437
       Star: -4108787663010400821
       Star_2: -1073110140
-      SuperBallFlower: 51403895
       powerups_10: 3366297153455892705
       powerups_4: 4536303970436761004
       powerups_5: -499814844998443567

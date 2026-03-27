@@ -104,6 +104,7 @@ namespace Quantum {
     NoPowerup,
     MiniMushroom,
     Mushroom,
+    GoldFlower,
     BoomerangFlower,
     FireFlower,
     IceFlower,
@@ -112,7 +113,6 @@ namespace Quantum {
     HammerSuit,
     CloudFlower,
     SuperBallFlower,
-    GoldFlower,
     MegaMushroom,
   }
   public enum StageTileFlags : byte {
