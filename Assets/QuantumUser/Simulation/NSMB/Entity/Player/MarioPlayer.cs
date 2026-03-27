@@ -313,6 +313,7 @@ namespace Quantum {
                 f.Signals.OnMarioPlayerDropObjective(entity, 1, attacker);
                 break;
             }
+            case PowerupState.GoldFlower:
             case PowerupState.SuperBallFlower:
             case PowerupState.CloudFlower:
             case PowerupState.BoomerangFlower:

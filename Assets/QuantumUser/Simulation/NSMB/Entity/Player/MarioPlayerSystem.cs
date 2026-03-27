@@ -1445,7 +1445,8 @@ namespace Quantum {
             case PowerupState.HammerSuit:
             case PowerupState.BoomerangFlower:
             case PowerupState.CloudFlower:
-            case PowerupState.SuperBallFlower: {
+            case PowerupState.SuperBallFlower:
+            case PowerupState.GoldFlower: {
 
                 if (mario->ProjectileDelayFrames > 0 || mario->IsWallsliding || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
                     || mario->IsSpinnerFlying || mario->IsDrilling || mario->IsSkidding || mario->IsTurnaround) {
@@ -1503,6 +1504,8 @@ namespace Quantum {
                     projectile = ShootBoomerangProjectile(f, ref filter, physics);
                 } else if (mario->CurrentPowerupState == PowerupState.CloudFlower) {
                     projectile = ShootCloudProjectile(f, ref filter, physics, powerupAsset);
+                } else if (mario->CurrentPowerupState == PowerupState.GoldFlower) {
+                    projectile = ShootGoldballProjectile(f, ref filter, physics);
                 } else {
                     projectile = ShootNormalProjectile(f, ref filter, physics);
                 }
@@ -1568,6 +1571,19 @@ namespace Quantum {
             physicsObject->Velocity.Y = FP.FromString("3.0");
 
             EntityRef newEntity = f.Create(f.SimulationConfig.CloudPrototype);
+
+            var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
+            return projectile;
+        }
+
+        private Projectile* ShootGoldballProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
+            var mario = filter.MarioPlayer;
+            var physicsObject = filter.PhysicsObject;
+
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40);
+
+            EntityRef newEntity = f.Create(f.SimulationConfig.GoldballPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
@@ -2176,6 +2192,15 @@ namespace Quantum {
                 bool didKnockback = false;
                 bool damaged = false;
                 switch (projectileAsset.Effect) {
+                case ProjectileEffectType.KillEnemiesAndBumpKnockbackPlayers:
+                    if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
+                        damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
+                    }
+                    if (!damaged) {
+                        didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, projectileEntity);
+                        damaged = true;
+                    }
+                    break;
                 case ProjectileEffectType.KillEnemiesAndSoftKnockbackPlayers:
                 case ProjectileEffectType.Fire:
                     if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {

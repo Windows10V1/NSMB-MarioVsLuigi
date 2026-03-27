@@ -70,6 +70,10 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _GoldFlowerTexture:
+        m_Texture: {fileID: 2800000, guid: 33b7d186ea02eca4bb6150115991798e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
         m_Texture: {fileID: 2800000, guid: 77032d0aaa50f124ea7cae92e342faf2, type: 3}
         m_Scale: {x: 1, y: 1}

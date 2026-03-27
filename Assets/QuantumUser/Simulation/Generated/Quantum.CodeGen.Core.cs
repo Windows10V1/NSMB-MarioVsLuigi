@@ -112,6 +112,7 @@ namespace Quantum {
     HammerSuit,
     CloudFlower,
     SuperBallFlower,
+    GoldFlower,
     MegaMushroom,
   }
   public enum StageTileFlags : byte {

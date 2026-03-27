@@ -110,6 +110,7 @@ namespace NSMB.Entities.Player {
         [Header("Shaders")]
         [SerializeField] private Shader normalShader;
         [SerializeField] private Shader rainbowShader;
+        [SerializeField] private Shader goldShader;
 
         [Header("Sound")]
         [SerializeField] private AudioSource sfx;
@@ -311,7 +312,7 @@ namespace NSMB.Entities.Player {
             }
 
             SetParticleEmission(drillParticle, !disableParticles && mario->IsDrilling);
-            SetParticleEmission(sparkles, !disableParticles && mario->IsStarmanInvincible);
+            SetParticleEmission(sparkles, !disableParticles && mario->IsStarmanInvincible || !disableParticles && mario->CurrentPowerupState == PowerupState.GoldFlower);
             SetParticleEmission(iceSkiddingParticle, !disableParticles && physicsObject->IsOnSlipperyGround && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterSkiddingParticle, !disableParticles && onWater && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterRunningParticle, !disableParticles && !waterSkiddingParticle.isPlaying && onWater && FPMath.Abs(physicsObject->Velocity.X) > FP._0_10);
@@ -572,6 +573,7 @@ namespace NSMB.Entities.Player {
                 PowerupState.BoomerangFlower => 5,
                 PowerupState.CloudFlower => 6,
                 PowerupState.SuperBallFlower => 7,
+                PowerupState.GoldFlower => 0,
                 _ => 0
             };
             materialBlock.SetFloat(ParamPowerupState, ps);
@@ -590,7 +592,7 @@ namespace NSMB.Entities.Player {
             foreach (Renderer r in renderers) {
                 r.SetPropertyBlock(materialBlock);
                 foreach (var m in materials[r]) {
-                    var newShader = mario->IsStarmanInvincible ? rainbowShader : normalShader;
+                    var newShader = mario->IsStarmanInvincible ? rainbowShader : (mario->CurrentPowerupState == PowerupState.GoldFlower ? goldShader : normalShader);
                     if (m.shader != newShader) {
                         m.shader = newShader;
                     }

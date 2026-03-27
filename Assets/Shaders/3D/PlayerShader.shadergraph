@@ -35,6 +35,9 @@
         },
         {
             "m_Id": "4f244f31e02f473b96e1c1b294b32d2e"
+        },
+        {
+            "m_Id": "4424363f79db42ab88833809ead5b9e9"
         }
     ],
     "m_Keywords": [],
@@ -779,7 +782,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 1.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -803,7 +807,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -854,7 +859,8 @@
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -869,7 +875,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 1.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -930,7 +937,8 @@
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -939,8 +947,8 @@
     "m_ObjectId": "10922283de80436d85b401f210153bc6",
     "m_Title": "EyeTextures",
     "m_Position": {
-        "x": -207.0001678466797,
-        "y": -175.0
+        "x": -207.0,
+        "y": -175.00010681152345
     }
 }
 
@@ -956,7 +964,8 @@
     "m_StageCapability": 2,
     "m_Value": 3.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -1005,7 +1014,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -1130,7 +1140,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -1217,6 +1228,9 @@
         },
         {
             "m_Id": "4f244f31e02f473b96e1c1b294b32d2e"
+        },
+        {
+            "m_Id": "4424363f79db42ab88833809ead5b9e9"
         },
         {
             "m_Id": "44b17095b31941378dd760ed65bba2b9"
@@ -1389,7 +1403,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -1413,7 +1428,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -1447,6 +1463,9 @@
     "m_Guid": {
         "m_GuidSerialized": "2cc6413e-a5b5-4aed-936d-a748702198d3"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "OverallsColor",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "OverallsColor",
@@ -1460,6 +1479,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 2,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "r": 1.0,
         "g": 1.0,
@@ -1521,7 +1542,44 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": true
+}
+
+{
+    "m_SGVersion": 0,
+    "m_Type": "UnityEditor.ShaderGraph.Internal.Texture2DShaderProperty",
+    "m_ObjectId": "4424363f79db42ab88833809ead5b9e9",
+    "m_Guid": {
+        "m_GuidSerialized": "25629a82-3b81-41ce-9069-bd026eb9b83f"
+    },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
+    "m_Name": "GoldFlowerTexture",
+    "m_DefaultRefNameVersion": 1,
+    "m_RefNameGeneratedByDisplayName": "GoldFlowerTexture",
+    "m_DefaultReferenceName": "_GoldFlowerTexture",
+    "m_OverrideReferenceName": "",
+    "m_GeneratePropertyBlock": true,
+    "m_UseCustomSlotLabel": false,
+    "m_CustomSlotLabel": "",
+    "m_DismissedVersion": 0,
+    "m_Precision": 0,
+    "overrideHLSLDeclaration": false,
+    "hlslDeclarationOverride": 0,
+    "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
+    "m_Value": {
+        "m_SerializedTexture": "",
+        "m_Guid": ""
+    },
+    "isMainTexture": false,
+    "useTilingAndOffset": false,
+    "useTexelSize": true,
+    "m_Modifiable": true,
+    "m_DefaultType": 0
 }
 
 {
@@ -1536,7 +1594,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -1546,6 +1605,9 @@
     "m_Guid": {
         "m_GuidSerialized": "f2042c51-8abd-496f-a5f4-8ce3588ac7a7"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "PowerupState",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "PowerupState",
@@ -1559,12 +1621,25 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 0.0,
     "m_FloatType": 0,
+    "m_LiteralFloatMode": false,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -1574,6 +1649,9 @@
     "m_Guid": {
         "m_GuidSerialized": "5fdcf037-d2f4-4802-bb42-b3b45bc1daa9"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "HatUsesOverallsColor",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "HatUsesOverallsColor",
@@ -1587,6 +1665,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": false
 }
 
@@ -1597,6 +1677,9 @@
     "m_Guid": {
         "m_GuidSerialized": "b37ad1bc-fccb-4ca0-a9a0-dd505aaed4eb"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "MultiPowerupMaterial",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "MultiPowerupMaterial",
@@ -1610,6 +1693,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": false
 }
 
@@ -1620,6 +1705,9 @@
     "m_Guid": {
         "m_GuidSerialized": "b7e38cd6-e7d2-4528-a46f-0bf25fa7fdae"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "EyeState",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "EyeState",
@@ -1633,12 +1721,25 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 2,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": 0.0,
     "m_FloatType": 0,
+    "m_LiteralFloatMode": false,
     "m_RangeValues": {
         "x": 0.0,
         "y": 1.0
-    }
+    },
+    "m_SliderType": 0,
+    "m_SliderPower": 3.0,
+    "m_EnumType": 0,
+    "m_CSharpEnumString": "",
+    "m_EnumNames": [
+        "Default"
+    ],
+    "m_EnumValues": [
+        0
+    ]
 }
 
 {
@@ -1712,6 +1813,9 @@
     "m_Guid": {
         "m_GuidSerialized": "24dc6bc5-9051-4581-b874-58e0b75d9ae2"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "StarmanTexture",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "StarmanTexture",
@@ -1725,12 +1829,15 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "m_SerializedTexture": "",
         "m_Guid": ""
     },
     "isMainTexture": false,
     "useTilingAndOffset": false,
+    "useTexelSize": true,
     "m_Modifiable": true,
     "m_DefaultType": 0
 }
@@ -1756,7 +1863,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -1771,7 +1879,8 @@
     "m_StageCapability": 3,
     "m_Value": 1.0,
     "m_DefaultValue": 1.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -1811,7 +1920,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -1898,7 +2008,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -1946,7 +2057,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -1961,7 +2073,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.5,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -1976,7 +2089,8 @@
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -2075,6 +2189,7 @@
     "m_CastShadows": false,
     "m_ReceiveShadows": false,
     "m_DisableTint": false,
+    "m_Sort3DAs2DCompatible": false,
     "m_AdditionalMotionVectorMode": 0,
     "m_AlembicMotionVectors": false,
     "m_SupportsLODCrossFade": false,
@@ -2163,7 +2278,7 @@
     "m_Title": "Texture Index Start Selector",
     "m_Position": {
         "x": -1800.0,
-        "y": 87.00001525878906
+        "y": 86.99989318847656
     }
 }
 
@@ -2222,7 +2337,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -2268,6 +2384,9 @@
     "m_Guid": {
         "m_GuidSerialized": "c1dc6a2b-e13d-46e1-9bfb-34f6afadd8b4"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "Textures",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "Textures",
@@ -2281,6 +2400,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "m_SerializedTexture": "{\"textureArray\":{\"fileID\":18700000,\"guid\":\"b0f26c22812524b419834be4f80c34e6\",\"type\":3}}",
         "m_Guid": ""
@@ -2438,6 +2559,9 @@
     "m_Guid": {
         "m_GuidSerialized": "c718fc52-f3be-4f89-997c-9d7094802799"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "EyeTextures",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "EyeTextures",
@@ -2451,6 +2575,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "m_SerializedTexture": "{\"textureArray\":{\"fileID\":18700000,\"guid\":\"86d0d983b7ffae444b5e270df0725c3a\",\"type\":3}}",
         "m_Guid": ""
@@ -2504,7 +2630,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -2514,7 +2641,7 @@
     "m_Group": {
         "m_Id": "71cffb7b54e348098b6dd4bff61b78fb"
     },
-    "m_Name": "TextureRecolorerWithMask",
+    "m_Name": "Texture Recolorer With Mask",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -2623,8 +2750,8 @@
     "m_ObjectId": "71cffb7b54e348098b6dd4bff61b78fb",
     "m_Title": "Shirt Recolorer",
     "m_Position": {
-        "x": -1104.0,
-        "y": 63.00002670288086
+        "x": -1104.0001220703125,
+        "y": 62.99989700317383
     }
 }
 
@@ -2640,7 +2767,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -2664,7 +2792,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -2723,8 +2852,8 @@
     "m_ObjectId": "774f3b308e204b1c830f5c19457d8b04",
     "m_Title": "Overalls Recolorer",
     "m_Position": {
-        "x": -1117.0,
-        "y": 499.00006103515627
+        "x": -1117.0001220703125,
+        "y": 499.0000915527344
     }
 }
 
@@ -2749,7 +2878,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -2759,6 +2889,9 @@
     "m_Guid": {
         "m_GuidSerialized": "670e4e7a-c568-459f-a0b4-2e386a0354e7"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "ShirtColor",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "ShirtColor",
@@ -2772,6 +2905,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "r": 1.0,
         "g": 1.0,
@@ -2811,7 +2946,8 @@
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -2835,7 +2971,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -2916,7 +3053,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -2959,8 +3097,8 @@
     "m_ObjectId": "8daf8346df4b4f2084c2b0d08ee81057",
     "m_Title": "Base Texture Sampler",
     "m_Position": {
-        "x": -1130.0,
-        "y": -402.0000305175781
+        "x": -1130.0001220703125,
+        "y": -402.0
     }
 }
 
@@ -2976,7 +3114,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -2986,7 +3125,7 @@
     "m_Group": {
         "m_Id": "a094326315554e5b83c0e83f33dbe554"
     },
-    "m_Name": "TextureRecolorerWithMask",
+    "m_Name": "Texture Recolorer With Mask",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -3048,8 +3187,8 @@
     "m_ObjectId": "90f11075e3af4ab785d04dbab12df8c9",
     "m_Title": "Combine Recolored Textures",
     "m_Position": {
-        "x": -683.9998779296875,
-        "y": 296.0000915527344
+        "x": -684.0000610351563,
+        "y": 296.0002136230469
     }
 }
 
@@ -3065,7 +3204,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -3080,7 +3220,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -3215,7 +3356,8 @@
     "m_StageCapability": 3,
     "m_Value": 1.0,
     "m_DefaultValue": 1.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -3230,7 +3372,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -3313,7 +3456,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -3390,8 +3534,8 @@
     "m_ObjectId": "a094326315554e5b83c0e83f33dbe554",
     "m_Title": "Hat Recolorer",
     "m_Position": {
-        "x": -1371.0,
-        "y": 940.9998168945313
+        "x": -1371.0001220703125,
+        "y": 941.000244140625
     }
 }
 
@@ -3407,7 +3551,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -3422,7 +3567,8 @@
     "m_StageCapability": 2,
     "m_Value": 1.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -3446,7 +3592,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -3461,7 +3608,8 @@
     "m_StageCapability": 2,
     "m_Value": 1.0,
     "m_DefaultValue": 1.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -3485,7 +3633,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -3495,7 +3644,7 @@
     "m_Group": {
         "m_Id": "774f3b308e204b1c830f5c19457d8b04"
     },
-    "m_Name": "TextureRecolorerWithMask",
+    "m_Name": "Texture Recolorer With Mask",
     "m_DrawState": {
         "m_Expanded": true,
         "m_Position": {
@@ -3676,6 +3825,9 @@
     "m_Guid": {
         "m_GuidSerialized": "1de88b61-25b8-4532-b219-946cdc5e5572"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "IsEyeTexture",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "IsEyeTexture",
@@ -3689,6 +3841,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": false
 }
 
@@ -3721,7 +3875,8 @@
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -3872,7 +4027,8 @@
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -3924,7 +4080,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -3939,7 +4096,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -4032,7 +4190,8 @@
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -4262,7 +4421,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -4286,7 +4446,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -4347,7 +4508,8 @@
     "m_StageCapability": 3,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -4510,7 +4672,8 @@
     "m_StageCapability": 3,
     "m_Value": 1.0,
     "m_DefaultValue": 1.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -4550,7 +4713,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -4645,7 +4809,8 @@
         "y": 0.0,
         "z": 0.0,
         "w": 0.0
-    }
+    },
+    "m_LiteralMode": false
 }
 
 {
@@ -4655,6 +4820,9 @@
     "m_Guid": {
         "m_GuidSerialized": "a1f3e721-d3dc-451a-9209-871e11b373e4"
     },
+    "promotedFromAssetID": "",
+    "promotedFromCategoryName": "",
+    "promotedOrdering": -1,
     "m_Name": "MultiplyColor",
     "m_DefaultRefNameVersion": 1,
     "m_RefNameGeneratedByDisplayName": "MultiplyColor",
@@ -4668,6 +4836,8 @@
     "overrideHLSLDeclaration": false,
     "hlslDeclarationOverride": 0,
     "m_Hidden": false,
+    "m_PerRendererData": false,
+    "m_customAttributes": [],
     "m_Value": {
         "x": 1.0,
         "y": 1.0,
@@ -4688,7 +4858,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.5,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -4775,7 +4946,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -4896,7 +5068,8 @@
     "m_StageCapability": 2,
     "m_Value": 0.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -4911,7 +5084,8 @@
     "m_StageCapability": 2,
     "m_Value": 2.0,
     "m_DefaultValue": 0.0,
-    "m_Labels": []
+    "m_Labels": [],
+    "m_LiteralMode": false
 }
 
 {
@@ -4920,7 +5094,7 @@
     "m_ObjectId": "f77952b1fed443ba8200177e4cac9866",
     "m_Title": "Overlay Recolored Textures",
     "m_Position": {
-        "x": -102.00016784667969,
+        "x": -102.0,
         "y": 290.0000915527344
     }
 }
