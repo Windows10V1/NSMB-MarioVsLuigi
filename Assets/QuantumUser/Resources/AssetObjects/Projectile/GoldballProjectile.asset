@@ -34,7 +34,7 @@ MonoBehaviour:
   HasCollision: 1
   DoesntEffectBlueShell: 0
   CollectCoins: 0
-  DestroyParticleEffect: 9
+  DestroyParticleEffect: 5
   ShootSound: 126
   IsBoomerang: 0
   BoomerangReturnDelay:
@@ -42,10 +42,4 @@ MonoBehaviour:
   BoomerangReturnAcceleration:
     RawValue: 32768
   IsSuperBall: 0
-  SfxOverrides:
-  - SoundEffect: 43
-    Mode: 0
-    Priority: 0
-    PlayGlobally: 0
-    AudioClips:
-    - {fileID: 8300000, guid: 6176189a9c2dbd447b02ba8a2d290a06, type: 3}
+  SfxOverrides: []

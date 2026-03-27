@@ -2184,7 +2184,7 @@ namespace Quantum {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
                     }
                     if (!damaged) {
-                        didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, projectileEntity);
+                        didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 0 : 0, KnockbackStrength.CollisionBump, projectileEntity);
                         damaged = true;
                     }
                     break;

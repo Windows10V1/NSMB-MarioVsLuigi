@@ -515,7 +515,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -8359218312643153770, guid: b73add24eb026c844b85593f8bab1f8c,
     type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: a6a625e3bb2c8ee41be41a59e4f81fe4, type: 3}
+  m_Resource: {fileID: 8300000, guid: fd0caf520b1e07d4ba464cdfd7adce37, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.5
   m_Pitch: 1
@@ -616,7 +616,7 @@ MonoBehaviour:
   audioSources:
   - {fileID: 4212411262979768644}
   soundOrigin: {fileID: 9163467667808470578}
-  soundRange: 5
+  soundRange: 11
   maxPanning: 0.8
 --- !u!114 &3939787356651426186
 MonoBehaviour:
@@ -631,7 +631,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioSource: {fileID: 4212411262979768644}
-  currentAudio: {fileID: 11400000, guid: e9a2e1bbfff2f404c83d4d3a5e6f78e8, type: 2}
+  currentAudio: {fileID: 11400000, guid: c86a8a29f27bcc94d83abc96a4c2014c, type: 2}
   playOnAwake: 1
 --- !u!1 &7243713612715078606
 GameObject:
@@ -5627,7 +5627,7 @@ PrefabInstance:
     - target: {fileID: 1821550530333385025, guid: 34b8762c3868b5d43b40a69badde238a,
         type: 3}
       propertyPath: InitialModule.startLifetime.scalar
-      value: 0.45
+      value: 0.65
       objectReference: {fileID: 0}
     - target: {fileID: 1821550530333385025, guid: 34b8762c3868b5d43b40a69badde238a,
         type: 3}
