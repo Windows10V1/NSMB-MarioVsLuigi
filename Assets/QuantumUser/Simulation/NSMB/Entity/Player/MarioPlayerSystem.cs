@@ -2178,13 +2178,30 @@ namespace Quantum {
             if (damageable) {
                 bool didKnockback = false;
                 bool damaged = false;
+
+                // Calculate knockback direction based on boomerang phase
+                // Check both wall-bounce return state (IsReturning) and natural return phase (elapsed time)
+                bool knockbackFromRight;
+                if (projectileAsset.IsBoomerang) {
+                    FP elapsedTime = (FP)projectile->Lifetime / 60; // Assuming 60 FPS
+                    bool isInReturnPhase = projectile->IsReturning() || elapsedTime >= projectileAsset.BoomerangReturnDelay;
+                    
+                    if (isInReturnPhase) {
+                        knockbackFromRight = projectile->FacingRight; // When returning, knockback direction is same as facing
+                    } else {
+                        knockbackFromRight = !projectile->FacingRight; // Normal: opposite of facing direction
+                    }
+                } else {
+                    knockbackFromRight = !projectile->FacingRight; // Non-boomerang: always opposite of facing
+                }
+
                 switch (projectileAsset.Effect) {
                 case ProjectileEffectType.KillEnemiesAndBumpKnockbackPlayers:
                     if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
                     }
                     if (!damaged) {
-                        didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 0 : 0, KnockbackStrength.CollisionBump, projectileEntity);
+                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 0 : 0, KnockbackStrength.CollisionBump, projectileEntity);
                         damaged = true;
                     }
                     break;
@@ -2194,7 +2211,7 @@ namespace Quantum {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
                     }
                     if (!damaged) {
-                        didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectileEntity);
+                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectileEntity);
                         damaged = true;
                     }
                     break;
@@ -2207,7 +2224,7 @@ namespace Quantum {
                     }
                     
                     if (!damaged) {
-                        didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectileEntity);
+                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectileEntity);
                         damaged = true;
                     }
                     break;
