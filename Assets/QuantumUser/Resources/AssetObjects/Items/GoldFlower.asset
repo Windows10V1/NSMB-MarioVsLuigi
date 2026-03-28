@@ -20,9 +20,9 @@ MonoBehaviour:
     Id:
       Value: 1520819388083381927
   SpawnChance:
-    RawValue: 57344
+    RawValue: 98304
   AboveAverageBonus:
-    RawValue: 65536
+    RawValue: 49152
   BelowAverageBonus:
     RawValue: -65536
   BlockSpawnSoundEffect: 69
@@ -143,7 +143,7 @@ MonoBehaviour:
   ItemPriority: 2
   EnterReserveIfOverridden: 1
   MaxInstantProjectiles: 1
-  MaxProjectileCount: 2
+  MaxProjectileCount: 1
   ProjectileSpawnHorizontalOffset:
     RawValue: 0
   ProjectileSpawnVerticalOffset:

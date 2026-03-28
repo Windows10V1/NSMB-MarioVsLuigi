@@ -22,6 +22,7 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
 
         bool brokenByMega = false;
         EntityRef bumpOwner = default;
+        var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
         if (f.Unsafe.TryGetPointer(entity, out MarioPlayer* mario)) {
             // Mario interacting with the block
             if (mario->CurrentPowerupState < PowerupState.Mushroom) {
@@ -61,7 +62,29 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
 
         } else if (f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
             var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
-            if (asset.IsBoomerang) {
+            
+            // Check if this is a Goldball by checking if owner has GoldFlower powerup
+            bool isGoldball = false;
+            if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* owner)) {
+                isGoldball = owner->CurrentPowerupState == PowerupState.GoldFlower;
+            }
+            
+            if ((isGoldball || asset.IsGoldball) && BreakingRules.HasFlag(BreakableBy.Goldballs)) {
+                // Gold Ball turns this brick into a Stage Coin (only if brick allows it)
+                var coinPos = QuantumUtils.RelativeTileToWorldRounded(stage, tilePosition);
+                EntityRef newCoin = f.Create(f.SimulationConfig.StageCoinPrototype);
+                var coin = f.Unsafe.GetPointer<Coin>(newCoin);
+                // Don't mark as BakedInStage so it won't be recreated on stage reset
+                coin->CoinType = 0;
+                // Set a very high lifetime so it never despawns (won't decrement for 18+ minutes at 60 FPS)
+                coin->Lifetime = 32767;
+                var coinTransform = f.Unsafe.GetPointer<Transform2D>(newCoin);
+                coinTransform->Position = coinPos;
+                stage.SetTileRelative(f, tilePosition, default);
+                // Despawn the projectile with particle and sound effects
+                ProjectileSystem.Destroy(f, entity, asset.DestroyParticleEffect);
+                return true;
+            } else if (asset.IsBoomerang) {
                 doBreak = BreakingRules.HasFlag(BreakableBy.Boomerangs);
                 doBump = false;
                 bumpOwner = projectile->Owner;
@@ -71,7 +94,6 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
             }
         }
 
-        var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
         if (doBreak) {
             if (direction is not InteractionDirection.Left or InteractionDirection.Right) {
                 BlockBumpSystem.Bump(f, QuantumUtils.RelativeTileToWorldRounded(stage, tilePosition), bumpOwner, allowSelfDamage, direction != InteractionDirection.Down);
@@ -130,6 +152,7 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
         MegaMario = 1 << 6,
         Shells = 1 << 7,
         Bombs = 1 << 8,
-        Boomerangs = 1 << 9
+        Boomerangs = 1 << 9,
+        Goldballs = 1 << 10
     }
 }

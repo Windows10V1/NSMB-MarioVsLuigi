@@ -28,6 +28,9 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
     // Super Ball-specific properties
     public bool IsSuperBall = false; // When true, uses custom 45-degree bounce physics
 
+    // Gold Ball-specific properties
+    public bool IsGoldball = false; // When true, turns bricks into coins
+
     public SoundEffectOverride[] SfxOverrides;
 
     [NonSerialized] private Dictionary<SoundEffect, SoundEffectOverride> overridesDict;
