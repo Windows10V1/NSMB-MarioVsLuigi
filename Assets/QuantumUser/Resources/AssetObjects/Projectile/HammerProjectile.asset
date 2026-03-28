@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/HammerProjectile
     Guid:
       Value: 395779911797546411
-  Effect: 2
+  Effect: 3
   Bounce: 1
   Speed:
     RawValue: 983040
@@ -33,6 +33,14 @@ MonoBehaviour:
   InheritShooterVelocity: 0
   HasCollision: 0
   DoesntEffectBlueShell: 1
+  CollectCoins: 0
   DestroyParticleEffect: 8
   ShootSound: 106
+  IsBoomerang: 0
+  BoomerangReturnDelay:
+    RawValue: 32768
+  BoomerangReturnAcceleration:
+    RawValue: 32768
+  IsSuperBall: 0
+  IsGoldball: 0
   SfxOverrides: []

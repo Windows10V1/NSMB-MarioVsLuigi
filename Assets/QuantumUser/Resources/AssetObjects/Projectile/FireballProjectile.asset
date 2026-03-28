@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/FireballProjectile
     Guid:
       Value: 503653222628643586
-  Effect: 0
+  Effect: 1
   Bounce: 1
   Speed:
     RawValue: 425984
@@ -33,6 +33,14 @@ MonoBehaviour:
   InheritShooterVelocity: 0
   HasCollision: 1
   DoesntEffectBlueShell: 1
+  CollectCoins: 0
   DestroyParticleEffect: 5
   ShootSound: 44
+  IsBoomerang: 0
+  BoomerangReturnDelay:
+    RawValue: 32768
+  BoomerangReturnAcceleration:
+    RawValue: 32768
+  IsSuperBall: 0
+  IsGoldball: 0
   SfxOverrides: []

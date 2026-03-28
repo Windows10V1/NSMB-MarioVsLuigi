@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/BoomerangProjectile
     Guid:
       Value: 399601692553361196
-  Effect: 2
+  Effect: 3
   Bounce: 0
   Speed:
     RawValue: 704512
@@ -41,4 +41,6 @@ MonoBehaviour:
     RawValue: 16384
   BoomerangReturnAcceleration:
     RawValue: 131072
+  IsSuperBall: 0
+  IsGoldball: 0
   SfxOverrides: []
