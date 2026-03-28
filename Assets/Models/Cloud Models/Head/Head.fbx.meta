@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 6d73b2cf3b06b3145ab34296246ae0fd
+guid: 791ebc21705d058408283d1c9606b12b
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -7,7 +7,7 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: defaultMat
+      name: cloud_acessory_tx
     second: {fileID: 2100000, guid: 3735eac8ff288ad4188382fe252dcda5, type: 2}
   materials:
     materialImportMode: 2
@@ -84,7 +84,7 @@ ModelImporter:
     blendShapeNormalImportMode: 1
     normalSmoothingSource: 0
   referencedClips: []
-  importAnimation: 1
+  importAnimation: 0
   humanDescription:
     serializedVersion: 3
     human: []

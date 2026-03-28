@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/CloudProjectile
     Guid:
       Value: 323175042763833291
-  Effect: 2
+  Effect: 0
   Bounce: 0
   Speed:
     RawValue: 0
@@ -41,4 +41,6 @@ MonoBehaviour:
     RawValue: 0
   BoomerangReturnAcceleration:
     RawValue: 0
+  IsSuperBall: 0
+  IsGoldball: 0
   SfxOverrides: []

@@ -2202,12 +2202,14 @@ namespace Quantum {
                 }
 
                 switch (projectileAsset.Effect) {
+                case ProjectileEffectType.None:
+                    break;
                 case ProjectileEffectType.KillEnemiesAndBumpKnockbackPlayers:
                     if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
                     }
                     if (!damaged) {
-                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 2 : 0, KnockbackStrength.CollisionBump, projectileEntity);
+                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, projectileEntity);
                         damaged = true;
                     }
                     break;
