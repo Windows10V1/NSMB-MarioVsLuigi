@@ -73,6 +73,10 @@ public unsafe class PowerupAsset : CoinItemAsset, ISoundOverrideProvider {
     }
 
     public override bool CanSpawn(Frame f, bool fromRouletteBlock) {
+        if (!base.CanSpawn(f, fromRouletteBlock)) {
+            return false;
+        }
+
         if (MaxNumberOfItems > 0 && CountItemsExisting(f) >= MaxNumberOfItems) {
             return false;
         }

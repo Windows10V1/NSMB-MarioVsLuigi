@@ -9,7 +9,6 @@ namespace Quantum {
         public override void EnableGamemode(Frame f) {
             f.SystemEnable<BigStarSystem>();
             f.Global->AutomaticStageRefreshTimer = f.Global->AutomaticStageRefreshInterval = 0;
-
         }
 
         public override void DisableGamemode(Frame f) {
@@ -118,9 +117,9 @@ namespace Quantum {
 
             // item ranking formulas which is used for determining which items spawn
             FP itemRank = avgDiff - diffLeader / 5 * starBand / starsToWin * (normLeader * starsToWin / 4);
-            FP bonus;
 
             // being above the average means you get different formula
+            FP bonus;
             if (itemRank > 0) {
                 FP magni = (starBand + normStarAvg * starsToWin) / starsToWin;
                 bonus = item.AboveAverageBonus * FPMath.Log(FPMath.Abs(itemRank) + 1, FP.E) * magni;

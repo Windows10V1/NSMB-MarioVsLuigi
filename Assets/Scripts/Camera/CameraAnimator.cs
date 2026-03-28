@@ -84,8 +84,8 @@ namespace NSMB.Cameras {
                 BackgroundLoop.Instance.Reposition(ourCamera);
             }
 
-            bool lmb = Settings.Controls.UI.Click.ReadValue<float>() >= 0.5f || Settings.Controls.UI.RightClick.ReadValue<float>() >= 0.5f;
-            bool mmb = Settings.Controls.UI.MiddleClick.ReadValue<float>() >= 0.5f;
+            bool lmb = Settings.Controls.UI.Click.IsPressed() || Settings.Controls.UI.RightClick.IsPressed();
+            bool mmb = Settings.Controls.UI.MiddleClick.IsPressed();
             if (lmb || !mmb) {
                 previousPointer = ourCamera.ScreenToViewportPoint(Settings.Controls.UI.Point.ReadValue<Vector2>());
             }
@@ -96,7 +96,16 @@ namespace NSMB.Cameras {
             if (tweenTime < 0.5f) {
                 UpdateCameraFollowPlayerMode(e);
             } else {
-                ourCamera.transform.position = Vector3.Lerp(tweenStartPosition, tweenedTargetPosition, Mathf.Clamp01((tweenTime - 0.5f) / 1f));
+                Vector3 lerpedPos =
+                    QuantumUtils.WrappedLerp(
+                        e.Game.Frames.Predicted,
+                        tweenStartPosition.ToFPVector2(),
+                        tweenedTargetPosition.ToFPVector2(),
+                        FPMath.Clamp01((FP.FromFloat_UNSAFE(tweenTime) - FP._0_50) / 1))
+                    .ToUnityVector2();
+
+                lerpedPos.z = tweenedTargetPosition.z;
+                ourCamera.transform.position = lerpedPos;
             }
         }
 
@@ -185,8 +194,8 @@ namespace NSMB.Cameras {
             Vector2 pointerScreen = Settings.Controls.UI.Point.ReadValue<Vector2>();
             Vector2 pointer = ourCamera.ScreenToViewportPoint(pointerScreen);
 
-            bool lmb = Settings.Controls.UI.Click.ReadValue<float>() >= 0.5f || Settings.Controls.UI.RightClick.ReadValue<float>() >= 0.5f;
-            bool mmb = Settings.Controls.UI.MiddleClick.ReadValue<float>() >= 0.5f;
+            bool lmb = Settings.Controls.UI.Click.IsPressed() || Settings.Controls.UI.RightClick.IsPressed();
+            bool mmb = Settings.Controls.UI.MiddleClick.IsPressed();
             if (lmb || mmb) {
                 if (!clickHeld) {
                     // Make sure we're not over an object.
@@ -223,8 +232,8 @@ namespace NSMB.Cameras {
             Vector3? worldPosBefore = (zoomAmount != 0) ? ourCamera.ViewportToWorldPoint(pointer) : null;
 
             if (!ignoreKeyboard) {
-                int zoomIn = Settings.Controls.Replay.ZoomIn.ReadValue<float>() >= 0.5f ? 1 : 0;
-                int zoomOut = Settings.Controls.Replay.ZoomOut.ReadValue<float>() >= 0.5f ? 1 : 0;
+                int zoomIn = Settings.Controls.Replay.ZoomIn.IsPressed() ? 1 : 0;
+                int zoomOut = Settings.Controls.Replay.ZoomOut.IsPressed() ? 1 : 0;
                 zoomAmount += (zoomOut - zoomIn);
             }
 

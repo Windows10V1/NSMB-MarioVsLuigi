@@ -29,6 +29,7 @@ namespace NSMB.Entities.CoinItems {
 
         public void Start() {
             QuantumEvent.Subscribe<EventCoinItemBecameActive>(this, OnCoinItemBecameActive);
+            QuantumEvent.Subscribe<EventGameEnded>(this, OnGameEnded);
         }
 
         public override void OnActivate(Frame f) {
@@ -152,6 +153,15 @@ namespace NSMB.Entities.CoinItems {
             renderer.gameObject.transform.localScale = Vector3.one;
             if (childAnimator) {
                 childAnimator.enabled = true;
+            }
+        }
+
+        private void OnGameEnded(EventGameEnded e) {
+            if (childAnimator) {
+                childAnimator.enabled = false;
+            }
+            if (childAnimation) {
+                childAnimation.enabled = false;
             }
         }
     }

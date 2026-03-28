@@ -72,9 +72,9 @@ namespace NSMB.Quantum {
                 bool left = Vector2.Dot(normalizedJoystick, Vector2.left) > 0.4f;
                 bool right = Vector2.Dot(normalizedJoystick, Vector2.right) > 0.4f;
 
-                bool jump = Settings.Controls.Player.Jump.ReadValue<float>() > 0.5f;
-                bool sprint = (Settings.Controls.Player.Sprint.ReadValue<float>() > 0.5f) ^ Settings.Instance.controlsAutoSprint;
-                bool powerupAction = Settings.Controls.Player.PowerupAction.ReadValue<float>() > 0.5f;
+                bool jump = Settings.Controls.Player.Jump.IsPressed();
+                bool sprint = Settings.Controls.Player.Sprint.IsPressed() ^ Settings.Instance.controlsAutoSprint;
+                bool powerupAction = Settings.Controls.Player.PowerupAction.IsPressed();
 
                 i = new() {
                     Up = up,

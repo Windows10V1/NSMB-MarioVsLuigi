@@ -212,7 +212,7 @@ namespace NSMB.Utilities {
 
             // Prioritize spectator status
             var playerData = QuantumUtils.GetPlayerData(f, player);
-            if (playerData != null && playerData->IsSpectator) {
+            if (playerData == null || playerData->IsSpectator) {
                 return spectatorColor;
             }
 
