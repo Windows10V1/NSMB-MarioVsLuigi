@@ -417,7 +417,7 @@ namespace Quantum {
             // Check if this is a cloud projectile and set cooldown on owner
             if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* owner)) {
                 if (owner->CurrentPowerupState == PowerupState.CloudFlower) {
-                    owner->CloudFlowerCooldownFrames = 300; // 5 second cooldown (300 frames at 60 FPS)
+                    owner->CloudFlowerCooldownFrames = 240; // 4 second cooldown (240 frames at 60 FPS)
                 }
                 
                 // Check if this is a goldball projectile and set cooldown on owner
