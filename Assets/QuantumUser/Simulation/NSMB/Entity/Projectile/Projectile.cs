@@ -34,8 +34,8 @@ namespace Quantum {
                 physicsObject->Velocity = FPVector2.Zero;
                 
                 // Store diagonal direction:
-                // Combo bits: bit 0-1 = horizontal direction (0=left, 1=right)
-                //             bit 2-3 = vertical direction (0=down, 1=up)
+                // Combo bits: bit 0 = horizontal direction (0=left, 1=right)
+                //             bit 1 = vertical direction (0=down, 1=up)
                 byte dirByte = 0;
                 if (right) dirByte |= 1;  // bit 0 = horizontal
                 dirByte |= 2;             // bit 1 = vertical (always start going up)

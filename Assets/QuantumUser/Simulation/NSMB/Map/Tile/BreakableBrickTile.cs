@@ -63,13 +63,7 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
         } else if (f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
             var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
             
-            // Check if this is a Goldball by checking if owner has GoldFlower powerup
-            bool isGoldball = false;
-            if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* owner)) {
-                isGoldball = owner->CurrentPowerupState == PowerupState.GoldFlower;
-            }
-            
-            if ((isGoldball || asset.IsGoldball) && BreakingRules.HasFlag(BreakableBy.Goldballs)) {
+            if (asset.IsGoldball && BreakingRules.HasFlag(BreakableBy.Goldballs)) {
                 // Gold Ball turns this brick into a Stage Coin (only if brick allows it)
                 var coinPos = QuantumUtils.RelativeTileToWorldRounded(stage, tilePosition);
                 EntityRef newCoin = f.Create(f.SimulationConfig.StageCoinPrototype);

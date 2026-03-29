@@ -276,31 +276,26 @@ namespace Quantum {
             // Try to interact with tiles (for breaking blocks, etc.)
             bool anyCollision = hitGround || hitCeiling || hitLeftWall || hitRightWall;
             if (anyCollision) {
-                foreach (var contact in f.ResolveList(physicsObject->Contacts)) {
-                    // Only process tile contacts (no entity)
-                    if (f.Exists(contact.Entity)) {
-                        continue;
+                // SuperBall uses manual collision detection - physics contacts are empty
+                // Query tile directly at the collision position
+                StageTileInstance tileInstance = stage.GetTileRelative(f, transform->Position);
+                StageTile tile = f.FindAsset(tileInstance.Tile);
+                
+                if (tile is IInteractableTile it) {
+                    // Determine interaction direction based on what we hit
+                    InteractionDirection direction = InteractionDirection.Up;
+                    if (hitGround) {
+                        direction = InteractionDirection.Down;
+                    } else if (hitCeiling) {
+                        direction = InteractionDirection.Up;
+                    } else if (hitLeftWall) {
+                        direction = InteractionDirection.Left;
+                    } else if (hitRightWall) {
+                        direction = InteractionDirection.Right;
                     }
 
-                    StageTileInstance tileInstance = stage.GetTileRelative(f, contact.Tile);
-                    StageTile tile = f.FindAsset(tileInstance.Tile);
-                    
-                    if (tile is IInteractableTile it) {
-                        // Determine interaction direction based on what we hit
-                        InteractionDirection direction = InteractionDirection.Up;
-                        if (hitGround) {
-                            direction = InteractionDirection.Down;
-                        } else if (hitCeiling) {
-                            direction = InteractionDirection.Up;
-                        } else if (hitLeftWall) {
-                            direction = InteractionDirection.Left;
-                        } else if (hitRightWall) {
-                            direction = InteractionDirection.Right;
-                        }
-
-                        // Call interact on the tile
-                        it.Interact(f, filter.Entity, direction, contact.Tile, tileInstance, out _);
-                    }
+                    // Call interact on the tile
+                    it.Interact(f, filter.Entity, direction, QuantumUtils.WorldToRelativeTile(f, transform->Position), tileInstance, out _);
                 }
             }
         }
@@ -412,11 +407,14 @@ namespace Quantum {
         public static void Destroy(Frame f, EntityRef entity, ParticleEffect particle) {
             var projectile = f.Unsafe.GetPointer<Projectile>(entity);
             var transform = f.Unsafe.GetPointer<Transform2D>(entity);
+            var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
             
             // Check if this is a cloud projectile and set cooldown on owner
-            if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* owner)) {
-                if (owner->CurrentPowerupState == PowerupState.CloudFlower) {
-                    owner->CloudFlowerCooldownFrames = 240; // 4 second cooldown (240 frames at 60 FPS)
+            if (asset.Effect == ProjectileEffectType.None && asset.Speed == 0 && !asset.HasCollision) {
+                if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* owner)) {
+                    if (owner->CurrentPowerupState == PowerupState.CloudFlower) {
+                        owner->CloudFlowerCooldownFrames = 240; // 4 second cooldown (240 frames at 60 FPS)
+                    }
                 }
             }
             
