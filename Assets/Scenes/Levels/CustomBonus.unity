@@ -2115,6 +2115,27 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7177057303658333091, guid: dcdc633a29f212843ae9cbdf4be58fb2,
+        type: 3}
+      propertyPath: particles.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177057303658333091, guid: dcdc633a29f212843ae9cbdf4be58fb2,
+        type: 3}
+      propertyPath: particles.Array.data[3].prefab
+      value: 
+      objectReference: {fileID: 5903185039186744869, guid: 1edf7e2cb13961e40b41297574f63680,
+        type: 3}
+    - target: {fileID: 7177057303658333091, guid: dcdc633a29f212843ae9cbdf4be58fb2,
+        type: 3}
+      propertyPath: particles.Array.data[3].offset.y
+      value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177057303658333091, guid: dcdc633a29f212843ae9cbdf4be58fb2,
+        type: 3}
+      propertyPath: particles.Array.data[3].particle
+      value: 9
+      objectReference: {fileID: 0}
     - target: {fileID: 7682502346014357760, guid: dcdc633a29f212843ae9cbdf4be58fb2,
         type: 3}
       propertyPath: Asset

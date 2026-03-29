@@ -2183,8 +2183,10 @@ namespace Quantum {
                 bool didKnockback = false;
                 bool damaged = false;
 
-                // Calculate knockback direction based on boomerang phase
-                // Check both wall-bounce return state (IsReturning) and natural return phase (elapsed time)
+                // Calculate knockback direction based on projectile type
+                // Boomerang: based on phase
+                // Super Ball: based on super ball's current direction (after potential ricochets)
+                // Default: opposite of projectile facing
                 bool knockbackFromRight;
                 if (projectileAsset.IsBoomerang) {
                     FP elapsedTime = (FP)projectile->Lifetime / 60; // Assuming 60 FPS
@@ -2195,6 +2197,10 @@ namespace Quantum {
                     } else {
                         knockbackFromRight = !projectile->FacingRight; // Normal: opposite of facing direction
                     }
+                } else if (projectileAsset.IsSuperBall) {
+                    // For super balls, knockback direction depends on current direction (after ricochets)
+                    // Combo byte bit 0: horizontal direction (0=left, 1=right)
+                    knockbackFromRight = (projectile->Combo & 1) == 1;
                 } else {
                     knockbackFromRight = !projectile->FacingRight; // Non-boomerang: always opposite of facing
                 }
