@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: -8827579426703279798}
   - component: {fileID: 5432761528888521127}
   - component: {fileID: 5816618518376565689}
-  - component: {fileID: -9113168347366101870}
   - component: {fileID: -5850122481703649106}
   - component: {fileID: -1924100074386991617}
+  - component: {fileID: 244496280647032461}
   m_Layer: 19
   m_Name: Hammer
   m_TagString: Untagged
@@ -404,23 +404,6 @@ MonoBehaviour:
         RawValue: 9830
     BroadRadius:
       RawValue: 65536
---- !u!114 &-9113168347366101870
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6307920351473437675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ee3e15f5c22e22746860121bd7f7db13, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sRenderer: {fileID: 0}
-  animator: {fileID: 9025442341733772760}
-  legacySpriteAnimator: {fileID: 0}
-  sameTeamColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
-  differentTeamColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &-5850122481703649106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -449,6 +432,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prototype:
     _empty_prototype_dummy_field_: 0
+--- !u!114 &244496280647032461
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6307920351473437675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c58cd349faf33864da76beb5a8b6721a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NSMB.Entities.Powerup.ProjectileAnimator3D
+  meshRenderer: {fileID: 8818015814349666637}
+  usePalette: 0
+  sameTeamTint: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+  differentTeamTint: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &6817442949190414024
 GameObject:
   m_ObjectHideFlags: 0
@@ -5444,6 +5443,12 @@ PrefabInstance:
 --- !u!4 &7772443187923817931 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f46b8fc151393264695663a47f3ba684,
+    type: 3}
+  m_PrefabInstance: {fileID: 7806984023966216736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8818015814349666637 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: f46b8fc151393264695663a47f3ba684,
     type: 3}
   m_PrefabInstance: {fileID: 7806984023966216736}
   m_PrefabAsset: {fileID: 0}
