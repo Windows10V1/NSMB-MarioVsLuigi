@@ -412,17 +412,11 @@ namespace Quantum {
         public static void Destroy(Frame f, EntityRef entity, ParticleEffect particle) {
             var projectile = f.Unsafe.GetPointer<Projectile>(entity);
             var transform = f.Unsafe.GetPointer<Transform2D>(entity);
-            var projectileAsset = f.FindAsset(projectile->Asset);
             
             // Check if this is a cloud projectile and set cooldown on owner
             if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* owner)) {
                 if (owner->CurrentPowerupState == PowerupState.CloudFlower) {
                     owner->CloudFlowerCooldownFrames = 240; // 4 second cooldown (240 frames at 60 FPS)
-                }
-                
-                // Check if this is a goldball projectile and set cooldown on owner
-                if (projectileAsset != null && projectileAsset.IsGoldball) {
-                    owner->GoldballCooldownFrames = 60; // 1 second cooldown (60 frames at 60 FPS)
                 }
             }
             

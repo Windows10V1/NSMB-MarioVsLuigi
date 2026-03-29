@@ -875,7 +875,6 @@ namespace Quantum {
             QuantumUtils.Decrement(ref mario->GroundpoundCooldownFrames);
             QuantumUtils.Decrement(ref mario->PropellerDrillCooldown);
             QuantumUtils.Decrement(ref mario->CloudFlowerCooldownFrames);
-            QuantumUtils.Decrement(ref mario->GoldballCooldownFrames);
 
             if (inputs.Down.IsDown && allowGroundpoundStart) {
                 TryStartGroundpound(f, ref filter, physics, stage);
@@ -1456,11 +1455,6 @@ namespace Quantum {
 
                 // Cloud flower specific cooldown check
                 if (mario->CurrentPowerupState == PowerupState.CloudFlower && mario->CloudFlowerCooldownFrames > 0) {
-                    return;
-                }
-
-                // Goldball specific cooldown check
-                if (mario->GoldballCooldownFrames > 0) {
                     return;
                 }
 
@@ -2213,7 +2207,7 @@ namespace Quantum {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
                     }
                     if (!damaged) {
-                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, projectileEntity);
+                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 2 : 0, KnockbackStrength.CollisionBump, projectileEntity);
                         damaged = true;
                     }
                     break;
