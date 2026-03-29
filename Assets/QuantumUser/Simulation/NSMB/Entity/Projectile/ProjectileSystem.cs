@@ -278,7 +278,7 @@ namespace Quantum {
             if (anyCollision) {
                 // SuperBall uses manual collision detection - physics contacts are empty
                 // Query tile directly at the collision position
-                StageTileInstance tileInstance = stage.GetTileRelative(f, transform->Position);
+                StageTileInstance tileInstance = stage.GetTileRelative(f, QuantumUtils.WorldToRelativeTile(f, transform->Position));
                 StageTile tile = f.FindAsset(tileInstance.Tile);
                 
                 if (tile is IInteractableTile it) {
