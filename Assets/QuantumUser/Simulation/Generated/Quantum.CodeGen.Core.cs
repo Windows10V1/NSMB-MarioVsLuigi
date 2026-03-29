@@ -2723,13 +2723,13 @@ namespace Quantum {
     [FieldOffset(144)]
     [ExcludeFromPrototype()]
     public EntityRef LastAttacker;
-    [FieldOffset(46)]
+    [FieldOffset(44)]
     [ExcludeFromPrototype()]
     public UInt16 InvincibilityFrames;
     [FieldOffset(19)]
     [ExcludeFromPrototype()]
     public Byte MegaMushroomStartFrames;
-    [FieldOffset(48)]
+    [FieldOffset(46)]
     [ExcludeFromPrototype()]
     public UInt16 MegaMushroomFrames;
     [FieldOffset(17)]
@@ -2768,9 +2768,9 @@ namespace Quantum {
     [FieldOffset(27)]
     [ExcludeFromPrototype()]
     public Byte PropellerDrillHoldFrames;
-    [FieldOffset(44)]
+    [FieldOffset(48)]
     [ExcludeFromPrototype()]
-    public UInt16 CloudFlowerCooldownFrames;
+    public UInt16 ProjectileCooldownFrames;
     [FieldOffset(136)]
     [ExcludeFromPrototype()]
     public EntityRef HeldEntity;
@@ -2853,7 +2853,7 @@ namespace Quantum {
         hash = hash * 31 + PropellerSpinFrames.GetHashCode();
         hash = hash * 31 + PropellerDrillCooldown.GetHashCode();
         hash = hash * 31 + PropellerDrillHoldFrames.GetHashCode();
-        hash = hash * 31 + CloudFlowerCooldownFrames.GetHashCode();
+        hash = hash * 31 + ProjectileCooldownFrames.GetHashCode();
         hash = hash * 31 + HeldEntity.GetHashCode();
         hash = hash * 31 + HoldStartFrame.GetHashCode();
         hash = hash * 31 + CurrentPipe.GetHashCode();
@@ -2909,9 +2909,9 @@ namespace Quantum {
         serializer.Stream.Serialize((Byte*)&p->CurrentKnockback);
         serializer.Stream.Serialize((Byte*)&p->CurrentPowerupState);
         serializer.Stream.Serialize((Byte*)&p->PreviousPowerupState);
-        serializer.Stream.Serialize(&p->CloudFlowerCooldownFrames);
         serializer.Stream.Serialize(&p->InvincibilityFrames);
         serializer.Stream.Serialize(&p->MegaMushroomFrames);
+        serializer.Stream.Serialize(&p->ProjectileCooldownFrames);
         serializer.Stream.Serialize(&p->HoldStartFrame);
         serializer.Stream.Serialize(&p->KnockbackTick);
         serializer.Stream.Serialize(&p->LandedFrame);

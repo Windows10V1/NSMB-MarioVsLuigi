@@ -31,6 +31,15 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
     // Gold Ball-specific properties
     public bool IsGoldball = false; // When true, turns bricks into coins
 
+    // Cooldown settings (e.g., for Cloud power-up)
+    public int CooldownFrames = 0; // 0 = no cooldown, otherwise frames to wait before next shot
+
+    // Projectile spawn settings (moved from PowerupAsset)
+    public byte MaxInstantProjectiles = 0; // 0 = use global defaults
+    public byte MaxProjectileCount = 0; // 0 = use global defaults
+    public FP ProjectileSpawnHorizontalOffset = 0;
+    public FP ProjectileSpawnVerticalOffset = 0;
+
     public SoundEffectOverride[] SfxOverrides;
 
     [NonSerialized] private Dictionary<SoundEffect, SoundEffectOverride> overridesDict;

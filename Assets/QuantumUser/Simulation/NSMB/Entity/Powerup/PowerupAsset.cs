@@ -29,13 +29,6 @@ public unsafe class PowerupAsset : CoinItemAsset, ISoundOverrideProvider {
     public sbyte StatePriority = -1, ItemPriority = -1;
     public bool EnterReserveIfOverridden = true;
 
-
-    // Projectile-specific limits (0 = use global defaults)
-    public byte MaxInstantProjectiles = 0;
-    public byte MaxProjectileCount = 0;
-    public FP ProjectileSpawnHorizontalOffset = 0;
-    public FP ProjectileSpawnVerticalOffset = 0;
-
     public SoundEffectOverride[] SfxOverrides;
 
     [NonSerialized] private Dictionary<SoundEffect, SoundEffectOverride> overridesDict;

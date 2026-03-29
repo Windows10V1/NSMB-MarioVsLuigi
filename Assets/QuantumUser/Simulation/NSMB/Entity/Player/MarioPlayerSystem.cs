@@ -874,7 +874,7 @@ namespace Quantum {
             bool allowGroundpoundStart = mario->GroundpoundCooldownFrames == 1 || mario->IsPropellerFlying || mario->IsSpinnerFlying;
             QuantumUtils.Decrement(ref mario->GroundpoundCooldownFrames);
             QuantumUtils.Decrement(ref mario->PropellerDrillCooldown);
-            QuantumUtils.Decrement(ref mario->CloudFlowerCooldownFrames);
+            QuantumUtils.Decrement(ref mario->ProjectileCooldownFrames);
 
             if (inputs.Down.IsDown && allowGroundpoundStart) {
                 TryStartGroundpound(f, ref filter, physics, stage);
@@ -1374,6 +1374,7 @@ namespace Quantum {
             }
             QuantumUtils.Decrement(ref mario->PropellerSpinFrames);
             QuantumUtils.Decrement(ref mario->ProjectileDelayFrames);
+            QuantumUtils.Decrement(ref mario->ProjectileCooldownFrames);
             if (QuantumUtils.Decrement(ref mario->ProjectileVolleyFrames)) {
                 mario->CurrentVolley = 0;
             }
@@ -1453,24 +1454,35 @@ namespace Quantum {
                     return;
                 }
 
-                // Cloud flower specific cooldown check
-                if (mario->CurrentPowerupState == PowerupState.CloudFlower && mario->CloudFlowerCooldownFrames > 0) {
+                // Projectile cooldown check
+                if (mario->ProjectileCooldownFrames > 0) {
                     return;
                 }
 
                 byte activeProjectiles = mario->CurrentProjectiles;
                 
-                // Get powerup asset to check for custom limits
-                PowerupAsset powerupAsset = QuantumUtils.FindPowerupAsset(f, mario->CurrentPowerupState);
+                // Get projectile asset for customizable limits
+                AssetRef<ProjectileAsset> projectileAssetRef = mario->CurrentPowerupState switch {
+                    PowerupState.IceFlower => f.SimulationConfig.IceballProjectileAsset,
+                    PowerupState.FireFlower => f.SimulationConfig.FireballProjectileAsset,
+                    PowerupState.HammerSuit => f.SimulationConfig.HammerProjectileAsset,
+                    PowerupState.BoomerangFlower => f.SimulationConfig.BoomerangProjectileAsset,
+                    PowerupState.CloudFlower => f.SimulationConfig.CloudProjectileAsset,
+                    PowerupState.SuperBallFlower => f.SimulationConfig.SuperballProjectileAsset,
+                    PowerupState.GoldFlower => f.SimulationConfig.GoldballProjectileAsset,
+                    _ => default
+                };
+                ProjectileAsset projectileAsset = projectileAssetRef.IsValid ? f.FindAsset(projectileAssetRef) : null;
+                
                 byte maxInstantProjectiles = 2; // Default for most projectiles
                 byte maxProjectiles = physics.MaxProjecitles; // Default max
                 
-                if (powerupAsset != null) {
-                    if (powerupAsset.MaxInstantProjectiles > 0) {
-                        maxInstantProjectiles = powerupAsset.MaxInstantProjectiles;
+                if (projectileAsset != null) {
+                    if (projectileAsset.MaxInstantProjectiles > 0) {
+                        maxInstantProjectiles = projectileAsset.MaxInstantProjectiles;
                     }
-                    if (powerupAsset.MaxProjectileCount > 0) {
-                        maxProjectiles = powerupAsset.MaxProjectileCount;
+                    if (projectileAsset.MaxProjectileCount > 0) {
+                        maxProjectiles = projectileAsset.MaxProjectileCount;
                     }
                 }
                 
@@ -1503,7 +1515,7 @@ namespace Quantum {
                 } else if (mario->CurrentPowerupState == PowerupState.BoomerangFlower) {
                     projectile = ShootBoomerangProjectile(f, ref filter, physics);
                 } else if (mario->CurrentPowerupState == PowerupState.CloudFlower) {
-                    projectile = ShootCloudProjectile(f, ref filter, physics, powerupAsset);
+                    projectile = ShootCloudProjectile(f, ref filter, physics, projectileAsset);
                 } else {
                     projectile = ShootNormalProjectile(f, ref filter, physics);
                 }
@@ -1549,17 +1561,17 @@ namespace Quantum {
         }
     }
 
-        private Projectile* ShootCloudProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics, PowerupAsset powerupAsset) {
+        private Projectile* ShootCloudProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics, ProjectileAsset projectileAsset) {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
             FP horizontalOffset = mario->FacingRight ? FP._0_25 : -FP._0_25;
             FP verticalOffset = FP._0_50;
 
-            // Use custom offsets from powerupAsset if available
-            if (powerupAsset != null) {
-                horizontalOffset = mario->FacingRight ? powerupAsset.ProjectileSpawnHorizontalOffset : -powerupAsset.ProjectileSpawnHorizontalOffset;
-                verticalOffset = powerupAsset.ProjectileSpawnVerticalOffset;
+            // Use custom offsets from projectileAsset if available
+            if (projectileAsset != null) {
+                horizontalOffset = mario->FacingRight ? projectileAsset.ProjectileSpawnHorizontalOffset : -projectileAsset.ProjectileSpawnHorizontalOffset;
+                verticalOffset = projectileAsset.ProjectileSpawnVerticalOffset;
             }
 
             FPVector2 spawnPos = filter.Transform->Position + new FPVector2(horizontalOffset, verticalOffset);

@@ -43,4 +43,10 @@ MonoBehaviour:
     RawValue: 32768
   IsSuperBall: 0
   IsGoldball: 1
+  MaxInstantProjectiles: 2
+  MaxProjectileCount: 2
+  ProjectileSpawnHorizontalOffset:
+    RawValue: 0
+  ProjectileSpawnVerticalOffset:
+    RawValue: 0
   SfxOverrides: []

@@ -19,7 +19,7 @@ MonoBehaviour:
   Effect: 3
   Bounce: 1
   Speed:
-    RawValue: 294912
+    RawValue: 425984
   BounceStrength:
     RawValue: 0
   Gravity:
@@ -43,4 +43,10 @@ MonoBehaviour:
     RawValue: 32768
   IsSuperBall: 1
   IsGoldball: 0
+  MaxInstantProjectiles: 2
+  MaxProjectileCount: 2
+  ProjectileSpawnHorizontalOffset:
+    RawValue: 0
+  ProjectileSpawnVerticalOffset:
+    RawValue: 0
   SfxOverrides: []

@@ -409,12 +409,10 @@ namespace Quantum {
             var transform = f.Unsafe.GetPointer<Transform2D>(entity);
             var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
             
-            // Check if this is a cloud projectile and set cooldown on owner
-            if (asset.Effect == ProjectileEffectType.None && asset.Speed == 0 && !asset.HasCollision) {
+            // Check if this projectile has a cooldown and set it on owner
+            if (asset.CooldownFrames > 0) {
                 if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* owner)) {
-                    if (owner->CurrentPowerupState == PowerupState.CloudFlower) {
-                        owner->CloudFlowerCooldownFrames = 240; // 4 second cooldown (240 frames at 60 FPS)
-                    }
+                    owner->ProjectileCooldownFrames = (ushort)asset.CooldownFrames;
                 }
             }
             
