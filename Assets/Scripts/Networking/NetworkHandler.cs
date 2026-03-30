@@ -149,10 +149,7 @@ namespace NSMB.Networking {
             try {
                 string buildIdentifier = "";
                 if (Instance.buildIdentifierAsset && !string.IsNullOrWhiteSpace(Instance.buildIdentifierAsset.Identifier)) {
-                    Debug.Log($"[Network] Build Identifier: {Instance.buildIdentifierAsset.Identifier}");
                     buildIdentifier = "-" + Instance.buildIdentifierAsset.Identifier;
-                } else {
-                    Debug.Log("[Network] Build Identifier: <none>");
                 }
 
                 await Client.ConnectUsingSettingsAsync(new AppSettings {

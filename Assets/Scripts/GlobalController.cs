@@ -15,6 +15,8 @@ using UnityEngine.UI;
 using NSMB.UI.Game;
 using NSMB.Sound;
 using NSMB.UI;
+using System.IO;
+
 
 #if UNITY_STANDALONE
 using NSMB.UI.MainMenu.Submenus.Replays;
@@ -98,6 +100,18 @@ namespace NSMB {
             }
 #endif
 
+            if (keyboard[Key.F6].wasPressedThisFrame && !string.IsNullOrEmpty(Application.consoleLogPath)) {
+                System.Diagnostics.Process.Start(Path.GetDirectoryName(Application.consoleLogPath));
+            }
+
+            if (keyboard[Key.F7].wasPressedThisFrame && !string.IsNullOrEmpty(ReplayListManager.ReplayDirectory)) {
+                System.Diagnostics.Process.Start(ReplayListManager.ReplayDirectory);
+            }
+            
+            if (keyboard[Key.F8].wasPressedThisFrame && addonManager.isActiveAndEnabled && !string.IsNullOrEmpty(AddonManager.LocalFolderPath)) {
+                System.Diagnostics.Process.Start(AddonManager.LocalFolderPath);
+            }
+
             if (Debug.isDebugBuild) {
                 if (keyboard[Key.F9].wasPressedThisFrame) {
                     if (Profiler.enabled) {
@@ -121,18 +135,6 @@ namespace NSMB {
                     }
                 }
                 */
-            }
-
-            if (keyboard[Key.F6].wasPressedThisFrame) {
-                System.Diagnostics.Process.Start(Application.consoleLogPath);
-            }
-
-            if (keyboard[Key.F7].wasPressedThisFrame) {
-                System.Diagnostics.Process.Start(ReplayListManager.ReplayDirectory);
-            }
-
-            if (keyboard[Key.F8].wasPressedThisFrame) {
-                System.Diagnostics.Process.Start(AddonManager.LocalFolderPath);
             }
 #endif
 

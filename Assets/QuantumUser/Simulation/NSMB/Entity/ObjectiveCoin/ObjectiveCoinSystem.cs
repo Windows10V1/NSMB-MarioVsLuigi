@@ -68,13 +68,16 @@ namespace Quantum {
 
                 if (hits.Count == 0) {
                     // Hit no players
-                    var gamemode = f.FindAsset(f.Global->Rules.Gamemode) as CoinRunnersGamemode;
+                    var gamemode = (CoinRunnersGamemode) f.FindAsset(f.Global->Rules.Gamemode);
                     EntityRef newEntity = f.Create(gamemode.StarCoinPrototype);
                     f.Global->MainBigStar = newEntity;
                     var newStarCoinTransform = f.Unsafe.GetPointer<Transform2D>(newEntity);
                     newStarCoinTransform->Position = position;
                     spawnedStarCoin = true;
+                    f.Events.BigCollectableAttemptedSpawn(index, position, Success: true);
                     break;
+                } else {
+                    f.Events.BigCollectableAttemptedSpawn(index, position, Success: false);
                 }
             }
 

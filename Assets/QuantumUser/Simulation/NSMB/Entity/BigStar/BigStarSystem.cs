@@ -55,7 +55,7 @@ namespace Quantum {
 
                 if (hits.Count == 0) {
                     // Hit no players
-                    var gamemode = f.FindAsset(f.Global->Rules.Gamemode) as StarChasersGamemode;
+                    var gamemode = (StarChasersGamemode) f.FindAsset(f.Global->Rules.Gamemode);
                     EntityRef newEntity = f.Create(gamemode.BigStarPrototype);
                     f.Global->MainBigStar = newEntity;
                     var newStarTransform = f.Unsafe.GetPointer<Transform2D>(newEntity);
@@ -66,12 +66,15 @@ namespace Quantum {
                     newStar->IsStationary = true;
                     newStarPhysicsObject->DisableCollision = true;
                     spawnedStar = true;
+                    f.Events.BigCollectableAttemptedSpawn(index, position, Success: true);
                     break;
+                } else {
+                    f.Events.BigCollectableAttemptedSpawn(index, position, Success: false);
                 }
-            }
 
-            if (!spawnedStar) {
-                f.Global->BigStarSpawnTimer = 30;
+                if (!spawnedStar) {
+                    f.Global->BigStarSpawnTimer = 30;
+                }
             }
         }
 
@@ -168,7 +171,7 @@ namespace Quantum {
             f.Signals.OnMarioPlayerCollectedStar(marioEntity);
             GameLogicSystem.CheckForGameEnd(f);
 
-            f.Events.MarioPlayerCollectedStar(marioEntity, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position);
+            f.Events.MarioPlayerCollectedStar(marioEntity, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position, starEntity);
             f.Events.CollectableDespawned(starEntity, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position, true);
             f.Destroy(starEntity);
         }
