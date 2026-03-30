@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/SuperBallProjectile
     Guid:
       Value: 408052301521581379
-  Effect: 3
+  Effect: 1
   Bounce: 1
   Speed:
     RawValue: 425984
@@ -43,8 +43,9 @@ MonoBehaviour:
     RawValue: 32768
   IsSuperBall: 1
   IsGoldball: 0
-  MaxInstantProjectiles: 2
-  MaxProjectileCount: 2
+  CooldownFrames: 0
+  MaxInstantProjectiles: 0
+  MaxProjectileCount: 0
   ProjectileSpawnHorizontalOffset:
     RawValue: 0
   ProjectileSpawnVerticalOffset:
