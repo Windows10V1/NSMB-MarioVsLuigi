@@ -92,7 +92,7 @@ namespace NSMB.Cameras {
         }
 
         private void UpdateCameraFollowPlayerTweening(CallbackUpdateView e) {
-            tweenTime += Time.unscaledDeltaTime;
+            tweenTime += Time.deltaTime;
             if (tweenTime < 0.5f) {
                 UpdateCameraFollowPlayerMode(e);
             } else {
