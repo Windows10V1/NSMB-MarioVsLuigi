@@ -169,67 +169,64 @@ namespace Quantum {
             var transform = filter.Transform;
             var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
             var collider = filter.PhysicsCollider;
+            var entity = filter.Entity;
 
             // Handle Super Ball lifetime (if any)
             if (projectile->Lifetime > 0 && QuantumUtils.Decrement(ref projectile->Lifetime)) {
-                // Despawn via timer
-                Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                Destroy(f, entity, asset.DestroyParticleEffect);
                 return;
             }
 
             // Check to instant-despawn if spawned inside a wall
             if (!projectile->CheckedCollision) {
-                if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
-                    Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape, stage: stage, entity: entity)) {
+                    Destroy(f, entity, asset.DestroyParticleEffect);
                     return;
                 }
                 projectile->CheckedCollision = true;
             }
 
-            // Extract direction from Combo byte:
-            // bit 0 = horizontal (0=left, 1=right)
-            // bit 1 = vertical (0=down, 1=up)
+            // Extract direction from Combo byte: bit 0 = horizontal (0=left, 1=right), bit 1 = vertical (0=down, 1=up)
             bool goingRight = (projectile->Combo & 1) != 0;
             bool goingUp = (projectile->Combo & 2) != 0;
 
             // Calculate velocity components (constant magnitude at 45 degrees)
-            FP speedComponent = projectile->Speed;
-            FP velocityX = goingRight ? speedComponent : -speedComponent;
-            FP velocityY = goingUp ? -speedComponent : speedComponent;  // Negative = up
+            FP velocityX = goingRight ? projectile->Speed : -projectile->Speed;
+            FP velocityY = goingUp ? -projectile->Speed : projectile->Speed;  // Negative = up
 
             // Move the projectile manually
             FPVector2 newPosition = transform->Position + new FPVector2(velocityX, velocityY) / 60;  // 60 FPS
 
-            // Check for terrain collisions
+            // Check for terrain collisions (including semisolids for ground detection)
             bool hitGround = false;
             bool hitCeiling = false;
             bool hitLeftWall = false;
             bool hitRightWall = false;
 
-            // Simple collision detection: check if new position would be in terrain
-            if (PhysicsObjectSystem.BoxInGround(f, newPosition, collider->Shape)) {
-                // We hit something - figure out what
+            // Check if new position would be in terrain
+            if (PhysicsObjectSystem.BoxInGround(f, newPosition, collider->Shape, stage: stage, entity: entity)) {
+                // We hit something - figure out what direction
                 // Try moving only X
-                FPVector2 posX = new(newPosition.X, transform->Position.Y);
-                if (!PhysicsObjectSystem.BoxInGround(f, posX, collider->Shape)) {
+                FPVector2 posXOnly = new(newPosition.X, transform->Position.Y);
+                if (!PhysicsObjectSystem.BoxInGround(f, posXOnly, collider->Shape, stage: stage, entity: entity)) {
                     // Can move in X but not Y - hit ceiling or ground
                     if (velocityY > 0) {
                         hitGround = true;
                     } else {
                         hitCeiling = true;
                     }
-                    newPosition.X = posX.X;
+                    newPosition.X = posXOnly.X;
                 } else {
                     // Try moving only Y
-                    FPVector2 posY = new(transform->Position.X, newPosition.Y);
-                    if (!PhysicsObjectSystem.BoxInGround(f, posY, collider->Shape)) {
+                    FPVector2 posYOnly = new(transform->Position.X, newPosition.Y);
+                    if (!PhysicsObjectSystem.BoxInGround(f, posYOnly, collider->Shape, stage: stage, entity: entity)) {
                         // Can move in Y but not X - hit wall
                         if (velocityX < 0) {
                             hitLeftWall = true;
                         } else {
                             hitRightWall = true;
                         }
-                        newPosition.Y = posY.Y;
+                        newPosition.Y = posYOnly.Y;
                     } else {
                         // Both blocked, stuck in corner - bounce off both
                         if (velocityX < 0) {
@@ -255,22 +252,18 @@ namespace Quantum {
             if (hitGround) {
                 // Flip vertical direction - set bit 1 (go UP after hitting ground)
                 projectile->Combo |= 2;
-                goingUp = true;
             }
             if (hitCeiling) {
                 // Flip vertical direction - clear bit 1 (go DOWN after hitting ceiling)
-                projectile->Combo = (byte)(projectile->Combo & 0xFD);  // 11111101
-                goingUp = false;
+                projectile->Combo &= 0xFD;  // 11111101
             }
             if (hitLeftWall) {
                 // Flip horizontal direction - set bit 0 (go right)
                 projectile->Combo |= 1;
-                goingRight = true;
             }
             if (hitRightWall) {
                 // Flip horizontal direction - clear bit 0 (go left)
-                projectile->Combo = (byte)(projectile->Combo & 0xFE);  // 11111110
-                goingRight = false;
+                projectile->Combo &= 0xFE;  // 11111110
             }
 
             // Try to interact with tiles (for breaking blocks, etc.)
@@ -295,7 +288,7 @@ namespace Quantum {
                     }
 
                     // Call interact on the tile
-                    it.Interact(f, filter.Entity, direction, QuantumUtils.WorldToRelativeTile(f, transform->Position), tileInstance, out _);
+                    it.Interact(f, entity, direction, QuantumUtils.WorldToRelativeTile(f, transform->Position), tileInstance, out _);
                 }
             }
         }
