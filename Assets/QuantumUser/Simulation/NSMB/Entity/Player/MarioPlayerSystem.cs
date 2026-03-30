@@ -2617,8 +2617,11 @@ namespace Quantum {
             KnockbackStrength strength = KnockbackStrength.Normal;
             switch (breakReason) {
             case IceBlockBreakReason.HitWall:
+                strength = KnockbackStrength.FireballBump;
+                damaged = mario->DoKnockback(f, entity, mario->FacingRight, 1, strength, brokenIceBlock);
+                break;
+
             case IceBlockBreakReason.Other:
-            other:
                 strength = KnockbackStrength.FireballBump;
                 damaged = mario->DoKnockback(f, entity, mario->FacingRight, 1, strength, brokenIceBlock);
                 mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
