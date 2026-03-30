@@ -200,7 +200,7 @@ namespace Quantum {
 
                 physicsObject->Velocity.X += (physics.FastTurnaroundAcceleration * (mario->FacingRight ? -1 : 1) * f.DeltaTime);
             } else if ((inputs.Left ^ inputs.Right)
-                       && (!mario->IsCrouching || (mario->IsCrouching && !physicsObject->IsTouchingGround && mario->CurrentPowerupState != PowerupState.BlueShell))
+                       && (!mario->IsCrouching || (mario->IsCrouching && !physicsObject->IsTouchingGround && mario->CurrentPowerupState != PowerupState.BlueShell && mario->CurrentPowerupState != PowerupState.HammerSuit))
                        && !mario->IsInKnockback
                        && !mario->IsSliding) {
 
@@ -1475,11 +1475,14 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40);
+            ref var inputs = ref filter.Inputs;
+            bool aimingUp = inputs.Up.IsDown;
+            
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, aimingUp ? FP._0_75 : Constants._0_40);
             EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, false);
+            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, aimingUp);
             return projectile;
         }
 
@@ -2023,7 +2026,8 @@ namespace Quantum {
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && mario->IsDamageable
-                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
+                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
+                && !(mario->CurrentPowerupState == PowerupState.HammerSuit && mario->IsCrouching);
 
             if (damageable) {
                 bool didKnockback = false;
@@ -2442,14 +2446,6 @@ namespace Quantum {
                 if (didKnockback) {
                     f.Events.PlayKnockbackEffect(defender, attacker, strength, avgPosition);
                 }
-            } else if (defenderMario->CurrentPowerupState == PowerupState.HammerSuit && defenderPhysicsObject->IsTouchingGround && defenderMario->IsCrouching && !groundpounded) {
-                var attackerPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(attacker);
-                if (FPMath.Abs(attackerPhysicsObject->Velocity.X) < 2) {
-                    attackerPhysicsObject->Velocity.X = fromRight ? -2 : 2;
-                }
-                attackerPhysicsObject->Velocity.Y = 4;
-                attackerMario->DoEntityBounce = false;
-                f.Events.EnemyKicked(defender, false);
             } else {
                 if (defenderMario->CurrentPowerupState == PowerupState.MiniMushroom && groundpounded) {
                     defenderMario->Powerdown(f, defender, false, attacker);
@@ -2617,6 +2613,7 @@ namespace Quantum {
             KnockbackStrength strength = KnockbackStrength.Normal;
             switch (breakReason) {
             case IceBlockBreakReason.HitWall:
+            other:
                 strength = KnockbackStrength.FireballBump;
                 damaged = mario->DoKnockback(f, entity, mario->FacingRight, 1, strength, brokenIceBlock);
                 break;
