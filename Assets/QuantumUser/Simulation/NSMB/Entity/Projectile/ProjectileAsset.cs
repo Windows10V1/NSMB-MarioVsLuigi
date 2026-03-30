@@ -22,21 +22,21 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
 
     // Boomerang-specific properties
     public bool IsBoomerang = false;
-    public FP BoomerangReturnDelay = FP.FromString("0.5"); // Delay before return force activates
-    public FP BoomerangReturnAcceleration = FP.FromString("0.5"); // How quickly force ramps up
+    public FP BoomerangReturnDelay = FP.FromString("0.5");
+    public FP BoomerangReturnAcceleration = FP.FromString("0.5");
 
     // Super Ball-specific properties
-    public bool IsSuperBall = false; // When true, uses custom 45-degree bounce physics
+    public bool IsSuperBall = false;
 
     // Gold Ball-specific properties
-    public bool IsGoldball = false; // When true, turns bricks into coins
+    public bool IsGoldball = false;
 
     // Cooldown settings (e.g., for Cloud power-up)
-    public int CooldownFrames = 0; // 0 = no cooldown, otherwise frames to wait before next shot
+    public int CooldownFrames = 0;
 
-    // Projectile spawn settings (moved from PowerupAsset)
-    public byte MaxInstantProjectiles = 0; // 0 = use global defaults
-    public byte MaxProjectileCount = 0; // 0 = use global defaults
+    // Projectile spawn settings
+    public byte MaxInstantProjectiles = 0;
+    public byte MaxProjectileCount = 0;
     public FP ProjectileSpawnHorizontalOffset = 0;
     public FP ProjectileSpawnVerticalOffset = 0;
 
