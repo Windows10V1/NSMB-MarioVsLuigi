@@ -1,0 +1,65 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ef72dd466a4a304fa1d61bcde88ab92, type: 3}
+  m_Name: WarioSounds
+  m_EditorClassIdentifier: 
+  SfxOverrides:
+  - SoundEffect: 33
+    Mode: 0
+    Priority: 0
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: b72dc1e321566a2419e457986579b39e, type: 3}
+    - {fileID: 8300000, guid: 2293281971748924487cc9af1399c430, type: 3}
+  - SoundEffect: 34
+    Mode: 0
+    Priority: 0
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: c40ca1be5975bc94ea4334b771e77f2f, type: 3}
+  - SoundEffect: 35
+    Mode: 0
+    Priority: 0
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: ae85185cddcdb3d46baa3ef3dd3b9144, type: 3}
+  - SoundEffect: 36
+    Mode: 0
+    Priority: 0
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: f049a377f56a20e4faa1bf67497a80ce, type: 3}
+  - SoundEffect: 37
+    Mode: 0
+    Priority: 0
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: ed8975bc0577e2a4ea53d08cb1b61c34, type: 3}
+  - SoundEffect: 38
+    Mode: 0
+    Priority: 0
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: 0e61420914e630549948f18ce35b398a, type: 3}
+  - SoundEffect: 39
+    Mode: 0
+    Priority: 0
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: 5f09727157f744c439bdc0d563b87626, type: 3}
+    - {fileID: 8300000, guid: 27d0aef7c014dc84a8710755332c5f8c, type: 3}
+  - SoundEffect: 40
+    Mode: 0
+    Priority: 0
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: f4d85d475f8500e47acae3a31598c22c, type: 3}
