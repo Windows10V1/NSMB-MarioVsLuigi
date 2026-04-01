@@ -3,7 +3,7 @@ import enum ParticleEffect(byte);
 component Projectile {
 	AssetRef<ProjectileAsset> Asset;
 	FP Speed;
-	byte Lifetime;
+	int Lifetime;
 
 	[ExcludeFromPrototype] EntityRef Owner;
 	[ExcludeFromPrototype] bool FacingRight;

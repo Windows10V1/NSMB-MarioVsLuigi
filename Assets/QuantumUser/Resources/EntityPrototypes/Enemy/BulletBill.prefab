@@ -4904,7 +4904,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5a26cde1892218c4fbbe8b84c92e1a24, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -5525,6 +5525,8 @@ MonoBehaviour:
       Value: 0
     DisableRespawning:
       Value: 1
+    StayAtHomeWhenOffscreen:
+      Value: 0
 --- !u!114 &-2707382414775849669
 MonoBehaviour:
   m_ObjectHideFlags: 0

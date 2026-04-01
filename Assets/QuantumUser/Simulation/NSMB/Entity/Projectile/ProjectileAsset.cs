@@ -20,21 +20,16 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
     public ParticleEffect DestroyParticleEffect = ParticleEffect.None;
     public SoundEffect ShootSound = SoundEffect.Powerup_Fireball_Shoot;
 
-    // Boomerang-specific properties
     public bool IsBoomerang = false;
     public FP BoomerangReturnDelay = FP.FromString("0.5");
     public FP BoomerangReturnAcceleration = FP.FromString("0.5");
 
-    // Super Ball-specific properties
     public bool IsSuperBall = false;
 
-    // Gold Ball-specific properties
     public bool IsGoldball = false;
 
-    // Cooldown settings (e.g., for Cloud power-up)
     public int CooldownFrames = 0;
 
-    // Projectile spawn settings
     public byte MaxInstantProjectiles = 0;
     public byte MaxProjectileCount = 0;
     public FP ProjectileSpawnHorizontalOffset = 0;

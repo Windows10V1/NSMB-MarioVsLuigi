@@ -880,7 +880,7 @@ namespace Quantum.Prototypes {
   public unsafe partial class ProjectilePrototype : ComponentPrototype<Quantum.Projectile> {
     public AssetRef<ProjectileAsset> Asset;
     public FP Speed;
-    public Byte Lifetime;
+    public Int32 Lifetime;
     partial void MaterializeUser(Frame frame, ref Quantum.Projectile result, in PrototypeMaterializationContext context);
     public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
         Quantum.Projectile component = default;

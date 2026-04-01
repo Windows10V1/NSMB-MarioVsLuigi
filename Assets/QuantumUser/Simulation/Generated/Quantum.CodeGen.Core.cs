@@ -3262,24 +3262,24 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct Projectile : Quantum.IComponent {
-    public const Int32 SIZE = 40;
+    public const Int32 SIZE = 48;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(16)]
-    public AssetRef<ProjectileAsset> Asset;
-    [FieldOffset(32)]
-    public FP Speed;
-    [FieldOffset(1)]
-    public Byte Lifetime;
     [FieldOffset(24)]
+    public AssetRef<ProjectileAsset> Asset;
+    [FieldOffset(40)]
+    public FP Speed;
+    [FieldOffset(4)]
+    public Int32 Lifetime;
+    [FieldOffset(32)]
     [ExcludeFromPrototype()]
     public EntityRef Owner;
-    [FieldOffset(8)]
-    [ExcludeFromPrototype()]
-    public QBoolean FacingRight;
     [FieldOffset(12)]
     [ExcludeFromPrototype()]
+    public QBoolean FacingRight;
+    [FieldOffset(16)]
+    [ExcludeFromPrototype()]
     public QBoolean HasBounced;
-    [FieldOffset(4)]
+    [FieldOffset(8)]
     [ExcludeFromPrototype()]
     public QBoolean CheckedCollision;
     [FieldOffset(0)]
