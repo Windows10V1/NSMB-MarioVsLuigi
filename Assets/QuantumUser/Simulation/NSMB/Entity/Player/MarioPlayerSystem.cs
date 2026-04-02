@@ -1334,6 +1334,11 @@ namespace Quantum {
                     return;
                 }
 
+                // Prevent cloud flower shooting while standing on the ground
+                if (mario->CurrentPowerupState == PowerupState.CloudFlower && physicsObject->IsTouchingGround) {
+                    return;
+                }
+
                 if (mario->ProjectileCooldownFrames > 0) {
                     return;
                 }

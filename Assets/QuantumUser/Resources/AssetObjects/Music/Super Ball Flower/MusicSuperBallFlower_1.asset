@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 075af0e881e112348abe562216ddc298, type: 3}
+  m_Name: MusicSuperBallFlower_1
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/AssetObjects/Music/Super Ball Flower/MusicSuperBallFlower_1
+    Guid:
+      Value: 269824406810584804
+  clip: {fileID: 8300000, guid: c88c9e3b735451948a36e97142cc213f, type: 3}
+  fastClip: {fileID: 8300000, guid: c88c9e3b735451948a36e97142cc213f, type: 3}
+  loopStartSeconds: 2.05
+  loopEndSeconds: 26.05
+  speedupFactor: 1.25
