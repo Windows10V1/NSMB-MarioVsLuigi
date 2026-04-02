@@ -357,11 +357,6 @@ namespace Quantum {
                         it.Interact(f, filter.Entity, direction, contact.Tile, tileInstance, out _);
                     }
                 }
-                
-                // Restore original velocity for boomerangs that hit breakable bricks
-                if (asset.IsBoomerang && hitBreakableBrick) {
-                    physicsObject->Velocity = originalVelocity;
-                }
             }
 
             // Special handling for boomerangs: switch to returning mode on terrain hit
