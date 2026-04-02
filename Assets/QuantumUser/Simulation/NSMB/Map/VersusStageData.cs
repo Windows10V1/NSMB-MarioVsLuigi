@@ -57,6 +57,7 @@ public unsafe class VersusStageData : AssetObject, ISoundOverrideProvider {
     public AssetRef<LoopingMusicData>[] MainMusic;
     public AssetRef<LoopingMusicData> InvincibleMusic;
     public AssetRef<LoopingMusicData> MegaMushroomMusic;
+    public AssetRef<LoopingMusicData> SuperBallFlowerMusic;
 
     [HideInInspector] public StageTileInstance[] TileData;
     [HideInInspector] public FPVector2[] BigStarSpawnpoints;

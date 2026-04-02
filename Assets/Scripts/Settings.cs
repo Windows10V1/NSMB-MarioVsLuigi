@@ -354,7 +354,7 @@ namespace NSMB {
             audioMuteSFXOnUnfocus = false;
             audioPanning = true;
             audioRestartMusicOnDeath = false;
-            audioSpecialPowerupMusic = Enums.SpecialPowerupMusic.Starman | Enums.SpecialPowerupMusic.MegaMushroom;
+            audioSpecialPowerupMusic = Enums.SpecialPowerupMusic.Starman | Enums.SpecialPowerupMusic.MegaMushroom | Enums.SpecialPowerupMusic.SuperBallFlower;
 
             FileInfo bindingsFile = new(Application.persistentDataPath + "/controls.json");
             if (bindingsFile.Exists) {
