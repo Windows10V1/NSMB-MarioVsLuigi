@@ -314,7 +314,16 @@ namespace Quantum {
             }
 
             // Try to interact with tiles (for breaking blocks, etc.)
+            // Also check for boomerang breakable brick piercing
+            bool hitBreakableBrick = false;
+            FPVector2 newVelocity = FPVector2.Zero;
             if (hasTerrainCollision && !physicsObject->DisableCollision) {
+                // Store original velocity for boomerangs to preserve momentum
+                if (asset.IsBoomerang) {
+                    FPVector2 originalVelocity = physicsObject->Velocity;
+                    newVelocity = originalVelocity;
+                }
+                
                 foreach (var contact in f.ResolveList(physicsObject->Contacts)) {
                     // Only process tile contacts (no entity)
                     if (f.Exists(contact.Entity)) {
@@ -325,6 +334,13 @@ namespace Quantum {
                     StageTile tile = f.FindAsset(tileInstance.Tile);
                     
                     if (tile is IInteractableTile it) {
+                        // Check if this is a breakable brick for boomerang piercing
+                        if (asset.IsBoomerang && tile is BreakableBrickTile breakableBrick) {
+                            if (breakableBrick.BreakingRules.HasFlag(BreakableBrickTile.BreakableBy.Boomerangs)) {
+                                hitBreakableBrick = true;
+                            }
+                        }
+                        
                         // Determine interaction direction based on contact normal
                         InteractionDirection direction = InteractionDirection.Up;
                         if (FPVector2.Dot(contact.Normal, FPVector2.Up) > FP.FromString("0.5")) {
@@ -341,10 +357,16 @@ namespace Quantum {
                         it.Interact(f, filter.Entity, direction, contact.Tile, tileInstance, out _);
                     }
                 }
+                
+                // Restore original velocity for boomerangs that hit breakable bricks
+                if (asset.IsBoomerang && hitBreakableBrick) {
+                    physicsObject->Velocity = originalVelocity;
+                }
             }
 
             // Special handling for boomerangs: switch to returning mode on terrain hit
-            if (asset.IsBoomerang && hasTerrainCollision && !projectile->IsReturning()) {
+            // But allow piercing through breakable bricks
+            if (asset.IsBoomerang && hasTerrainCollision && !projectile->IsReturning() && !hitBreakableBrick) {
                 projectile->SetReturning();
                 projectile->Lifetime = 0; // Reset frame counter for return phase with peak force
                 // Apply max pull force immediately when hitting terrain
@@ -354,12 +376,18 @@ namespace Quantum {
 
             // Despawn
             if (!physicsObject->DisableCollision) {
-                if (physicsObject->IsTouchingLeftWall
+                bool shouldDespawn = physicsObject->IsTouchingLeftWall
                     || physicsObject->IsTouchingRightWall
                     || physicsObject->IsTouchingCeiling
                     || (physicsObject->IsTouchingGround && (!asset.Bounce || (projectile->HasBounced && asset.DestroyOnSecondBounce)))
-                    || PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape)) {
+                    || PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape);
 
+                // Don't despawn boomerangs that just hit breakable bricks
+                if (shouldDespawn && asset.IsBoomerang && hitBreakableBrick) {
+                    shouldDespawn = false;
+                }
+
+                if (shouldDespawn) {
                     Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                     return;
                 }
