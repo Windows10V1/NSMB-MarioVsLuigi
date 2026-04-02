@@ -200,7 +200,7 @@ namespace Quantum {
 
                 physicsObject->Velocity.X += (physics.FastTurnaroundAcceleration * (mario->FacingRight ? -1 : 1) * f.DeltaTime);
             } else if ((inputs.Left ^ inputs.Right)
-                       && (!mario->IsCrouching || (mario->IsCrouching && !physicsObject->IsTouchingGround && mario->CurrentPowerupState != PowerupState.BlueShell && mario->CurrentPowerupState != PowerupState.HammerSuit))
+                       && (!mario->IsCrouching || (mario->IsCrouching && !physicsObject->IsTouchingGround && mario->CurrentPowerupState != PowerupState.BlueShell))
                        && !mario->IsInKnockback
                        && !mario->IsSliding) {
 
@@ -1605,8 +1605,7 @@ namespace Quantum {
                 && !((mario->FacingRight && physicsObject->IsTouchingRightWall) || (!mario->FacingRight && physicsObject->IsTouchingLeftWall))
                 && (mario->IsCrouching || inputs.Down.IsDown)
                 && !mario->IsInShell
-                && !physicsObject->IsUnderwater
-                && mario->CurrentPowerupState != PowerupState.HammerSuit) {
+                && !physicsObject->IsUnderwater) {
 
                 if (blueShell && movingFastEnough && inputs.Sprint.IsDown) {
                     mario->IsInShell = true;
@@ -2031,8 +2030,7 @@ namespace Quantum {
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && mario->IsDamageable
-                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
-                && !(mario->CurrentPowerupState == PowerupState.HammerSuit && mario->IsCrouching);
+                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
 
             if (damageable) {
                 bool didKnockback = false;

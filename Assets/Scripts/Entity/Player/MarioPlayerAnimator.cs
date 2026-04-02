@@ -101,7 +101,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeShellExclude, blueShell, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuck, boomerangHelmet, boomerangShell, cloudHead, cloudScarf;
+        [SerializeField] private GameObject smallModel, largeModel, largeShellExclude, blueShell, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, cloudHead, cloudScarf;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -609,9 +609,8 @@ namespace NSMB.Entities.Player {
             smallModel.SetActive(!large);
             blueShell.SetActive(mario->CurrentPowerupState == PowerupState.BlueShell);
             propellerHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.PropellerMushroom);
-            HammerHelm.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.HammerSuit && (!mario->IsCrouching || f.Exists(mario->CurrentPipe)));
-            HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit && (!mario->IsCrouching || f.Exists(mario->CurrentPipe)));
-            HammerTuck.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit && mario->IsCrouching && !f.Exists(mario->CurrentPipe));
+            HammerHelm.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.HammerSuit);
+            HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
             boomerangHelmet.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             boomerangShell.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudHead.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
