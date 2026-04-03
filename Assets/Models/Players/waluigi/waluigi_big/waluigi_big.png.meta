@@ -1,0 +1,585 @@
+fileFormatVersion: 2
+guid: 86f92b04bcd78fc42af5314bee6d48df
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7117614253678139873
+    second: waluigi_big_0
+  - first:
+      213: -8705146833775490302
+    second: waluigi_big_1
+  - first:
+      213: -1420038854857204817
+    second: waluigi_big_2
+  - first:
+      213: 1216031501053574710
+    second: waluigi_big_3
+  - first:
+      213: 8953407844442145495
+    second: waluigi_big_4
+  - first:
+      213: 503067114365049546
+    second: waluigi_big_5
+  - first:
+      213: 6643523470390388730
+    second: waluigi_big_6
+  - first:
+      213: 4399166539983339865
+    second: waluigi_big_7
+  - first:
+      213: -43123377449668539
+    second: waluigi_big_8
+  - first:
+      213: 3308662981659529268
+    second: waluigi_big_9
+  - first:
+      213: -299583712742293584
+    second: waluigi_big_10
+  - first:
+      213: -8377599888816513610
+    second: waluigi_big_11
+  - first:
+      213: 7553019161718121245
+    second: waluigi_big_12
+  - first:
+      213: 5154733001607188685
+    second: waluigi_big_13
+  - first:
+      213: -784667636326412553
+    second: waluigi_big_14
+  - first:
+      213: -6768462260288415639
+    second: waluigi_big_15
+  - first:
+      213: 6887805963638614440
+    second: waluigi_big_16
+  - first:
+      213: 7112845813434621980
+    second: waluigi_big_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: 1
+    mipBias: 0
+    wrapU: 0
+    wrapV: 0
+    wrapW: 0
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 0
+  spriteTessellationDetail: -1
+  textureType: 0
+  textureShape: 4
+  singleChannelComponent: 0
+  flipbookRows: 32
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: waluigi_big_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1176
+        width: 128
+        height: 104
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f16e1490c87293d90800000000000000
+      internalID: -7117614253678139873
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_1
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1143
+        width: 37
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20b0237931b113780800000000000000
+      internalID: -8705146833775490302
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_2
+      rect:
+        serializedVersion: 2
+        x: 39
+        y: 1142
+        width: 26
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fabdbf86f220b4ce0800000000000000
+      internalID: -1420038854857204817
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_3
+      rect:
+        serializedVersion: 2
+        x: 66
+        y: 1147
+        width: 17
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 63ebbf7153630e010800000000000000
+      internalID: 1216031501053574710
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_4
+      rect:
+        serializedVersion: 2
+        x: 84
+        y: 1143
+        width: 6
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7d28b215ff4e04c70800000000000000
+      internalID: 8953407844442145495
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_5
+      rect:
+        serializedVersion: 2
+        x: 103
+        y: 1082
+        width: 25
+        height: 46
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acad8e900e04bf600800000000000000
+      internalID: 503067114365049546
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_6
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 1037
+        width: 64
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af7e69db569823c50800000000000000
+      internalID: 6643523470390388730
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 959
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 951cd7b09aafc0d30800000000000000
+      internalID: 4399166539983339865
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_8
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 856
+        width: 115
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 540f895448bc66ff0800000000000000
+      internalID: -43123377449668539
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_9
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 858
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4301d47a37bbaed20800000000000000
+      internalID: 3308662981659529268
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 703
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0bfb085533aa7dbf0800000000000000
+      internalID: -299583712742293584
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_11
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 587
+        width: 128
+        height: 69
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6bd5dbc9949ccbb80800000000000000
+      internalID: -8377599888816513610
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 447
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d136de3f8e6b1d860800000000000000
+      internalID: 7553019161718121245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 344
+        width: 115
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dc097c0aa5a498740800000000000000
+      internalID: 5154733001607188685
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_14
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 346
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7fec40e21fc4c15f0800000000000000
+      internalID: -784667636326412553
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 191
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9681fd36f679112a0800000000000000
+      internalID: -6768462260288415639
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 88
+        width: 115
+        height: 41
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8a92f70e707669f50800000000000000
+      internalID: 6887805963638614440
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: waluigi_big_17
+      rect:
+        serializedVersion: 2
+        x: 90
+        y: 90
+        width: 7
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c1025e3f497e5b260800000000000000
+      internalID: 7112845813434621980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      waluigi_big_0: -7117614253678139873
+      waluigi_big_1: -8705146833775490302
+      waluigi_big_10: -299583712742293584
+      waluigi_big_11: -8377599888816513610
+      waluigi_big_12: 7553019161718121245
+      waluigi_big_13: 5154733001607188685
+      waluigi_big_14: -784667636326412553
+      waluigi_big_15: -6768462260288415639
+      waluigi_big_16: 6887805963638614440
+      waluigi_big_17: 7112845813434621980
+      waluigi_big_2: -1420038854857204817
+      waluigi_big_3: 1216031501053574710
+      waluigi_big_4: 8953407844442145495
+      waluigi_big_5: 503067114365049546
+      waluigi_big_6: 6643523470390388730
+      waluigi_big_7: 4399166539983339865
+      waluigi_big_8: -43123377449668539
+      waluigi_big_9: 3308662981659529268
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

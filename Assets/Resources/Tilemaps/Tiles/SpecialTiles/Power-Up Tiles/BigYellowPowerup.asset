@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-3061604471713882216
+--- !u!114 &-4203515704885302357
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8963c1eb6bcbe445abee72055f6918d, type: 3}
-  m_Name: YellowPowerupStageTile
-  m_EditorClassIdentifier: 
+  m_Name: BigYellowPowerupStageTile
+  m_EditorClassIdentifier: Quantum.Simulation::PowerupTile
   Identifier:
-    Path: Resources/Tilemaps/Tiles/SpecialTiles/BigYellowPowerup|YellowPowerupStageTile
+    Path: Resources/Tilemaps/Tiles/SpecialTiles/Power-Up Tiles/BigYellowPowerup|BigYellowPowerupStageTile
     Guid:
-      Value: 1243711167638502309
+      Value: 2562237264314383749
   Tile: {fileID: 11400000}
   CollisionData:
     IsFullTile: 1
@@ -25,7 +25,7 @@ MonoBehaviour:
   IsPolygon: 1
   FootstepSound: 31
   FootstepParticle: 0
-  ParticleColor: {r: 0.972549, g: 0.8156863, b: 0.1254902, a: 1}
+  ParticleColor: {r: 0.972549, g: 0.8156863, b: 0.1254902, a: 0}
   BreakingRules: 64
   BumpIfNotBroken: 0
   BumpSize:
@@ -46,10 +46,10 @@ MonoBehaviour:
     Flags: 0
   smallPowerup:
     Id:
-      Value: 390055422968795145
+      Value: 296548766860541996
   largePowerup:
     Id:
-      Value: 301199286238400872
+      Value: 279725308049324760
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -78,28 +78,3 @@ MonoBehaviour:
   m_AnimationStartFrame: 0
   m_TileColliderType: 2
   m_TileAnimationFlags: 0
---- !u!114 &269000324152457956
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6d97847a2693b724f89fe1384eaa00a4, type: 3}
-  m_Name: BigYellowPowerupStageTile
-  m_EditorClassIdentifier: Quantum.Simulation::StageTile
-  Identifier:
-    Path: Resources/Tilemaps/Tiles/SpecialTiles/BigYellowPowerup|BigYellowPowerupStageTile
-    Guid:
-      Value: 3812141229290299409
-  Tile: {fileID: 11400000}
-  CollisionData:
-    IsFullTile: 1
-    Shapes: []
-  IsSlipperyGround: 0
-  IsSlideableGround: 0
-  IsPolygon: 1
-  FootstepSound: 31
-  FootstepParticle: 0
