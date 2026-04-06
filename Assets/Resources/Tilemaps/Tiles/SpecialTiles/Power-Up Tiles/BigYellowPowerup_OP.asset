@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8963c1eb6bcbe445abee72055f6918d, type: 3}
-  m_Name: YellowPowerup_PropellerStageTile
+  m_Name: BigYellowPowerup_OPStageTile
   m_EditorClassIdentifier: Quantum.Simulation::PowerupTile
   Identifier:
-    Path: Resources/Tilemaps/Tiles/SpecialTiles/Power-Up Tiles/YellowPowerup_Propeller|YellowPowerup_PropellerStageTile
+    Path: Resources/Tilemaps/Tiles/SpecialTiles/Power-Up Tiles/BigYellowPowerup_OP|BigYellowPowerup_OPStageTile
     Guid:
-      Value: 2660034658171917550
+      Value: 2696180008092507922
   Tile: {fileID: 11400000}
   CollisionData:
     IsFullTile: 1
@@ -26,30 +26,30 @@ MonoBehaviour:
   FootstepSound: 31
   FootstepParticle: 0
   ParticleColor: {r: 0.972549, g: 0.8156863, b: 0.1254902, a: 0}
-  BreakingRules: 320
+  BreakingRules: 64
   BumpIfNotBroken: 0
   BumpSize:
     X:
-      RawValue: 32768
+      RawValue: 65536
     Y:
-      RawValue: 32768
+      RawValue: 65536
   BumpOffset:
     X:
-      RawValue: 0
+      RawValue: 16384
     Y:
-      RawValue: 0
+      RawValue: -32768
   resultTile:
     Tile:
       Id:
-        Value: 2517210178256145466
+        Value: 1138970648612223160
     Rotation: 0
     Flags: 0
   smallPowerup:
     Id:
-      Value: 390055422968795145
+      Value: 301199286238400872
   largePowerup:
     Id:
-      Value: 328877894917160747
+      Value: 346982985959821743
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,16 +60,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
-  m_Name: YellowPowerup_Propeller
+  m_Name: BigYellowPowerup_OP
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
-  - {fileID: -8917260427315313510, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: -8151411539534625427, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: 215657226047675787, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: 2250798203632615395, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: -8917260427315313510, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  m_MinSpeed: 8
-  m_MaxSpeed: 8
+  - {fileID: 2699191563456265128, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}
+  - {fileID: -860526655, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}
+  - {fileID: -1270059183, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}
+  - {fileID: 535396780, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}
+  - {fileID: -1401111935, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}
+  - {fileID: -1896756482, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}
+  - {fileID: -1491018865, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}
+  - {fileID: 243379521, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}
+  - {fileID: 2699191563456265128, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}
+  m_MinSpeed: 12
+  m_MaxSpeed: 12
   m_AnimationStartTime: 0
   m_AnimationStartFrame: 0
   m_TileColliderType: 2

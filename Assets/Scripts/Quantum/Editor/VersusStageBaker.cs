@@ -366,25 +366,12 @@ namespace NSMB.Quantum {
 
 
 
-            /*
-
             string existingTilePath = AssetDatabase.GetAssetPath(tile);
-
             AssetDatabase.AddObjectToAsset(newTile, existingTilePath);
-
             AssetDatabase.SaveAssets();
-
-            (var guid, var fileId) = AssetDatabaseUtils.GetGUIDAndLocalFileIdentifierOrThrow(newTile);
-
-            newTile.Guid = QuantumUnityDBUtilities.CreateDeterministicAssetGuid(new GUID(guid), fileId);
-
-            Debug.Log(newTile.Guid);
-
+            (string guid, long fileId) = global::Quantum.Editor.AssetDatabaseUtils.GetGUIDAndLocalFileIdentifierOrThrow(newTile);
+            newTile.Guid = global::Quantum.Editor.QuantumUnityDBUtilities.CreateDeterministicAssetGuid(new GUID(guid), fileId);
             QuantumUnityDB.Global.AddAsset(newTile);
-
-            */
-
-            throw new Exception("this shit's fucked, man");
 
             return newTile;
 

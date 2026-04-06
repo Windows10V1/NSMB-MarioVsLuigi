@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e9c5479bb850b640b3d5d2032677f8c, type: 3}
-  m_Name: BricksPlatformMoverReversed
+  m_Name: SlopeyHeightsPlatformMover
   m_EditorClassIdentifier: 
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/World/BricksPlatformMoverReversed
+    Path: QuantumUser/Resources/AssetObjects/World/SlopeyHeightsPlatformMover
     Guid:
-      Value: 314909372842339485
+      Value: 524091014562512709
   ObjectPath:
   - Position:
       X:
@@ -23,14 +23,14 @@ MonoBehaviour:
       Y:
         RawValue: 0
     TravelDuration:
-      RawValue: 688128
+      RawValue: 1146880
     EaseIn: 0
     EaseOut: 0
   - Position:
       X:
         RawValue: 0
       Y:
-        RawValue: -688128
+        RawValue: 1146880
     TravelDuration:
       RawValue: 0
     EaseIn: 0
