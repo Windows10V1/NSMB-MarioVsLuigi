@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8963c1eb6bcbe445abee72055f6918d, type: 3}
-  m_Name: BigYellowPowerup_OPStageTile
+  m_Name: BigYellowPowerup_CloudStageTile
   m_EditorClassIdentifier: Quantum.Simulation::PowerupTile
   Identifier:
-    Path: Resources/Tilemaps/Tiles/SpecialTiles/Power-Up Tiles/BigYellowPowerup_OP|BigYellowPowerup_OPStageTile
+    Path: Resources/Tilemaps/Tiles/SpecialTiles/Power-Up Tiles/BigYellowPowerup_Cloud|BigYellowPowerup_CloudStageTile
     Guid:
       Value: 2696180008092507922
   Tile: {fileID: 11400000}
@@ -25,7 +25,7 @@ MonoBehaviour:
   IsPolygon: 1
   FootstepSound: 31
   FootstepParticle: 0
-  ParticleColor: {r: 0.972549, g: 0.8156863, b: 0.1254902, a: 0}
+  ParticleColor: {r: 0.972549, g: 0.8156863, b: 0.1254902, a: 1}
   BreakingRules: 64
   BumpIfNotBroken: 0
   BumpSize:
@@ -46,10 +46,10 @@ MonoBehaviour:
     Flags: 0
   smallPowerup:
     Id:
-      Value: 301199286238400872
+      Value: 296548766860541996
   largePowerup:
     Id:
-      Value: 346982985959821743
+      Value: 301199286238400872
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,7 +60,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
-  m_Name: BigYellowPowerup_OP
+  m_Name: BigYellowPowerup_Cloud
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
   - {fileID: 2699191563456265128, guid: 2ca1b7038cf880c478327fc4b7250837, type: 3}

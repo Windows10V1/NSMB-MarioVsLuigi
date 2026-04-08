@@ -25,7 +25,7 @@ MonoBehaviour:
   IsPolygon: 1
   FootstepSound: 31
   FootstepParticle: 0
-  ParticleColor: {r: 0.972549, g: 0.8156863, b: 0.1254902, a: 0}
+  ParticleColor: {r: 0.972549, g: 0.8156863, b: 0.1254902, a: 1}
   BreakingRules: 320
   BumpIfNotBroken: 0
   BumpSize:
@@ -41,7 +41,7 @@ MonoBehaviour:
   resultTile:
     Tile:
       Id:
-        Value: 2517210178256145466
+        Value: 2276636638621846876
     Rotation: 0
     Flags: 0
   smallPowerup:

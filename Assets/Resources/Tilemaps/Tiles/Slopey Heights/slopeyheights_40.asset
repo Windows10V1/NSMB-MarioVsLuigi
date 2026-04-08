@@ -18,10 +18,23 @@ MonoBehaviour:
       Value: 1921722306517100519
   Tile: {fileID: 11400000}
   CollisionData:
-    IsFullTile: 1
-    Shapes: []
+    IsFullTile: 0
+    Shapes:
+    - Vertices:
+      - X:
+          RawValue: -32768
+        Y:
+          RawValue: 0
+      - X:
+          RawValue: -32768
+        Y:
+          RawValue: 32768
+      - X:
+          RawValue: 32768
+        Y:
+          RawValue: 32768
   IsSlipperyGround: 0
-  IsSlideableGround: 0
+  IsSlideableGround: 1
   IsPolygon: 1
   FootstepSound: 31
   FootstepParticle: 0

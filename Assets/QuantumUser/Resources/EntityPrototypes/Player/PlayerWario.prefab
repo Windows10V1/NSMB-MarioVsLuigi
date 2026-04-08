@@ -853,8 +853,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4824223341387914446}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 424c70ae4dd21be48816eb8502f642b7, type: 3}
-  m_Controller: {fileID: 22100000, guid: bb53eb034050b9e46a06c2b6e3c77388, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+  m_Controller: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1095,7 +1095,7 @@ MonoBehaviour:
   Prototype:
     PhysicsAsset:
       Id:
-        Value: 429607978212108660
+        Value: 317425921551375350
     CharacterAsset:
       Id:
         Value: 459109179549635985
@@ -7182,7 +7182,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Name
-      value: LargeWario
+      value: LargeMario
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
@@ -9138,7 +9138,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: m_Name
-      value: SmallWario
+      value: SmallMario
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}

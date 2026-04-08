@@ -1,0 +1,111 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a29518fadcd4a704abe29d73e5159d3f, type: 3}
+  m_Name: WaluigiCharacter
+  m_EditorClassIdentifier: 
+  Identifier:
+    Path: QuantumUser/Resources/AssetObjects/Characters/WaluigiCharacter
+    Guid:
+      Value: 328947832645045498
+  Prototype:
+    Id:
+      Value: 1342326677679803873
+  UiString: <sprite name=hud_waluigi>
+  TranslationString: character.waluigi
+  LoadingSmallSprite: {fileID: 3157287873035409675, guid: 3c7b32683e6794949a4af134f0eb0873,
+    type: 3}
+  LoadingLargeSprite: {fileID: -1721352853403412459, guid: 3c7b32683e6794949a4af134f0eb0873,
+    type: 3}
+  ReadySprite: {fileID: -7975249404588759376, guid: 70672da71d9d71a4daaf5f3fc58531e6,
+    type: 3}
+  SilhouetteSprite: {fileID: 21300000, guid: 69ebf16f7ccd5c34fb0733a2b65e900f, type: 3}
+  SelectionSprite: {fileID: 7719631808529669151, guid: d9ddaa104a3f00348975d7f2d4dd0227,
+    type: 3}
+  SelectionColor: {r: 0.401459, g: 0, b: 0.49803922, a: 1}
+  SelectionOrder: 1000
+  SmallOverrides: {fileID: 22100000, guid: 5e5f8222976959d4a8b43fee8aaf2ed0, type: 2}
+  LargeOverrides: {fileID: 22100000, guid: 341c8673d0d6d6446b1265bd3721aae0, type: 2}
+  Order: 3
+  SfxOverrides:
+  - SoundEffect: 33
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: c7b57072d83dd9141afc6b2d79aa6801, type: 3}
+    - {fileID: 8300000, guid: e3ed69b093155d14aa62dc40c043147c, type: 3}
+  - SoundEffect: 34
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: 4b45910e3b4b1d8428b7f7eef2d30eac, type: 3}
+  - SoundEffect: 35
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: e32f073ef31ba5945bc2561d453ecc48, type: 3}
+  - SoundEffect: 36
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: be7e3d5037f8a204087efdc629a407f8, type: 3}
+  - SoundEffect: 37
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: c09731978c043004b80b06662cc8b7ec, type: 3}
+  - SoundEffect: 38
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: d6831afb4582ab0439a37ff6c16e09a1, type: 3}
+  - SoundEffect: 39
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: df3aba3b0d6672c4cacb1e99a501d15e, type: 3}
+    - {fileID: 8300000, guid: 1bfbe87045236d94a9038f169821effb, type: 3}
+  - SoundEffect: 40
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: 4be901e373d07d3459893d5a1774142c, type: 3}
+  - SoundEffect: 115
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips: []
+  - SoundEffect: 116
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: c7b57072d83dd9141afc6b2d79aa6801, type: 3}
+  - SoundEffect: 117
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: 1bfbe87045236d94a9038f169821effb, type: 3}
+  - SoundEffect: 118
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: 1bfbe87045236d94a9038f169821effb, type: 3}
