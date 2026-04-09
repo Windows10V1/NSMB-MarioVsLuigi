@@ -103,7 +103,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2286387276365014281, guid: 2aaa40e1fc8bbb844bd4f5f936323019,
+      objectReference: {fileID: 5972935138116122138, guid: 2aaa40e1fc8bbb844bd4f5f936323019,
         type: 3}
     - target: {fileID: 1145319354374527610, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
@@ -194,9 +194,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NSMB.Utilities.Components.LegacyAnimateSpriteRenderer
   isDisplaying: 1
-  frame: 6.288844
+  frame: 7.177664
   runInEditor: 1
-  fps: 8
+  fps: 16
   frames:
   - {fileID: -1928627872273558081, guid: 2aaa40e1fc8bbb844bd4f5f936323019, type: 3}
   - {fileID: 6902178785164117124, guid: 2aaa40e1fc8bbb844bd4f5f936323019, type: 3}
