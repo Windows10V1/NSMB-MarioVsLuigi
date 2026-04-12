@@ -88,9 +88,9 @@ MonoBehaviour:
         RawValue: 0
       BoxExtents:
         X:
-          RawValue: 8192
+          RawValue: 10945
         Y:
-          RawValue: 8192
+          RawValue: 10945
       PositionOffset:
         X:
           RawValue: 0
@@ -445,9 +445,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NSMB.Entities.Powerup.ProjectileAnimator3D
   meshRenderer: {fileID: 8818015814349666637}
+  animator: {fileID: 9025442341733772760}
   usePalette: 0
-  sameTeamTint: {r: 0.75, g: 0.75, b: 0.75, a: 1}
-  differentTeamTint: {r: 1, g: 1, b: 1, a: 1}
+  sameTeamColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+  differentTeamColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!1 &6817442949190414024
 GameObject:
   m_ObjectHideFlags: 0

@@ -2047,7 +2047,7 @@ namespace Quantum {
                         knockbackFromRight = !projectile->FacingRight;
                     }
                 } else if (projectileAsset.IsSuperBall) {
-                    knockbackFromRight = (projectile->Combo & 1) == 1;
+                    knockbackFromRight = (projectile->Combo & 1) == 0;
                 } else {
                     knockbackFromRight = !projectile->FacingRight;
                 }

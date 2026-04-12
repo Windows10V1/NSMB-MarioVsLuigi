@@ -43,6 +43,7 @@ MonoBehaviour:
     RawValue: 32768
   IsSuperBall: 0
   IsGoldball: 1
+  CooldownFrames: 60
   MaxInstantProjectiles: 2
   MaxProjectileCount: 2
   ProjectileSpawnHorizontalOffset:

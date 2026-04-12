@@ -101,7 +101,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeShellExclude, blueShell, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, cloudHead, cloudScarf;
+        [SerializeField] private GameObject smallModel, largeModel, largeShellExclude, blueShell, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, boomerangBootL, boomerangBootR, cloudHead, cloudScarf;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -613,6 +613,8 @@ namespace NSMB.Entities.Player {
             HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
             boomerangHelmet.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             boomerangShell.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
+            boomerangBootL.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
+            boomerangBootR.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudHead.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
             cloudScarf.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
             
