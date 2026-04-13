@@ -62,7 +62,21 @@ namespace NSMB.Entities.Powerup {
 
         public override unsafe void OnUpdateView() {
             if (PredictedFrame.Unsafe.TryGetPointer(EntityRef, out Projectile* projectile)) {
-                owner = projectile->Owner;
+                EntityRef newOwner = projectile->Owner;
+                
+                if (newOwner != owner) {
+                    owner = newOwner;
+                    
+                    if (usePalette && PredictedFrame.Unsafe.TryGetPointer(owner, out MarioPlayer* ownerMario)) {
+                        var playerData = QuantumUtils.GetPlayerData(PredictedFrame, ownerMario->PlayerRef);
+                        if (playerData != null && PredictedFrame.TryFindAsset(playerData->Palette, out var palette)) {
+                            if (PredictedFrame.TryFindAsset(ownerMario->CharacterAsset, out var characterAsset)) {
+                                skin = palette.GetPaletteForCharacter(characterAsset);
+                            }
+                        }
+                        glowColor = Utils.GetPlayerColor(PredictedFrame, ownerMario->PlayerRef);
+                    }
+                }
             }
         }
 

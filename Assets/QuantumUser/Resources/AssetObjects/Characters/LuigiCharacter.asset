@@ -31,10 +31,10 @@ MonoBehaviour:
   SelectionSprite: {fileID: 1263302900, guid: 66a50f8ce62e8954a977cf86df786637, type: 3}
   SelectionColor: {r: 0.401459, g: 0.9716981, b: 0.3254272, a: 1}
   SelectionOrder: -1000
+  DefaultProjectileColor: {r: 0.17254902, g: 0.5803922, b: 0.105882354, a: 1}
   SmallOverrides: {fileID: 22100000, guid: a1854453357bb034e89ec419b0f57906, type: 2}
   LargeOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e, type: 2}
   Order: 1
-  IsLegacy: 1
   SfxOverrides:
   - SoundEffect: 33
     Mode: 0

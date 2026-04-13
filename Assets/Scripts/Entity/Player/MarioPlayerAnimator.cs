@@ -141,6 +141,8 @@ namespace NSMB.Entities.Player {
         
         //---Private Variables
         private Enums.PlayerEyeState eyeState;
+        private float happyEyeStateTimer;
+        private float pissedEyeStateTimer;
         private float propellerVelocity;
         private Quaternion modelRotationTarget;
         private bool modelRotateInstantly;
@@ -577,7 +579,34 @@ namespace NSMB.Entities.Player {
                 _ => 0
             };
             materialBlock.SetFloat(ParamPowerupState, ps);
-            materialBlock.SetFloat(ParamEyeState, (int) (mario->IsDead || mario->IsInKnockback ? Enums.PlayerEyeState.Death : eyeState));
+            // Update eye state timers
+            happyEyeStateTimer -= Time.deltaTime;
+            if (happyEyeStateTimer < 0) happyEyeStateTimer = 0;
+            pissedEyeStateTimer -= Time.deltaTime;
+            if (pissedEyeStateTimer < 0) pissedEyeStateTimer = 0;
+
+            // Trigger happy state on doublejump and triplejump
+            if ((mario->JumpState == JumpState.DoubleJump || mario->JumpState == JumpState.TripleJump) && happyEyeStateTimer == 0) {
+                happyEyeStateTimer = 0.3f;
+            }
+
+            // Trigger pissed state when frozen
+            if (freezable->IsFrozen(f) && pissedEyeStateTimer == 0) {
+                pissedEyeStateTimer = 0.5f;
+            }
+
+            // Determine eye state
+            Enums.PlayerEyeState currentEyeState = eyeState;
+            if (mario->IsDead) {
+                currentEyeState = Enums.PlayerEyeState.Death;
+            } else if (happyEyeStateTimer > 0) {
+                currentEyeState = Enums.PlayerEyeState.Happy;
+            } else if (pissedEyeStateTimer > 0 || mario->IsInWeakKnockback) {
+                currentEyeState = Enums.PlayerEyeState.Pissed;
+            } else if (mario->IsInKnockback) {
+                currentEyeState = Enums.PlayerEyeState.Pain;
+            }
+            materialBlock.SetFloat(ParamEyeState, (int) currentEyeState);
             materialBlock.SetFloat(ParamModelScale, models.transform.lossyScale.x * (mario->CurrentPowerupState >= PowerupState.Mushroom ? 1f : 0.5f));
 
             Vector3 giantMultiply = Vector3.one;
@@ -903,6 +932,7 @@ namespace NSMB.Entities.Player {
             }
 
             PlaySound(SoundEffect.World_Block_Bump);
+            pissedEyeStateTimer = 0.5f;
             lastBumpSound = Time.time;
         }
 

@@ -8,7 +8,7 @@ public static class Enums {
     #region ANIMATION & MUSIC
     //---Animation enums
     public enum PlayerEyeState {
-        Normal, HalfBlink, FullBlink, Death
+        Normal, HalfBlink, FullBlink, Death, Pain, Pissed, Happy
     }
 
     //---Sound effects
