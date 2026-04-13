@@ -113,7 +113,10 @@ namespace Quantum {
                 return;
             }
 
-            FPVector2 directionToOwner = (ownerTransform->Position + (FPVector2.Up * Constants._0_40)) - transform->Position;
+            var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+            FPVector2 ownerPosition = ownerTransform->Position + (FPVector2.Up * Constants._0_40);
+            QuantumUtils.UnwrapWorldLocations(stage, transform->Position, ownerPosition, out FPVector2 unwrappedProjectilePos, out FPVector2 unwrappedOwnerPos);
+            FPVector2 directionToOwner = unwrappedOwnerPos - unwrappedProjectilePos;
             FP distanceToOwner = directionToOwner.Magnitude;
 
             if (distanceToOwner < FP.FromString("0.5")) {

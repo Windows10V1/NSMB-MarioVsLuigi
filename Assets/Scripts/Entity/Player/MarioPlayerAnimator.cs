@@ -878,6 +878,7 @@ namespace NSMB.Entities.Player {
                 big = holdable->HoldAboveHead;
             }
             PlaySound(big ? SoundEffect.Player_Voice_Throw_Large : SoundEffect.Player_Voice_Throw_Small);
+            happyEyeStateTimer = 0.3f;
             animator.SetTrigger(ParamThrow);
         }
 
