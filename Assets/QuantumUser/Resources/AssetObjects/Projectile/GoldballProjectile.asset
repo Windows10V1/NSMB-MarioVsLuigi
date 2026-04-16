@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/GoldballProjectile
     Guid:
       Value: 505756156224867182
-  Effect: 4
+  Effect: 5
   Bounce: 1
   Speed:
     RawValue: 425984
@@ -43,7 +43,7 @@ MonoBehaviour:
     RawValue: 32768
   IsSuperBall: 0
   IsGoldball: 1
-  CooldownFrames: 60
+  CooldownFrames: 75
   MaxInstantProjectiles: 2
   MaxProjectileCount: 2
   ProjectileSpawnHorizontalOffset:
