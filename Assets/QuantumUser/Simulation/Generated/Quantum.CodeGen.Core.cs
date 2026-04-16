@@ -107,7 +107,7 @@ namespace Quantum {
     GoldFlower,
     BoomerangFlower,
     FireFlower,
-    IceFlower,
+    PenguinSuit,
     PropellerMushroom,
     BlueShell,
     HammerSuit,

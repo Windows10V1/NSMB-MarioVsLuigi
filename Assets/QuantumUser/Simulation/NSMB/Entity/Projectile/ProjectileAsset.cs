@@ -57,6 +57,7 @@ public enum ProjectileEffectType {
     None,
     Fire,
     Freeze,
-    KillEnemiesAndSoftKnockbackPlayers,
-    KillEnemiesAndBumpKnockbackPlayers,
+    Hammer,
+    Boomerang,
+    Goldball,
 }

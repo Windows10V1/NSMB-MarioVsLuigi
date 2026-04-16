@@ -10,7 +10,6 @@
         //public AssetRef<PaletteSet>[] Palettes;
         //public AssetRef<TeamAsset>[] Teams;
         public AssetRef<EntityPrototype> FireballPrototype, IceballPrototype, HammerPrototype, BoomerangPrototype, CloudPrototype, SuperballPrototype, GoldballPrototype, BlockBumpPrototype, IceBlockPrototype, StageCoinPrototype;
-        public AssetRef<ProjectileAsset> IceballProjectileAsset, FireballProjectileAsset, HammerProjectileAsset, BoomerangProjectileAsset, CloudProjectileAsset, SuperballProjectileAsset, GoldballProjectileAsset;
 
     }
 }

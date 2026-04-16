@@ -1311,7 +1311,7 @@ namespace Quantum {
 
             if (!(inputs.PowerupAction.WasPressed
                 || (state == PowerupState.PropellerMushroom && inputs.PropellerPowerupAction.WasPressed && !physicsObject->IsTouchingGround && !mario->IsWallsliding)
-                || ((state == PowerupState.FireFlower || state == PowerupState.IceFlower || state == PowerupState.HammerSuit || state == PowerupState.BoomerangFlower || state == PowerupState.CloudFlower || state == PowerupState.SuperBallFlower || state == PowerupState.GoldFlower) && inputs.FireballPowerupAction.WasPressed))) {
+                || ((state == PowerupState.FireFlower || state == PowerupState.PenguinSuit || state == PowerupState.HammerSuit || state == PowerupState.BoomerangFlower || state == PowerupState.CloudFlower || state == PowerupState.SuperBallFlower || state == PowerupState.GoldFlower) && inputs.FireballPowerupAction.WasPressed))) {
                 return;
             }
 
@@ -1321,7 +1321,7 @@ namespace Quantum {
             }
 
             switch (mario->CurrentPowerupState) {
-            case PowerupState.IceFlower:
+            case PowerupState.PenguinSuit:
             case PowerupState.FireFlower:
             case PowerupState.HammerSuit:
             case PowerupState.BoomerangFlower:
@@ -1334,46 +1334,21 @@ namespace Quantum {
                     return;
                 }
 
-                // Prevent cloud flower shooting while standing on the ground
+                // Honorable mention for Cloud Flower before disaster.
                 if (mario->CurrentPowerupState == PowerupState.CloudFlower && physicsObject->IsTouchingGround) {
                     return;
                 }
 
+                // Let the projectile fuckery begin!
                 if (mario->ProjectileCooldownFrames > 0) {
                     return;
                 }
 
                 byte activeProjectiles = mario->CurrentProjectiles;
-
-                AssetRef<ProjectileAsset> projectileAssetRef = mario->CurrentPowerupState switch {
-                    PowerupState.IceFlower => f.SimulationConfig.IceballProjectileAsset,
-                    PowerupState.FireFlower => f.SimulationConfig.FireballProjectileAsset,
-                    PowerupState.HammerSuit => f.SimulationConfig.HammerProjectileAsset,
-                    PowerupState.BoomerangFlower => f.SimulationConfig.BoomerangProjectileAsset,
-                    PowerupState.CloudFlower => f.SimulationConfig.CloudProjectileAsset,
-                    PowerupState.SuperBallFlower => f.SimulationConfig.SuperballProjectileAsset,
-                    PowerupState.GoldFlower => f.SimulationConfig.GoldballProjectileAsset,
-                    _ => default
-                };
-                ProjectileAsset projectileAsset = projectileAssetRef.IsValid ? f.FindAsset(projectileAssetRef) : null;
-
                 byte maxInstantProjectiles = 2;
                 byte maxProjectiles = physics.MaxProjecitles;
 
-                if (projectileAsset != null) {
-                    if (projectileAsset.MaxInstantProjectiles > 0) {
-                        maxInstantProjectiles = projectileAsset.MaxInstantProjectiles;
-                    }
-                    if (projectileAsset.MaxProjectileCount > 0) {
-                        maxProjectiles = projectileAsset.MaxProjectileCount;
-                    }
-                }
-
                 if (activeProjectiles >= maxProjectiles) {
-                    return;
-                }
-
-                if (mario->CurrentPowerupState == PowerupState.BoomerangFlower && activeProjectiles > 0) {
                     return;
                 }
 
@@ -1388,6 +1363,7 @@ namespace Quantum {
                 mario->CurrentProjectiles++;
                 mario->ProjectileDelayFrames = physics.ProjectileDelayFrames;
                 mario->ProjectileVolleyFrames = physics.ProjectileVolleyFrames;
+                // End of projectile disaster... or is it?
 
                 Projectile* projectile;
                 if (mario->CurrentPowerupState == PowerupState.HammerSuit) {
@@ -1395,7 +1371,7 @@ namespace Quantum {
                 } else if (mario->CurrentPowerupState == PowerupState.BoomerangFlower) {
                     projectile = ShootBoomerangProjectile(f, ref filter, physics);
                 } else if (mario->CurrentPowerupState == PowerupState.CloudFlower) {
-                    projectile = ShootCloudProjectile(f, ref filter, physics, projectileAsset);
+                    projectile = ShootCloudProjectile(f, ref filter, physics);
                 } else {
                     projectile = ShootNormalProjectile(f, ref filter, physics);
                 }
@@ -1439,22 +1415,17 @@ namespace Quantum {
             }
         }
 
-        private Projectile* ShootCloudProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics, ProjectileAsset projectileAsset) {
+        private Projectile* ShootCloudProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
             FP horizontalOffset = mario->FacingRight ? FP._0_25 : -FP._0_25;
             FP verticalOffset = FP._0_50;
 
-            if (projectileAsset != null) {
-                horizontalOffset = mario->FacingRight ? projectileAsset.ProjectileSpawnHorizontalOffset : -projectileAsset.ProjectileSpawnHorizontalOffset;
-                verticalOffset = projectileAsset.ProjectileSpawnVerticalOffset;
-            }
-
             FPVector2 spawnPos = filter.Transform->Position + new FPVector2(horizontalOffset, verticalOffset);
 
             physicsObject->Velocity.X = 0;
-            physicsObject->Velocity.Y = FP.FromString("3.0");
+            physicsObject->Velocity.Y = FP.FromString("12.0");
 
             EntityRef newEntity = f.Create(f.SimulationConfig.CloudPrototype);
 
@@ -1501,7 +1472,7 @@ namespace Quantum {
                 ? f.SimulationConfig.GoldballPrototype
                 : mario->CurrentPowerupState == PowerupState.SuperBallFlower
                 ? f.SimulationConfig.SuperballPrototype
-                : mario->CurrentPowerupState == PowerupState.IceFlower
+                : mario->CurrentPowerupState == PowerupState.PenguinSuit
                 ? f.SimulationConfig.IceballPrototype
                 : f.SimulationConfig.FireballPrototype);
 
@@ -2055,16 +2026,17 @@ namespace Quantum {
                 switch (projectileAsset.Effect) {
                 case ProjectileEffectType.None:
                     break;
-                case ProjectileEffectType.KillEnemiesAndBumpKnockbackPlayers:
+                case ProjectileEffectType.Goldball:
                     if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
                     }
                     if (!damaged) {
-                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 2 : 0, KnockbackStrength.CollisionBump, projectileEntity);
+                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 3 : 0, KnockbackStrength.CollisionBump, projectileEntity);
                         damaged = true;
                     }
                     break;
-                case ProjectileEffectType.KillEnemiesAndSoftKnockbackPlayers:
+                case ProjectileEffectType.Hammer:
+                case ProjectileEffectType.Boomerang:
                 case ProjectileEffectType.Fire:
                     if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);

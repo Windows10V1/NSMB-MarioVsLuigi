@@ -28,19 +28,19 @@ namespace Quantum {
             var projectile = filter.Projectile;
             var asset = f.FindAsset(projectile->Asset);
 
-            // Super Ball has its own physics system - skip normal update logic
+            // Fuck the normal update logic
             if (asset.IsSuperBall) {
                 HandleSuperBallUpdate(f, ref filter, asset);
                 return;
             }
 
-            // Handle boomerang-specific logic
+            // Insane
             if (asset.IsBoomerang) {
                 HandleBoomerangUpdate(f, ref filter, asset);
             } else {
-                // Normal projectile lifetime handling
+                // Sane
                 if (projectile->Lifetime > 0 && QuantumUtils.Decrement(ref projectile->Lifetime)) {
-                    // Despawn via timer
+                    // Tick-tock tick-Tock. Boom.
                     Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                     return;
                 }
@@ -59,7 +59,6 @@ namespace Quantum {
 
             HandleTileCollision(f, ref filter, asset);
 
-            // For boomerangs, check if pull force should be applied
             bool boomerangPullForceActive = false;
             if (asset.IsBoomerang) {
                 if (projectile->IsReturning()) {
@@ -70,7 +69,6 @@ namespace Quantum {
                 }
             }
 
-            // Don't override velocity if boomerang pull force is active (it's controlled by the pull force)
             if (!boomerangPullForceActive) {
                 physicsObject->Velocity.X = projectile->Speed * (projectile->FacingRight ? 1 : -1);
             }
@@ -85,22 +83,17 @@ namespace Quantum {
             var physicsObject = filter.PhysicsObject;
             var transform = filter.Transform;
 
-            // Increment frame counter
             projectile->Lifetime++;
 
-            // Check if we should be returning
             if (!projectile->IsReturning()) {
-                // Still in "going" phase - check if it's time to start pulling back
-                FP elapsedTime = (FP)projectile->Lifetime / 60; // Assuming 60 FPS
+                FP elapsedTime = (FP)projectile->Lifetime / 60; // 60 FPS
 
                 if (elapsedTime >= asset.BoomerangReturnDelay) {
-                    // Time to start the return force
                     FP timeIntoReturn = elapsedTime - asset.BoomerangReturnDelay;
                     ApplyBoomerangPullForce(f, ref filter, asset, timeIntoReturn);
                 }
             } else {
-                // Already returning - apply max pull force
-                ApplyBoomerangPullForce(f, ref filter, asset, FP.MaxValue); // Max value triggers peak force
+                ApplyBoomerangPullForce(f, ref filter, asset, FP.MaxValue);
             }
         }
 
@@ -120,40 +113,31 @@ namespace Quantum {
             FP distanceToOwner = directionToOwner.Magnitude;
 
             if (distanceToOwner < FP.FromString("0.5")) {
-                // Very close to owner - despawn without particle
+                // Very close to the shooter. Despawn without particle.
                 Destroy(f, filter.Entity, ParticleEffect.None);
                 return;
             }
 
             directionToOwner = directionToOwner.Normalized;
 
-            // Calculate pull force strength based on time
-            // Gradually ramp up from 0 to peak speed
             FP pullForceStrength;
             if (timeIntoReturn >= FP.MaxValue || projectile->IsReturning()) {
-                // Peak force - same speed as projectile moving toward owner
                 pullForceStrength = asset.Speed;
             } else {
-                // Gradually increase from 0 to peak over time
                 pullForceStrength = timeIntoReturn * asset.BoomerangReturnAcceleration * asset.Speed;
                 if (pullForceStrength > asset.Speed) {
                     pullForceStrength = asset.Speed;
                 }
             }
 
-            // Calculate target velocity (toward owner at pull force strength)
             FPVector2 targetVelocity = directionToOwner * pullForceStrength;
             
-            // Smoothly transition current velocity to target velocity over time
-            // Only apply smooth transition when returning due to timer, not when hitting terrain
             FPVector2 smoothVelocity = targetVelocity;
             if (timeIntoReturn < FP.MaxValue && !projectile->IsReturning()) {
-                // Natural countdown phase - use smooth transition
-                FP transitionTime = FP.FromString("1.0"); // 1 second to fully transition
+                FP transitionTime = FP.FromString("1.0");
                 FP transitionProgress = FPMath.Min(timeIntoReturn / transitionTime, FP._1);
                 
                 FPVector2 currentVelocity = physicsObject->Velocity;
-                // Lerp between current and target: current * (1 - t) + target * t
                 smoothVelocity = new FPVector2(
                     currentVelocity.X * (FP._1 - transitionProgress) + targetVelocity.X * transitionProgress,
                     currentVelocity.Y * (FP._1 - transitionProgress) + targetVelocity.Y * transitionProgress
@@ -162,7 +146,6 @@ namespace Quantum {
             
             physicsObject->Velocity = smoothVelocity;
 
-            // Disable gravity while returning
             physicsObject->Gravity = FPVector2.Zero;
         }
 
@@ -174,7 +157,7 @@ namespace Quantum {
             var collider = filter.PhysicsCollider;
             var entity = filter.Entity;
 
-            // Handle Super Ball lifetime (if any)
+            // Handle Super Ball lifetime (i hate bytes)
             if (projectile->Lifetime > 0 && QuantumUtils.Decrement(ref projectile->Lifetime)) {
                 Destroy(f, entity, asset.DestroyParticleEffect);
                 return;
@@ -189,30 +172,25 @@ namespace Quantum {
                 projectile->CheckedCollision = true;
             }
 
-            // Extract direction from Combo byte: bit 0 = horizontal (0=left, 1=right), bit 1 = vertical (0=down, 1=up)
+            // Direction Extraction, that sounds cool.
             bool goingRight = (projectile->Combo & 1) != 0;
             bool goingUp = (projectile->Combo & 2) != 0;
 
-            // Calculate velocity components (constant magnitude at 45 degrees)
+            // Calculate Calculate Calculate
             FP velocityX = goingRight ? projectile->Speed : -projectile->Speed;
-            FP velocityY = goingUp ? -projectile->Speed : projectile->Speed;  // Negative = up
+            FP velocityY = goingUp ? -projectile->Speed : projectile->Speed;  // Negative = UP
 
-            // Move the projectile manually
             FPVector2 newPosition = transform->Position + new FPVector2(velocityX, velocityY) / 60;  // 60 FPS
 
-            // Check for terrain collisions (including semisolids for ground detection)
+            // Check for terrain collisions (semisolids are broken, somehow)
             bool hitGround = false;
             bool hitCeiling = false;
             bool hitLeftWall = false;
             bool hitRightWall = false;
 
-            // Check if new position would be in terrain
             if (PhysicsObjectSystem.BoxInGround(f, newPosition, collider->Shape, stage: stage, entity: entity)) {
-                // We hit something - figure out what direction
-                // Try moving only X
                 FPVector2 posXOnly = new(newPosition.X, transform->Position.Y);
                 if (!PhysicsObjectSystem.BoxInGround(f, posXOnly, collider->Shape, stage: stage, entity: entity)) {
-                    // Can move in X but not Y - hit ceiling or ground
                     if (velocityY > 0) {
                         hitGround = true;
                     } else {
@@ -220,10 +198,8 @@ namespace Quantum {
                     }
                     newPosition.X = posXOnly.X;
                 } else {
-                    // Try moving only Y
                     FPVector2 posYOnly = new(transform->Position.X, newPosition.Y);
                     if (!PhysicsObjectSystem.BoxInGround(f, posYOnly, collider->Shape, stage: stage, entity: entity)) {
-                        // Can move in Y but not X - hit wall
                         if (velocityX < 0) {
                             hitLeftWall = true;
                         } else {
@@ -231,7 +207,6 @@ namespace Quantum {
                         }
                         newPosition.Y = posYOnly.Y;
                     } else {
-                        // Both blocked, stuck in corner - bounce off both
                         if (velocityX < 0) {
                             hitLeftWall = true;
                         } else {
@@ -242,43 +217,32 @@ namespace Quantum {
                         } else {
                             hitCeiling = true;
                         }
-                        // Stay at current position
                         newPosition = transform->Position;
                     }
                 }
             }
 
-            // Update position
             transform->Position = newPosition;
 
-            // Handle bounces - reverse appropriate velocity components
             if (hitGround) {
-                // Flip vertical direction - set bit 1 (go UP after hitting ground)
                 projectile->Combo |= 2;
             }
             if (hitCeiling) {
-                // Flip vertical direction - clear bit 1 (go DOWN after hitting ceiling)
-                projectile->Combo &= 0xFD;  // 11111101
+                projectile->Combo &= 0xFD;
             }
             if (hitLeftWall) {
-                // Flip horizontal direction - set bit 0 (go right)
                 projectile->Combo |= 1;
             }
             if (hitRightWall) {
-                // Flip horizontal direction - clear bit 0 (go left)
-                projectile->Combo &= 0xFE;  // 11111110
+                projectile->Combo &= 0xFE;
             }
 
-            // Try to interact with tiles (for breaking blocks, etc.)
             bool anyCollision = hitGround || hitCeiling || hitLeftWall || hitRightWall;
             if (anyCollision) {
-                // SuperBall uses manual collision detection - physics contacts are empty
-                // Query tile directly at the collision position
                 StageTileInstance tileInstance = stage.GetTileRelative(f, QuantumUtils.WorldToRelativeTile(f, transform->Position));
                 StageTile tile = f.FindAsset(tileInstance.Tile);
                 
                 if (tile is IInteractableTile it) {
-                    // Determine interaction direction based on what we hit
                     InteractionDirection direction = InteractionDirection.Up;
                     if (hitGround) {
                         direction = InteractionDirection.Down;
@@ -290,7 +254,6 @@ namespace Quantum {
                         direction = InteractionDirection.Right;
                     }
 
-                    // Call interact on the tile
                     it.Interact(f, entity, direction, QuantumUtils.WorldToRelativeTile(f, transform->Position), tileInstance, out _);
                 }
             }
@@ -301,12 +264,10 @@ namespace Quantum {
             var physicsObject = filter.PhysicsObject;
             var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
 
-            // Super Ball uses its own collision handling
             if (asset.IsSuperBall) {
                 return;
             }
 
-            // Check for terrain collision
             bool hasTerrainCollision = false;
             if (!physicsObject->DisableCollision) {
                 hasTerrainCollision = physicsObject->IsTouchingLeftWall
@@ -316,19 +277,15 @@ namespace Quantum {
                     || PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape);
             }
 
-            // Try to interact with tiles (for breaking blocks, etc.)
-            // Also check for boomerang breakable brick piercing
             bool hitBreakableBrick = false;
             FPVector2 newVelocity = FPVector2.Zero;
             if (hasTerrainCollision && !physicsObject->DisableCollision) {
-                // Store original velocity for boomerangs to preserve momentum
                 if (asset.IsBoomerang) {
                     FPVector2 originalVelocity = physicsObject->Velocity;
                     newVelocity = originalVelocity;
                 }
                 
                 foreach (var contact in f.ResolveList(physicsObject->Contacts)) {
-                    // Only process tile contacts (no entity)
                     if (f.Exists(contact.Entity)) {
                         continue;
                     }
@@ -337,14 +294,12 @@ namespace Quantum {
                     StageTile tile = f.FindAsset(tileInstance.Tile);
                     
                     if (tile is IInteractableTile it) {
-                        // Check if this is a breakable brick for boomerang piercing
                         if (asset.IsBoomerang && tile is BreakableBrickTile breakableBrick) {
                             if (breakableBrick.BreakingRules.HasFlag(BreakableBrickTile.BreakableBy.Boomerangs)) {
                                 hitBreakableBrick = true;
                             }
                         }
                         
-                        // Determine interaction direction based on contact normal
                         InteractionDirection direction = InteractionDirection.Up;
                         if (FPVector2.Dot(contact.Normal, FPVector2.Up) > FP.FromString("0.5")) {
                             direction = InteractionDirection.Down; // Hit from above
@@ -356,23 +311,18 @@ namespace Quantum {
                             direction = InteractionDirection.Right; // Hit from left
                         }
 
-                        // Call interact on the tile
                         it.Interact(f, filter.Entity, direction, contact.Tile, tileInstance, out _);
                     }
                 }
             }
 
-            // Special handling for boomerangs: switch to returning mode on terrain hit
-            // But allow piercing through breakable bricks
             if (asset.IsBoomerang && hasTerrainCollision && !projectile->IsReturning() && !hitBreakableBrick) {
                 projectile->SetReturning();
-                projectile->Lifetime = 0; // Reset frame counter for return phase with peak force
-                // Apply max pull force immediately when hitting terrain
+                projectile->Lifetime = 0;
                 ApplyBoomerangPullForce(f, ref filter, asset, FP.MaxValue);
-                return; // Don't despawn, just switch to return mode
+                return;
             }
 
-            // Despawn
             if (!physicsObject->DisableCollision) {
                 bool shouldDespawn = physicsObject->IsTouchingLeftWall
                     || physicsObject->IsTouchingRightWall
@@ -380,7 +330,6 @@ namespace Quantum {
                     || (physicsObject->IsTouchingGround && (!asset.Bounce || (projectile->HasBounced && asset.DestroyOnSecondBounce)))
                     || PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape);
 
-                // Don't despawn boomerangs that just hit breakable bricks
                 if (shouldDespawn && asset.IsBoomerang && hitBreakableBrick) {
                     shouldDespawn = false;
                 }
@@ -416,8 +365,10 @@ namespace Quantum {
             var projectileAssetB = f.FindAsset(projectileB->Asset);
 
             if ((projectileAssetA.Effect == ProjectileEffectType.Fire && projectileAssetB.Effect == ProjectileEffectType.Freeze)
-                || (projectileAssetB.Effect == ProjectileEffectType.Fire && projectileAssetA.Effect == ProjectileEffectType.Freeze)) {
-                // Fireball collided with Iceball. Destroy both.
+                || (projectileAssetB.Effect == ProjectileEffectType.Fire && projectileAssetA.Effect == ProjectileEffectType.Freeze)
+                || (projectileAssetA.Effect == ProjectileEffectType.Hammer && projectileAssetB.Effect == ProjectileEffectType.Boomerang)
+                || (projectileAssetB.Effect == ProjectileEffectType.Hammer && projectileAssetA.Effect == ProjectileEffectType.Boomerang)) {
+                // Fireball collided with Iceball/Hammer collided with Boomerang. Destroy both.
                 Destroy(f, projectileEntityA, projectileAssetA.DestroyParticleEffect);
                 Destroy(f, projectileEntityB, projectileAssetB.DestroyParticleEffect);
             }
