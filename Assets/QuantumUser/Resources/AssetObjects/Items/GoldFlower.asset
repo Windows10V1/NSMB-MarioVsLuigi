@@ -20,11 +20,11 @@ MonoBehaviour:
     Id:
       Value: 1520819388083381927
   SpawnChance:
-    RawValue: 57344
+    RawValue: 58982
   AboveAverageBonus:
-    RawValue: -73728
+    RawValue: 8192
   BelowAverageBonus:
-    RawValue: 49152
+    RawValue: -8192
   BlockSpawnSoundEffect: 69
   Flags: 23
   MaxNumberOfItems: 0
@@ -142,12 +142,6 @@ MonoBehaviour:
   StatePriority: 2
   ItemPriority: 2
   EnterReserveIfOverridden: 1
-  MaxInstantProjectiles: 2
-  MaxProjectileCount: 2
-  ProjectileSpawnHorizontalOffset:
-    RawValue: 0
-  ProjectileSpawnVerticalOffset:
-    RawValue: 0
   SfxOverrides:
   - SoundEffect: 69
     Mode: 0
