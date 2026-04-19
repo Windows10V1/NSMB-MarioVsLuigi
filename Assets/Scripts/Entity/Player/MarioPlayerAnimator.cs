@@ -63,6 +63,7 @@ namespace NSMB.Entities.Player {
         private static readonly int ParamCrouching = Animator.StringToHash("crouching");
         private static readonly int ParamGroundpound = Animator.StringToHash("groundpound");
         private static readonly int ParamSliding = Animator.StringToHash("sliding");
+        private static readonly int ParamPenguinSlide = Animator.StringToHash("PenguinSlide");
         private static readonly int ParamKnockback = Animator.StringToHash("knockback");
         private static readonly int ParamFacingRight = Animator.StringToHash("facingRight");
         private static readonly int ParamFlying = Animator.StringToHash("flying");
@@ -323,13 +324,13 @@ namespace NSMB.Entities.Player {
             SetParticleEmission(iceSkiddingParticle, !disableParticles && physicsObject->IsOnSlipperyGround && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterSkiddingParticle, !disableParticles && onWater && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterRunningParticle, !disableParticles && !waterSkiddingParticle.isPlaying && onWater && FPMath.Abs(physicsObject->Velocity.X) > FP._0_10);
-            SetParticleEmission(dust, !disableParticles && !iceSkiddingParticle.isPlaying && !waterSkiddingParticle.isPlaying && (mario->IsWallsliding || (physicsObject->IsTouchingGround && ((mario->IsSkidding || (mario->IsCrouching && !physicsObject->IsOnSlipperyGround)) && Mathf.Abs(physicsObject->Velocity.X.AsFloat) > 0.25f)) || mario->FastTurnaroundFrames > 0 || (((mario->IsSliding && Mathf.Abs(physicsObject->Velocity.X.AsFloat) > 0.25f) || mario->IsInShell) && physicsObject->IsTouchingGround)) && !f.Exists(mario->CurrentPipe));
+            SetParticleEmission(dust, !disableParticles && !iceSkiddingParticle.isPlaying && !waterSkiddingParticle.isPlaying && (mario->IsWallsliding || (physicsObject->IsTouchingGround && ((mario->IsSkidding || (mario->IsCrouching && !physicsObject->IsOnSlipperyGround)) && Mathf.Abs(physicsObject->Velocity.X.AsFloat) > 0.25f)) || mario->FastTurnaroundFrames > 0 || (((mario->IsSliding && Mathf.Abs(physicsObject->Velocity.X.AsFloat) > 0.25f) || mario->IsInShell || mario->IsPenguinSliding) && physicsObject->IsTouchingGround)) && !f.Exists(mario->CurrentPipe));
             SetParticleEmission(giantParticle, !disableParticles && mario->CurrentPowerupState == PowerupState.MegaMushroom && mario->MegaMushroomStartFrames == 0);
             SetParticleEmission(fireParticle, mario->IsDead && !mario->IsRespawning && mario->FireDeath && !physicsObject->IsFrozen);
             SetParticleEmission(bubblesParticle, !disableParticles && physicsObject->IsUnderwater);
 
             var physicsCollider = f.Unsafe.GetPointer<PhysicsCollider2D>(EntityRef);
-            if (mario->IsCrouching || mario->IsSliding || mario->IsSkidding || mario->IsInShell) {
+            if (mario->IsCrouching || mario->IsSliding || mario->IsPenguinSliding || mario->IsSkidding || mario->IsInShell) {
                 dust.transform.localPosition = Vector2.zero;
             } else if (mario->IsWallsliding) {
                 dust.transform.localPosition = physicsCollider->Shape.Box.Extents.ToUnityVector2() * 1.5f * (mario->WallslideLeft ? new Vector2(-1, 1) : Vector2.one);
@@ -339,7 +340,7 @@ namespace NSMB.Entities.Player {
             waterSkiddingParticle.transform.localScale = flip;
             waterRunningParticle.transform.localScale = flip;
 
-            dustPlayer.SetSoundData((mario->IsInShell || mario->IsSliding || mario->IsCrouchedInShell) ? shellSlideData : wallSlideData);
+            dustPlayer.SetSoundData((mario->IsInShell || mario->IsSliding || mario->IsPenguinSliding || mario->IsCrouchedInShell) ? shellSlideData : wallSlideData);
             drillPlayer.SetSoundData(mario->IsPropellerFlying ? propellerDrillData : spinnerDrillData);
             bubblesParticle.transform.localPosition = new(bubblesParticle.transform.localPosition.x, physicsCollider->Shape.Box.Extents.Y.AsFloat * 2);
 
@@ -497,6 +498,7 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamCrouching, mario->IsCrouching);
             animator.SetBool(ParamGroundpound, mario->IsGroundpounding);
             animator.SetBool(ParamSliding, mario->IsSliding);
+            animator.SetBool(ParamPenguinSlide, mario->IsPenguinSliding);
             animator.SetBool(ParamKnockback, mario->IsInKnockback && mario->KnockbackGetupFrames == 0);
             animator.SetBool(ParamFacingRight, (left ^ right) ? right : mario->FacingRight);
             animator.SetBool(ParamFlying, mario->IsSpinnerFlying);
@@ -665,9 +667,9 @@ namespace NSMB.Entities.Player {
                 }
 
                 animator.avatar = targetAvatar;
-                animator.runtimeAnimatorController = large ? character.LargeOverrides : character.SmallOverrides;
+                animator.runtimeAnimatorController = mario->CurrentPowerupState == PowerupState.PenguinSuit ? character.PenguinOverrides : (large ? character.LargeOverrides : character.SmallOverrides);
 
-                // Push back state 
+                // Push back state
                 animator.Rebind();
 
                 foreach (int i in layers) {

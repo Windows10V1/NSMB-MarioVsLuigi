@@ -230,6 +230,8 @@ MonoBehaviour:
     RawValue: 345600
   SlideMinimumAngle:
     RawValue: 819200
+  PenguinSlideSpeedMultiplier:
+    RawValue: 65946
   GroundpoundStartVelocity:
     X:
       RawValue: 0
@@ -237,10 +239,6 @@ MonoBehaviour:
       RawValue: 98304
   GroundpoundStartFrames: 16
   GroundpoundStartMegaFrames: 24
-  ProjectileVolleySize: 2
-  ProjectileVolleyFrames: 75
-  ProjectileDelayFrames: 6
-  MaxProjecitles: 6
   PropellerSpinFrames: 30
   PropellerLaunchVelocity:
     RawValue: 393216

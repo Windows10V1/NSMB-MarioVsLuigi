@@ -65,7 +65,7 @@ namespace Quantum {
                     boomerangPullForceActive = true;
                 } else {
                     FP elapsedTime = (FP)projectile->Lifetime / 60;
-                    boomerangPullForceActive = elapsedTime >= asset.BoomerangReturnDelay;
+                    boomerangPullForceActive = elapsedTime >= FP.FromString("0.25");
                 }
             }
 
@@ -88,8 +88,8 @@ namespace Quantum {
             if (!projectile->IsReturning()) {
                 FP elapsedTime = (FP)projectile->Lifetime / 60; // 60 FPS
 
-                if (elapsedTime >= asset.BoomerangReturnDelay) {
-                    FP timeIntoReturn = elapsedTime - asset.BoomerangReturnDelay;
+                if (elapsedTime >= FP.FromString("0.25")) {
+                    FP timeIntoReturn = elapsedTime - FP.FromString("0.25");
                     ApplyBoomerangPullForce(f, ref filter, asset, timeIntoReturn);
                 }
             } else {
@@ -124,7 +124,7 @@ namespace Quantum {
             if (timeIntoReturn >= FP.MaxValue || projectile->IsReturning()) {
                 pullForceStrength = asset.Speed;
             } else {
-                pullForceStrength = timeIntoReturn * asset.BoomerangReturnAcceleration * asset.Speed;
+                pullForceStrength = timeIntoReturn * FP.FromString("2") * asset.Speed;
                 if (pullForceStrength > asset.Speed) {
                     pullForceStrength = asset.Speed;
                 }

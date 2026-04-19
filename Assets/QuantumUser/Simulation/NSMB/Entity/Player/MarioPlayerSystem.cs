@@ -171,7 +171,7 @@ namespace Quantum {
                 } else {
                     acc = mario->CurrentPowerupState == PowerupState.BlueShell ? physics.SwimShellAcceleration[stage] : physics.SwimAcceleration[stage];
                 }
-            } else if (physicsObject->IsOnSlipperyGround) {
+            } else if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
                 acc = physics.WalkIceAcceleration[stage];
             } else if (mario->CurrentPowerupState == PowerupState.MegaMushroom) {
                 acc = physics.WalkMegaAcceleration[stage];
@@ -193,8 +193,8 @@ namespace Quantum {
                 if (QuantumUtils.Decrement(ref mario->FastTurnaroundFrames)) {
                     mario->IsTurnaround = true;
                 }
-            } else if (mario->IsTurnaround && !physicsObject->IsOnSlipperyGround) {
-                // Can't fast turnaround on ice.
+            } else if (mario->IsTurnaround && !(physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit)) {
+                // Can't fast turnaround on ice (unless Penguin Suit).
                 mario->IsTurnaround = physicsObject->IsTouchingGround && !mario->IsCrouching && xVelAbs < physics.WalkMaxVelocity[1] && !physicsObject->IsTouchingLeftWall && !physicsObject->IsTouchingRightWall;
                 mario->IsSkidding = mario->IsTurnaround;
 
@@ -231,7 +231,7 @@ namespace Quantum {
                         }
 
                         if (mario->IsSkidding) {
-                            if (physicsObject->IsOnSlipperyGround) {
+                            if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
                                 acc = physics.SkiddingIceDeceleration;
                             } else if (xVelAbs > maxArray[physics.RunSpeedStage]) {
                                 acc = physics.SkiddingStarmanDeceleration;
@@ -241,7 +241,7 @@ namespace Quantum {
 
                             mario->SlowTurnaroundFrames = 0;
                         } else {
-                            if (physicsObject->IsOnSlipperyGround) {
+                            if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
                                 acc = physics.SlowTurnaroundIceAcceleration;
                             } else {
                                 mario->SlowTurnaroundFrames = (byte) FPMath.Clamp(mario->SlowTurnaroundFrames + 1, 0,
@@ -278,7 +278,7 @@ namespace Quantum {
 
                 FP angle = FPMath.Abs(physicsObject->FloorAngle);
                 if (mario->IsInKnockback) {
-                    if (physicsObject->IsOnSlipperyGround) {
+                    if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
                         acc = mario->KnockForwards ? -physics.StomachKnockbackIceDeceleration : -physics.SittingKnockbackIceDeceleration;
                     } else {
                         acc = mario->KnockForwards ? -physics.StomachKnockbackDeceleration : -physics.SittingKnockbackDeceleration;
@@ -295,7 +295,7 @@ namespace Quantum {
                     } else {
                         acc = -physics.WalkAcceleration[0];
                     }
-                } else if (physicsObject->IsOnSlipperyGround) {
+                } else if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
                     acc = -physics.WalkButtonReleaseIceDeceleration[stage];
                 } else {
                     acc = -physics.WalkButtonReleaseDeceleration;
@@ -329,10 +329,9 @@ namespace Quantum {
 
             if (mario->CurrentPowerupState != PowerupState.BlueShell) mario->IsCrouching &= !mario->IsSliding;
 
-            // Penguin Slide movement logic: 1.15x max running speed, straight line
             if (mario->IsPenguinSliding && physicsObject->IsTouchingGround) {
                 FP maxRunSpeed = physics.WalkMaxVelocity[physics.RunSpeedStage];
-                FP penguinSlideSpeed = maxRunSpeed * FP.FromString("1.15");
+                FP penguinSlideSpeed = maxRunSpeed * physics.PenguinSlideSpeedMultiplier;
                 FP direction = mario->FacingRight ? 1 : -1;
                 physicsObject->Velocity.X = FPMath.MoveTowards(physicsObject->Velocity.X, penguinSlideSpeed * direction, physics.WalkAcceleration[0] * f.DeltaTime);
             }
@@ -468,7 +467,16 @@ namespace Quantum {
                 newY += FPMath.Abs(physicsObject->FloorAngle) * FP._0_01 * alpha;
             }
 
-            if (canSpecialJump && mario->JumpState == JumpState.SingleJump) {
+            // Force single basic jump during Penguin Slide - no combo jumps
+            if (mario->IsPenguinSliding) {
+                mario->JumpState = JumpState.SingleJump;
+                // Use standard jump height without speed bonus
+                newY = effectiveState switch {
+                    PowerupState.MegaMushroom => physics.JumpMegaVelocity,
+                    PowerupState.MiniMushroom => physics.JumpMiniVelocity,
+                    _ => physics.JumpVelocity,
+                };
+            } else if (canSpecialJump && mario->JumpState == JumpState.SingleJump) {
                 mario->JumpState = JumpState.DoubleJump;
             } else if (canSpecialJump && mario->JumpState == JumpState.DoubleJump) {
                 mario->JumpState = JumpState.TripleJump;
@@ -735,7 +743,7 @@ namespace Quantum {
                     mario->FacingRight = inputs.Right.IsDown;
                 }
             } else if (mario->MegaMushroomStartFrames == 0 && mario->MegaMushroomEndFrames == 0 && !mario->IsSkidding && !mario->IsTurnaround) {
-                if (!mario->IsInShell && ((FPMath.Abs(physicsObject->Velocity.X) < FP._0_50 && mario->IsCrouching) || physicsObject->IsOnSlipperyGround) && rightOrLeft) {
+                if (!mario->IsInShell && ((FPMath.Abs(physicsObject->Velocity.X) < FP._0_50 && mario->IsCrouching) || (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit)) && rightOrLeft) {
                     mario->FacingRight = inputs.Right.IsDown;
                 } else if (mario->IsInKnockback || (physicsObject->IsTouchingGround && mario->CurrentPowerupState != PowerupState.MegaMushroom && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05 && !mario->IsCrouching)) {
                     mario->FacingRight = physicsObject->Velocity.X > 0;
@@ -783,7 +791,7 @@ namespace Quantum {
                 }
             }
 
-            if (!wasCrouching && mario->IsCrouching && !mario->IsInShell) {
+            if (!wasCrouching && mario->IsCrouching && !mario->IsInShell && !mario->IsPenguinSliding) {
                 f.Events.MarioPlayerCrouched(filter.Entity, mario->CurrentPowerupState);
             }
         }
@@ -1346,23 +1354,29 @@ namespace Quantum {
                     return;
                 }
 
-                // Honorable mention for Cloud Flower before disaster.
+                // Honorable mention for Cloud Flower.
                 if (mario->CurrentPowerupState == PowerupState.CloudFlower && physicsObject->IsTouchingGround) {
                     return;
                 }
 
-                // Let the projectile fuckery begin!
                 if (mario->ProjectileCooldownFrames > 0) {
                     return;
                 }
 
                 byte activeProjectiles = mario->CurrentProjectiles;
                 
-                // Get projectile limits from the projectile asset
-                byte maxInstantProjectiles = 2;
-                byte maxProjectiles = physics.MaxProjecitles;
+                const byte DEFAULT_MAX_INSTANT_PROJECTILES = 2;
+                const byte DEFAULT_MAX_PROJECTILES = 6;
+                const byte DEFAULT_COOLDOWN_FRAMES = 0;
+                const byte DEFAULT_VOLLEY_SIZE = 2;
+                const byte DEFAULT_VOLLEY_FRAMES = 75;
                 
-                // Create a temporary entity to access the projectile asset from the prototype
+                byte maxInstantProjectiles = DEFAULT_MAX_INSTANT_PROJECTILES;
+                byte maxProjectiles = DEFAULT_MAX_PROJECTILES;
+                byte cooldownFrames = DEFAULT_COOLDOWN_FRAMES;
+                byte volleySize = DEFAULT_VOLLEY_SIZE;
+                byte volleyFrames = DEFAULT_VOLLEY_FRAMES;
+                
                 AssetRef<EntityPrototype> projectilePrototype = mario->CurrentPowerupState == PowerupState.HammerSuit
                     ? f.SimulationConfig.HammerPrototype
                     : mario->CurrentPowerupState == PowerupState.BoomerangFlower
@@ -1386,6 +1400,9 @@ namespace Quantum {
                         maxProjectiles = projectileAssetData.MaxProjectileCount > 0 
                             ? projectileAssetData.MaxProjectileCount 
                             : maxProjectiles;
+                        cooldownFrames = projectileAssetData.CooldownFrames > 0
+                            ? (byte) projectileAssetData.CooldownFrames
+                            : cooldownFrames;
                     }
                 }
                 f.Destroy(tempEntity);
@@ -1396,16 +1413,15 @@ namespace Quantum {
 
                 if (activeProjectiles < maxInstantProjectiles) {
                     mario->CurrentVolley = (byte) (activeProjectiles + 1);
-                } else if (mario->CurrentVolley < physics.ProjectileVolleySize) {
+                } else if (mario->CurrentVolley < volleySize) {
                     mario->CurrentVolley++;
                 } else {
                     return;
                 }
 
                 mario->CurrentProjectiles++;
-                mario->ProjectileDelayFrames = physics.ProjectileDelayFrames;
-                mario->ProjectileVolleyFrames = physics.ProjectileVolleyFrames;
-                // End of projectile disaster... or is it?
+                mario->ProjectileDelayFrames = cooldownFrames;
+                mario->ProjectileVolleyFrames = volleyFrames;
 
                 Projectile* projectile;
                 if (mario->CurrentPowerupState == PowerupState.HammerSuit) {
@@ -1461,13 +1477,12 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            FP horizontalOffset = mario->FacingRight ? FP._0_25 : -FP._0_25;
-            FP verticalOffset = FP._0_50;
+            FP verticalOffset = -FP._0_25;
 
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(horizontalOffset, verticalOffset);
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(0, verticalOffset);
 
             physicsObject->Velocity.X = 0;
-            physicsObject->Velocity.Y = FP.FromString("12.0");
+            physicsObject->Velocity.Y = FP.FromString("3.0");
 
             EntityRef newEntity = f.Create(f.SimulationConfig.CloudPrototype);
 
@@ -1613,25 +1628,24 @@ namespace Quantum {
                 if (atMaxSpeed && inputs.Down.IsDown && physicsObject->IsTouchingGround && !mario->IsPenguinSliding) {
                     mario->IsPenguinSliding = true;
                     mario->IsCrouching = false;
-                    f.Events.MarioPlayerPenguinSlideStarted(filter.Entity);
                 }
                 
                 // Maintenance: persists while sprint is held
                 if (mario->IsPenguinSliding) {
+                    // Restrict left/right input - maintain slide direction by ignoring turn inputs
+                    bool tryingToTurn = (inputs.Left.IsDown && mario->FacingRight) || (inputs.Right.IsDown && !mario->FacingRight);
+                    
                     if (!inputs.Sprint.IsDown) {
                         // Transition back to run/idle based on velocity
                         mario->IsPenguinSliding = false;
-                        f.Events.MarioPlayerPenguinSlideStopped(filter.Entity);
-                    } else if (inputs.Up.IsDown || (mario->FacingRight && physicsObject->IsTouchingRightWall) || (!mario->FacingRight && physicsObject->IsTouchingLeftWall)) {
-                        // Cancel slide on up input or wall collision
+                    } else if (inputs.Up.IsDown || tryingToTurn || (mario->FacingRight && physicsObject->IsTouchingRightWall) || (!mario->FacingRight && physicsObject->IsTouchingLeftWall)) {
+                        // Cancel slide on up input, trying to turn, or wall collision
                         mario->IsPenguinSliding = false;
-                        f.Events.MarioPlayerPenguinSlideStopped(filter.Entity);
                     }
                 }
             } else if (mario->IsPenguinSliding) {
                 // Cancel penguin slide if conditions are no longer met
                 mario->IsPenguinSliding = false;
-                f.Events.MarioPlayerPenguinSlideStopped(filter.Entity);
             }
 
             if (!blueShell) {
@@ -2090,7 +2104,7 @@ namespace Quantum {
                 bool knockbackFromRight;
                 if (projectileAsset.IsBoomerang) {
                     FP elapsedTime = (FP)projectile->Lifetime / 60;
-                    bool isInReturnPhase = projectile->IsReturning() || elapsedTime >= projectileAsset.BoomerangReturnDelay;
+                    bool isInReturnPhase = projectile->IsReturning() || elapsedTime >= FP.FromString("0.25");
 
                     if (isInReturnPhase) {
                         knockbackFromRight = projectile->FacingRight;
@@ -2111,7 +2125,7 @@ namespace Quantum {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
                     }
                     if (!damaged) {
-                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 3 : 0, KnockbackStrength.CollisionBump, projectileEntity);
+                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, projectileEntity);
                         damaged = true;
                     }
                     break;

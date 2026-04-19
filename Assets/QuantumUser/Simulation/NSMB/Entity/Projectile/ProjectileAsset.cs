@@ -21,8 +21,6 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
     public SoundEffect ShootSound = SoundEffect.Powerup_Fireball_Shoot;
 
     public bool IsBoomerang = false;
-    public FP BoomerangReturnDelay = FP.FromString("0.5");
-    public FP BoomerangReturnAcceleration = FP.FromString("0.5");
 
     public bool IsSuperBall = false;
 
@@ -32,8 +30,6 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
 
     public byte MaxInstantProjectiles = 0;
     public byte MaxProjectileCount = 0;
-    public FP ProjectileSpawnHorizontalOffset = 0;
-    public FP ProjectileSpawnVerticalOffset = 0;
 
     public SoundEffectOverride[] SfxOverrides;
 

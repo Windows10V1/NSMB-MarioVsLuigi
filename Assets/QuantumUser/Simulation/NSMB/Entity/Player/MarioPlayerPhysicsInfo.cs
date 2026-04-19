@@ -116,6 +116,7 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     public FP SlideFastAcceleration = FF(13.1835975f);
     public FP SlideSlowAcceleration = FF(5.2734375f);
     public FP SlideMinimumAngle = FF(12.5f);
+    public FP PenguinSlideSpeedMultiplier = FF(1.15f);
 
     // --- Groundpounding
     public FPVector2 GroundpoundStartVelocity = FPVector2.Up * FP._1_50;
@@ -123,11 +124,6 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     public byte GroundpoundStartMegaFrames = 24;
 
     // --- Powerups
-    public byte ProjectileVolleySize = 2;
-    public byte ProjectileVolleyFrames = 75;
-    public byte ProjectileDelayFrames = 6;
-    public byte MaxProjecitles = 6;
-
     public byte PropellerSpinFrames = 30;
     public FP PropellerLaunchVelocity = 6;
     public byte PropellerLaunchFrames = 60;
