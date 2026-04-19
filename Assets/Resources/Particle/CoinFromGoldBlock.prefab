@@ -60,7 +60,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5a26cde1892218c4fbbe8b84c92e1a24, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,7 +83,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: -3
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 595918852289861335, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
+  m_Sprite: {fileID: 2620925746830137660, guid: f4b7221be8b79c94c9c8919163014cb0,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -132,15 +133,11 @@ MonoBehaviour:
   runInEditor: 0
   fps: 24
   frames:
-  - {fileID: 595918852289861335, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: 845948447533366988, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: -5313328981683241401, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: -8417162070665421395, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  colorblindModeFrames:
-  - {fileID: -2128285509, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: 579779561, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: -667571031, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
-  - {fileID: -1028925186, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
+  - {fileID: 2620925746830137660, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
+  - {fileID: -3961342211389282260, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
+  - {fileID: -2074995507315294404, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
+  - {fileID: -6910632858783443427, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}
+  colorblindModeFrames: []
   useUnscaledDelta: 0
   sRenderer: {fileID: 4355208377236206567}
   image: {fileID: 0}
@@ -154,7 +151,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4355208377719065581}
   m_Layer: 17
-  m_Name: ObjectiveCoinFromGoldBlock
+  m_Name: CoinFromGoldBlock
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

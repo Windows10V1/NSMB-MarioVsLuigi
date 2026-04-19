@@ -178,7 +178,9 @@ namespace Quantum {
 
         public void OnReturnToRoom(Frame f) {
             f.Global->MainBigStar = EntityRef.None;
+            f.Global->MainStarCoin = EntityRef.None;
             f.Global->BigStarSpawnTimer = 0;
+            f.Global->StarCoinSpawnTimer = 0;
             f.Global->UsedStarSpawns.ClearAll();
         }
 

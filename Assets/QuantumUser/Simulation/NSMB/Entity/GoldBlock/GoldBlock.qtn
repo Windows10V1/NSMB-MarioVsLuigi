@@ -1,7 +1,7 @@
 component GoldBlock {
 	[ExcludeFromPrototype] EntityRef AttachedTo;
 	[ExcludeFromPrototype] int ObjectiveCoinsRemaining;
-	[ExcludeFromPrototype] byte Timer;
+	[ExcludeFromPrototype] ushort Timer;
 }
 
 event MarioPlayerPickedUpGoldBlock {

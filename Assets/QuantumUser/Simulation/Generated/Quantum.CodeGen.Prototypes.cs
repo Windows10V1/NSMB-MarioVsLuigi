@@ -283,16 +283,6 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.CoinRunnersData))]
-  public unsafe partial class CoinRunnersDataPrototype : StructPrototype {
-    public Int32 ObjectiveCoins;
-    partial void MaterializeUser(Frame frame, ref Quantum.CoinRunnersData result, in PrototypeMaterializationContext context);
-    public void Materialize(Frame frame, ref Quantum.CoinRunnersData result, in PrototypeMaterializationContext context = default) {
-        result.ObjectiveCoins = this.ObjectiveCoins;
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.ComboKeeper))]
   public unsafe partial class ComboKeeperPrototype : ComponentPrototype<Quantum.ComboKeeper> {
     public Byte Combo;
@@ -445,12 +435,10 @@ namespace Quantum.Prototypes {
   public unsafe partial class GamemodeSpecificDataPrototype : UnionPrototype {
     public string _field_used_;
     public Quantum.Prototypes.StarChasersDataPrototype StarChasers;
-    public Quantum.Prototypes.CoinRunnersDataPrototype CoinRunners;
     partial void MaterializeUser(Frame frame, ref Quantum.GamemodeSpecificData result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.GamemodeSpecificData result, in PrototypeMaterializationContext context = default) {
         switch (_field_used_) {
           case "STARCHASERS": this.StarChasers.Materialize(frame, ref *result.StarChasers, in context); break;
-          case "COINRUNNERS": this.CoinRunners.Materialize(frame, ref *result.CoinRunners, in context); break;
           case "": case null: break;
           default: PrototypeValidator.UnknownUnionField(_field_used_, in context); break;
         }

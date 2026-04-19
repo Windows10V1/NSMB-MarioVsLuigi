@@ -634,18 +634,17 @@ namespace NSMB.Entities.Player {
 
             // Model changing
             bool large = mario->CurrentPowerupState >= PowerupState.Mushroom;
-            largeModel.SetActive(large && mario->CurrentPowerupState != PowerupState.PenguinSuit);
-            smallModel.SetActive(!large && mario->CurrentPowerupState != PowerupState.PenguinSuit);
+            largeModel.SetActive(large);
+            smallModel.SetActive(!large);
             blueShell.SetActive(mario->CurrentPowerupState == PowerupState.BlueShell);
-            penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             propellerHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.PropellerMushroom);
             HammerHelm.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.HammerSuit);
             HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
-            boomerangHelmet.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
+            boomerangHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             boomerangShell.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             boomerangBootL.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             boomerangBootR.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
-            cloudHead.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
+            cloudHead.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.CloudFlower);
             cloudScarf.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;

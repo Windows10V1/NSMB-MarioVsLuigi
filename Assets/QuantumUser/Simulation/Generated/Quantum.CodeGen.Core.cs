@@ -974,24 +974,6 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct CoinRunnersData {
-    public const Int32 SIZE = 4;
-    public const Int32 ALIGNMENT = 4;
-    [FieldOffset(0)]
-    public Int32 ObjectiveCoins;
-    public override readonly Int32 GetHashCode() {
-      unchecked { 
-        var hash = 18149;
-        hash = hash * 31 + ObjectiveCoins.GetHashCode();
-        return hash;
-      }
-    }
-    public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (CoinRunnersData*)ptr;
-        serializer.Stream.Serialize(&p->ObjectiveCoins);
-    }
-  }
-  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct GameRules {
     public const Int32 SIZE = 48;
     public const Int32 ALIGNMENT = 8;
@@ -1278,7 +1260,7 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct _globals_ {
-    public const Int32 SIZE = 3136;
+    public const Int32 SIZE = 3144;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(0)]
     public AssetRef<Map> Map;
@@ -1307,11 +1289,15 @@ namespace Quantum {
     public BitSet10 PlayerLastConnectionState;
     [FieldOffset(1824)]
     public UInt16 BigStarSpawnTimer;
+    [FieldOffset(1830)]
+    public UInt16 StarCoinSpawnTimer;
     [FieldOffset(1872)]
     public EntityRef MainBigStar;
+    [FieldOffset(1880)]
+    public EntityRef MainStarCoin;
     [FieldOffset(1864)]
     public BitSet64 UsedStarSpawns;
-    [FieldOffset(1888)]
+    [FieldOffset(1896)]
     public GameRules Rules;
     [FieldOffset(1818)]
     public GameState GameState;
@@ -1327,7 +1313,7 @@ namespace Quantum {
     public UInt16 AutomaticStageRefreshInterval;
     [FieldOffset(1822)]
     public UInt16 AutomaticStageRefreshTimer;
-    [FieldOffset(1936)]
+    [FieldOffset(1944)]
     [FramePrinter.FixedArrayAttribute(typeof(PlayerInformation), 10)]
     private fixed Byte _PlayerInfo_[1200];
     [FieldOffset(1816)]
@@ -1346,7 +1332,7 @@ namespace Quantum {
     [FieldOffset(1856)]
     [AllocateOnComponentAdded()]
     public QListPtr<BannedPlayerInfo> BannedPlayerIds;
-    [FieldOffset(1880)]
+    [FieldOffset(1888)]
     public FP Timer;
     public readonly FixedArray<Input> input {
       get {
@@ -1374,7 +1360,9 @@ namespace Quantum {
         hash = hash * 31 + HashCodeUtils.GetArrayHashCode(input);
         hash = hash * 31 + PlayerLastConnectionState.GetHashCode();
         hash = hash * 31 + BigStarSpawnTimer.GetHashCode();
+        hash = hash * 31 + StarCoinSpawnTimer.GetHashCode();
         hash = hash * 31 + MainBigStar.GetHashCode();
+        hash = hash * 31 + MainStarCoin.GetHashCode();
         hash = hash * 31 + UsedStarSpawns.GetHashCode();
         hash = hash * 31 + Rules.GetHashCode();
         hash = hash * 31 + (Byte)GameState;
@@ -1426,6 +1414,7 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->BigStarSpawnTimer);
         serializer.Stream.Serialize(&p->GameStartFrames);
         serializer.Stream.Serialize(&p->PlayerLoadFrames);
+        serializer.Stream.Serialize(&p->StarCoinSpawnTimer);
         serializer.Stream.Serialize(&p->StartFrame);
         serializer.Stream.Serialize(&p->TotalGamesPlayed);
         serializer.Stream.Serialize(&p->WinningTeam);
@@ -1435,6 +1424,7 @@ namespace Quantum {
         QList.Serialize(&p->BannedPlayerIds, serializer, Statics.SerializeBannedPlayerInfo);
         Quantum.BitSet64.Serialize(&p->UsedStarSpawns, serializer);
         EntityRef.Serialize(&p->MainBigStar, serializer);
+        EntityRef.Serialize(&p->MainStarCoin, serializer);
         FP.Serialize(&p->Timer, serializer);
         Quantum.GameRules.Serialize(&p->Rules, serializer);
         FixedArray.Serialize(p->PlayerInfo, serializer, Statics.SerializePlayerInformation);
@@ -1451,12 +1441,7 @@ namespace Quantum {
     [FieldOverlap(4)]
     [FramePrinter.PrintIf("_field_used_", Quantum.GamemodeSpecificData.STARCHASERS)]
     private StarChasersData _StarChasers;
-    [FieldOffset(4)]
-    [FieldOverlap(4)]
-    [FramePrinter.PrintIf("_field_used_", Quantum.GamemodeSpecificData.COINRUNNERS)]
-    private CoinRunnersData _CoinRunners;
     public const Int32 STARCHASERS = 1;
-    public const Int32 COINRUNNERS = 2;
     public readonly Int32 Field {
       get {
         return _field_used_;
@@ -1473,23 +1458,11 @@ namespace Quantum {
         }
       }
     }
-    public CoinRunnersData* CoinRunners {
-      get {
-        fixed (CoinRunnersData* p = &_CoinRunners) {
-          if (_field_used_ != COINRUNNERS) {
-            Native.Utils.Clear(p, 4);
-            _field_used_ = COINRUNNERS;
-          }
-          return p;
-        }
-      }
-    }
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 11299;
         hash = hash * 31 + _field_used_.GetHashCode();
         hash = hash * 31 + _StarChasers.GetHashCode();
-        hash = hash * 31 + _CoinRunners.GetHashCode();
         return hash;
       }
     }
@@ -1500,9 +1473,6 @@ namespace Quantum {
           return;
         }
         serializer.Stream.Serialize(&p->_field_used_);
-        if (p->_field_used_ == COINRUNNERS) {
-          Quantum.CoinRunnersData.Serialize(&p->_CoinRunners, serializer);
-        }
         if (p->_field_used_ == STARCHASERS) {
           Quantum.StarChasersData.Serialize(&p->_StarChasers, serializer);
         }
@@ -2253,7 +2223,7 @@ namespace Quantum {
     public Int32 ObjectiveCoinsRemaining;
     [FieldOffset(0)]
     [ExcludeFromPrototype()]
-    public Byte Timer;
+    public UInt16 Timer;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 5399;
@@ -4422,7 +4392,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(CharacterController3D), CharacterController3D.SIZE);
       typeRegistry.Register(typeof(Quantum.Coin), Quantum.Coin.SIZE);
       typeRegistry.Register(typeof(Quantum.CoinItem), Quantum.CoinItem.SIZE);
-      typeRegistry.Register(typeof(Quantum.CoinRunnersData), Quantum.CoinRunnersData.SIZE);
       typeRegistry.Register(typeof(Quantum.CoinType), 1);
       typeRegistry.Register(typeof(ColorRGBA), ColorRGBA.SIZE);
       typeRegistry.Register(typeof(Quantum.ComboKeeper), Quantum.ComboKeeper.SIZE);

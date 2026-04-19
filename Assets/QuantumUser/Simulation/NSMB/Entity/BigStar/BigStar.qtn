@@ -3,7 +3,9 @@
 
 global {
 	ushort BigStarSpawnTimer;
+	ushort StarCoinSpawnTimer;
 	EntityRef MainBigStar;
+	EntityRef MainStarCoin;
 	bitset[MaxStarSpawns] UsedStarSpawns;
 }
 

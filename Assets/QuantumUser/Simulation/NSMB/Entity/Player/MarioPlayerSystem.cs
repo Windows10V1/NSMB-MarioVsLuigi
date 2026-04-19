@@ -1345,8 +1345,38 @@ namespace Quantum {
                 }
 
                 byte activeProjectiles = mario->CurrentProjectiles;
+                
+                // Get projectile limits from the projectile asset
                 byte maxInstantProjectiles = 2;
                 byte maxProjectiles = physics.MaxProjecitles;
+                
+                // Create a temporary entity to access the projectile asset from the prototype
+                AssetRef<EntityPrototype> projectilePrototype = mario->CurrentPowerupState == PowerupState.HammerSuit
+                    ? f.SimulationConfig.HammerPrototype
+                    : mario->CurrentPowerupState == PowerupState.BoomerangFlower
+                    ? f.SimulationConfig.BoomerangPrototype
+                    : mario->CurrentPowerupState == PowerupState.CloudFlower
+                    ? f.SimulationConfig.CloudPrototype
+                    : mario->CurrentPowerupState == PowerupState.GoldFlower
+                    ? f.SimulationConfig.GoldballPrototype
+                    : mario->CurrentPowerupState == PowerupState.SuperBallFlower
+                    ? f.SimulationConfig.SuperballPrototype
+                    : mario->CurrentPowerupState == PowerupState.PenguinSuit
+                    ? f.SimulationConfig.IceballPrototype
+                    : f.SimulationConfig.FireballPrototype;
+                
+                EntityRef tempEntity = f.Create(projectilePrototype);
+                if (f.Unsafe.TryGetPointer(tempEntity, out Projectile* tempProjectile)) {
+                    if (f.TryFindAsset(tempProjectile->Asset, out var projectileAssetData)) {
+                        maxInstantProjectiles = projectileAssetData.MaxInstantProjectiles > 0 
+                            ? projectileAssetData.MaxInstantProjectiles 
+                            : maxInstantProjectiles;
+                        maxProjectiles = projectileAssetData.MaxProjectileCount > 0 
+                            ? projectileAssetData.MaxProjectileCount 
+                            : maxProjectiles;
+                    }
+                }
+                f.Destroy(tempEntity);
 
                 if (activeProjectiles >= maxProjectiles) {
                     return;
@@ -1451,14 +1481,11 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            ref var inputs = ref filter.Inputs;
-            bool aimingUp = inputs.Up.IsDown;
-            
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, aimingUp ? FP._0_75 : Constants._0_40);
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40);
             EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, aimingUp);
+            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }
 

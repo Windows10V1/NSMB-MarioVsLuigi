@@ -536,6 +536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   graphicsRoot: {fileID: 6142040129701411480}
+  moveBehindBlocksRoot: {fileID: 0}
   renderer: {fileID: 3522644845206703513}
   childAnimator: {fileID: 579011151076643705}
   childAnimation: {fileID: 8480178127695157793}
@@ -584,9 +585,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Prototype:
-    AttachedTo: {fileID: 0}
-    ObjectiveCoinsRemaining: 50
-    Timer: 0
+    _empty_prototype_dummy_field_: 0
 --- !u!1 &1501951331144334225
 GameObject:
   m_ObjectHideFlags: 0
@@ -1181,14 +1180,14 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 08141aacc2b968a419a9c775bdcbdf8d, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0.33
-  m_Pitch: 1
+  m_Volume: 1
+  m_Pitch: 0
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 256
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -1255,7 +1254,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 1
+      value: 0
       inSlope: 0
       outSlope: 0
       tangentMode: 0

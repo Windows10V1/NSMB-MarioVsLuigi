@@ -23,27 +23,24 @@ namespace Quantum {
 
             if (f.Exists(goldBlock->AttachedTo)) {
                 // Attached to a player.
-                var marioPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(goldBlock->AttachedTo);
-                
-                if (!marioPhysicsObject->IsFrozen) {
-                    if (FPMath.Abs(marioPhysicsObject->Velocity.X) > 5) {
-                        goldBlock->Timer += 10;
-                    } else if (marioPhysicsObject->Velocity.SqrMagnitude > FP._0_05) {
-                        goldBlock->Timer++;
-                    }
-                }
+                goldBlock->Timer++;
 
-                if (goldBlock->Timer >= 40) {
+                if (goldBlock->Timer >= 600) { // 10 seconds (600 frames at 60 FPS)
                     var mario = f.Unsafe.GetPointer<MarioPlayer>(goldBlock->AttachedTo);
-                    mario->GamemodeData.CoinRunners->ObjectiveCoins++;
-                    f.Events.GoldBlockGeneratedObjectiveCoin(entity);
-                    f.Events.MarioPlayerObjectiveCoinsChanged(goldBlock->AttachedTo);
-                    goldBlock->Timer = 0;
-                    if (--goldBlock->ObjectiveCoinsRemaining == 0) {
-                        f.Events.GoldBlockRanOutOfCoins(entity);
-                        f.Destroy(entity);
-                        return;
+                    byte threshold = (byte) f.Global->Rules.CoinsForPowerup;
+                    byte oldCoins = mario->Coins;
+                    byte newCoins = (byte) FPMath.Min(255, mario->Coins + 1);
+                    
+                    // Check if we crossed the threshold
+                    if (newCoins == threshold) {
+                        mario->Coins = 0;
+                        MarioPlayerSystem.SpawnItem(f, goldBlock->AttachedTo, mario, default, false);
+                    } else {
+                        mario->Coins = newCoins;
                     }
+                    
+                    f.Events.GoldBlockGeneratedObjectiveCoin(entity);
+                    goldBlock->Timer = 0;
                 }
                 transform->Position = f.Unsafe.GetPointer<Transform2D>(goldBlock->AttachedTo)->Position + FPVector2.Up;
             } else {
@@ -100,9 +97,19 @@ namespace Quantum {
                 return;
             }
             if (mario->CurrentPowerupState == PowerupState.MegaMushroom) {
-                // Break into 10 coins
-                var transform = f.Unsafe.GetPointer<Transform2D>(contact.Entity);
-                ObjectiveCoinSystem.SpawnObjectiveCoins(f, transform->Position, 10, 0, false);
+                // Give 1 item coin
+                byte threshold = (byte) f.Global->Rules.CoinsForPowerup;
+                byte oldCoins = mario->Coins;
+                byte newCoins = (byte) FPMath.Min(255, mario->Coins + 1);
+                
+                // Check if we crossed the threshold
+                if (newCoins == threshold) {
+                    mario->Coins = 0;
+                    MarioPlayerSystem.SpawnItem(f, marioEntity, mario, default, false);
+                } else {
+                    mario->Coins = newCoins;
+                }
+                
                 f.Events.GoldBlockBrokenByMega(contact.Entity);
                 f.Destroy(contact.Entity);
                 keepContacts = false;
@@ -122,7 +129,6 @@ namespace Quantum {
                 foreach ((var otherGoldBlockEntity, var otherGoldBlock) in f.Unsafe.GetComponentBlockIterator<GoldBlock>()) {
                     if (otherGoldBlock->AttachedTo == marioEntity) {
                         // Already wearing a gold block. Refresh this one, instead.
-                        otherGoldBlock->ObjectiveCoinsRemaining += GetCoinsInGoldBlock(f, mario);
                         f.Events.MarioPlayerPickedUpGoldBlock(marioEntity, otherGoldBlockEntity);
                         handled = true;
                         break;
@@ -131,8 +137,7 @@ namespace Quantum {
 
                 if (!handled) {
                     goldBlock->AttachedTo = marioEntity;
-                    goldBlock->ObjectiveCoinsRemaining = GetCoinsInGoldBlock(f, mario);
-                    //f.Unsafe.GetPointer<CoinItem>(helmetEntity)->Lifetime = 0;
+                    goldBlock->Timer = 0;
                     f.Remove<CoinItem>(goldBlockEntity);
                     f.Remove<PhysicsCollider2D>(goldBlockEntity);
                     f.Remove<MovingPlatform>(goldBlockEntity);
@@ -182,10 +187,5 @@ namespace Quantum {
             }
         }
 
-        private static int GetCoinsInGoldBlock(Frame f, MarioPlayer* mario) {
-            var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
-            _ = gamemode.GetWinningTeam(f, out int firstPlaceCoins);
-            return FPMath.CeilToInt(25 + (firstPlaceCoins - mario->GamemodeData.CoinRunners->ObjectiveCoins) / Constants._2_50);
-        }
     }
 }

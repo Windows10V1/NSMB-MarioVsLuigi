@@ -799,6 +799,7 @@ MonoBehaviour:
   largeModel: {fileID: 2209300530651413591}
   largeShellExclude: {fileID: 3909441804163237101}
   blueShell: {fileID: 3629787967981286811}
+  penguinModel: {fileID: 0}
   propellerHelmet: {fileID: 8712194458326895251}
   propeller: {fileID: 8626919663303982960}
   HammerHelm: {fileID: 4056376664574429795}
@@ -6318,7 +6319,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8884398169400829083
 Transform:
   m_ObjectHideFlags: 0
@@ -6459,7 +6460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6755115520442013785
 Transform:
   m_ObjectHideFlags: 0

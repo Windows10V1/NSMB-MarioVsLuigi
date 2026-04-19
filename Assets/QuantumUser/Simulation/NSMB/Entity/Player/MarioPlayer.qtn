@@ -133,13 +133,8 @@ struct StarChasersData {
 	byte Stars;
 }
 
-struct CoinRunnersData {
-	int ObjectiveCoins;
-}
-
 union GamemodeSpecificData {
 	StarChasersData StarChasers;
-	CoinRunnersData CoinRunners;
 }
 
 enum KnockbackStrength : Byte {
