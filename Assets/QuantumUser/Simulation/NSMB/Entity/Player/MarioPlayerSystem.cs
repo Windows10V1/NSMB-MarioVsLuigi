@@ -1335,7 +1335,7 @@ namespace Quantum {
                 return;
             }
 
-            if (mario->IsDead || filter.Freezable->IsFrozen(f) || mario->IsGroundpounding || mario->IsInKnockback || f.Exists(mario->CurrentPipe)
+            if (mario->IsDead || filter.Freezable->IsFrozen(f) || mario->IsGroundpounding || (mario->IsInKnockback && mario->CurrentPowerupState != PowerupState.CloudFlower) || f.Exists(mario->CurrentPipe)
                 || f.Exists(mario->HeldEntity) || mario->IsCrouching || mario->IsSliding) {
                 return;
             }

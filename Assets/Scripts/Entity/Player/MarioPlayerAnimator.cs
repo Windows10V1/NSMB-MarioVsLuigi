@@ -157,6 +157,7 @@ namespace NSMB.Entities.Player {
         private Vector3 previousPosition;
         private bool forceUpdate;
         private GameObject activeRespawnParticle;
+        private PowerupState previousPowerupState;
 
         public void OnValidate() {
             this.SetIfNull(ref animator);
@@ -577,7 +578,7 @@ namespace NSMB.Entities.Player {
             int ps = mario->CurrentPowerupState switch {
                 PowerupState.FireFlower => 1,
                 PowerupState.PropellerMushroom => 2,
-                PowerupState.PenguinSuit => 3,
+                PowerupState.PenguinSuit => 0,
                 PowerupState.HammerSuit => 4,
                 PowerupState.BoomerangFlower => 5,
                 PowerupState.CloudFlower => 6,
@@ -658,7 +659,15 @@ namespace NSMB.Entities.Player {
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;
             bool changedAvatar = animator.avatar != targetAvatar;
 
-            if (changedAvatar) {
+            // Determine which animation controller should be used
+            RuntimeAnimatorController targetController = mario->CurrentPowerupState == PowerupState.PenguinSuit ? character.PenguinOverrides : (large ? character.LargeOverrides : character.SmallOverrides);
+
+            // Determine which controller should have been used for previous state
+            RuntimeAnimatorController previousController = previousPowerupState == PowerupState.PenguinSuit ? character.PenguinOverrides : (mario->CurrentPowerupState >= PowerupState.Mushroom ? character.LargeOverrides : character.SmallOverrides);
+
+            bool changedController = animator.runtimeAnimatorController != targetController || previousController != targetController;
+
+            if (changedAvatar || changedController) {
                 // Preserve Animations
                 int[] layers = { 0, 1, 3 };
                 AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[animator.layerCount];
@@ -667,7 +676,7 @@ namespace NSMB.Entities.Player {
                 }
 
                 animator.avatar = targetAvatar;
-                animator.runtimeAnimatorController = mario->CurrentPowerupState == PowerupState.PenguinSuit ? character.PenguinOverrides : (large ? character.LargeOverrides : character.SmallOverrides);
+                animator.runtimeAnimatorController = targetController;
 
                 // Push back state
                 animator.Rebind();
@@ -676,6 +685,8 @@ namespace NSMB.Entities.Player {
                     animator.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
                 }
             }
+
+            previousPowerupState = mario->CurrentPowerupState;
 
             float newZ = -4;
             if (mario->IsDead) {
