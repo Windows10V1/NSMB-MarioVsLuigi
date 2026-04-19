@@ -25,6 +25,7 @@ public class CharacterAsset : AssetObject, ISoundOverrideProvider, IOrderedAsset
 
     public RuntimeAnimatorController SmallOverrides;
     public RuntimeAnimatorController LargeOverrides;
+    public RuntimeAnimatorController PenguinOverrides;
 #endif
 
     public int Order;

@@ -363,26 +363,26 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct BitSet21 {
+  public unsafe partial struct BitSet22 {
     public const Int32 SIZE = 8;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(0)]
     public fixed UInt64 Bits[1];
-    public const Int32 BitsSize = 21;
+    public const Int32 BitsSize = 22;
     public readonly Int32 Length {
       get {
-        return 21;
+        return 22;
       }
     }
     public static void Print(void* ptr, FramePrinter printer) {
-      var p = (BitSet21*)ptr;
+      var p = (BitSet22*)ptr;
       printer.ScopeBegin();
-      UnmanagedUtils.PrintBytesBits((byte*)&p->Bits, 21, 64, printer);
+      UnmanagedUtils.PrintBytesBits((byte*)&p->Bits, 22, 64, printer);
       printer.ScopeEnd();
     }
-    public static BitSet21 FromArray(UInt64[] values) {
+    public static BitSet22 FromArray(UInt64[] values) {
       Assert.Always(1 == values.Length, "Invalid array size", values.Length);
-      BitSet21 result = default;
+      BitSet22 result = default;
       for (int i = 0; i < 1; ++i) {
         result.Bits[i] = values[i];
       }
@@ -390,12 +390,12 @@ namespace Quantum {
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Set(Int32 bit) {
-      Assert.Check(bit >= 0 && bit < 21);
+      Assert.Check(bit >= 0 && bit < 22);
       fixed (UInt64* p = Bits) (p[bit/64]) |= (1UL<<(bit%64));
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Clear(Int32 bit) {
-      Assert.Check(bit >= 0 && bit < 21);
+      Assert.Check(bit >= 0 && bit < 22);
       fixed (UInt64* p = Bits) (p[bit/64]) &= ~(1UL<<(bit%64));
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -410,26 +410,26 @@ namespace Quantum {
     public readonly Int32 GetSetCount() {
       fixed (UInt64* p = Bits) {
         int result = 0;
-        result += Maths.CountSetBits(p[0] & 0x1FFFFFUL);
+        result += Maths.CountSetBits(p[0] & 0x3FFFFFUL);
         return result;
       }
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly Boolean IsAnySet() {
       fixed (UInt64* p = Bits) {
-        if ((p[0] & 0x1FFFFFUL) != 0) return true;
+        if ((p[0] & 0x3FFFFFUL) != 0) return true;
         return false;
       }
     }
     public override readonly Int32 GetHashCode() {
       unchecked { 
-        var hash = 5749;
+        var hash = 5779;
         fixed (UInt64* p = Bits) hash = hash * 31 + HashCodeUtils.GetArrayHashCode(p, 1);
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (BitSet21*)ptr;
+        var p = (BitSet22*)ptr;
         serializer.Stream.SerializeBuffer(&p->Bits[0], 1);
     }
   }
@@ -2623,7 +2623,7 @@ namespace Quantum {
     public Byte NoLivesStarDirection;
     [FieldOffset(112)]
     [ExcludeFromPrototype()]
-    public BitSet21 Flags;
+    public BitSet22 Flags;
     [FieldOffset(8)]
     [ExcludeFromPrototype()]
     public Byte FastTurnaroundFrames;
@@ -2894,7 +2894,7 @@ namespace Quantum {
         AssetRef.Serialize(&p->CharacterAsset, serializer);
         AssetRef.Serialize(&p->PhysicsAsset, serializer);
         AssetRef.Serialize(&p->ReserveItem, serializer);
-        Quantum.BitSet21.Serialize(&p->Flags, serializer);
+        Quantum.BitSet22.Serialize(&p->Flags, serializer);
         EntityRef.Serialize(&p->CurrentPipe, serializer);
         EntityRef.Serialize(&p->CurrentSpinner, serializer);
         EntityRef.Serialize(&p->HeldEntity, serializer);
@@ -4374,7 +4374,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.BitSet1024), Quantum.BitSet1024.SIZE);
       typeRegistry.Register(typeof(Quantum.BitSet128), Quantum.BitSet128.SIZE);
       typeRegistry.Register(typeof(Quantum.BitSet2048), Quantum.BitSet2048.SIZE);
-      typeRegistry.Register(typeof(Quantum.BitSet21), Quantum.BitSet21.SIZE);
+      typeRegistry.Register(typeof(Quantum.BitSet22), Quantum.BitSet22.SIZE);
       typeRegistry.Register(typeof(Quantum.BitSet256), Quantum.BitSet256.SIZE);
       typeRegistry.Register(typeof(Quantum.BitSet4096), Quantum.BitSet4096.SIZE);
       typeRegistry.Register(typeof(Quantum.BitSet512), Quantum.BitSet512.SIZE);

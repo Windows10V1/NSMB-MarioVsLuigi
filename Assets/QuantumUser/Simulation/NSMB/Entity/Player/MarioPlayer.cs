@@ -89,6 +89,10 @@ namespace Quantum {
             readonly get => Flags.IsSet(20);
             set => SetValue(ref Flags, 20, value);
         }
+        public bool IsPenguinSliding {
+            readonly get => Flags.IsSet(21);
+            set => SetValue(ref Flags, 21, value);
+        }
 
         public readonly bool IsStarmanInvincible => InvincibilityFrames > 0;
         public readonly bool IsWallsliding => WallslideLeft || WallslideRight;
@@ -269,6 +273,7 @@ namespace Quantum {
             IsSpinnerFlying = false;
             IsDrilling = false;
             IsSliding = false;
+            IsPenguinSliding = false;
             IsCrouching = false;
             IsSkidding = false;
             IsTurnaround = false;
@@ -338,6 +343,7 @@ namespace Quantum {
             IsDrilling &= !IsPropellerFlying;
             IsPropellerFlying = false;
             IsInShell = false;
+            IsPenguinSliding = false;
             PropellerLaunchFrames = 0;
             PropellerSpinFrames = 0;
             UsedPropellerThisJump = false;
@@ -387,6 +393,7 @@ namespace Quantum {
             MegaMushroomEndFrames = 0;
             IsCrouching = false;
             IsSliding = false;
+            IsPenguinSliding = false;
             IsTurnaround = false;
             CurrentKnockback = KnockbackStrength.None;
             IsGroundpounding = false;
@@ -511,6 +518,7 @@ namespace Quantum {
             PropellerSpinFrames = 0;
             IsSliding = false;
             IsDrilling = false;
+            IsPenguinSliding = false;
             WallslideLeft = WallslideRight = false;
 
             if (f.Unsafe.TryGetPointer(attacker, out Projectile* projectile)) {
@@ -574,6 +582,7 @@ namespace Quantum {
 
             IsCrouching = false;
             IsSliding = false;
+            IsPenguinSliding = false;
             IsPropellerFlying = false;
             UsedPropellerThisJump = false;
             PropellerLaunchFrames = 0;
@@ -596,7 +605,7 @@ namespace Quantum {
             f.Events.MarioPlayerEnteredPipe(mario, CurrentPipe, false, horizontalDirection, FPVector2.Zero);
         }
 
-        private static void SetValue(ref BitSet21 bitset, int index, bool value) {
+        private static void SetValue(ref BitSet22 bitset, int index, bool value) {
             if (value) {
                 bitset.Set(index);
             } else {

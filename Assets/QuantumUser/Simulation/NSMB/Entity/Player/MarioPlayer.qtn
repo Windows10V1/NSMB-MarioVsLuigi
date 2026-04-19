@@ -60,7 +60,7 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte RespawnFrames;
 	[ExcludeFromPrototype] byte NoLivesStarDirection;
 	
-	[ExcludeFromPrototype] bitset[21] Flags;
+	[ExcludeFromPrototype] bitset[22] Flags;
 
 	// Walk/Running
     [ExcludeFromPrototype] byte FastTurnaroundFrames;
@@ -281,6 +281,14 @@ synced event MarioPlayerDestroyed {
 }
 
 event MarioPlayerLandedWithAnimation {
+	EntityRef Entity;
+}
+
+event MarioPlayerPenguinSlideStarted {
+	EntityRef Entity;
+}
+
+event MarioPlayerPenguinSlideStopped {
 	EntityRef Entity;
 }
 

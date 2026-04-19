@@ -202,7 +202,8 @@ namespace Quantum {
             } else if ((inputs.Left ^ inputs.Right)
                        && (!mario->IsCrouching || (mario->IsCrouching && !physicsObject->IsTouchingGround && mario->CurrentPowerupState != PowerupState.BlueShell))
                        && !mario->IsInKnockback
-                       && !mario->IsSliding) {
+                       && !mario->IsSliding
+                       && !mario->IsPenguinSliding) {
 
                 int direction = inputs.Left ? -1 : 1;
                 if (mario->IsSkidding) {
@@ -327,6 +328,14 @@ namespace Quantum {
             }
 
             if (mario->CurrentPowerupState != PowerupState.BlueShell) mario->IsCrouching &= !mario->IsSliding;
+
+            // Penguin Slide movement logic: 1.15x max running speed, straight line
+            if (mario->IsPenguinSliding && physicsObject->IsTouchingGround) {
+                FP maxRunSpeed = physics.WalkMaxVelocity[physics.RunSpeedStage];
+                FP penguinSlideSpeed = maxRunSpeed * FP.FromString("1.15");
+                FP direction = mario->FacingRight ? 1 : -1;
+                physicsObject->Velocity.X = FPMath.MoveTowards(physicsObject->Velocity.X, penguinSlideSpeed * direction, physics.WalkAcceleration[0] * f.DeltaTime);
+            }
         }
 
         private static FP CalculateSlopeMaxSpeedOffset(FP floorAngle) {
@@ -428,7 +437,10 @@ namespace Quantum {
 
             mario->IsSkidding = false;
             mario->IsTurnaround = false;
+            // Don't cancel penguin slide when jumping
             mario->IsSliding = false;
+            // Preserve penguin slide state during jump
+            // mario->IsPenguinSliding is not reset here
             mario->WallslideEndFrames = 0;
             mario->IsGroundpounding = false;
             mario->GroundpoundStartFrames = 0;
@@ -1562,6 +1574,7 @@ namespace Quantum {
             mario->IsSpinnerFlying = false;
             mario->IsCrouching |= physicsObject->IsTouchingGround && mario->IsSliding;
             mario->IsSliding = false;
+            mario->IsPenguinSliding = false;
             mario->IsSkidding = false;
             mario->IsTurnaround = false;
             mario->UsedPropellerThisJump = false;
@@ -1588,10 +1601,41 @@ namespace Quantum {
             var physicsObject = filter.PhysicsObject;
             bool validFloorAngle = FPMath.Abs(physicsObject->FloorAngle) >= physics.SlideMinimumAngle;
             bool blueShell = mario->CurrentPowerupState == PowerupState.BlueShell;
+            bool penguinSuit = mario->CurrentPowerupState == PowerupState.PenguinSuit;
             bool movingFastEnough = (physicsObject->Velocity.X > 0) == (FPMath.Sign(physicsObject->FloorAngle) == 1) && FPMath.Abs(physicsObject->Velocity.X) >= physics.WalkMaxVelocity[physics.RunSpeedStage];
 
+            // Handle Penguin Slide (exclusive to PenguinSuit)
+            if (penguinSuit && !mario->IsInKnockback && !f.Exists(mario->HeldEntity) && !physicsObject->IsUnderwater) {
+                FP maxRunSpeed = physics.WalkMaxVelocity[physics.RunSpeedStage];
+                bool atMaxSpeed = FPMath.Abs(physicsObject->Velocity.X) >= maxRunSpeed;
+                
+                // Activation: max running speed + down input
+                if (atMaxSpeed && inputs.Down.IsDown && physicsObject->IsTouchingGround && !mario->IsPenguinSliding) {
+                    mario->IsPenguinSliding = true;
+                    mario->IsCrouching = false;
+                    f.Events.MarioPlayerPenguinSlideStarted(filter.Entity);
+                }
+                
+                // Maintenance: persists while sprint is held
+                if (mario->IsPenguinSliding) {
+                    if (!inputs.Sprint.IsDown) {
+                        // Transition back to run/idle based on velocity
+                        mario->IsPenguinSliding = false;
+                        f.Events.MarioPlayerPenguinSlideStopped(filter.Entity);
+                    } else if (inputs.Up.IsDown || (mario->FacingRight && physicsObject->IsTouchingRightWall) || (!mario->FacingRight && physicsObject->IsTouchingLeftWall)) {
+                        // Cancel slide on up input or wall collision
+                        mario->IsPenguinSliding = false;
+                        f.Events.MarioPlayerPenguinSlideStopped(filter.Entity);
+                    }
+                }
+            } else if (mario->IsPenguinSliding) {
+                // Cancel penguin slide if conditions are no longer met
+                mario->IsPenguinSliding = false;
+                f.Events.MarioPlayerPenguinSlideStopped(filter.Entity);
+            }
+
             if (!blueShell) {
-                mario->IsCrouching &= !mario->IsSliding;
+                mario->IsCrouching &= !mario->IsSliding && !mario->IsPenguinSliding;
             }
 
             if ((physicsObject->IsOnSlideableGround || blueShell)
@@ -1603,6 +1647,7 @@ namespace Quantum {
                 && !((mario->FacingRight && physicsObject->IsTouchingRightWall) || (!mario->FacingRight && physicsObject->IsTouchingLeftWall))
                 && (mario->IsCrouching || inputs.Down.IsDown)
                 && !mario->IsInShell
+                && !mario->IsPenguinSliding
                 && !physicsObject->IsUnderwater) {
 
                 if (blueShell && movingFastEnough && inputs.Sprint.IsDown) {
@@ -1711,7 +1756,8 @@ namespace Quantum {
 
             FP newHeight;
             bool crouchHitbox = mario->CurrentPowerupState >= PowerupState.Mushroom && mario->CurrentPowerupState != PowerupState.MegaMushroom && !f.Exists(mario->CurrentPipe) && ((mario->IsCrouching && !mario->IsGroundpounding) || mario->IsInShell || mario->IsSliding);
-            bool smallHitbox = mario->CurrentPowerupState != PowerupState.MegaMushroom && ((mario->IsStarmanInvincible && !physicsObject->IsTouchingGround && !crouchHitbox && !mario->IsSliding && !mario->IsSpinnerFlying && !mario->IsPropellerFlying) || mario->IsGroundpounding);
+            bool penguinSlideHitbox = mario->CurrentPowerupState == PowerupState.PenguinSuit && mario->IsPenguinSliding;
+            bool smallHitbox = mario->CurrentPowerupState != PowerupState.MegaMushroom && ((mario->IsStarmanInvincible && !physicsObject->IsTouchingGround && !crouchHitbox && !mario->IsSliding && !mario->IsPenguinSliding && !mario->IsSpinnerFlying && !mario->IsPropellerFlying) || mario->IsGroundpounding);
             if (mario->CurrentPowerupState <= PowerupState.MiniMushroom || smallHitbox) {
                 newHeight = physics.SmallHitboxHeight;
             } else {
@@ -1723,6 +1769,13 @@ namespace Quantum {
             }
 
             FPVector2 newExtents = new(Constants._0_1875, newHeight / 2);
+            
+            // Penguin Slide hitbox: 0.5x height, 2.0x width
+            if (penguinSlideHitbox) {
+                newExtents.Y /= 2;
+                newExtents.X *= 2;
+            }
+            
             if (mario->CurrentPowerupState == PowerupState.MiniMushroom) {
                 newExtents /= 2;
             }
