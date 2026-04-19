@@ -101,7 +101,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeShellExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, boomerangBootL, boomerangBootR, cloudHead, cloudScarf;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, boomerangBootL, boomerangBootR, cloudHead, cloudScarf;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -248,7 +248,12 @@ namespace NSMB.Entities.Player {
         }
 
         public void LateUpdate() {
-            largeShellExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell"));
+            Frame f = PredictedFrame;
+            if (!f.Exists(EntityRef)) {
+                return;
+            }
+            var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
+            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") && mario->CurrentPowerupState != PowerupState.PenguinSuit);
         }
 
         public override void OnUpdateView() {
@@ -637,6 +642,7 @@ namespace NSMB.Entities.Player {
             largeModel.SetActive(large);
             smallModel.SetActive(!large);
             blueShell.SetActive(mario->CurrentPowerupState == PowerupState.BlueShell);
+            penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             propellerHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.PropellerMushroom);
             HammerHelm.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.HammerSuit);
             HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
