@@ -37,17 +37,9 @@ MonoBehaviour:
   DestroyParticleEffect: 9
   ShootSound: 126
   IsBoomerang: 0
-  BoomerangReturnDelay:
-    RawValue: 32768
-  BoomerangReturnAcceleration:
-    RawValue: 32768
   IsSuperBall: 0
   IsGoldball: 1
   CooldownFrames: 60
-  MaxInstantProjectiles: 2
-  MaxProjectileCount: 2
-  ProjectileSpawnHorizontalOffset:
-    RawValue: 0
-  ProjectileSpawnVerticalOffset:
-    RawValue: 0
+  MaxInstantProjectiles: 1
+  MaxProjectileCount: 1
   SfxOverrides: []

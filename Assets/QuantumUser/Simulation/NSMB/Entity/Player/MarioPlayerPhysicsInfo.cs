@@ -116,7 +116,7 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     public FP SlideFastAcceleration = FF(13.1835975f);
     public FP SlideSlowAcceleration = FF(5.2734375f);
     public FP SlideMinimumAngle = FF(12.5f);
-    public FP PenguinSlideSpeedMultiplier = FF(1.15f);
+    public FP PenguinSlideSpeedMultiplier = FF(1.075f);
 
     // --- Groundpounding
     public FPVector2 GroundpoundStartVelocity = FPVector2.Up * FP._1_50;

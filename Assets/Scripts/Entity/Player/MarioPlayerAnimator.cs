@@ -117,8 +117,8 @@ namespace NSMB.Entities.Player {
         [SerializeField] private AudioSource sfx;
         [SerializeField] private AudioSource coinSfx;
         [SerializeField] private AudioClip normalDrill, propellerDrill;
-        [SerializeField] private LoopingSoundPlayer dustPlayer, drillPlayer;
-        [SerializeField] private LoopingSoundData wallSlideData, shellSlideData, spinnerDrillData, propellerDrillData;
+        [SerializeField] private LoopingSoundPlayer dustPlayer, drillPlayer, goldFlowerPlayer;
+        [SerializeField] private LoopingSoundData wallSlideData, shellSlideData, spinnerDrillData, propellerDrillData, goldFlowerData;
 
         [Header("Gold Block")]
         [SerializeField] private Transform smallGoldBlockBone;
@@ -343,6 +343,20 @@ namespace NSMB.Entities.Player {
 
             dustPlayer.SetSoundData((mario->IsInShell || mario->IsSliding || mario->IsPenguinSliding || mario->IsCrouchedInShell) ? shellSlideData : wallSlideData);
             drillPlayer.SetSoundData(mario->IsPropellerFlying ? propellerDrillData : spinnerDrillData);
+            // Gold Flower emits sound
+            bool hasGoldFlower = mario->CurrentPowerupState == PowerupState.GoldFlower;
+            if (hasGoldFlower && !disableParticles) {
+                if (goldFlowerPlayer.Source.clip != goldFlowerData?.clip) {
+                    goldFlowerPlayer.SetSoundData(goldFlowerData);
+                }
+                if (!goldFlowerPlayer.IsPlaying) {
+                    goldFlowerPlayer.Play();
+                }
+            } else {
+                if (goldFlowerPlayer.IsPlaying) {
+                    goldFlowerPlayer.Stop();
+                }
+            }
             bubblesParticle.transform.localPosition = new(bubblesParticle.transform.localPosition.x, physicsCollider->Shape.Box.Extents.Y.AsFloat * 2);
 
             if (!mario->IsDead) {
