@@ -1482,7 +1482,7 @@ namespace Quantum {
             FPVector2 spawnPos = filter.Transform->Position + new FPVector2(0, verticalOffset);
 
             physicsObject->Velocity.X = 0;
-            physicsObject->Velocity.Y = FP.FromString("3.0");
+            physicsObject->Velocity.Y = FP.FromString("4.0");
 
             EntityRef newEntity = f.Create(f.SimulationConfig.CloudPrototype);
 
