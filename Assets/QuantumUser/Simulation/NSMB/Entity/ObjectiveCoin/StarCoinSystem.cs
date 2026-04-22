@@ -74,7 +74,6 @@ namespace Quantum {
                 if (bigStarPosition.HasValue) {
                     FP distanceSquared = FPVector2.DistanceSquared(position, bigStarPosition.Value);
                     if (distanceSquared < FP._0_01) {
-                        // Too close to Big Star, try next spawnpoint
                         continue;
                     }
                 }
@@ -117,23 +116,27 @@ namespace Quantum {
                 return;
             }
 
-            // Give 10 item coins for power-up spawning
+            // Give 4 item coins
             byte threshold = (byte) f.Global->Rules.CoinsForPowerup;
             byte oldCoins = mario->Coins;
-            byte newCoins = (byte) FPMath.Min(255, mario->Coins + 10);
-            
-            // Check how many times we crossed the threshold
+            byte newCoins = (byte) FPMath.Min(255, mario->Coins + 4);
+
+
             int oldThresholds = oldCoins / threshold;
             int newThresholds = newCoins / threshold;
             int powerupsToSpawn = newThresholds - oldThresholds;
-            
-            // Spawn power-ups for each threshold crossed
+
+            EntityRef spawnedItem = EntityRef.None;
             for (int i = 0; i < powerupsToSpawn; i++) {
-                MarioPlayerSystem.SpawnItem(f, marioEntity, mario, default, false);
+                spawnedItem = MarioPlayerSystem.SpawnItem(f, marioEntity, mario, default, false);
             }
             
-            // Reset coins to remainder after threshold crossings
             mario->Coins = (byte) (newCoins % threshold);
+            
+            if (spawnedItem.IsValid) {
+                var starCoinTransform = f.Unsafe.GetPointer<Transform2D>(starCoinEntity);
+                f.Events.MarioPlayerCollectedCoin(marioEntity, newCoins, spawnedItem, starCoinTransform->Position, false, false);
+            }
             
             f.Global->StarCoinSpawnTimer = (ushort) ((624 - (f.Global->RealPlayers * 12)) * 2);
             f.Global->MainStarCoin = EntityRef.None;

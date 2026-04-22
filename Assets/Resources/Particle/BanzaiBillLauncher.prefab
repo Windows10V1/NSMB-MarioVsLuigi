@@ -58,7 +58,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 5a26cde1892218c4fbbe8b84c92e1a24, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -81,11 +81,12 @@ SpriteRenderer:
   m_SortingLayer: 1
   m_SortingOrder: 0
   m_MaskInteraction: 0
-  m_Sprite: {fileID: 883784342, guid: 0496f6bcff5e6bc4fb118ff705cfef52, type: 3}
+  m_Sprite: {fileID: 3851521018809549276, guid: b367b5b326358c344bdec86c257fa93f,
+    type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
-  m_DrawMode: 1
+  m_DrawMode: 0
   m_Size: {x: 1, y: 2}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
@@ -104,7 +105,7 @@ GameObject:
   - component: {fileID: -1843595439736670929}
   - component: {fileID: 5957365481354593459}
   m_Layer: 17
-  m_Name: BulletBillLauncher
+  m_Name: BanzaiBillLauncher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

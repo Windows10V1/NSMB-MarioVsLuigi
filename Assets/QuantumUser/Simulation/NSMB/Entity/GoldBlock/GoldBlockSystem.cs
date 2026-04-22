@@ -30,15 +30,18 @@ namespace Quantum {
                     byte threshold = (byte) f.Global->Rules.CoinsForPowerup;
                     byte oldCoins = mario->Coins;
                     byte newCoins = (byte) FPMath.Min(255, mario->Coins + 1);
-                    
+
                     // Check if we crossed the threshold
                     if (newCoins == threshold) {
                         mario->Coins = 0;
-                        MarioPlayerSystem.SpawnItem(f, goldBlock->AttachedTo, mario, default, false);
+                        EntityRef spawnedItem = MarioPlayerSystem.SpawnItem(f, goldBlock->AttachedTo, mario, default, false);
+
+                        // Fire event to trigger power-up spawn sound
+                        f.Events.MarioPlayerCollectedCoin(goldBlock->AttachedTo, newCoins, spawnedItem, transform->Position, false, false);
                     } else {
                         mario->Coins = newCoins;
                     }
-                    
+
                     f.Events.GoldBlockGeneratedObjectiveCoin(entity);
                     goldBlock->Timer = 0;
                 }

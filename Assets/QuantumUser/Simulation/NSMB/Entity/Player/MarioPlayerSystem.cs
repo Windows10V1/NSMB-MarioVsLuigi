@@ -2290,6 +2290,8 @@ namespace Quantum {
             if (!eitherDamageInvincible) {
                 bool marioAShell = marioA->IsInShell;
                 bool marioBShell = marioB->IsInShell;
+                bool marioACrouchedInShell = marioA->IsCrouchedInShell;
+                bool marioBCrouchedInShell = marioB->IsCrouchedInShell;
                 if (marioAShell && marioBShell) {
                     bool knockbacked = false;
                     knockbacked |= marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, marioBEntity);
@@ -2298,7 +2300,7 @@ namespace Quantum {
                         f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.CollisionBump, avgPosition);
                     }
                     return;
-                } else if (marioAShell) {
+                } else if (marioAShell && !marioBCrouchedInShell) {
                     if (!marioBAbove) {
                         var marioAPhysicsInfo = f.FindAsset(marioA->PhysicsAsset);
 
@@ -2312,7 +2314,7 @@ namespace Quantum {
                         f.Events.PlayBumpSound(marioAEntity);
                         return;
                     }
-                } else if (marioBShell) {
+                } else if (marioBShell && !marioACrouchedInShell) {
                     if (!marioAAbove) {
                         var marioBPhysicsInfo = f.FindAsset(marioB->PhysicsAsset);
 

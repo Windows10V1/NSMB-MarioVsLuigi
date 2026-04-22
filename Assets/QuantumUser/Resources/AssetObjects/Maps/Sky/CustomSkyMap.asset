@@ -233,7 +233,7 @@ MonoBehaviour:
           X:
             RawValue: -688128
           Y:
-            RawValue: -163840
+            RawValue: -98304
         Rotation:
           RawValue: 0
     - rid: 400122020186030081
@@ -257,12 +257,12 @@ MonoBehaviour:
             X:
               RawValue: 32768
             Y:
-              RawValue: 131072
+              RawValue: 98304
           PositionOffset:
             X:
               RawValue: 0
             Y:
-              RawValue: 131072
+              RawValue: 98304
           RotationOffset:
             RawValue: 0
           UserTag: 0
@@ -282,7 +282,7 @@ MonoBehaviour:
       type: {class: BreakableObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
         OriginalHeight:
-          RawValue: 524288
+          RawValue: 393216
         MinimumHeight:
           RawValue: 131072
         IsStompable:
