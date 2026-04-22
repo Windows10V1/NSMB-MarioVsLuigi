@@ -183,11 +183,11 @@ namespace Quantum {
         }
 
         public void OnMarioPlayerDied(Frame f, EntityRef entity) {
-            // Lose half of all coins
             var mario = f.Unsafe.GetPointer<MarioPlayer>(entity);
             var transform = f.Unsafe.GetPointer<Transform2D>(entity);
 
-            mario->GamemodeData.CoinRunners->ObjectiveCoins -= mario->GamemodeData.CoinRunners->ObjectiveCoins / 5;
+            // do 100 - DeathPenalty as 100% means losing all your coins
+            mario->GamemodeData.CoinRunners->ObjectiveCoins *= (100 - f.Global->Rules.GamemodeRules.CoinRunners->DeathPenalty) / 100;
             f.Events.MarioPlayerObjectiveCoinsChanged(entity);
         }
 

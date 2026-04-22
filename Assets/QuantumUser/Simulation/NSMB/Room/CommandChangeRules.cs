@@ -100,6 +100,7 @@ namespace Quantum {
             TeamsEnabled = 1 << 6,
             CustomPowerupsEnabled = 1 << 7,
             DrawOnTimeUp = 1 << 8,
+            StarFountain = 1 << 9,
         }
     }
 }

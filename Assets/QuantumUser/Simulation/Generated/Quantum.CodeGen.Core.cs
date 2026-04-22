@@ -993,10 +993,12 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct CoinRunnersRules {
-    public const Int32 SIZE = 8;
-    public const Int32 ALIGNMENT = 8;
+    public const Int32 SIZE = 4;
+    public const Int32 ALIGNMENT = 1;
+    [FieldOffset(1)]
+    private fixed Byte _alignment_padding_[3];
     [FieldOffset(0)]
-    public FP DeathPenalty;
+    public Byte DeathPenalty;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 6329;
@@ -1006,7 +1008,7 @@ namespace Quantum {
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (CoinRunnersRules*)ptr;
-        FP.Serialize(&p->DeathPenalty, serializer);
+        serializer.Stream.Serialize(&p->DeathPenalty);
     }
   }
   [StructLayout(LayoutKind.Explicit)]
@@ -1589,7 +1591,7 @@ namespace Quantum {
       get {
         fixed (CoinRunnersRules* p = &_CoinRunners) {
           if (_field_used_ != COINRUNNERS) {
-            Native.Utils.Clear(p, 8);
+            Native.Utils.Clear(p, 4);
             _field_used_ = COINRUNNERS;
           }
           return p;

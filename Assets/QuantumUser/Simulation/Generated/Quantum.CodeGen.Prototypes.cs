@@ -298,7 +298,7 @@ namespace Quantum.Prototypes {
   [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.CoinRunnersRules))]
   public unsafe partial class CoinRunnersRulesPrototype : StructPrototype {
-    public FP DeathPenalty;
+    public Byte DeathPenalty;
     partial void MaterializeUser(Frame frame, ref Quantum.CoinRunnersRules result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.CoinRunnersRules result, in PrototypeMaterializationContext context = default) {
         result.DeathPenalty = this.DeathPenalty;

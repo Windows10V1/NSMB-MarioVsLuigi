@@ -294,7 +294,7 @@ namespace Quantum {
                 // this wacky formula is how we figure out how many stars to drop before dying
                 // to set the "DeathStarThreshold" we get the amount of stars we currently have
                 // then we multiply it by the StarFountain, rounding UP. StarFountain is value between 0 and 1
-                starChasers->DeathStarThreshold = (byte) FPMath.CeilToInt(starChasers->Stars * f.Global->Rules.GamemodeRules.StarChasers->StarFountain);
+                starChasers->DeathStarThreshold = (byte) (starChasers->Stars -  FPMath.CeilToInt(starChasers->Stars * f.Global->Rules.GamemodeRules.StarChasers->StarFountain));
             }
 
             f.Signals.OnMarioPlayerDied(entity);
