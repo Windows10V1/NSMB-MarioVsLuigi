@@ -995,28 +995,28 @@ namespace Quantum {
   public unsafe partial struct GameRules {
     public const Int32 SIZE = 56;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(40)]
+    [FieldOffset(48)]
     public AssetRef<Map> Stage;
-    [FieldOffset(32)]
+    [FieldOffset(40)]
     public AssetRef<GamemodeAsset> Gamemode;
-    [FieldOffset(12)]
+    [FieldOffset(16)]
     public Int32 StarsToWin;
     [FieldOffset(4)]
     public Int32 CoinsForPowerup;
     [FieldOffset(8)]
     public Int32 Lives;
-    [FieldOffset(16)]
-    public Int32 TimerMinutes;
-    [FieldOffset(28)]
-    public QBoolean TeamsEnabled;
     [FieldOffset(20)]
-    public QBoolean CustomPowerupsEnabled;
+    public Int32 TimerMinutes;
+    [FieldOffset(32)]
+    public QBoolean TeamsEnabled;
     [FieldOffset(24)]
+    public QBoolean CustomPowerupsEnabled;
+    [FieldOffset(28)]
     public QBoolean DrawOnTimeUp;
-    [FieldOffset(48)]
-    public FP StarFountain;
+    [FieldOffset(12)]
+    public Int32 StarFountain;
     [FieldOffset(0)]
-    public Byte CoinDeathPenalty;
+    public Int32 CoinDeathPenalty;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 443;
@@ -1039,6 +1039,7 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->CoinDeathPenalty);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);
+        serializer.Stream.Serialize(&p->StarFountain);
         serializer.Stream.Serialize(&p->StarsToWin);
         serializer.Stream.Serialize(&p->TimerMinutes);
         QBoolean.Serialize(&p->CustomPowerupsEnabled, serializer);
@@ -1046,7 +1047,6 @@ namespace Quantum {
         QBoolean.Serialize(&p->TeamsEnabled, serializer);
         AssetRef.Serialize(&p->Gamemode, serializer);
         AssetRef.Serialize(&p->Stage, serializer);
-        FP.Serialize(&p->StarFountain, serializer);
     }
   }
   [StructLayout(LayoutKind.Explicit)]

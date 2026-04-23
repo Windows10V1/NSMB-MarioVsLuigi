@@ -42,8 +42,8 @@ struct GameRules {
 	bool DrawOnTimeUp;
 
 	// these are advanced rules
-	FP StarFountain; // fraction, options 0, 1/4, 2/4, 3/4, ALL
-	byte CoinDeathPenalty; // divide this number by 100. 0 for NONE, 100 for ALL
+	int StarFountain; // divide this number by 100, options 0, 1/4, 2/4, 3/4, ALL
+	int CoinDeathPenalty; // divide this number by 100. 0 for NONE, 100 for ALL
 }
 
 enum GameState : Byte {

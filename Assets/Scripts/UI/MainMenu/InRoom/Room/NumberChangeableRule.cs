@@ -51,6 +51,12 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             case CommandChangeRules.Rules.TimerMinutes:
                 cmd.TimerMinutes = (int) value;
                 break;
+            case CommandChangeRules.Rules.StarFountain:
+                cmd.StarFountain = (int) value;
+                break;
+            case CommandChangeRules.Rules.CoinDeathPenalty:
+                cmd.CoinDeathPenalty = (int) value;
+                break;
             }
 
             QuantumGame game = QuantumRunner.DefaultGame;
@@ -63,7 +69,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         protected override void UpdateLabel() {
             TranslationManager tm = GlobalController.Instance.translationManager;
             if (value is int intValue) {
-                label.text = labelPrefix + ((minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue);
+                label.text = labelPrefix + ((minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue + labelSuffix);
             }
         }
     }
