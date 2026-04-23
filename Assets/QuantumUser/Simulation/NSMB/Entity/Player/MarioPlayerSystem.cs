@@ -141,7 +141,7 @@ namespace Quantum {
             bool run = (inputs.Sprint.IsDown || mega || mario->IsPropellerFlying) && (mega || !mario->IsSpinnerFlying);
             int maxStage;
             if (swimming) {
-                if (mario->CurrentPowerupState == PowerupState.BlueShell) {
+                if (mario->CurrentPowerupState == PowerupState.BlueShell || mario->CurrentPowerupState == PowerupState.FrogSuit) {
                     maxStage = physics.SwimShellMaxVelocity.Length - 1;
                 } else {
                     maxStage = physics.SwimMaxVelocity.Length - 1;
@@ -157,9 +157,9 @@ namespace Quantum {
             FP[] maxArray = physics.WalkMaxVelocity;
             if (swimming) {
                 if (physicsObject->IsTouchingGround) {
-                    maxArray = mario->CurrentPowerupState == PowerupState.BlueShell ? physics.SwimWalkShellMaxVelocity : physics.SwimWalkMaxVelocity;
+                    maxArray = mario->CurrentPowerupState == PowerupState.BlueShell ? physics.SwimWalkShellMaxVelocity : (mario->CurrentPowerupState == PowerupState.FrogSuit ? physics.SwimWalkFrogMaxVelocity : physics.SwimWalkMaxVelocity);
                 } else {
-                    maxArray = mario->CurrentPowerupState == PowerupState.BlueShell ? physics.SwimShellMaxVelocity : physics.SwimMaxVelocity;
+                    maxArray = mario->CurrentPowerupState == PowerupState.BlueShell ? physics.SwimShellMaxVelocity : (mario->CurrentPowerupState == PowerupState.FrogSuit ? physics.SwimFrogMaxVelocity : physics.SwimMaxVelocity);
                 }
             }
             int stage = mario->GetSpeedStage(physicsObject, physics);
@@ -167,14 +167,16 @@ namespace Quantum {
             FP acc;
             if (swimming) {
                 if (physicsObject->IsTouchingGround) {
-                    acc = mario->CurrentPowerupState == PowerupState.BlueShell ? physics.SwimWalkShellAcceleration[stage] : physics.SwimWalkAcceleration[stage];
+                    acc = mario->CurrentPowerupState == PowerupState.BlueShell ? physics.SwimWalkShellAcceleration[stage] : (mario->CurrentPowerupState == PowerupState.FrogSuit ? physics.SwimWalkFrogAcceleration[stage] : physics.SwimWalkAcceleration[stage]);
                 } else {
-                    acc = mario->CurrentPowerupState == PowerupState.BlueShell ? physics.SwimShellAcceleration[stage] : physics.SwimAcceleration[stage];
+                    acc = mario->CurrentPowerupState == PowerupState.BlueShell ? physics.SwimShellAcceleration[stage] : (mario->CurrentPowerupState == PowerupState.FrogSuit ? physics.SwimFrogAcceleration[stage] : physics.SwimAcceleration[stage]);
                 }
-            } else if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
+            } else if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit || physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.FrogSuit) {
                 acc = physics.WalkIceAcceleration[stage];
             } else if (mario->CurrentPowerupState == PowerupState.MegaMushroom) {
                 acc = physics.WalkMegaAcceleration[stage];
+            } else if (mario->CurrentPowerupState == PowerupState.FrogSuit) {
+                acc = physics.WalkAcceleration[stage] * physics.WalkFrogAccelerationMultiplier;
             } else {
                 acc = physics.WalkAcceleration[stage];
             }
@@ -193,8 +195,8 @@ namespace Quantum {
                 if (QuantumUtils.Decrement(ref mario->FastTurnaroundFrames)) {
                     mario->IsTurnaround = true;
                 }
-            } else if (mario->IsTurnaround && !(physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit)) {
-                // Can't fast turnaround on ice (unless Penguin Suit).
+            } else if (mario->IsTurnaround && !(physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit || physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.FrogSuit)) {
+                // Can't fast turnaround on ice (unless Penguin Suit, or Frog).
                 mario->IsTurnaround = physicsObject->IsTouchingGround && !mario->IsCrouching && xVelAbs < physics.WalkMaxVelocity[1] && !physicsObject->IsTouchingLeftWall && !physicsObject->IsTouchingRightWall;
                 mario->IsSkidding = mario->IsTurnaround;
 
@@ -231,17 +233,17 @@ namespace Quantum {
                         }
 
                         if (mario->IsSkidding) {
-                            if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
+                            if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit || physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.FrogSuit) {
                                 acc = physics.SkiddingIceDeceleration;
                             } else if (xVelAbs > maxArray[physics.RunSpeedStage]) {
                                 acc = physics.SkiddingStarmanDeceleration;
                             } else {
-                                acc = physics.SkiddingDeceleration;
+                                acc = mario->CurrentPowerupState == PowerupState.FrogSuit ? physics.SkiddingDeceleration * physics.SkiddingFrogDecelerationMultiplier : physics.SkiddingDeceleration;
                             }
 
                             mario->SlowTurnaroundFrames = 0;
                         } else {
-                            if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
+                            if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit || physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.FrogSuit) {
                                 acc = physics.SlowTurnaroundIceAcceleration;
                             } else {
                                 mario->SlowTurnaroundFrames = (byte) FPMath.Clamp(mario->SlowTurnaroundFrames + 1, 0,
@@ -278,7 +280,7 @@ namespace Quantum {
 
                 FP angle = FPMath.Abs(physicsObject->FloorAngle);
                 if (mario->IsInKnockback) {
-                    if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
+                    if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit || physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.FrogSuit) {
                         acc = mario->KnockForwards ? -physics.StomachKnockbackIceDeceleration : -physics.SittingKnockbackIceDeceleration;
                     } else {
                         acc = mario->KnockForwards ? -physics.StomachKnockbackDeceleration : -physics.SittingKnockbackDeceleration;
@@ -295,7 +297,7 @@ namespace Quantum {
                     } else {
                         acc = -physics.WalkAcceleration[0];
                     }
-                } else if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) {
+                } else if (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit || physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.FrogSuit) {
                     acc = -physics.WalkButtonReleaseIceDeceleration[stage];
                 } else {
                     acc = -physics.WalkButtonReleaseDeceleration;
@@ -743,7 +745,7 @@ namespace Quantum {
                     mario->FacingRight = inputs.Right.IsDown;
                 }
             } else if (mario->MegaMushroomStartFrames == 0 && mario->MegaMushroomEndFrames == 0 && !mario->IsSkidding && !mario->IsTurnaround) {
-                if (!mario->IsInShell && ((FPMath.Abs(physicsObject->Velocity.X) < FP._0_50 && mario->IsCrouching) || (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit)) && rightOrLeft) {
+                if (!mario->IsInShell && ((FPMath.Abs(physicsObject->Velocity.X) < FP._0_50 && mario->IsCrouching) || (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.PenguinSuit) || (physicsObject->IsOnSlipperyGround && mario->CurrentPowerupState != PowerupState.FrogSuit)) && rightOrLeft) {
                     mario->FacingRight = inputs.Right.IsDown;
                 } else if (mario->IsInKnockback || (physicsObject->IsTouchingGround && mario->CurrentPowerupState != PowerupState.MegaMushroom && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05 && !mario->IsCrouching)) {
                     mario->FacingRight = physicsObject->Velocity.X > 0;

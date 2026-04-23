@@ -511,6 +511,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: FrogSuit
+      rect:
+        serializedVersion: 2
+        x: 112
+        y: 16
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b9a8f213ca335f14a91594f534f270ba
+      internalID: 632673322
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -530,6 +552,7 @@ TextureImporter:
       CatSuit: -1629917848
       CloudFlower: -386398983
       FireFlower: -6090384608550177697
+      FrogSuit: 632673322
       GoldFlower: 51403895
       HammerSuit: -1109677166
       JumpSuit: 1662652401

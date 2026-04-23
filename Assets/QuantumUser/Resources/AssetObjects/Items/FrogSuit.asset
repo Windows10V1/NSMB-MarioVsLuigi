@@ -10,23 +10,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a77651c98eb177748a49241e377f4457, type: 3}
-  m_Name: CloudFlower
+  m_Name: FrogSuit
   m_EditorClassIdentifier: 
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Items/CloudFlower
+    Path: QuantumUser/Resources/AssetObjects/Items/FrogSuit
     Guid:
-      Value: 301199286238400872
+      Value: 399823404425704623
   Prefab:
     Id:
-      Value: 1383126763358375215
+      Value: 1383402070595929219
   SpawnChance:
-    RawValue: 90112
+    RawValue: 81920
   AboveAverageBonus:
-    RawValue: 40960
+    RawValue: 32768
   BelowAverageBonus:
-    RawValue: -73728
+    RawValue: -81920
   BlockSpawnSoundEffect: 69
-  Flags: 23
+  Flags: 19
   MaxNumberOfItems: 0
   CameraSpawnOffset:
     X:
@@ -35,10 +35,10 @@ MonoBehaviour:
       RawValue: 110100
   MaxMatchingPowerStates: 0
   MaxMatchingReserveState: 0
-  State: 11
+  State: 7
   SoundPlaysEverywhere: 0
   SoundEffect: 16
-  ReserveSprite: {fileID: 37558163, guid: a87d3b028baa82640b06b88398a8c4f0, type: 3}
+  ReserveSprite: {fileID: -1139861373, guid: a87d3b028baa82640b06b88398a8c4f0, type: 3}
   AvoidPlayers: 0
   Speed:
     RawValue: 0

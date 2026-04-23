@@ -14,10 +14,15 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     public FP[] WalkBlueShellMultiplier = FF(new[] { 0.9f, 1f, 1.1f, 0.75f });
     public FP WalkButtonReleaseDeceleration = FF(3.9550781196f);
 
+    // Frog Suit multipliers
+    public FP WalkFrogAccelerationMultiplier = FF(2.0f);
+    public FP SkiddingFrogDecelerationMultiplier = FF(2.0f);
+
     // Turnaround
     public FP[] SlowTurnaroundAcceleration = FF(new[] { 3.955078125f, 8.7890625f, 8.7890625f, 21.093756f });
     public FP FastTurnaroundAcceleration = FF(28.125f);
 
+    // Skidding
     public FP SkiddingMinimumVelocity = FF(4.6875f);
     public FP SkiddingDeceleration = FF(10.54687536f);
     public FP SkiddingStarmanDeceleration = FF(84.375f);
@@ -93,10 +98,15 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     public FP[] SwimShellMaxVelocity = FF(new[] { 3.1640625f });
     public FP[] SwimShellAcceleration = FF(new[] { 6.15234375f, 6.15234375f });
 
+    public FP[] SwimFrogMaxVelocity = FF(new[] { 3.1640625f });
+    public FP[] SwimFrogAcceleration = FF(new[] { 6.15234375f, 6.15234375f });
+
     public FP[] SwimWalkMaxVelocity = FF(new[] { 1.0546875f, 1.0546875f });
     public FP[] SwimWalkAcceleration = FF(new[] { 3.07617875f, 1.7578125f });
     public FP[] SwimWalkShellMaxVelocity = FF(new[] { 1.58203125f, 1.58203125f });
     public FP[] SwimWalkShellAcceleration = FF(new[] { 6.15234375f, 6.15234375f });
+    public FP[] SwimWalkFrogMaxVelocity = FF(new[] { 1.58203125f, 1.58203125f });
+    public FP[] SwimWalkFrogAcceleration = FF(new[] { 6.15234375f, 6.15234375f });
     public FP SwimGroundpoundDeceleration = FF(38.671875f);
 
     // --- Flying

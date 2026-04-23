@@ -483,7 +483,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -492,6 +492,28 @@ TextureImporter:
       bones: []
       spriteID: ed086ad5e31900745b19da406758da43
       internalID: -559220929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: reserve-frog
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63363a5834aadee4d9c7df9277bb4468
+      internalID: -1139861373
       vertices: []
       indices: 
       edges: []
@@ -518,6 +540,7 @@ TextureImporter:
       reserve-empty: -4773353537684922170
       reserve-fireflower: 2690215448161037315
       reserve-frame: 7194109699264141795
+      reserve-frog: -1139861373
       reserve-gold: -559220929
       reserve-hammer: -645946170
       reserve-ice: 697740482

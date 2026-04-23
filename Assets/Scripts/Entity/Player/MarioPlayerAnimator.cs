@@ -102,7 +102,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, cloudHead, cloudScarf;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, cloudHead, cloudScarf, frogModel;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -255,7 +255,7 @@ namespace NSMB.Entities.Player {
                 return;
             }
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
-            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") && mario->CurrentPowerupState != PowerupState.PenguinSuit);
+            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") || mario->CurrentPowerupState != PowerupState.PenguinSuit || mario->CurrentPowerupState != PowerupState.FrogSuit);
         }
 
         public override void OnUpdateView() {
@@ -590,14 +590,15 @@ namespace NSMB.Entities.Player {
             // Shader effects
             TryCreateMaterialBlock();
             int ps = mario->CurrentPowerupState switch {
+                PowerupState.PenguinSuit => 0,
+                PowerupState.GoldFlower => 0,
                 PowerupState.FireFlower => 1,
                 PowerupState.PropellerMushroom => 2,
-                PowerupState.PenguinSuit => 0,
-                PowerupState.HammerSuit => 4,
-                PowerupState.BoomerangFlower => 5,
-                PowerupState.CloudFlower => 6,
-                PowerupState.SuperBallFlower => 7,
-                PowerupState.GoldFlower => 0,
+                PowerupState.HammerSuit => 3,
+                PowerupState.BoomerangFlower => 4,
+                PowerupState.CloudFlower => 5,
+                PowerupState.SuperBallFlower => 6,
+                PowerupState.FrogSuit => 7,
                 _ => 0
             };
             materialBlock.SetFloat(ParamPowerupState, ps);
@@ -667,6 +668,7 @@ namespace NSMB.Entities.Player {
             boomerangShell.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudHead.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.CloudFlower);
             cloudScarf.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
+            frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;
             bool changedAvatar = animator.avatar != targetAvatar;
