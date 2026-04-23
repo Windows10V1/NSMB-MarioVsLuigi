@@ -49,7 +49,6 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
         //---Private Variables
         private int activeTab = 0;
         private readonly List<ChangeableRule> rules = new();
-        private CommandChangeRules.Rules currentRule;
         private bool _roomIdVisible;
 
         private List<GameObject> allMapListGameObjects = new();
