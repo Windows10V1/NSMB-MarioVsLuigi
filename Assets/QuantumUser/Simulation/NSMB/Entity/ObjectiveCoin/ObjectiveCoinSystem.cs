@@ -189,10 +189,8 @@ namespace Quantum {
             // do 100 - DeathPenalty as 100% means losing all your coins
             var coinRunData = mario->GamemodeData.CoinRunners;
 
-            // what this does is multiply the objective coins by the death penalty percentage
-            // ex. DeathPenalty = 80, 100 - 80 = 20, divide by 100 we get 20%
-            // multiply 20% with our coins to get how many coins we get to keep after that death, and round down
-            coinRunData->ObjectiveCoins = FPMath.FloorToInt((FP)(100 - f.Global->Rules.CoinDeathPenalty) / 100 * coinRunData->ObjectiveCoins);
+            FP removePercentage = (FP) f.Global->Rules.CoinDeathPenalty / 100;
+            coinRunData->ObjectiveCoins -= (int) (coinRunData->ObjectiveCoins * removePercentage);
             f.Events.MarioPlayerObjectiveCoinsChanged(entity);
         }
 

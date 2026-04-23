@@ -288,7 +288,7 @@ namespace Quantum {
             physicsObject->CurrentData = default;
 
             // set the amount of stars to drop if no longer valid
-            if (!IsValid(f)) {
+            if (!IsValid(f) && gamemode is StarChasersGamemode) {
                 var starChasers = GamemodeData.StarChasers;
 
                 // this wacky formula is how we figure out how many stars to drop before dying
