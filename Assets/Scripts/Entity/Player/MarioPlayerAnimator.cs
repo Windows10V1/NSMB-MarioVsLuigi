@@ -89,6 +89,7 @@ namespace NSMB.Entities.Player {
         private static readonly int ParamThrow = Animator.StringToHash("throw");
         private static readonly int ParamHeadPickup = Animator.StringToHash("head-pickup");
         private static readonly int ParamFireball = Animator.StringToHash("fireball");
+        private static readonly int ParamTaunt = Animator.StringToHash("taunt");
         #endregion
 
         //---Public Variables
@@ -211,6 +212,7 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventPhysicsObjectLanded>(this, OnPhysicsObjectLanded, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerLandedWithAnimation>(this, OnMarioPlayerLandedWithAnimation, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventMarioPlayerTaunted>(this, OnMarioPlayerTaunted);
         }
 
         public override void OnActivate(Frame f) {
@@ -511,7 +513,8 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamPushing, mario->LastPushingFrame + 5 >= f.Number);
             animator.SetBool(ParamFrozen, freezable->IsFrozen(f));
             animator.SetBool(ParamKnockforwards, mario->KnockForwards);
-
+            animator.SetBool(ParamTaunt, mario->TauntFrames > 0);
+                
             float animatedVelocity = Mathf.Abs(physicsObject->Velocity.X.AsFloat);
             if (mario->IsStuckInBlock) {
                 animatedVelocity = 0;
@@ -1267,6 +1270,14 @@ namespace NSMB.Entities.Player {
             }
 
             sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
+        }
+
+        private void OnMarioPlayerTaunted(EventMarioPlayerTaunted e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            sfx.PlayOneShot(SoundEffect.Player_Voice_Taunt);
         }
     }
 }

@@ -29,16 +29,14 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
         public override GameObject BackButton => tabs[activeTab].BackButton;
 
         //---Serialized Variables
+        [SerializeField] private List<GameSettingsPanel> tabs;
+        [SerializeField] private Color activeTabColor = Color.white, inactiveTabColor = Color.gray;
+
         [Header("Map Selection")]
         [SerializeField] private TMP_Text headerTemplate;
         [SerializeField] private GameObject horizontalTemplate;
         [SerializeField] private StageSelectionButton stageSelectionButtonTemplate;
         [SerializeField] private string[] headerOrder;
-
-        [Header("Game Settings")]
-        [SerializeField] private List<GameSettingsPanel> tabs;
-        [SerializeField] private TMP_Text descriptionText;
-        [SerializeField] private Color activeTabColor = Color.white, inactiveTabColor = Color.gray;
 
         [Header("Room Settings")]
         [SerializeField] private TMP_Text maxPlayerSliderValue;
