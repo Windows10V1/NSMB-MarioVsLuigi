@@ -393,10 +393,12 @@ namespace NSMB.Entities.Player {
             modelRotateInstantly = false;
             var freezable = f.Unsafe.GetPointer<Freezable>(EntityRef);
 
-            if (f.Exists(mario->CurrentPipe)) {
+            /*if (mario->TauntFrames > 0) {
+                modelRotationTarget = Quaternion.Euler(0, 180, 0);
+            } else*/ if (f.Exists(mario->CurrentPipe)) {
                 modelRotationTarget = Quaternion.Euler(0, mario->FacingRight ? angleR : angleL, 0);
                 modelRotateInstantly = true;
-            } if (mario->IsInKnockback || freezable->IsFrozen(f)) {
+            } else if (mario->IsInKnockback || freezable->IsFrozen(f)) {
                 bool right = mario->FacingRight;
                 if (mario->IsInKnockback && (physicsObject->IsUnderwater || mario->IsInWeakKnockback)) {
                     right = mario->KnockbackWasOriginallyFacingRight;
