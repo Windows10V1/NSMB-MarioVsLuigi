@@ -992,49 +992,31 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct CoinRunnersRules {
-    public const Int32 SIZE = 4;
-    public const Int32 ALIGNMENT = 1;
-    [FieldOffset(1)]
-    private fixed Byte _alignment_padding_[3];
-    [FieldOffset(0)]
-    public Byte DeathPenalty;
-    public override readonly Int32 GetHashCode() {
-      unchecked { 
-        var hash = 6329;
-        hash = hash * 31 + DeathPenalty.GetHashCode();
-        return hash;
-      }
-    }
-    public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (CoinRunnersRules*)ptr;
-        serializer.Stream.Serialize(&p->DeathPenalty);
-    }
-  }
-  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct GameRules {
-    public const Int32 SIZE = 64;
+    public const Int32 SIZE = 56;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(40)]
     public AssetRef<Map> Stage;
     [FieldOffset(32)]
     public AssetRef<GamemodeAsset> Gamemode;
-    [FieldOffset(8)]
-    public Int32 StarsToWin;
-    [FieldOffset(0)]
-    public Int32 CoinsForPowerup;
-    [FieldOffset(4)]
-    public Int32 Lives;
     [FieldOffset(12)]
-    public Int32 TimerMinutes;
-    [FieldOffset(24)]
-    public QBoolean TeamsEnabled;
+    public Int32 StarsToWin;
+    [FieldOffset(4)]
+    public Int32 CoinsForPowerup;
+    [FieldOffset(8)]
+    public Int32 Lives;
     [FieldOffset(16)]
-    public QBoolean CustomPowerupsEnabled;
+    public Int32 TimerMinutes;
+    [FieldOffset(28)]
+    public QBoolean TeamsEnabled;
     [FieldOffset(20)]
+    public QBoolean CustomPowerupsEnabled;
+    [FieldOffset(24)]
     public QBoolean DrawOnTimeUp;
     [FieldOffset(48)]
-    public GamemodeSpecificRules GamemodeRules;
+    public FP StarFountain;
+    [FieldOffset(0)]
+    public Byte CoinDeathPenalty;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 443;
@@ -1047,12 +1029,14 @@ namespace Quantum {
         hash = hash * 31 + TeamsEnabled.GetHashCode();
         hash = hash * 31 + CustomPowerupsEnabled.GetHashCode();
         hash = hash * 31 + DrawOnTimeUp.GetHashCode();
-        hash = hash * 31 + GamemodeRules.GetHashCode();
+        hash = hash * 31 + StarFountain.GetHashCode();
+        hash = hash * 31 + CoinDeathPenalty.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (GameRules*)ptr;
+        serializer.Stream.Serialize(&p->CoinDeathPenalty);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);
         serializer.Stream.Serialize(&p->StarsToWin);
@@ -1062,7 +1046,7 @@ namespace Quantum {
         QBoolean.Serialize(&p->TeamsEnabled, serializer);
         AssetRef.Serialize(&p->Gamemode, serializer);
         AssetRef.Serialize(&p->Stage, serializer);
-        Quantum.GamemodeSpecificRules.Serialize(&p->GamemodeRules, serializer);
+        FP.Serialize(&p->StarFountain, serializer);
     }
   }
   [StructLayout(LayoutKind.Explicit)]
@@ -1305,26 +1289,8 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct StarChasersRules {
-    public const Int32 SIZE = 8;
-    public const Int32 ALIGNMENT = 8;
-    [FieldOffset(0)]
-    public FP StarFountain;
-    public override readonly Int32 GetHashCode() {
-      unchecked { 
-        var hash = 10433;
-        hash = hash * 31 + StarFountain.GetHashCode();
-        return hash;
-      }
-    }
-    public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (StarChasersRules*)ptr;
-        FP.Serialize(&p->StarFountain, serializer);
-    }
-  }
-  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct _globals_ {
-    public const Int32 SIZE = 3152;
+    public const Int32 SIZE = 3144;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(0)]
     public AssetRef<Map> Map;
@@ -1373,7 +1339,7 @@ namespace Quantum {
     public UInt16 AutomaticStageRefreshInterval;
     [FieldOffset(1822)]
     public UInt16 AutomaticStageRefreshTimer;
-    [FieldOffset(1952)]
+    [FieldOffset(1944)]
     [FramePrinter.FixedArrayAttribute(typeof(PlayerInformation), 10)]
     private fixed Byte _PlayerInfo_[1200];
     [FieldOffset(1816)]
@@ -1551,74 +1517,6 @@ namespace Quantum {
         }
         if (p->_field_used_ == STARCHASERS) {
           Quantum.StarChasersData.Serialize(&p->_StarChasers, serializer);
-        }
-    }
-  }
-  [StructLayout(LayoutKind.Explicit)]
-  [Union()]
-  public unsafe partial struct GamemodeSpecificRules {
-    public const Int32 SIZE = 16;
-    public const Int32 ALIGNMENT = 8;
-    [FieldOffset(0)]
-    private Int32 _field_used_;
-    [FieldOffset(8)]
-    [FieldOverlap(8)]
-    [FramePrinter.PrintIf("_field_used_", Quantum.GamemodeSpecificRules.STARCHASERS)]
-    private StarChasersRules _StarChasers;
-    [FieldOffset(8)]
-    [FieldOverlap(8)]
-    [FramePrinter.PrintIf("_field_used_", Quantum.GamemodeSpecificRules.COINRUNNERS)]
-    private CoinRunnersRules _CoinRunners;
-    public const Int32 STARCHASERS = 1;
-    public const Int32 COINRUNNERS = 2;
-    public readonly Int32 Field {
-      get {
-        return _field_used_;
-      }
-    }
-    public StarChasersRules* StarChasers {
-      get {
-        fixed (StarChasersRules* p = &_StarChasers) {
-          if (_field_used_ != STARCHASERS) {
-            Native.Utils.Clear(p, 8);
-            _field_used_ = STARCHASERS;
-          }
-          return p;
-        }
-      }
-    }
-    public CoinRunnersRules* CoinRunners {
-      get {
-        fixed (CoinRunnersRules* p = &_CoinRunners) {
-          if (_field_used_ != COINRUNNERS) {
-            Native.Utils.Clear(p, 4);
-            _field_used_ = COINRUNNERS;
-          }
-          return p;
-        }
-      }
-    }
-    public override readonly Int32 GetHashCode() {
-      unchecked { 
-        var hash = 8941;
-        hash = hash * 31 + _field_used_.GetHashCode();
-        hash = hash * 31 + _StarChasers.GetHashCode();
-        hash = hash * 31 + _CoinRunners.GetHashCode();
-        return hash;
-      }
-    }
-    public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (GamemodeSpecificRules*)ptr;
-        if (serializer.InputMode) {
-          serializer.Stream.SerializeBuffer((byte*)p, Quantum.GamemodeSpecificRules.SIZE);
-          return;
-        }
-        serializer.Stream.Serialize(&p->_field_used_);
-        if (p->_field_used_ == COINRUNNERS) {
-          Quantum.CoinRunnersRules.Serialize(&p->_CoinRunners, serializer);
-        }
-        if (p->_field_used_ == STARCHASERS) {
-          Quantum.StarChasersRules.Serialize(&p->_StarChasers, serializer);
         }
     }
   }
@@ -4528,7 +4426,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.Coin), Quantum.Coin.SIZE);
       typeRegistry.Register(typeof(Quantum.CoinItem), Quantum.CoinItem.SIZE);
       typeRegistry.Register(typeof(Quantum.CoinRunnersData), Quantum.CoinRunnersData.SIZE);
-      typeRegistry.Register(typeof(Quantum.CoinRunnersRules), Quantum.CoinRunnersRules.SIZE);
       typeRegistry.Register(typeof(Quantum.CoinType), 1);
       typeRegistry.Register(typeof(ColorRGBA), ColorRGBA.SIZE);
       typeRegistry.Register(typeof(Quantum.ComboKeeper), Quantum.ComboKeeper.SIZE);
@@ -4558,7 +4455,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.GameRules), Quantum.GameRules.SIZE);
       typeRegistry.Register(typeof(Quantum.GameState), 1);
       typeRegistry.Register(typeof(Quantum.GamemodeSpecificData), Quantum.GamemodeSpecificData.SIZE);
-      typeRegistry.Register(typeof(Quantum.GamemodeSpecificRules), Quantum.GamemodeSpecificRules.SIZE);
       typeRegistry.Register(typeof(Quantum.GenericMover), Quantum.GenericMover.SIZE);
       typeRegistry.Register(typeof(Quantum.GoldBlock), Quantum.GoldBlock.SIZE);
       typeRegistry.Register(typeof(Quantum.Goomba), Quantum.Goomba.SIZE);
@@ -4644,7 +4540,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.StageTileFlags), 1);
       typeRegistry.Register(typeof(Quantum.StageTileInstance), Quantum.StageTileInstance.SIZE);
       typeRegistry.Register(typeof(Quantum.StarChasersData), Quantum.StarChasersData.SIZE);
-      typeRegistry.Register(typeof(Quantum.StarChasersRules), Quantum.StarChasersRules.SIZE);
       typeRegistry.Register(typeof(Quantum.StarCoin), Quantum.StarCoin.SIZE);
       typeRegistry.Register(typeof(Transform2D), Transform2D.SIZE);
       typeRegistry.Register(typeof(Transform2DVertical), Transform2DVertical.SIZE);

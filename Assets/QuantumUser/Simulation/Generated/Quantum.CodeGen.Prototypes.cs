@@ -296,16 +296,6 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.CoinRunnersRules))]
-  public unsafe partial class CoinRunnersRulesPrototype : StructPrototype {
-    public Byte DeathPenalty;
-    partial void MaterializeUser(Frame frame, ref Quantum.CoinRunnersRules result, in PrototypeMaterializationContext context);
-    public void Materialize(Frame frame, ref Quantum.CoinRunnersRules result, in PrototypeMaterializationContext context = default) {
-        result.DeathPenalty = this.DeathPenalty;
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.ComboKeeper))]
   public unsafe partial class ComboKeeperPrototype : ComponentPrototype<Quantum.ComboKeeper> {
     public Byte Combo;
@@ -439,7 +429,8 @@ namespace Quantum.Prototypes {
     public QBoolean TeamsEnabled;
     public QBoolean CustomPowerupsEnabled;
     public QBoolean DrawOnTimeUp;
-    public Quantum.Prototypes.GamemodeSpecificRulesPrototype GamemodeRules;
+    public FP StarFountain;
+    public Byte CoinDeathPenalty;
     partial void MaterializeUser(Frame frame, ref Quantum.GameRules result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.GameRules result, in PrototypeMaterializationContext context = default) {
         result.Stage = this.Stage;
@@ -451,7 +442,8 @@ namespace Quantum.Prototypes {
         result.TeamsEnabled = this.TeamsEnabled;
         result.CustomPowerupsEnabled = this.CustomPowerupsEnabled;
         result.DrawOnTimeUp = this.DrawOnTimeUp;
-        this.GamemodeRules.Materialize(frame, ref result.GamemodeRules, in context);
+        result.StarFountain = this.StarFountain;
+        result.CoinDeathPenalty = this.CoinDeathPenalty;
         MaterializeUser(frame, ref result, in context);
     }
   }
@@ -463,23 +455,6 @@ namespace Quantum.Prototypes {
     public Quantum.Prototypes.CoinRunnersDataPrototype CoinRunners;
     partial void MaterializeUser(Frame frame, ref Quantum.GamemodeSpecificData result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.GamemodeSpecificData result, in PrototypeMaterializationContext context = default) {
-        switch (_field_used_) {
-          case "STARCHASERS": this.StarChasers.Materialize(frame, ref *result.StarChasers, in context); break;
-          case "COINRUNNERS": this.CoinRunners.Materialize(frame, ref *result.CoinRunners, in context); break;
-          case "": case null: break;
-          default: PrototypeValidator.UnknownUnionField(_field_used_, in context); break;
-        }
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.GamemodeSpecificRules))]
-  public unsafe partial class GamemodeSpecificRulesPrototype : UnionPrototype {
-    public string _field_used_;
-    public Quantum.Prototypes.StarChasersRulesPrototype StarChasers;
-    public Quantum.Prototypes.CoinRunnersRulesPrototype CoinRunners;
-    partial void MaterializeUser(Frame frame, ref Quantum.GamemodeSpecificRules result, in PrototypeMaterializationContext context);
-    public void Materialize(Frame frame, ref Quantum.GamemodeSpecificRules result, in PrototypeMaterializationContext context = default) {
         switch (_field_used_) {
           case "STARCHASERS": this.StarChasers.Materialize(frame, ref *result.StarChasers, in context); break;
           case "COINRUNNERS": this.CoinRunners.Materialize(frame, ref *result.CoinRunners, in context); break;
@@ -966,16 +941,6 @@ namespace Quantum.Prototypes {
     public void Materialize(Frame frame, ref Quantum.StarChasersData result, in PrototypeMaterializationContext context = default) {
         result.Stars = this.Stars;
         result.DeathStarThreshold = this.DeathStarThreshold;
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.StarChasersRules))]
-  public unsafe partial class StarChasersRulesPrototype : StructPrototype {
-    public FP StarFountain;
-    partial void MaterializeUser(Frame frame, ref Quantum.StarChasersRules result, in PrototypeMaterializationContext context);
-    public void Materialize(Frame frame, ref Quantum.StarChasersRules result, in PrototypeMaterializationContext context = default) {
-        result.StarFountain = this.StarFountain;
         MaterializeUser(frame, ref result, in context);
     }
   }
