@@ -1124,7 +1124,7 @@ namespace Quantum {
                     bool swimming = physicsObject->IsUnderwater;
                     int framesInKnockback = f.Number - mario->KnockbackTick;
                     if (mario->DoEntityBounce
-                        || (swimming && framesInKnockback > 60)
+                        || (swimming && framesInKnockback >= 40)
                         || (!swimming && !mario->IsInWeakKnockback && physicsObject->IsTouchingGround && FPMath.Abs(physicsObject->Velocity.X) < FP._0_33 && framesInKnockback > 25)
                         || (!swimming && physicsObject->IsTouchingGround && framesInKnockback > 120)
                         || (!swimming && mario->IsInWeakKnockback && framesInKnockback > 45)) {
