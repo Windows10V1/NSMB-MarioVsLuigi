@@ -93,6 +93,10 @@ namespace Quantum {
             readonly get => Flags.IsSet(21);
             set => SetValue(ref Flags, 21, value);
         }
+        public bool IsFrogHyperspeed {
+            readonly get => Flags.IsSet(22);
+            set => SetValue(ref Flags, 22, value);
+        }
 
         public readonly bool IsStarmanInvincible => InvincibilityFrames > 0;
         public readonly bool IsWallsliding => WallslideLeft || WallslideRight;
@@ -274,6 +278,7 @@ namespace Quantum {
             IsDrilling = false;
             IsSliding = false;
             IsPenguinSliding = false;
+            IsFrogHyperspeed = false;
             IsCrouching = false;
             IsSkidding = false;
             IsTurnaround = false;
@@ -349,6 +354,7 @@ namespace Quantum {
             IsPropellerFlying = false;
             IsInShell = false;
             IsPenguinSliding = false;
+            IsFrogHyperspeed = false;
             PropellerLaunchFrames = 0;
             PropellerSpinFrames = 0;
             UsedPropellerThisJump = false;
@@ -452,16 +458,6 @@ namespace Quantum {
 
             if (IsInKnockback) {
                 ResetKnockback(f, entity);
-            }
-
-            if (CurrentPowerupState == PowerupState.MiniMushroom && strength >= KnockbackStrength.Groundpound) {
-                f.Signals.OnMarioPlayerDropObjective(entity, starsToDrop - 1, attacker);
-                Powerdown(f, entity, false, attacker);
-                return true;
-            }
-
-            if (IsInKnockback || IsInWeakKnockback) {
-                starsToDrop = Math.Min(1, starsToDrop);
             }
 
             var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
@@ -610,7 +606,7 @@ namespace Quantum {
             f.Events.MarioPlayerEnteredPipe(mario, CurrentPipe, false, horizontalDirection, FPVector2.Zero);
         }
 
-        private static void SetValue(ref BitSet22 bitset, int index, bool value) {
+        private static void SetValue(ref BitSet23 bitset, int index, bool value) {
             if (value) {
                 bitset.Set(index);
             } else {

@@ -8,5 +8,5 @@ public enum ParticleEffect : byte {
     Break_Iceball = 6,
     Water_Splash_Surface = 7,
     Puff = 8,
-    Break_Goldball = 9,
+    Break_Goldball = 9
 }

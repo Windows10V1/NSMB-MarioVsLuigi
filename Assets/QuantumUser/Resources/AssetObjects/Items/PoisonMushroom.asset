@@ -9,24 +9,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3e603eeabd17b0d4694ac32ed6f20ecc, type: 3}
-  m_Name: 1-Up
-  m_EditorClassIdentifier: 
+  m_Script: {fileID: 11500000, guid: 1229a18cf6acf584cb27ebf6ad9fd037, type: 3}
+  m_Name: PoisonMushroom
+  m_EditorClassIdentifier: Quantum.Simulation::PoisonMushroomPowerupAsset
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Items/1-Up
+    Path: QuantumUser/Resources/AssetObjects/Items/PoisonMushroom
     Guid:
-      Value: 421291512996345105
+      Value: 512015127377734234
   Prefab:
     Id:
-      Value: 1365421339623582075
+      Value: 0
   SpawnChance:
     RawValue: 0
   AboveAverageBonus:
-    RawValue: 0
-  BelowAverageBonus:
     RawValue: 8192
+  BelowAverageBonus:
+    RawValue: 0
   BlockSpawnSoundEffect: 69
-  Flags: 27
+  Flags: 19
   MaxNumberOfItems: 0
   CameraSpawnOffset:
     X:
@@ -37,15 +37,15 @@ MonoBehaviour:
   MaxMatchingReserveState: 0
   State: 0
   SoundPlaysEverywhere: 0
-  SoundEffect: 78
+  SoundEffect: 16
   ReserveSprite: {fileID: 0}
   AvoidPlayers: 0
   Speed:
-    RawValue: 131072
+    RawValue: 163840
   BounceStrength:
     RawValue: 0
   TerminalVelocity:
-    RawValue: -524288
+    RawValue: 0
   BumpedFromBelowVelocity:
     RawValue: 360448
   FollowAnimationCurve: 0
@@ -75,5 +75,5 @@ MonoBehaviour:
     Keys: []
   StatePriority: -1
   ItemPriority: -1
-  EnterReserveIfOverridden: 0
+  EnterReserveIfOverridden: 1
   SfxOverrides: []

@@ -533,6 +533,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: PoisonMushroom
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 16
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 44fd76562abd8cf47b1b5b3d065f850c
+      internalID: -784459595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -562,6 +584,7 @@ TextureImporter:
       POW_1: 1512579996
       POW_2: -280334765
       PenguinSuit: 4928671260392873470
+      PoisonMushroom: -784459595
       Shell: 2834573260081099437
       Star: -4108787663010400821
       Star_2: -1073110140

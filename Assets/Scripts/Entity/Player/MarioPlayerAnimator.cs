@@ -255,7 +255,7 @@ namespace NSMB.Entities.Player {
                 return;
             }
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
-            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") || mario->CurrentPowerupState != PowerupState.PenguinSuit || mario->CurrentPowerupState != PowerupState.FrogSuit);
+            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") && mario->CurrentPowerupState != PowerupState.PenguinSuit && mario->CurrentPowerupState != PowerupState.FrogSuit);
         }
 
         public override void OnUpdateView() {

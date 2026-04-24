@@ -15,8 +15,13 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     public FP WalkButtonReleaseDeceleration = FF(3.9550781196f);
 
     // Frog Suit multipliers
-    public FP WalkFrogAccelerationMultiplier = FF(2.0f);
-    public FP SkiddingFrogDecelerationMultiplier = FF(2.0f);
+    public FP WalkFrogAccelerationMultiplier = FF(2.5f);
+    public FP SkiddingFrogDecelerationMultiplier = FF(2.5f);
+    public FP JumpFrogVelocity = FF(7.283203125f);
+    public FP JumpFrogSpeedBonusVelocity = FF(0.515625f);
+
+    // Frog Suit hyperspeed
+    public FP[] WalkFrogHyperspeedMultiplier = FF(new[] { 1.1f, 1.2f, 1.3f });
 
     // Turnaround
     public FP[] SlowTurnaroundAcceleration = FF(new[] { 3.955078125f, 8.7890625f, 8.7890625f, 21.093756f });

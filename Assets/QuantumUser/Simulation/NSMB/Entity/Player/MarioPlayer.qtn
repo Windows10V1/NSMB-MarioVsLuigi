@@ -60,7 +60,7 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte RespawnFrames;
 	[ExcludeFromPrototype] byte NoLivesStarDirection;
 	
-	[ExcludeFromPrototype] bitset[22] Flags;
+	[ExcludeFromPrototype] bitset[23] Flags;
 
 	// Walk/Running
     [ExcludeFromPrototype] byte FastTurnaroundFrames;
@@ -110,6 +110,9 @@ component MarioPlayer {
 
 	[ExcludeFromPrototype] byte ShellSpeedStage;
     [ExcludeFromPrototype] byte ShellSlowdownFrames;
+
+	[ExcludeFromPrototype] byte FrogHyperspeedStage;
+    [ExcludeFromPrototype] byte FrogHyperspeedSlowdownFrames;
 
 	[ExcludeFromPrototype] byte PropellerLaunchFrames;
 	[ExcludeFromPrototype] byte PropellerSpinFrames;
@@ -297,6 +300,10 @@ event PlayKnockbackEffect {
 	EntityRef Attacker;
 	KnockbackStrength Strength;
 	nothashed FPVector2? AttackerPosition;
+}
+
+event MarioPlayerBlueShellStomped {
+	EntityRef Entity;
 }
 
 // these events are for external replay tools
