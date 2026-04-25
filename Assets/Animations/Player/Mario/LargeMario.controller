@@ -7474,6 +7474,9 @@ AnimatorController:
     - serializedVersion: 2
       m_State: {fileID: -4656010172901654503}
       m_Motion: {fileID: 7400000, guid: 35dba57074cd3124db52bba3b179f451, type: 2}
+    - serializedVersion: 2
+      m_State: {fileID: 7299579015199356633}
+      m_Motion: {fileID: 7400000, guid: c3df4f39538179746bdd204648a750c4, type: 2}
     m_Behaviours: []
     m_BlendingMode: 1
     m_SyncedLayerIndex: 0
@@ -12939,7 +12942,7 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: crouch
-  m_Speed: 1
+  m_Speed: 0.01
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: -950088248704882056}
@@ -14607,7 +14610,7 @@ AnimatorStateMachine:
     m_Position: {x: 130, y: 190, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7299579015199356633}
-    m_Position: {x: 600, y: 280, z: 0}
+    m_Position: {x: 590, y: 280, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8268070426293739897}
     m_Position: {x: 450, y: 450, z: 0}

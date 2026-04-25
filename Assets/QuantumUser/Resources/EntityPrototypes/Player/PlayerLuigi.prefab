@@ -880,21 +880,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf9d71929a202541b352e506ca0197e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wasTurnaround: 0
-  models: {fileID: 8422425992379838812}
   character: {fileID: 11400000, guid: 20241e3c68674eb4dbb58f063d01cfd2, type: 2}
+  modelRoot: {fileID: 8422425992379838812}
   animator: {fileID: 2254935152879088866}
-  smallAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
-  largeAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
-  smallModel: {fileID: 7762643025404982223}
-  largeModel: {fileID: 2209300530651413591}
-  largeShellExclude: {fileID: 0}
-  blueShell: {fileID: 3629787967981286811}
-  propellerHelmet: {fileID: 8712194458326895251}
+  largeShellExclude: {fileID: 3969380940220378773}
   propeller: {fileID: 8626919663303982960}
-  HammerHelm: {fileID: 4056376664574429795}
-  HammerShell: {fileID: 880582643022226802}
-  HammerTuck: {fileID: 2229351969153277470}
   coinNumberParticle: {fileID: 4677531960176377302, guid: 818e60315a414df48a229c8d1186ce98,
     type: 3}
   coinFromBlockParticle: {fileID: 4355208377719065490, guid: e55364fb26d178a4fbb31ba42edc3c9a,
@@ -930,6 +920,48 @@ MonoBehaviour:
   iceSkiddingParticle: {fileID: 5251921966134561398}
   waterRunningParticle: {fileID: 8602803811170997306}
   waterSkiddingParticle: {fileID: 3878221348697021963}
+  fallbackPowerupVisuals:
+    State: 2
+    AdditionalGameObjects: []
+    BaseModel: {fileID: 2209300530651413591}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
+      type: 2}
+  powerupVisuals:
+  - State: 0
+    AdditionalGameObjects: []
+    BaseModel: {fileID: 7762643025404982223}
+    AnimationAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: a1854453357bb034e89ec419b0f57906,
+      type: 2}
+  - State: 1
+    AdditionalGameObjects: []
+    BaseModel: {fileID: 7762643025404982223}
+    AnimationAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: a1854453357bb034e89ec419b0f57906,
+      type: 2}
+  - State: 5
+    AdditionalGameObjects:
+    - {fileID: 8712194458326895251}
+    BaseModel: {fileID: 2209300530651413591}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
+      type: 2}
+  - State: 6
+    AdditionalGameObjects:
+    - {fileID: 3629787967981286811}
+    BaseModel: {fileID: 2209300530651413591}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
+      type: 2}
+  - State: 7
+    AdditionalGameObjects:
+    - {fileID: 4056376664574429795}
+    - {fileID: 880582643022226802}
+    BaseModel: {fileID: 2209300530651413591}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
+      type: 2}
 --- !u!114 &8832712012989740833
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8885,17 +8917,22 @@ PrefabInstance:
     - target: {fileID: 1494689952369271858, guid: b9c007ad3b94b184fa982b69cd7b6c49,
         type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.08062031
+      value: 0.080339305
       objectReference: {fileID: 0}
     - target: {fileID: 1494689952369271858, guid: b9c007ad3b94b184fa982b69cd7b6c49,
         type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.022540193
+      value: -0.022461629
       objectReference: {fileID: 0}
     - target: {fileID: 1494689952369271858, guid: b9c007ad3b94b184fa982b69cd7b6c49,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: 3.4888607e-22
+      value: 3.4767e-22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1494689952369271858, guid: b9c007ad3b94b184fa982b69cd7b6c49,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0.9965145
       objectReference: {fileID: 0}
     - target: {fileID: 4958121264187717163, guid: b9c007ad3b94b184fa982b69cd7b6c49,
         type: 3}

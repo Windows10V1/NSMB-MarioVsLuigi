@@ -74,6 +74,7 @@ namespace Quantum {
 
             if (HandleTaunting(f, ref filter, command is CommandTaunt)) {
                 HandlePowerups(f, ref filter, physics, stage);
+                HandleKnockback(f, ref filter);
                 HandleHitbox(f, ref filter, physics);
                 return;
             }
@@ -82,6 +83,7 @@ namespace Quantum {
                 HandleCrouching(f, ref filter, physics);
                 HandleFacingDirection(f, ref filter, physics);
                 HandlePowerups(f, ref filter, physics, stage);
+                HandleKnockback(f, ref filter);
                 HandleHitbox(f, ref filter, physics);
                 return;
             }
@@ -1456,7 +1458,7 @@ namespace Quantum {
             }
 
             PowerupState state = mario->CurrentPowerupState;
-            if (mario->MegaMushroomStartFrames > 0) {
+            if (mario->MegaMushroomStartFrames > 0 || mario->TauntFrames > 0) {
                 return;
             }
 
