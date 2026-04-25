@@ -2987,25 +2987,6 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct POWBlock : Quantum.IComponent {
-    public const Int32 SIZE = 8;
-    public const Int32 ALIGNMENT = 8;
-    [FieldOffset(0)]
-    [ExcludeFromPrototype()]
-    public EntityRef AttachedTo;
-    public override readonly Int32 GetHashCode() {
-      unchecked { 
-        var hash = 3373;
-        hash = hash * 31 + AttachedTo.GetHashCode();
-        return hash;
-      }
-    }
-    public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (POWBlock*)ptr;
-        EntityRef.Serialize(&p->AttachedTo, serializer);
-    }
-  }
-  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct PhysicsObject : Quantum.IComponent {
     public const Int32 SIZE = 144;
     public const Int32 ALIGNMENT = 8;
@@ -3230,6 +3211,32 @@ namespace Quantum {
         QBoolean.Serialize(&p->VotedToContinue, serializer);
         AssetRef.Serialize(&p->Character, serializer);
         AssetRef.Serialize(&p->Palette, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct PowBlock : Quantum.IComponent {
+    public const Int32 SIZE = 16;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(0)]
+    public Byte RemainingCharges;
+    [FieldOffset(1)]
+    public Byte SpriteState;
+    [FieldOffset(8)]
+    public FP ExplosionRadius;
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 13649;
+        hash = hash * 31 + RemainingCharges.GetHashCode();
+        hash = hash * 31 + SpriteState.GetHashCode();
+        hash = hash * 31 + ExplosionRadius.GetHashCode();
+        return hash;
+      }
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (PowBlock*)ptr;
+        serializer.Stream.Serialize(&p->RemainingCharges);
+        serializer.Stream.Serialize(&p->SpriteState);
+        FP.Serialize(&p->ExplosionRadius, serializer);
     }
   }
   [StructLayout(LayoutKind.Explicit)]
@@ -3516,6 +3523,9 @@ namespace Quantum {
   }
   public unsafe partial interface ISignalOnEntityCrushed : ISignal {
     void OnEntityCrushed(Frame f, EntityRef entity);
+  }
+  public unsafe partial interface ISignalOnPowHitEntity : ISignal {
+    void OnPowHitEntity(Frame f, EntityRef pow, EntityRef hitEntity);
   }
   public unsafe partial interface ISignalOnMarioPlayerCollectedPowerup : ISignal {
     void OnMarioPlayerCollectedPowerup(Frame f, EntityRef mario, EntityRef powerup);
@@ -3852,6 +3862,7 @@ namespace Quantum {
     private ISignalOnMarioPlayerMegaMushroomFootstep[] _ISignalOnMarioPlayerMegaMushroomFootstepSystems;
     private ISignalOnEntityChangeUnderwaterState[] _ISignalOnEntityChangeUnderwaterStateSystems;
     private ISignalOnEntityCrushed[] _ISignalOnEntityCrushedSystems;
+    private ISignalOnPowHitEntity[] _ISignalOnPowHitEntitySystems;
     private ISignalOnMarioPlayerCollectedPowerup[] _ISignalOnMarioPlayerCollectedPowerupSystems;
     private ISignalOnProjectileHitEntity[] _ISignalOnProjectileHitEntitySystems;
     private ISignalOnStageReset[] _ISignalOnStageResetSystems;
@@ -3899,6 +3910,7 @@ namespace Quantum {
       _ISignalOnMarioPlayerMegaMushroomFootstepSystems = BuildSignalsArray<ISignalOnMarioPlayerMegaMushroomFootstep>();
       _ISignalOnEntityChangeUnderwaterStateSystems = BuildSignalsArray<ISignalOnEntityChangeUnderwaterState>();
       _ISignalOnEntityCrushedSystems = BuildSignalsArray<ISignalOnEntityCrushed>();
+      _ISignalOnPowHitEntitySystems = BuildSignalsArray<ISignalOnPowHitEntity>();
       _ISignalOnMarioPlayerCollectedPowerupSystems = BuildSignalsArray<ISignalOnMarioPlayerCollectedPowerup>();
       _ISignalOnProjectileHitEntitySystems = BuildSignalsArray<ISignalOnProjectileHitEntity>();
       _ISignalOnStageResetSystems = BuildSignalsArray<ISignalOnStageReset>();
@@ -3981,8 +3993,6 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<NavMeshSteeringAgent>();
       BuildSignalsArrayOnComponentAdded<Quantum.ObjectiveCoin>();
       BuildSignalsArrayOnComponentRemoved<Quantum.ObjectiveCoin>();
-      BuildSignalsArrayOnComponentAdded<Quantum.POWBlock>();
-      BuildSignalsArrayOnComponentRemoved<Quantum.POWBlock>();
       BuildSignalsArrayOnComponentAdded<PhysicsBody2D>();
       BuildSignalsArrayOnComponentRemoved<PhysicsBody2D>();
       BuildSignalsArrayOnComponentAdded<PhysicsBody3D>();
@@ -4005,6 +4015,8 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<Quantum.PiranhaPlant>();
       BuildSignalsArrayOnComponentAdded<Quantum.PlayerData>();
       BuildSignalsArrayOnComponentRemoved<Quantum.PlayerData>();
+      BuildSignalsArrayOnComponentAdded<Quantum.PowBlock>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.PowBlock>();
       BuildSignalsArrayOnComponentAdded<Quantum.Powerup>();
       BuildSignalsArrayOnComponentRemoved<Quantum.Powerup>();
       BuildSignalsArrayOnComponentAdded<Quantum.Projectile>();
@@ -4338,6 +4350,15 @@ namespace Quantum {
           }
         }
       }
+      public void OnPowHitEntity(EntityRef pow, EntityRef hitEntity) {
+        var array = _f._ISignalOnPowHitEntitySystems;
+        for (Int32 i = 0; i < array.Length; ++i) {
+          var s = array[i];
+          if (_f.SystemIsEnabledInHierarchy((SystemBase)s)) {
+            s.OnPowHitEntity(_f, pow, hitEntity);
+          }
+        }
+      }
       public void OnMarioPlayerCollectedPowerup(EntityRef mario, EntityRef powerup) {
         var array = _f._ISignalOnMarioPlayerCollectedPowerupSystems;
         for (Int32 i = 0; i < array.Length; ++i) {
@@ -4497,7 +4518,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(NullableFPVector3), NullableFPVector3.SIZE);
       typeRegistry.Register(typeof(NullableNonNegativeFP), NullableNonNegativeFP.SIZE);
       typeRegistry.Register(typeof(Quantum.ObjectiveCoin), Quantum.ObjectiveCoin.SIZE);
-      typeRegistry.Register(typeof(Quantum.POWBlock), Quantum.POWBlock.SIZE);
       typeRegistry.Register(typeof(ParticleEffect), 1);
       typeRegistry.Register(typeof(PhysicsBody2D), PhysicsBody2D.SIZE);
       typeRegistry.Register(typeof(PhysicsBody3D), PhysicsBody3D.SIZE);
@@ -4518,6 +4538,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.PlayerData), Quantum.PlayerData.SIZE);
       typeRegistry.Register(typeof(Quantum.PlayerInformation), Quantum.PlayerInformation.SIZE);
       typeRegistry.Register(typeof(PlayerRef), PlayerRef.SIZE);
+      typeRegistry.Register(typeof(Quantum.PowBlock), Quantum.PowBlock.SIZE);
       typeRegistry.Register(typeof(Quantum.Powerup), Quantum.Powerup.SIZE);
       typeRegistry.Register(typeof(Quantum.PowerupReserveResult), 1);
       typeRegistry.Register(typeof(Quantum.PowerupSpawnReason), 1);
@@ -4581,10 +4602,10 @@ namespace Quantum {
         .Add<Quantum.MarioPlayer>(Quantum.MarioPlayer.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.MovingPlatform>(Quantum.MovingPlatform.Serialize, Quantum.MovingPlatform.OnAdded, Quantum.MovingPlatform.OnRemoved, ComponentFlags.None)
         .Add<Quantum.ObjectiveCoin>(Quantum.ObjectiveCoin.Serialize, null, null, ComponentFlags.None)
-        .Add<Quantum.POWBlock>(Quantum.POWBlock.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PhysicsObject>(Quantum.PhysicsObject.Serialize, Quantum.PhysicsObject.OnAdded, Quantum.PhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.PiranhaPlant>(Quantum.PiranhaPlant.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PlayerData>(Quantum.PlayerData.Serialize, null, null, ComponentFlags.None)
+        .Add<Quantum.PowBlock>(Quantum.PowBlock.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Powerup>(Quantum.Powerup.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Projectile>(Quantum.Projectile.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Spinner>(Quantum.Spinner.Serialize, Quantum.Spinner.OnAdded, Quantum.Spinner.OnRemoved, ComponentFlags.None)

@@ -1,3 +1,12 @@
-component POWBlock {
-	[ExcludeFromPrototype] EntityRef AttachedTo;
+// in PowBlock.qtn
+component PowBlock {
+  byte RemainingCharges;
+  byte SpriteState;
+  FP ExplosionRadius;
+}
+
+signal OnPowHitEntity(EntityRef pow, EntityRef hitEntity);
+
+event PowBlockExploded {
+  EntityRef Entity;
 }
