@@ -6,6 +6,7 @@ namespace Quantum {
         static partial void AddCommandFactoriesUser(ICollection<IDeterministicCommandFactory> factories, RuntimeConfig gameConfig, SimulationConfig simulationConfig) {
             // In game
             factories.Add(new CommandSpawnReserveItem());
+            factories.Add(new CommandTaunt());
             factories.Add(new CommandHostEndGame());
             factories.Add(new CommandEndGameContinue());
 
