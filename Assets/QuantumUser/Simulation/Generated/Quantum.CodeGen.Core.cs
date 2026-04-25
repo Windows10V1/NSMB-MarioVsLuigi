@@ -2987,6 +2987,25 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct POWBlock : Quantum.IComponent {
+    public const Int32 SIZE = 8;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(0)]
+    [ExcludeFromPrototype()]
+    public EntityRef AttachedTo;
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 3373;
+        hash = hash * 31 + AttachedTo.GetHashCode();
+        return hash;
+      }
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (POWBlock*)ptr;
+        EntityRef.Serialize(&p->AttachedTo, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct PhysicsObject : Quantum.IComponent {
     public const Int32 SIZE = 144;
     public const Int32 ALIGNMENT = 8;
@@ -3962,6 +3981,8 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<NavMeshSteeringAgent>();
       BuildSignalsArrayOnComponentAdded<Quantum.ObjectiveCoin>();
       BuildSignalsArrayOnComponentRemoved<Quantum.ObjectiveCoin>();
+      BuildSignalsArrayOnComponentAdded<Quantum.POWBlock>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.POWBlock>();
       BuildSignalsArrayOnComponentAdded<PhysicsBody2D>();
       BuildSignalsArrayOnComponentRemoved<PhysicsBody2D>();
       BuildSignalsArrayOnComponentAdded<PhysicsBody3D>();
@@ -4476,6 +4497,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(NullableFPVector3), NullableFPVector3.SIZE);
       typeRegistry.Register(typeof(NullableNonNegativeFP), NullableNonNegativeFP.SIZE);
       typeRegistry.Register(typeof(Quantum.ObjectiveCoin), Quantum.ObjectiveCoin.SIZE);
+      typeRegistry.Register(typeof(Quantum.POWBlock), Quantum.POWBlock.SIZE);
       typeRegistry.Register(typeof(ParticleEffect), 1);
       typeRegistry.Register(typeof(PhysicsBody2D), PhysicsBody2D.SIZE);
       typeRegistry.Register(typeof(PhysicsBody3D), PhysicsBody3D.SIZE);
@@ -4526,7 +4548,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum._globals_), Quantum._globals_.SIZE);
     }
     static partial void InitComponentTypeIdGen() {
-      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 39)
+      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 40)
         .AddBuiltInComponents()
         .Add<Quantum.BetterPhysicsObject>(Quantum.BetterPhysicsObject.Serialize, Quantum.BetterPhysicsObject.OnAdded, Quantum.BetterPhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.BigStar>(Quantum.BigStar.Serialize, null, null, ComponentFlags.None)
@@ -4559,6 +4581,7 @@ namespace Quantum {
         .Add<Quantum.MarioPlayer>(Quantum.MarioPlayer.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.MovingPlatform>(Quantum.MovingPlatform.Serialize, Quantum.MovingPlatform.OnAdded, Quantum.MovingPlatform.OnRemoved, ComponentFlags.None)
         .Add<Quantum.ObjectiveCoin>(Quantum.ObjectiveCoin.Serialize, null, null, ComponentFlags.None)
+        .Add<Quantum.POWBlock>(Quantum.POWBlock.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PhysicsObject>(Quantum.PhysicsObject.Serialize, Quantum.PhysicsObject.OnAdded, Quantum.PhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.PiranhaPlant>(Quantum.PiranhaPlant.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PlayerData>(Quantum.PlayerData.Serialize, null, null, ComponentFlags.None)

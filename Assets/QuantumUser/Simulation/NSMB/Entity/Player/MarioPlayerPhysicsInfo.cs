@@ -22,6 +22,7 @@ public class MarioPlayerPhysicsInfo : AssetObject {
 
     // Frog Suit hyperspeed
     public FP[] WalkFrogHyperspeedMultiplier = FF(new[] { 1.1f, 1.2f, 1.3f });
+    public const int FROG_HYPERSPEED_STAGE_1_ANGLE_THRESHOLD = 30;
 
     // Turnaround
     public FP[] SlowTurnaroundAcceleration = FF(new[] { 3.955078125f, 8.7890625f, 8.7890625f, 21.093756f });

@@ -230,7 +230,8 @@ namespace Quantum {
             switch (projectileAsset.Effect) {
             case ProjectileEffectType.Goldball:
             case ProjectileEffectType.Hammer:
-            case ProjectileEffectType.Boomerang: {
+            case ProjectileEffectType.Boomerang:
+            case ProjectileEffectType.SuperBall: {
                 f.Unsafe.GetPointer<Bobomb>(bobombEntity)->Kill(f, bobombEntity, projectileEntity, EnemyKillReason.Special);
                 break;
             }

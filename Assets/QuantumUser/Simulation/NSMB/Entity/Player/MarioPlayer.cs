@@ -512,14 +512,19 @@ namespace Quantum {
             KnockbackWasOriginallyFacingRight = FacingRight;
             KnockForwards = FacingRight != fromRight;
             IsInShell = false;
+            ShellSpeedStage = 0;
+            ShellSlowdownFrames = 0;
             IsGroundpounding = false;
             IsSpinnerFlying = false;
             IsPropellerFlying = false;
             PropellerLaunchFrames = 0;
             PropellerSpinFrames = 0;
+            PropellerDrillCooldown = 0;
             IsSliding = false;
             IsDrilling = false;
             IsPenguinSliding = false;
+            IsFrogHyperspeed = false;
+            FrogHyperspeedStage = 0;
             WallslideLeft = WallslideRight = false;
 
             if (f.Unsafe.TryGetPointer(attacker, out Projectile* projectile)) {

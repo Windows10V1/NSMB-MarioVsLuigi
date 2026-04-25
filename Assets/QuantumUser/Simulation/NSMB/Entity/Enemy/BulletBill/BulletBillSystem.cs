@@ -117,7 +117,7 @@ namespace Quantum
 
             if (projectileAsset.Effect == ProjectileEffectType.Freeze) {
                 IceBlockSystem.Freeze(f, bulletBillEntity, true);
-            } else if (projectileAsset.Effect == ProjectileEffectType.Fire) {
+            } else if (projectileAsset.Effect == ProjectileEffectType.Fire || projectileAsset.Effect == ProjectileEffectType.SuperBall) {
                 f.Events.BulletBillHitByProjectile(bulletBillEntity);
             } else {
                 f.Unsafe.GetPointer<BulletBill>(bulletBillEntity)->Kill(f, bulletBillEntity, projectileEntity, EnemyKillReason.Special);

@@ -413,7 +413,8 @@ namespace Quantum {
             case ProjectileEffectType.Goldball:
             case ProjectileEffectType.Hammer:
             case ProjectileEffectType.Boomerang:
-            case ProjectileEffectType.Fire: {
+            case ProjectileEffectType.Fire:
+            case ProjectileEffectType.SuperBall: {
                 f.Unsafe.GetPointer<Koopa>(koopaEntity)->Kill(f, koopaEntity, projectileEntity, EnemyKillReason.Special);
                 break;
             }

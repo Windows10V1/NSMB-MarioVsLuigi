@@ -56,4 +56,5 @@ public enum ProjectileEffectType {
     Hammer,
     Boomerang,
     Goldball,
+    SuperBall,
 }

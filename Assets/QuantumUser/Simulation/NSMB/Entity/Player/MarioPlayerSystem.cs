@@ -975,7 +975,7 @@ namespace Quantum {
                 // Activate Frog Suit hyperspeed when groundpounding on slope
                 if (mario->CurrentPowerupState == PowerupState.FrogSuit && FPMath.Abs(physicsObject->FloorAngle) >= physics.SlideMinimumAngle) {
                     mario->IsFrogHyperspeed = true;
-                    mario->FrogHyperspeedStage = FPMath.Abs(physicsObject->FloorAngle) >= 30 ? (byte)2 : (byte)1;
+                    mario->FrogHyperspeedStage = FPMath.Abs(physicsObject->FloorAngle) >= MarioPlayerPhysicsInfo.FROG_HYPERSPEED_STAGE_1_ANGLE_THRESHOLD ? (byte)2 : (byte)1;
                     mario->FrogHyperspeedSlowdownFrames = 0;
                 }
                 continueGroundpound = false;
@@ -1036,6 +1036,17 @@ namespace Quantum {
                 mario->WallslideRight = false;
                 mario->IsCrouching = false;
                 mario->IsInShell = false;
+                mario->ShellSpeedStage = 0;
+                mario->ShellSlowdownFrames = 0;
+                mario->IsPenguinSliding = false;
+                mario->IsPropellerFlying = false;
+                mario->PropellerLaunchFrames = 0;
+                mario->PropellerSpinFrames = 0;
+                mario->PropellerDrillCooldown = 0;
+                mario->IsSpinnerFlying = false;
+                mario->IsDrilling = false;
+                mario->IsFrogHyperspeed = false;
+                mario->FrogHyperspeedStage = 0;
             } else {
                 QuantumUtils.Decrement(ref mario->DamageInvincibilityFrames);
             }
@@ -1128,6 +1139,13 @@ namespace Quantum {
 
             ref var inputs = ref filter.Inputs;
             var physicsObject = filter.PhysicsObject;
+
+            // Cancel hyperspeed if knocked back (PvP interaction)
+            if (mario->IsInKnockback) {
+                mario->IsFrogHyperspeed = false;
+                mario->FrogHyperspeedStage = 0;
+                return;
+            }
 
             // Cancel hyperspeed if Left or Right is pressed
             if (f.IsPlayerVerifiedOrLocal(mario->PlayerRef) && (inputs.Left.IsDown || inputs.Right.IsDown)) {
@@ -2139,6 +2157,7 @@ namespace Quantum {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
             var marioPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
             var projectileAsset = f.FindAsset(projectile->Asset);
+            var projectilePhysics = f.Unsafe.GetPointer<PhysicsObject>(projectileEntity);
 
             bool dropStars = true;
             if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* ownerMario)) {
@@ -2148,7 +2167,8 @@ namespace Quantum {
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && mario->IsDamageable
-                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
+                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
+                && !(mario->CurrentPowerupState == PowerupState.GoldFlower && projectileAsset.Effect == ProjectileEffectType.Goldball);
 
             if (damageable) {
                 bool didKnockback = false;
@@ -2156,14 +2176,8 @@ namespace Quantum {
 
                 bool knockbackFromRight;
                 if (projectileAsset.IsBoomerang) {
-                    FP elapsedTime = (FP)projectile->Lifetime / 60;
-                    bool isInReturnPhase = projectile->IsReturning() || elapsedTime >= FP.FromString("0.25");
-
-                    if (isInReturnPhase) {
-                        knockbackFromRight = projectile->FacingRight;
-                    } else {
-                        knockbackFromRight = !projectile->FacingRight;
-                    }
+                    // Knockback direction based on boomerang's X velocity
+                    knockbackFromRight = projectilePhysics->Velocity.X > 0;
                 } else if (projectileAsset.IsSuperBall) {
                     knockbackFromRight = (projectile->Combo & 1) == 0;
                 } else {
@@ -2185,6 +2199,7 @@ namespace Quantum {
                 case ProjectileEffectType.Hammer:
                 case ProjectileEffectType.Boomerang:
                 case ProjectileEffectType.Fire:
+                case ProjectileEffectType.SuperBall:
                     if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
                     }
