@@ -32,6 +32,7 @@ namespace Quantum {
                     new BobombSystem(),
                     new PiranhaPlantSystem(),
                     new BulletBillLauncherSystem(),
+                    new BanzaiBillLauncherSystem(),
                     new BulletBillSystem(),
                     new BooSystem(),
                     new ProjectileSystem(),

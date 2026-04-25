@@ -1,5 +1,5 @@
 using System;
 
 public static class BuildInfo {
-	public static readonly DateTime BUILD_TIME = DateTime.Parse("2026-04-20T00:24:10.5214459Z");
+	public static readonly DateTime BUILD_TIME = DateTime.Parse("2026-04-24T19:40:00.4982740Z");
 }

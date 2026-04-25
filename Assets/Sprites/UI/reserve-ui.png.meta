@@ -365,7 +365,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: reserve-ice
+      name: reserve-penguin
       rect:
         serializedVersion: 2
         x: 128
@@ -505,7 +505,7 @@ TextureImporter:
         width: 64
         height: 64
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -543,10 +543,10 @@ TextureImporter:
       reserve-frog: -1139861373
       reserve-gold: -559220929
       reserve-hammer: -645946170
-      reserve-ice: 697740482
       reserve-mega: -1604689058
       reserve-mini: -1858463510
       reserve-mushroom: 5709720548119103520
+      reserve-penguin: 697740482
       reserve-propeller: -14430133
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0

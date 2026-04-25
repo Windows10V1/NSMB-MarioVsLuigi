@@ -129,7 +129,6 @@ MonoBehaviour:
     - rid: 2764666920119566337
     - rid: 2764666920119566338
     - rid: 2764666920119566339
-    - rid: 2764666920119566340
   SerializedTriangleDataUncompressedSize: 8
   references:
     version: 2
@@ -261,21 +260,12 @@ MonoBehaviour:
         CallbackFlags:
           Value: 0
     - rid: 2764666920119566339
-      type: {class: BreakableObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
-      data:
-        OriginalHeight:
-          RawValue: 0
-        MinimumHeight:
-          RawValue: 0
-        IsStompable:
-          Value: 0
-    - rid: 2764666920119566340
       type: {class: BulletBillLauncherPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
         BulletBillPrototype:
           Id:
             Value: 1412054551143023524
-        TimeToShoot: 240
+        TimeToShoot: 480
         MinimumShootRadius:
           RawValue: 39322
         MaximumShootRadius:
