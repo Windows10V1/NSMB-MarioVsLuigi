@@ -1257,7 +1257,7 @@ namespace NSMB.Entities.Player {
                 return;
             }
 
-            sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
+            PlaySound(SoundEffect.Powerup_HammerSuit_Bounce);
         }
 
         private void OnMarioPlayerTaunted(EventMarioPlayerTaunted e) {
@@ -1265,7 +1265,7 @@ namespace NSMB.Entities.Player {
                 return;
             }
 
-            sfx.PlayOneShot(SoundEffect.Player_Voice_Taunt);
+            PlaySound(SoundEffect.Player_Voice_Taunt);
         }
     }
 }
