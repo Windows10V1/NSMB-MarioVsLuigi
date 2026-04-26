@@ -13,7 +13,7 @@ namespace NSMB {
         //---Static Variables
         private static Controls _controls;
         public static Controls Controls => _controls;
-        public static event Action OnColorblindModeChanged, OnNametagVisibilityChanged, OnDisableChatChanged, OnNdsResolutionSettingChanged, OnDiscordIntegrationChanged;
+        public static event Action OnColorblindModeChanged, OnNametagVisibilityChanged, OnDisableChatChanged, OnNdsResolutionSettingChanged, OnDiscordIntegrationChanged, OnCondensedScoreboardChanged;
         public static event Action<bool> OnInputDisplayActiveChanged, OnReplaysEnabledChanged;
 
         //---Properties
@@ -67,6 +67,15 @@ namespace NSMB {
             set {
                 _generalReplaysEnabled = value;
                 OnReplaysEnabledChanged?.Invoke(value);
+            }
+        }
+        
+        private bool _generalCondensedScoreboard;
+        public bool GeneralCondensedScoreboard {
+            get => _generalCondensedScoreboard;
+            set {
+                _generalCondensedScoreboard = value;
+                OnCondensedScoreboardChanged?.Invoke();
             }
         }
 
@@ -243,6 +252,7 @@ namespace NSMB {
             // Generic
             PlayerPrefs.SetString("General_Nickname", generalNickname);
             PlayerPrefs.SetInt("General_ScoreboardAlwaysVisible", generalScoreboardAlways ? 1 : 0);
+            PlayerPrefs.SetInt("General_CondensedScoreboard", GeneralCondensedScoreboard ? 1 : 0);
             PlayerPrefs.SetInt("General_DisableChat", GeneralDisableChat ? 1 : 0);
             PlayerPrefs.SetInt("General_ChatFilter", generalChatFiltering ? 1 : 0);
             PlayerPrefs.SetString("General_Character", generalCharacter.Id.ToString());
@@ -325,6 +335,7 @@ namespace NSMB {
 
             generalNickname = PlayerPrefs.GetString("Nickname");
             generalScoreboardAlways = PlayerPrefs.GetInt("ScoreboardAlwaysVisible", 1) != 0;
+            GeneralCondensedScoreboard = false;
             GeneralDisableChat = false;
             generalChatFiltering = PlayerPrefs.GetInt("ChatFilter", 1) != 0;
             generalCharacter = Utils.IndexIntoOrDefault(AssetRepository<CharacterAsset>.AllAssetRefs, PlayerPrefs.GetInt("Character", 0), AssetRepository<CharacterAsset>.AllAssetRefs[0]);
@@ -379,6 +390,7 @@ namespace NSMB {
             // Generic
             TryGetSetting("General_Nickname", ref generalNickname);
             TryGetSetting("General_ScoreboardAlwaysVisible", ref generalScoreboardAlways);
+            TryGetSetting<bool>("General_CondensedScoreboard", nameof(GeneralCondensedScoreboard));
             TryGetSetting<bool>("General_DisableChat", nameof(GeneralDisableChat));
             TryGetSetting("General_ChatFilter", ref generalChatFiltering);
             int generalCharacterOld = 0;
