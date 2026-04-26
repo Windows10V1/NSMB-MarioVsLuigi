@@ -2007,8 +2007,7 @@ namespace Quantum {
             // Death up
             if (mario->DeathAnimationFrames > 0 && QuantumUtils.Decrement(ref mario->DeathAnimationFrames)) {
                 bool doRespawn = mario->IsValid(f);
-                var starChasers = mario->GamemodeData.StarChasers;
-                if (!doRespawn && f.FindAsset(f.Global->Rules.Gamemode) is StarChasersGamemode && starChasers->Stars > starChasers->DeathStarThreshold) {
+                if (!doRespawn && f.FindAsset(f.Global->Rules.Gamemode) is StarChasersGamemode && mario->GamemodeData.StarChasers->Stars > mario->GamemodeData.StarChasers->DeathStarThreshold) {
                     // Try to drop more stars
                     f.Signals.OnMarioPlayerDropObjective(entity, 1, filter.Entity);
                     mario->DeathAnimationFrames = 36;
