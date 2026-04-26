@@ -307,7 +307,7 @@ namespace Quantum {
         }
 
         public bool Powerdown(Frame f, EntityRef entity, bool ignoreInvincible, EntityRef attacker) {
-            if (!ignoreInvincible && (!IsDamageable || IsInPowerTransition(f))) {
+            if (!ignoreInvincible && (!IsDamageable || IsInPowerTransition(f) || CurrentPowerupState == PowerupState.MegaMushroom)) {
                 return false;
             }
 
@@ -437,7 +437,7 @@ namespace Quantum {
             }
         }
 
-        public bool DoKnockback(Frame f, EntityRef entity, bool fromRight, int starsToDrop, KnockbackStrength strength, EntityRef attacker, bool bypassDamageInvincibility = false, ProjectileEffectType projectileEffectType = ProjectileEffectType.None, bool wasBlueShell = false) {
+        public bool DoKnockback(Frame f, EntityRef entity, bool fromRight, int starsToDrop, KnockbackStrength strength, EntityRef attacker, bool bypassDamageInvincibility = false, ProjectileEffectType projectileEffectType = ProjectileEffectType.None, bool wasBlueShell = false, bool ignoreInvincibleStates = false) {
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(entity);
             if (physicsObject->IsUnderwater) {
                 strength = KnockbackStrength.Normal;
@@ -449,6 +449,10 @@ namespace Quantum {
 
             var freezable = f.Unsafe.GetPointer<Freezable>(entity);
             if ((!bypassDamageInvincibility && DamageInvincibilityFrames > 0) || f.Exists(CurrentPipe) || (freezable->IsFrozen(f) && freezable->FrozenCubeEntity != attacker) || IsDead || MegaMushroomStartFrames > 0 || MegaMushroomEndFrames > 0) {
+                return false;
+            }
+
+            if (!ignoreInvincibleStates && (CurrentPowerupState == PowerupState.MegaMushroom || IsStarmanInvincible)) {
                 return false;
             }
 
@@ -498,7 +502,7 @@ namespace Quantum {
             }
 
             CurrentKnockback = strength;
-            IsInWeakKnockback = forceWeak || (CurrentPowerupState != PowerupState.MegaMushroom && (strength == KnockbackStrength.CollisionBump || (strength == KnockbackStrength.FireballBump && physicsObject->IsTouchingGround)));
+            IsInWeakKnockback = forceWeak || (/*CurrentPowerupState != PowerupState.MegaMushroom &&*/ (strength == KnockbackStrength.CollisionBump || (strength == KnockbackStrength.FireballBump && physicsObject->IsTouchingGround)));
 
             physicsObject->Velocity = knockbackVelocity;
             physicsObject->IsTouchingGround = false;
@@ -549,7 +553,9 @@ namespace Quantum {
 
         public void ResetKnockback(Frame f, EntityRef mario) {
             KnockbackGetupFrames = 0;
-            DamageInvincibilityFrames = 90; // Exception: knockback does 90f instead of the usual 120f
+            if (CurrentPowerupState != PowerupState.MegaMushroom) {
+                DamageInvincibilityFrames = 90; // Exception: knockback does 90f instead of the usual 120f
+            }
             CurrentKnockback = KnockbackStrength.None;
             IsInWeakKnockback = false;
             FacingRight = KnockbackWasOriginallyFacingRight;
