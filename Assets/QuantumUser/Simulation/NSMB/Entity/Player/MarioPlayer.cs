@@ -95,7 +95,7 @@ namespace Quantum {
         public readonly bool IsInKnockback => CurrentKnockback != KnockbackStrength.None;
         public readonly bool CanCollectOwnTeamsObjectiveCoins => !IsInKnockback && DamageInvincibilityFrames == 0;
         public readonly PowerupTransitionAnimation* GetFirstPowerupAnim(Frame f) => f.ResolveList(PowerupAnimQueue).GetPointer(0);
-        public readonly bool IsInPowerAnim(Frame f) => f.ResolveList(PowerupAnimQueue).Count > 0;
+        public readonly bool IsInPowerTransition(Frame f) => f.ResolveList(PowerupAnimQueue).Count > 0;
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
 
         public readonly byte? GetTeam(Frame f) {
@@ -305,7 +305,7 @@ namespace Quantum {
         }
 
         public bool Powerdown(Frame f, EntityRef entity, bool ignoreInvincible, EntityRef attacker) {
-            if (!ignoreInvincible && !IsDamageable && !IsInPowerAnim(f)) {
+            if (!ignoreInvincible && (!IsDamageable || IsInPowerTransition(f))) {
                 return false;
             }
 

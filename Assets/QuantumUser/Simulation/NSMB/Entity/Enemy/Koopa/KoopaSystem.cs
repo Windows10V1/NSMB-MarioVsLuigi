@@ -289,7 +289,7 @@ namespace Quantum {
                         }
                     }
 
-                } else if (mario->IsDamageable && !mario->IsInPowerAnim(f) && (koopaEnemy->IntangibilityFrames == 0 || koopa->IsInShell)) {
+                } else if (mario->IsDamageable && !mario->IsInPowerTransition(f) && (koopaEnemy->IntangibilityFrames == 0 || koopa->IsInShell)) {
                     mario->Powerdown(f, marioEntity, false, koopaEntity);
                     if (!koopa->IsInShell) {
                         koopaEnemy->ChangeFacingRight(f, koopaEntity, damageDirection.X > 0);
@@ -359,7 +359,7 @@ namespace Quantum {
                             koopaEnemy->ChangeFacingRight(f, koopaEntity, ourPos.X > theirPos.X);
                         }
 
-                    } else if (mario->IsDamageable && !mario->IsInPowerAnim(f) && (koopaEnemy->IntangibilityFrames == 0 || koopa->IsKicked)) {
+                    } else if (mario->IsDamageable && !mario->IsInPowerTransition(f) && (koopaEnemy->IntangibilityFrames == 0 || koopa->IsKicked)) {
                         mario->Powerdown(f, marioEntity, false, koopaEntity);
                         if (!koopa->IsInShell) {
                             koopaEnemy->ChangeFacingRight(f, koopaEntity, damageDirection.X > 0);

@@ -473,7 +473,7 @@ namespace NSMB.Entities.Player {
 
         public PowerupState DisplayPowerupState(MarioPlayer* mario, Frame f) {
             // check if Mario is in a powerUP transition
-            if (mario->IsInPowerAnim(f)) {
+            if (mario->IsInPowerTransition(f)) {
                 var currAnim = f.ResolveList(mario->PowerupAnimQueue).GetPointer(0);
 
                 // now check its timer
@@ -654,9 +654,47 @@ namespace NSMB.Entities.Player {
         [SerializeField] private PowerupVisuals[] powerupVisuals;
         private PowerupVisuals previousPowerupVisuals;
 
-        private void UpdatePowerupVisuals(MarioPlayer* mario) {
-            PowerupVisuals currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
+        private void UpdatePowerupVisuals(MarioPlayer* mario, Frame f) {
+            PowerupVisuals currentPowerupVisuals = FindPowerupVisuals(DisplayPowerupState(mario, f));
             currentPowerupVisuals ??= fallbackPowerupVisuals;
+
+            Vector3 modelScale = currentPowerupVisuals.ModelScale;
+
+            if (mario->IsInPowerTransition(f)) {
+                var transition = mario->GetFirstPowerupAnim(f);
+                var beginningState = transition->StartingState;
+                var endingState = transition->EndingState;
+
+                bool startIsBig = beginningState >= PowerupState.Mushroom;
+                bool endIsBig = endingState >= PowerupState.Mushroom;
+
+                bool smallToBig = !startIsBig && startIsBig != endIsBig;
+                bool bigToSmall = !endIsBig && startIsBig != endIsBig;
+
+                if (bigToSmall || smallToBig) {
+                    currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
+                    // smol to big transition notes
+                    // stage one: .6
+                    // stage two: .5
+                    // stage three: .7
+                    // stage four: .6
+                    // stage five: .9
+                    // stage six: .8
+                    int currStage = (Constants.PowerupAnimLength - transition->Timer) / Constants.PowerupAnimOscillation;
+                    int stageByTwo = Math.Max(currStage / 2 - 1, 0);
+
+                    // .5f + 2 to the power of stageBy2
+                    if (smallToBig) {
+                        float scaleMulti = .6f + Mathf.Pow(2, stageByTwo) / 10;
+                        if (currStage % 2 == 1) scaleMulti -= .1f;
+                        modelScale.y = scaleMulti;
+                    } else if (bigToSmall) {
+                        float scaleMulti = 1.25f - Mathf.Pow(2, stageByTwo) / 10;
+                        if (currStage % 2 == 1) scaleMulti += .1f;
+                        modelScale.y = scaleMulti;
+                    }
+                }
+            }
 
             if (previousPowerupVisuals != currentPowerupVisuals) {
                 foreach (var powerupVisual in powerupVisuals) {
@@ -675,15 +713,15 @@ namespace NSMB.Entities.Player {
                 if (!mario->MegaMushroomStationaryEnd) {
                     timer *= 2;
                 }
-                targetScale = Vector3.Lerp(megaVisuals.ModelScale, currentPowerupVisuals.ModelScale, 1f - timer);
+                targetScale = Vector3.Lerp(megaVisuals.ModelScale, modelScale, 1f - timer);
             } else if (mario->MegaMushroomStartFrames > 0) {
                 // Interpolate from normal scale to mega scale.
                 var normalVisuals = FindPowerupVisuals(PowerupState.Mushroom);
                 float timer = mario->MegaMushroomStartFrames / 90f;
-                targetScale = Vector3.Lerp(normalVisuals.ModelScale, currentPowerupVisuals.ModelScale, 1f - timer);
+                targetScale = Vector3.Lerp(normalVisuals.ModelScale, modelScale, 1f - timer);
             } else {
                 // Just apply the scale
-                targetScale = currentPowerupVisuals.ModelScale;
+                targetScale = modelScale;
             }
             if (teammateStompTimer > 0) {
                 targetScale.y -= Mathf.Sin(teammateStompTimer * Mathf.PI / 0.15f) * 0.2f;

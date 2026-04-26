@@ -52,6 +52,8 @@ namespace Quantum {
                 return;
             }
 
+            HandlePowerupAnims(f, ref filter, physics, stage);
+
 #if QUANTUM_3_1
             foreach (var _ in f.GetPlayerCommands<CommandSpawnReserveItem>(player)) {
                 SpawnReserveItem(f, ref filter);
@@ -96,7 +98,6 @@ namespace Quantum {
 
             bool wasGroundpoundActive = mario->IsGroundpounding;
             HandlePowerups(f, ref filter, physics, stage);
-            HandlePowerupAnims(f, ref filter, physics, stage);
             HandleBreakingBlocks(f, ref filter, physics, stage);
             HandleCrouching(f, ref filter, physics);
             HandleGroundpound(f, ref filter, physics, stage);
@@ -1560,7 +1561,7 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            if (!mario->IsInPowerAnim(f)) {
+            if (!mario->IsInPowerTransition(f)) {
                 return;
             }
 
@@ -2167,7 +2168,7 @@ namespace Quantum {
 
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
-                && mario->IsDamageable && !mario->IsInPowerAnim(f)
+                && mario->IsDamageable && !mario->IsInPowerTransition(f)
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
 
             if (damageable) {
@@ -2276,7 +2277,7 @@ namespace Quantum {
                     }
                 } else if (marioAMega) {
                     bool knockbacked;
-                    if (true && !marioB->IsStarmanInvincible) {
+                    if (marioB->IsInPowerTransition(f) && !marioB->IsStarmanInvincible) {
                         goto NormalInteractions;
                     }
                     if (dropStars) {
@@ -2294,13 +2295,13 @@ namespace Quantum {
                     }
                     return;
                 } else if (marioBMega) {
-                    if (true && !marioA->IsStarmanInvincible) {
+                    if (marioA->IsInPowerTransition(f) && !marioA->IsStarmanInvincible) {
                         goto NormalInteractions;
                     }
                     bool knockbacked;
                     if (dropStars) {
                         if (marioA->IsStarmanInvincible) {
-                            knockbacked = marioA->DoKnockback(f, marioAEntity, fromRight, 0, KnockbackStrength.CollisionBump, marioBEntity, true);
+                            knockbacked = marioA->DoKnockback(f, marioAEntity, fromRight, 1, KnockbackStrength.CollisionBump, marioBEntity, true);
                         } else {
                             marioA->Powerdown(f, marioAEntity, false, marioBEntity);
                             knockbacked = false;
@@ -2334,13 +2335,13 @@ namespace Quantum {
                     }
                     return;
                 } else if (marioAStarman) {
-                    if (true && !marioB->IsStarmanInvincible) {
+                    if (marioB->IsInPowerTransition(f) && !marioB->IsStarmanInvincible) {
                         goto NormalInteractions;
                     }
                     MarioMarioAttackStarman(f, marioAEntity, marioBEntity, fromRight, dropStars);
                     return;
                 } else if (marioBStarman) {
-                    if (true && !marioA->IsStarmanInvincible) {
+                    if (marioA->IsInPowerTransition(f) && !marioA->IsStarmanInvincible) {
                         goto NormalInteractions;
                     }
                     MarioMarioAttackStarman(f, marioBEntity, marioAEntity, !fromRight, dropStars);
