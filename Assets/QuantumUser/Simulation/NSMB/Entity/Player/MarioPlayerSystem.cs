@@ -2166,9 +2166,14 @@ namespace Quantum {
                 dropStars = ownerMario->GetTeam(f) != mario->GetTeam(f);
             }
 
+            // Mario is "damageable" when he's...
+            // not in knockback, not Mega
+            // regular damageable checks (iframes is 0, not starman invincible)
+            // not in a powerUP transition while mini (specifically)
+            // Mario is in his Blue Shell and projectile doesn't affect blue Shell
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
-                && mario->IsDamageable && !mario->IsInPowerTransition(f)
+                && mario->IsDamageable && (!mario->IsInPowerTransition(f) || mario->CurrentPowerupState != PowerupState.MiniMushroom)
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
 
             if (damageable) {
@@ -2377,13 +2382,16 @@ namespace Quantum {
                 } else if (marioAShell) {
                     // only marioA is spinning in blue shell
                     if (!marioBAbove) {
+                        // since players are invincible during the powerUP
+                        // transitions use this bool to make them lose a star
+                        bool poweredDown = false;
                         // Hit them, powerdown them
                         marioB->FacingRight = !fromRight;
                         // powerdown must come before doknockback or it will not occur
                         if (dropStars) {
-                            marioB->Powerdown(f, marioBEntity, false, marioAEntity);
+                            poweredDown = marioB->Powerdown(f, marioBEntity, false, marioAEntity);
                         }
-                        marioB->DoKnockback(f, marioBEntity, !fromRight, 0, KnockbackStrength.Normal, marioAEntity, bypassDamageInvincibility: true, wasBlueShell: true);
+                        marioB->DoKnockback(f, marioBEntity, !fromRight, poweredDown ? 0 : 1, KnockbackStrength.Normal, marioAEntity, bypassDamageInvincibility: true, wasBlueShell: true);
                         marioA->FacingRight = !marioA->FacingRight;
                         marioA->ShellSpeedStage = marioAPhysicsInfo.ShellNormalStage;
                         f.Events.PlayBumpSound(marioAEntity);
@@ -2392,12 +2400,13 @@ namespace Quantum {
                 } else if (marioBShell) {
                     // only marioB is spinning in blue shell
                     if (!marioAAbove) {
+                        bool poweredDown = false;
                         // Hit them, powerdown them
                         marioA->FacingRight = fromRight;
                         if (dropStars) {
-                            marioA->Powerdown(f, marioAEntity, false, marioBEntity);
+                            poweredDown = marioA->Powerdown(f, marioAEntity, false, marioBEntity);
                         }
-                        marioA->DoKnockback(f, marioAEntity, fromRight, 0, KnockbackStrength.Normal, marioBEntity, bypassDamageInvincibility: true, wasBlueShell: true);
+                        marioA->DoKnockback(f, marioAEntity, fromRight, poweredDown ? 0 : 1, KnockbackStrength.Normal, marioBEntity, bypassDamageInvincibility: true, wasBlueShell: true);
                         marioB->FacingRight = !marioB->FacingRight;
                         marioB->ShellSpeedStage = marioBPhysicsInfo.ShellNormalStage;
                         f.Events.PlayBumpSound(marioBEntity);
@@ -2500,14 +2509,17 @@ namespace Quantum {
                     if (FPMath.Abs(velocityDifference) > averageWalkSpeed) {
                         // Bump
                         bool dealtKnockback = false;
+                        // since starman and mega mushroom has "normal interactions" when hitting player in powering UP
+                        // we want them to not lose any stars when bumping into that player
+                        bool loseStars = !marioA->IsStarmanInvincible && marioA->CurrentPowerupState != PowerupState.MegaMushroom;
                         if (marioAPhysics->IsTouchingGround && !marioAPhysics->IsUnderwater) {
-                            dealtKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, marioBEntity, bypassDamageInvincibility: true);
+                            dealtKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars && loseStars ? 1 : 0, KnockbackStrength.CollisionBump, marioBEntity, bypassDamageInvincibility: true);
                         } else {
                             marioAPhysics->Velocity.X = marioAPhysicsInfo.WalkMaxVelocity[marioAPhysicsInfo.RunSpeedStage] * (fromRight ? -1 : 1);
                         }
 
                         if (marioBPhysics->IsTouchingGround && !marioAPhysics->IsUnderwater) {
-                            dealtKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, marioAEntity, bypassDamageInvincibility: true);
+                            dealtKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars && loseStars ? 1 : 0, KnockbackStrength.CollisionBump, marioAEntity, bypassDamageInvincibility: true);
                         } else {
                             marioBPhysics->Velocity.X = marioBPhysicsInfo.WalkMaxVelocity[marioBPhysicsInfo.RunSpeedStage] * (fromRight ? 1 : -1);
                         }

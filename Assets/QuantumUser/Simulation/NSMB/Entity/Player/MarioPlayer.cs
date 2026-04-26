@@ -258,6 +258,8 @@ namespace Quantum {
             var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
             int oldObjectiveCount = gamemode.GetObjectiveCount(f, f.Unsafe.GetPointer<MarioPlayer>(entity));
 
+            f.ResolveList(PowerupAnimQueue).Clear();
+
             IsDead = true;
             FireDeath = fire;
             QuantumUtils.Decrement(ref Lives);
@@ -404,6 +406,8 @@ namespace Quantum {
             IsInShell = false;
             IsTurnaround = false;
             ForceJumpTimer = 0;
+
+            f.ResolveList(PowerupAnimQueue).Clear();
 
             physicsObject->IsFrozen = true;
             physicsObject->Velocity = FPVector2.Zero;
