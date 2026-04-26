@@ -1163,6 +1163,10 @@ namespace NSMB.Entities.Player {
                 }
                 */
 
+                if (powerup.Instant) {
+                    PlaySound(powerup.SoundEffect, new[] { powerup });
+                }
+
                 if (powerup.State == PowerupState.MegaMushroom) {
                     // play the sound here
                     PlaySound(powerup.SoundEffect, new[] { powerup });
