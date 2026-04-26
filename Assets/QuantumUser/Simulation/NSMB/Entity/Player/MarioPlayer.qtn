@@ -12,7 +12,8 @@
 #define _3_75 3.75
 
 #define DamageInvincibilityFrames 120
-#define PowerupAnimLength 36
+#define PowerupAnimLength 37
+#define PowerupAnimOscillation 6
 
 input {
 	button Up;

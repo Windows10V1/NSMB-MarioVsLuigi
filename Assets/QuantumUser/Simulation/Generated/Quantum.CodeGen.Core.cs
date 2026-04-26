@@ -3580,7 +3580,8 @@ namespace Quantum {
     public const Int32 EnemyHomeBoxBuffer = 8;
     public const Int32 MaxPlayers = 10;
     public const Int32 DamageInvincibilityFrames = 120;
-    public const Int32 PowerupAnimLength = 36;
+    public const Int32 PowerupAnimLength = 37;
+    public const Int32 PowerupAnimOscillation = 6;
     /// <summary>8.5</summary>
     public static FP _8_50 {
       [MethodImpl(MethodImplOptions.AggressiveInlining)] get { 

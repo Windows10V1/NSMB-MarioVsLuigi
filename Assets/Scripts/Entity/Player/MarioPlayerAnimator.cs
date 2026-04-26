@@ -471,6 +471,23 @@ namespace NSMB.Entities.Player {
             }
         }
 
+        public PowerupState DisplayPowerupState(MarioPlayer* mario, Frame f) {
+            // check if Mario is in a powerUP transition
+            if (mario->IsInPowerAnim(f)) {
+                var currAnim = f.ResolveList(mario->PowerupAnimQueue).GetPointer(0);
+
+                // now check its timer
+                bool displaySecond = currAnim->Timer / 6 % 2 == 1;
+                if (displaySecond) {
+                    return currAnim->EndingState;
+                } else {
+                    return currAnim->StartingState;
+                }
+            }
+
+            return mario->CurrentPowerupState;
+        }
+
         public void UpdateAnimatorVariables(Frame f, MarioPlayer* mario, PhysicsObject* physicsObject, Freezable* freezable, ref Input inputs) {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.UpdateAnimatorVariables");
 
@@ -501,8 +518,8 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamHeadCarry, heldObject != null && heldObject->HoldAboveHead);
             animator.SetBool(ParamCarryStart, heldObject != null && heldObject->HoldAboveHead && (f.Number - mario->HoldStartFrame) < 27);
             animator.SetBool(ParamPipe, f.Exists(mario->CurrentPipe));
-            animator.SetBool(ParamBlueShell, mario->DisplayPowerupState(f) == PowerupState.BlueShell);
-            animator.SetBool(ParamMini, mario->DisplayPowerupState(f) == PowerupState.MiniMushroom);
+            animator.SetBool(ParamBlueShell, DisplayPowerupState(mario, f) == PowerupState.BlueShell);
+            animator.SetBool(ParamMini, DisplayPowerupState(mario, f) == PowerupState.MiniMushroom);
             animator.SetBool(ParamMega, mario->CurrentPowerupState == PowerupState.MegaMushroom);
             animator.SetBool(ParamInShell, mario->IsInShell || (mario->CurrentPowerupState == PowerupState.BlueShell && (mario->IsCrouching || mario->IsGroundpounding || mario->IsSliding) && mario->GroundpoundStartFrames <= 9));
             animator.SetBool(ParamTurnaround, mario->IsTurnaround);
@@ -568,7 +585,7 @@ namespace NSMB.Entities.Player {
 
             // Shader effects
             TryCreateMaterialBlock();
-            int ps = mario->DisplayPowerupState(f) switch {
+            int ps = DisplayPowerupState(mario, f) switch {
                 PowerupState.FireFlower => 1,
                 PowerupState.PropellerMushroom => 2,
                 PowerupState.IceFlower => 3,
@@ -637,7 +654,7 @@ namespace NSMB.Entities.Player {
         private PowerupVisuals previousPowerupVisuals;
 
         private void UpdatePowerupVisuals(MarioPlayer* mario, Frame f) {
-            PowerupVisuals newPowerupVisuals = powerupVisuals.FirstOrDefault(pv => pv.State == mario->DisplayPowerupState(f));
+            PowerupVisuals newPowerupVisuals = powerupVisuals.FirstOrDefault(pv => pv.State == DisplayPowerupState(mario, f));
             newPowerupVisuals ??= fallbackPowerupVisuals;
 
             if (previousPowerupVisuals != newPowerupVisuals) {

@@ -1562,6 +1562,12 @@ namespace Quantum {
 
             // do the first thing on the list
             var queue = f.ResolveList(mario->PowerupAnimQueue);
+
+            // clear list if Mega
+            if (mario->MegaMushroomStartFrames > 0) {
+                queue.Clear();
+            }
+
             var currAnim = queue.GetPointer(0);
 
             // now we're GOing to tick down the timer
