@@ -2753,6 +2753,8 @@ namespace Quantum {
     public EntityRef LastAttacker;
     [FieldOffset(84)]
     [ExcludeFromPrototype()]
+    [AllocateOnComponentAdded()]
+    [FreeOnComponentRemoved()]
     public QListPtr<PowerupAnim> PowerupAnimQueue;
     [FieldOffset(44)]
     [ExcludeFromPrototype()]
@@ -2897,11 +2899,18 @@ namespace Quantum {
       }
     }
     public void ClearPointers(FrameBase f, EntityRef entity) {
-      PowerupAnimQueue = default;
+      if (PowerupAnimQueue != default) f.FreeList(ref PowerupAnimQueue);
     }
     public static void OnRemoved(FrameBase frame, EntityRef entity, void* ptr) {
       var p = (Quantum.MarioPlayer*)ptr;
       p->ClearPointers((Frame)frame, entity);
+    }
+    public void AllocatePointers(FrameBase f, EntityRef entity) {
+      f.TryAllocateList(ref PowerupAnimQueue);
+    }
+    public static void OnAdded(FrameBase frame, EntityRef entity, void* ptr) {
+      var p = (Quantum.MarioPlayer*)ptr;
+      p->AllocatePointers((Frame)frame, entity);
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (MarioPlayer*)ptr;
@@ -3571,6 +3580,7 @@ namespace Quantum {
     public const Int32 EnemyHomeBoxBuffer = 8;
     public const Int32 MaxPlayers = 10;
     public const Int32 DamageInvincibilityFrames = 120;
+    public const Int32 PowerupAnimLength = 36;
     /// <summary>8.5</summary>
     public static FP _8_50 {
       [MethodImpl(MethodImplOptions.AggressiveInlining)] get { 
@@ -4615,7 +4625,7 @@ namespace Quantum {
         .Add<Quantum.Koopa>(Quantum.Koopa.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Liquid>(Quantum.Liquid.Serialize, Quantum.Liquid.OnAdded, Quantum.Liquid.OnRemoved, ComponentFlags.None)
         .Add<Quantum.MarioBrosPlatform>(Quantum.MarioBrosPlatform.Serialize, null, null, ComponentFlags.None)
-        .Add<Quantum.MarioPlayer>(Quantum.MarioPlayer.Serialize, null, Quantum.MarioPlayer.OnRemoved, ComponentFlags.None)
+        .Add<Quantum.MarioPlayer>(Quantum.MarioPlayer.Serialize, Quantum.MarioPlayer.OnAdded, Quantum.MarioPlayer.OnRemoved, ComponentFlags.None)
         .Add<Quantum.MovingPlatform>(Quantum.MovingPlatform.Serialize, Quantum.MovingPlatform.OnAdded, Quantum.MovingPlatform.OnRemoved, ComponentFlags.None)
         .Add<Quantum.ObjectiveCoin>(Quantum.ObjectiveCoin.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PhysicsObject>(Quantum.PhysicsObject.Serialize, Quantum.PhysicsObject.OnAdded, Quantum.PhysicsObject.OnRemoved, ComponentFlags.None)

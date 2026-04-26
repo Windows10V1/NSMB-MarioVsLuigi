@@ -94,8 +94,29 @@ namespace Quantum {
         public readonly bool IsDamageable => !IsStarmanInvincible && DamageInvincibilityFrames == 0;
         public readonly bool IsInKnockback => CurrentKnockback != KnockbackStrength.None;
         public readonly bool CanCollectOwnTeamsObjectiveCoins => !IsInKnockback && DamageInvincibilityFrames == 0;
+        public readonly PowerupAnim* GetFirstPowerupAnim(Frame f) => f.ResolveList(PowerupAnimQueue).GetPointer(0);
         public readonly bool IsInPowerAnim(Frame f) => f.ResolveList(PowerupAnimQueue).Count > 0;
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
+
+        /**
+         * <summary>This is for MarioPlayerAnimator.</summary>
+         */
+        public PowerupState DisplayPowerupState(Frame f) {
+            // check if Mario is in a powerUP transition
+            if (IsInPowerAnim(f)) {
+                var currAnim = f.ResolveList(PowerupAnimQueue).GetPointer(0);
+
+                // now check its timer
+                bool displaySecond = currAnim->Timer / 6 % 2 == 0;
+                if (displaySecond) {
+                    return currAnim->EndingState;
+                } else {
+                    return currAnim->StartingState;
+                }
+            }
+
+            return CurrentPowerupState;
+        }
 
         public readonly byte? GetTeam(Frame f) {
             var data = QuantumUtils.GetPlayerData(f, PlayerRef);
@@ -243,7 +264,7 @@ namespace Quantum {
                 StartingState = startingState,
                 EndingState = endingState,
 
-                Timer = 0
+                Timer = Constants.PowerupAnimLength
             });
         }
 

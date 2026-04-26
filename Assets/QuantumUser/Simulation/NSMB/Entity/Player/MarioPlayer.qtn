@@ -12,6 +12,7 @@
 #define _3_75 3.75
 
 #define DamageInvincibilityFrames 120
+#define PowerupAnimLength 36
 
 input {
 	button Up;
@@ -103,7 +104,7 @@ component MarioPlayer {
 	[ExcludeFromPrototype] EntityRef LastAttacker;
 
 	// Powerups
-	[ExcludeFromPrototype] list<PowerupAnim> PowerupAnimQueue;
+	[ExcludeFromPrototype,AllocateOnComponentAdded,FreeOnComponentRemoved] list<PowerupAnim> PowerupAnimQueue;
     [ExcludeFromPrototype] ushort InvincibilityFrames;
 	
 	[ExcludeFromPrototype] byte MegaMushroomStartFrames;

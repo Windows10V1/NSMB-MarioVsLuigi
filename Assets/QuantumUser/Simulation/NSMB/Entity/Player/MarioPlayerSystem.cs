@@ -96,7 +96,7 @@ namespace Quantum {
 
             bool wasGroundpoundActive = mario->IsGroundpounding;
             HandlePowerups(f, ref filter, physics, stage);
-            HandlePowerupAnims(f, ref ftiler, physics, stage);
+            HandlePowerupAnims(f, ref filter, physics, stage);
             HandleBreakingBlocks(f, ref filter, physics, stage);
             HandleCrouching(f, ref filter, physics);
             HandleGroundpound(f, ref filter, physics, stage);
@@ -1552,8 +1552,22 @@ namespace Quantum {
             }
         }
 
-        private void HandlePowerupAnims(Frame f, ref Filter filter, MarioPlayerPhysicsInfo phyiscs) {
+        private void HandlePowerupAnims(Frame f, ref Filter filter, MarioPlayerPhysicsInfo phyiscs, VersusStageData stage) {
+            var mario = filter.MarioPlayer;
+            var physicsObject = filter.PhysicsObject;
 
+            if (!mario->IsInPowerAnim(f)) {
+                return;
+            }
+
+            // do the first thing on the list
+            var queue = f.ResolveList(mario->PowerupAnimQueue);
+            var currAnim = queue.GetPointer(0);
+
+            // now we're GOing to tick down the timer
+            if (QuantumUtils.Decrement(ref currAnim->Timer)) {
+                queue.RemoveAt(0);
+            }
         }
 
         private Projectile* ShootHammerProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {

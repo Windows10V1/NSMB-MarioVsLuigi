@@ -278,7 +278,7 @@ namespace NSMB.Entities.Player {
             var freezable = f.Unsafe.GetPointer<Freezable>(EntityRef);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(EntityRef);
 
-            UpdatePowerupVisuals(mario);
+            UpdatePowerupVisuals(mario, f);
 
             HandleMiscStates(f, mario, physicsObject, freezable);
             HandleAnimations(f, mario, physicsObject, freezable);
@@ -501,8 +501,8 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamHeadCarry, heldObject != null && heldObject->HoldAboveHead);
             animator.SetBool(ParamCarryStart, heldObject != null && heldObject->HoldAboveHead && (f.Number - mario->HoldStartFrame) < 27);
             animator.SetBool(ParamPipe, f.Exists(mario->CurrentPipe));
-            animator.SetBool(ParamBlueShell, mario->CurrentPowerupState == PowerupState.BlueShell);
-            animator.SetBool(ParamMini, mario->CurrentPowerupState == PowerupState.MiniMushroom);
+            animator.SetBool(ParamBlueShell, mario->DisplayPowerupState(f) == PowerupState.BlueShell);
+            animator.SetBool(ParamMini, mario->DisplayPowerupState(f) == PowerupState.MiniMushroom);
             animator.SetBool(ParamMega, mario->CurrentPowerupState == PowerupState.MegaMushroom);
             animator.SetBool(ParamInShell, mario->IsInShell || (mario->CurrentPowerupState == PowerupState.BlueShell && (mario->IsCrouching || mario->IsGroundpounding || mario->IsSliding) && mario->GroundpoundStartFrames <= 9));
             animator.SetBool(ParamTurnaround, mario->IsTurnaround);
@@ -568,7 +568,7 @@ namespace NSMB.Entities.Player {
 
             // Shader effects
             TryCreateMaterialBlock();
-            int ps = mario->CurrentPowerupState switch {
+            int ps = mario->DisplayPowerupState(f) switch {
                 PowerupState.FireFlower => 1,
                 PowerupState.PropellerMushroom => 2,
                 PowerupState.IceFlower => 3,
@@ -636,8 +636,8 @@ namespace NSMB.Entities.Player {
         [SerializeField] private PowerupVisuals[] powerupVisuals;
         private PowerupVisuals previousPowerupVisuals;
 
-        private void UpdatePowerupVisuals(MarioPlayer* mario) {
-            PowerupVisuals newPowerupVisuals = powerupVisuals.FirstOrDefault(pv => pv.State == mario->CurrentPowerupState);
+        private void UpdatePowerupVisuals(MarioPlayer* mario, Frame f) {
+            PowerupVisuals newPowerupVisuals = powerupVisuals.FirstOrDefault(pv => pv.State == mario->DisplayPowerupState(f));
             newPowerupVisuals ??= fallbackPowerupVisuals;
 
             if (previousPowerupVisuals != newPowerupVisuals) {
