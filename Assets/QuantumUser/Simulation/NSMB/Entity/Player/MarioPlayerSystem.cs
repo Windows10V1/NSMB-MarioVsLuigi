@@ -58,9 +58,10 @@ namespace Quantum {
                 break;
             }
 #else
-            if (f.GetPlayerCommand(player) is CommandSpawnReserveItem) {
+            var command = f.GetPlayerCommand(player);
+            if (command is CommandSpawnReserveItem) {
                 SpawnReserveItem(f, ref filter);
-            }
+            } 
 #endif
 
             if (HandleMegaMushroom(f, ref filter, physics, stage)) {
@@ -71,9 +72,18 @@ namespace Quantum {
                 return;
             }
 
+            if (HandleTaunting(f, ref filter, command is CommandTaunt)) {
+                HandlePowerups(f, ref filter, physics, stage);
+                HandleKnockback(f, ref filter);
+                HandleHitbox(f, ref filter, physics);
+                return;
+            }
+
             if (HandleStuckInBlock(f, ref filter, stage)) {
                 HandleCrouching(f, ref filter, physics);
                 HandleFacingDirection(f, ref filter, physics);
+                HandlePowerups(f, ref filter, physics, stage);
+                HandleKnockback(f, ref filter);
                 HandleHitbox(f, ref filter, physics);
                 return;
             }
@@ -105,6 +115,33 @@ namespace Quantum {
                 // Attempt to eject if our hitbox changes
                 HandleStuckInBlock(f, ref filter, stage);
             }
+        }
+
+        public bool HandleTaunting(Frame f, ref Filter filter, bool start) {
+            var mario = filter.MarioPlayer;
+            var physicsObject = filter.PhysicsObject;
+
+            if (!physicsObject->IsTouchingGround || FPMath.Abs(physicsObject->Velocity.X) > 2 
+                || mario->IsWallsliding || mario->IsGroundpounding || f.Exists(mario->CurrentPipe) || mario->IsInKnockback
+                || mario->IsPropellerFlying || mario->IsSpinnerFlying || mario->IsSkidding || mario->IsSliding
+                || mario->IsInShell || mario->IsTurnaround || mario->IsStuckInBlock || f.Exists(mario->HeldEntity)) {
+                // Disgusting.
+
+                if (mario->TauntFrames > 0) {
+                    mario->TauntFrames = 0;
+                }
+                return false;
+            }
+
+            QuantumUtils.Decrement(ref mario->TauntFrames);
+
+            if (start && mario->TauntFrames == 0) {
+                mario->TauntFrames = 125;
+                physicsObject->Velocity.X = 0;
+                f.Events.MarioPlayerTaunted(filter.Entity);
+            }
+
+            return mario->TauntFrames > 0;
         }
 
         public void HandleWalkingRunning(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
@@ -1089,7 +1126,7 @@ namespace Quantum {
                     bool swimming = physicsObject->IsUnderwater;
                     int framesInKnockback = f.Number - mario->KnockbackTick;
                     if (mario->DoEntityBounce
-                        || (swimming && framesInKnockback > 60)
+                        || (swimming && framesInKnockback >= 40)
                         || (!swimming && !mario->IsInWeakKnockback && physicsObject->IsTouchingGround && FPMath.Abs(physicsObject->Velocity.X) < FP._0_33 && framesInKnockback > 25)
                         || (!swimming && physicsObject->IsTouchingGround && framesInKnockback > 120)
                         || (!swimming && mario->IsInWeakKnockback && framesInKnockback > 45)) {
@@ -1421,7 +1458,7 @@ namespace Quantum {
             }
 
             PowerupState state = mario->CurrentPowerupState;
-            if (mario->MegaMushroomStartFrames > 0) {
+            if (mario->MegaMushroomStartFrames > 0 || mario->TauntFrames > 0) {
                 return;
             }
 

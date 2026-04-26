@@ -124,6 +124,8 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte PipeFrames;
 	[ExcludeFromPrototype] byte PipeCooldownFrames;
 
+	[ExcludeFromPrototype] byte TauntFrames;
+
 	[ExcludeFromPrototype] EntityRef CurrentSpinner;
 }
 
@@ -295,8 +297,11 @@ event PlayKnockbackEffect {
 	nothashed FPVector2? AttackerPosition;
 }
 
-event MarioPlayerBlueShellStomped
-{
+event MarioPlayerBlueShellStomped {
+	EntityRef Entity;
+}
+
+event MarioPlayerTaunted {
 	EntityRef Entity;
 }
 

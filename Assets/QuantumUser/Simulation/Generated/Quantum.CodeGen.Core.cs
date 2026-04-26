@@ -2618,10 +2618,10 @@ namespace Quantum {
     [FieldOffset(34)]
     [ExcludeFromPrototype()]
     public Byte SpawnpointIndex;
-    [FieldOffset(41)]
+    [FieldOffset(42)]
     [ExcludeFromPrototype()]
     public PowerupState CurrentPowerupState;
-    [FieldOffset(42)]
+    [FieldOffset(43)]
     [ExcludeFromPrototype()]
     public PowerupState PreviousPowerupState;
     [FieldOffset(104)]
@@ -2678,10 +2678,10 @@ namespace Quantum {
     [FieldOffset(35)]
     [ExcludeFromPrototype()]
     public Byte StationaryFrames;
-    [FieldOffset(38)]
+    [FieldOffset(39)]
     [ExcludeFromPrototype()]
     public JumpState JumpState;
-    [FieldOffset(39)]
+    [FieldOffset(40)]
     [ExcludeFromPrototype()]
     public JumpState PreviousJumpState;
     [FieldOffset(14)]
@@ -2702,10 +2702,10 @@ namespace Quantum {
     [FieldOffset(0)]
     [ExcludeFromPrototype()]
     public Byte CantJumpTimer;
-    [FieldOffset(37)]
+    [FieldOffset(38)]
     [ExcludeFromPrototype()]
     public Byte WallslideEndFrames;
-    [FieldOffset(36)]
+    [FieldOffset(37)]
     [ExcludeFromPrototype()]
     public Byte WalljumpFrames;
     [FieldOffset(12)]
@@ -2717,7 +2717,7 @@ namespace Quantum {
     [FieldOffset(11)]
     [ExcludeFromPrototype()]
     public Byte GroundpoundStandFrames;
-    [FieldOffset(40)]
+    [FieldOffset(41)]
     [ExcludeFromPrototype()]
     public KnockbackStrength CurrentKnockback;
     [FieldOffset(52)]
@@ -2798,6 +2798,9 @@ namespace Quantum {
     [FieldOffset(21)]
     [ExcludeFromPrototype()]
     public Byte PipeCooldownFrames;
+    [FieldOffset(36)]
+    [ExcludeFromPrototype()]
+    public Byte TauntFrames;
     [FieldOffset(128)]
     [ExcludeFromPrototype()]
     public EntityRef CurrentSpinner;
@@ -2868,6 +2871,7 @@ namespace Quantum {
         hash = hash * 31 + PipeDirection.GetHashCode();
         hash = hash * 31 + PipeFrames.GetHashCode();
         hash = hash * 31 + PipeCooldownFrames.GetHashCode();
+        hash = hash * 31 + TauntFrames.GetHashCode();
         hash = hash * 31 + CurrentSpinner.GetHashCode();
         return hash;
       }
@@ -2910,6 +2914,7 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->SlowTurnaroundFrames);
         serializer.Stream.Serialize(&p->SpawnpointIndex);
         serializer.Stream.Serialize(&p->StationaryFrames);
+        serializer.Stream.Serialize(&p->TauntFrames);
         serializer.Stream.Serialize(&p->WalljumpFrames);
         serializer.Stream.Serialize(&p->WallslideEndFrames);
         serializer.Stream.Serialize((Byte*)&p->JumpState);

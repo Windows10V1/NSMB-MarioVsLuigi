@@ -380,8 +380,6 @@ MonoBehaviour:
           Value: 1
         IsWaterSolid:
           Value: 0
-        BreakMegaObjects:
-          Value: 0
     - rid: 68130286679883788
       type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -1112,8 +1110,6 @@ MonoBehaviour:
         SlowInLiquids:
           Value: 1
         IsWaterSolid:
-          Value: 0
-        BreakMegaObjects:
           Value: 0
     - rid: 3678451543402610700
       type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -1883,8 +1879,6 @@ MonoBehaviour:
         SlowInLiquids:
           Value: 1
         IsWaterSolid:
-          Value: 0
-        BreakMegaObjects:
           Value: 0
     - rid: 8246143707158413324
       type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
