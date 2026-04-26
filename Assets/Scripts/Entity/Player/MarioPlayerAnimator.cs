@@ -519,7 +519,7 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamCarryStart, heldObject != null && heldObject->HoldAboveHead && (f.Number - mario->HoldStartFrame) < 27);
             animator.SetBool(ParamPipe, f.Exists(mario->CurrentPipe));
             animator.SetBool(ParamBlueShell, DisplayPowerupState(mario, f) == PowerupState.BlueShell);
-            animator.SetBool(ParamMini, DisplayPowerupState(mario, f) == PowerupState.MiniMushroom);
+            animator.SetBool(ParamMini, mario->CurrentPowerupState == PowerupState.MiniMushroom);
             animator.SetBool(ParamMega, mario->CurrentPowerupState == PowerupState.MegaMushroom);
             animator.SetBool(ParamInShell, mario->IsInShell || (mario->CurrentPowerupState == PowerupState.BlueShell && (mario->IsCrouching || mario->IsGroundpounding || mario->IsSliding) && mario->GroundpoundStartFrames <= 9));
             animator.SetBool(ParamTurnaround, mario->IsTurnaround);
@@ -671,17 +671,18 @@ namespace NSMB.Entities.Player {
                 bool smallToBig = !startIsBig && startIsBig != endIsBig;
                 bool bigToSmall = !endIsBig && startIsBig != endIsBig;
 
+                // smol to big transition notes
+                // stage one: .6
+                // stage two: .5
+                // stage three: .7
+                // stage four: .6
+                // stage five: .9
+                // stage six: .8
+                int currStage = (Constants.PowerupAnimLength - transition->Timer) / Constants.PowerupAnimOscillation;
+                int stageByTwo = Math.Max(currStage / 2 - 1, 0);
+
                 if (bigToSmall || smallToBig) {
-                    currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
-                    // smol to big transition notes
-                    // stage one: .6
-                    // stage two: .5
-                    // stage three: .7
-                    // stage four: .6
-                    // stage five: .9
-                    // stage six: .8
-                    int currStage = (Constants.PowerupAnimLength - transition->Timer) / Constants.PowerupAnimOscillation;
-                    int stageByTwo = Math.Max(currStage / 2 - 1, 0);
+                    currentPowerupVisuals = FindPowerupVisuals(endingState);
 
                     // .5f + 2 to the power of stageBy2
                     if (smallToBig) {
@@ -693,6 +694,19 @@ namespace NSMB.Entities.Player {
                         if (currStage % 2 == 1) scaleMulti += .1f;
                         modelScale.y = scaleMulti;
                     }
+                } else {
+                    // smol to mini mushroom etc
+                    var startVisuals = FindPowerupVisuals(transition->StartingState);
+                    var endingVisuals = FindPowerupVisuals(transition->EndingState);
+
+                    var startScale = startVisuals.ModelScale;
+                    var endScale = endingVisuals.ModelScale;
+
+                    var scaleDiff = endScale - startScale;
+
+                    float scaleMulti = .6f + Mathf.Pow(2, stageByTwo) / 10;
+                    if (currStage % 2 == 1) scaleMulti -= .1f;
+                    modelScale = startScale + scaleDiff * scaleMulti;
                 }
             }
 
