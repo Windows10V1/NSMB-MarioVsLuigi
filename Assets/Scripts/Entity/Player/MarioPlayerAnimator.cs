@@ -17,6 +17,7 @@ using UnityEngine.Rendering;
 using UnityEngine.Scripting;
 using static NSMB.Utilities.QuantumViewUtils;
 using Input = Quantum.Input;
+using System.Linq;
 
 namespace NSMB.Entities.Player {
     public unsafe class MarioPlayerAnimator : QuantumEntityViewComponent<StageContext> {
@@ -93,16 +94,15 @@ namespace NSMB.Entities.Player {
         #endregion
 
         //---Public Variables
-        public bool wasTurnaround;
-        public GameObject models;
+        [NonSerialized] public bool wasTurnaround;
 
         //---Serialized Variables
         [SerializeField] private CharacterAsset character;
 
         [Header("Animation + Rigging")]
+        [SerializeField] private GameObject modelRoot;
         [SerializeField] private Animator animator;
-        [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeShellExclude, blueShell, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuck;
+        [SerializeField] private GameObject largeShellExclude, propeller;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -138,10 +138,11 @@ namespace NSMB.Entities.Player {
         public Transform ActiveGoldBlockBone => smallGoldBlockBone.gameObject.activeInHierarchy ? smallGoldBlockBone : largeGoldBlockBone;
         public Mesh GoldBlockMesh => goldBlockMesh;
         public GameObject PropellerBlades => propeller;
+        public Animator Animator => animator;
+        public GameObject ModelRoot => modelRoot;
         
         //---Private Variables
         private Enums.PlayerEyeState eyeState;
-        private float propellerVelocity;
         private Quaternion modelRotationTarget;
         private bool modelRotateInstantly;
         private int footstepCounter;
@@ -174,7 +175,7 @@ namespace NSMB.Entities.Player {
                 materials[r] = matList;
             }
 
-            modelRotationTarget = models.transform.rotation;
+            modelRotationTarget = modelRoot.transform.rotation;
 
             StartCoroutine(BlinkRoutine());
 
@@ -261,7 +262,7 @@ namespace NSMB.Entities.Player {
 
             if (VerifiedFrame.Global->GameState >= GameState.Ended && !forceUpdate) {
                 animator.speed = 0;
-                models.SetActive(!mario->IsRespawning);
+                modelRoot.SetActive(!mario->IsRespawning);
                 SetParticleEmission(drillParticle, false);
                 SetParticleEmission(sparkles, false);
                 SetParticleEmission(iceSkiddingParticle, false);
@@ -277,6 +278,8 @@ namespace NSMB.Entities.Player {
             var freezable = f.Unsafe.GetPointer<Freezable>(EntityRef);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(EntityRef);
 
+            UpdatePowerupVisuals(mario);
+
             HandleMiscStates(f, mario, physicsObject, freezable);
             HandleAnimations(f, mario, physicsObject, freezable);
 
@@ -289,7 +292,7 @@ namespace NSMB.Entities.Player {
             }
             
             SetFacingDirection(f, mario, physicsObject);
-            InterpolateFacingDirection(mario, freezable->IsFrozen(f));
+            InterpolateFacingDirection();
             UpdateAnimatorVariables(f, mario, physicsObject, freezable, ref inputs);
             
             previousPosition = transform.position;
@@ -393,9 +396,9 @@ namespace NSMB.Entities.Player {
             modelRotateInstantly = false;
             var freezable = f.Unsafe.GetPointer<Freezable>(EntityRef);
 
-            /*if (mario->TauntFrames > 0) {
+            if (mario->TauntFrames > 0) {
                 modelRotationTarget = Quaternion.Euler(0, 180, 0);
-            } else*/ if (f.Exists(mario->CurrentPipe)) {
+            } else if (f.Exists(mario->CurrentPipe)) {
                 modelRotationTarget = Quaternion.Euler(0, mario->FacingRight ? angleR : angleL, 0);
                 modelRotateInstantly = true;
             } else if (mario->IsInKnockback || freezable->IsFrozen(f)) {
@@ -443,21 +446,16 @@ namespace NSMB.Entities.Player {
                 modelRotationTarget = Quaternion.Euler(0, mario->FacingRight ? angleR : angleL, 0);
             }
 
-            propellerVelocity = Mathf.Clamp(propellerVelocity + (1200 * ((mario->IsSpinnerFlying || mario->IsPropellerFlying || mario->UsedPropellerThisJump) ? -1 : 1) * delta), -2500, -300);
             wasTurnaround = mario->IsTurnaround;
         }
 
-        private void InterpolateFacingDirection(MarioPlayer* mario, bool frozen) {
+        private void InterpolateFacingDirection() {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.InterpolateFacingDirection");
             if (modelRotateInstantly || wasTurnaround) {
-                models.transform.rotation = modelRotationTarget;
+                modelRoot.transform.rotation = modelRotationTarget;
             } else /* if (!GameManager.Instance.GameEnded) */ {
                 float maxRotation = 2000f * Time.deltaTime;
-                models.transform.rotation = Quaternion.RotateTowards(models.transform.rotation, modelRotationTarget, maxRotation);
-            }
-
-            if (mario->CurrentPowerupState == PowerupState.PropellerMushroom && !frozen) {
-                propeller.transform.Rotate(Vector3.forward, propellerVelocity * Time.deltaTime);
+                modelRoot.transform.rotation = Quaternion.RotateTowards(modelRoot.transform.rotation, modelRotationTarget, maxRotation);
             }
         }
 
@@ -540,6 +538,7 @@ namespace NSMB.Entities.Player {
 
         private void HandleMiscStates(Frame f, MarioPlayer* mario, PhysicsObject* physicsObject, Freezable* freezable) {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.HandleMiscStates");
+
             // Scale
             Vector3 scale;
             if (mario->MegaMushroomEndFrames > 0) {
@@ -565,7 +564,7 @@ namespace NSMB.Entities.Player {
             }
 
             scale.y -= Mathf.Sin(teammateStompTimer * Mathf.PI / 0.15f) * 0.2f;
-            models.transform.SetLossyScale(scale);
+            modelRoot.transform.SetLossyScale(scale);
 
             // Shader effects
             TryCreateMaterialBlock();
@@ -578,7 +577,7 @@ namespace NSMB.Entities.Player {
             };
             materialBlock.SetFloat(ParamPowerupState, ps);
             materialBlock.SetFloat(ParamEyeState, (int) (mario->IsDead || mario->IsInKnockback ? Enums.PlayerEyeState.Death : eyeState));
-            materialBlock.SetFloat(ParamModelScale, models.transform.lossyScale.x * (mario->CurrentPowerupState >= PowerupState.Mushroom ? 1f : 0.5f));
+            materialBlock.SetFloat(ParamModelScale, modelRoot.transform.lossyScale.x * (mario->CurrentPowerupState >= PowerupState.Mushroom ? 1f : 0.5f));
 
             Vector3 giantMultiply = Vector3.one;
             float giantTimeRemaining = mario->MegaMushroomFrames / 60f;
@@ -601,40 +600,9 @@ namespace NSMB.Entities.Player {
 
             // Hit flash
             float remainingDamageInvincibility = mario->DamageInvincibilityFrames / 60f;
-            models.SetActive(f.Global->GameState >= GameState.Playing && (mario->KnockbackGetupFrames > 0 || mario->MegaMushroomStartFrames > 0 || (!mario->IsRespawning && (mario->IsDead || !(remainingDamageInvincibility > 0 && (f.Number * f.DeltaTime.AsFloat) * (remainingDamageInvincibility <= 0.75f ? 5 : 2) % 0.2f < 0.1f)))));
+            modelRoot.SetActive(f.Global->GameState >= GameState.Playing && (mario->KnockbackGetupFrames > 0 || mario->MegaMushroomStartFrames > 0 || (!mario->IsRespawning && (mario->IsDead || !(remainingDamageInvincibility > 0 && (f.Number * f.DeltaTime.AsFloat) * (remainingDamageInvincibility <= 0.75f ? 5 : 2) % 0.2f < 0.1f)))));
 
-            // Model changing
-            bool large = mario->CurrentPowerupState >= PowerupState.Mushroom;
-            largeModel.SetActive(large);
-            smallModel.SetActive(!large);
-            blueShell.SetActive(mario->CurrentPowerupState == PowerupState.BlueShell);
-            propellerHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.PropellerMushroom);
-            HammerHelm.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.HammerSuit && (!mario->IsCrouching || f.Exists(mario->CurrentPipe)));
-            HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit && (!mario->IsCrouching || f.Exists(mario->CurrentPipe)));
-            HammerTuck.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit && mario->IsCrouching && !f.Exists(mario->CurrentPipe));
-            
-            Avatar targetAvatar = large ? largeAvatar : smallAvatar;
-            bool changedAvatar = animator.avatar != targetAvatar;
-
-            if (changedAvatar) {
-                // Preserve Animations
-                int[] layers = { 0, 1, 3 };
-                AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[animator.layerCount];
-                foreach (int i in layers) {
-                    layerInfo[i] = animator.GetCurrentAnimatorStateInfo(i);
-                }
-
-                animator.avatar = targetAvatar;
-                animator.runtimeAnimatorController = large ? character.LargeOverrides : character.SmallOverrides;
-
-                // Push back state 
-                animator.Rebind();
-
-                foreach (int i in layers) {
-                    animator.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
-                }
-            }
-
+            // Z-positioning
             float newZ = -4;
             if (mario->IsDead) {
                 if (physicsObject->IsUnderwater) {
@@ -663,6 +631,24 @@ namespace NSMB.Entities.Player {
             materialBlock.SetVector(ParamShirtColor, skin?.ShirtColor != null ? skin.ShirtColor.AsColor.linear : Color.clear);
             materialBlock.SetFloat(ParamHatUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
         }
+
+        [SerializeField] private PowerupVisuals fallbackPowerupVisuals;
+        [SerializeField] private PowerupVisuals[] powerupVisuals;
+        private PowerupVisuals previousPowerupVisuals;
+
+        private void UpdatePowerupVisuals(MarioPlayer* mario) {
+            PowerupVisuals newPowerupVisuals = powerupVisuals.FirstOrDefault(pv => pv.State == mario->CurrentPowerupState);
+            newPowerupVisuals ??= fallbackPowerupVisuals;
+
+            if (previousPowerupVisuals != newPowerupVisuals) {
+                foreach (var powerupVisual in powerupVisuals) {
+                    powerupVisual.Disable();
+                }
+                newPowerupVisuals?.Enable(this);
+                previousPowerupVisuals = newPowerupVisuals;
+            }
+        }
+
 
         private unsafe void URPOnPreRender(ScriptableRenderContext context, Camera camera) {
             if (materialBlock == null) {
@@ -1271,7 +1257,7 @@ namespace NSMB.Entities.Player {
                 return;
             }
 
-            sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
+            PlaySound(SoundEffect.Powerup_HammerSuit_Bounce);
         }
 
         private void OnMarioPlayerTaunted(EventMarioPlayerTaunted e) {
@@ -1279,7 +1265,7 @@ namespace NSMB.Entities.Player {
                 return;
             }
 
-            sfx.PlayOneShot(SoundEffect.Player_Voice_Taunt);
+            PlaySound(SoundEffect.Player_Voice_Taunt);
         }
     }
 }
