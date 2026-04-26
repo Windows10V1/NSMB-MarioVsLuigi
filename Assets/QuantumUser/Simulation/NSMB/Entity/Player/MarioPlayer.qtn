@@ -28,6 +28,13 @@ input {
 	button AllowGroundpoundWithLeftRight;
 }
 
+struct PowerupAnim {
+	PowerupState StartingState;
+	PowerupState EndingState;
+
+	byte Timer;
+}
+
 enum JumpState : Byte {
     None,
     SingleJump,
@@ -96,6 +103,7 @@ component MarioPlayer {
 	[ExcludeFromPrototype] EntityRef LastAttacker;
 
 	// Powerups
+	[ExcludeFromPrototype] list<PowerupAnim> PowerupAnimQueue;
     [ExcludeFromPrototype] ushort InvincibilityFrames;
 	
 	[ExcludeFromPrototype] byte MegaMushroomStartFrames;

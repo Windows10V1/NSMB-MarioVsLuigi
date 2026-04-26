@@ -96,6 +96,7 @@ namespace Quantum {
 
             bool wasGroundpoundActive = mario->IsGroundpounding;
             HandlePowerups(f, ref filter, physics, stage);
+            HandlePowerupAnims(f, ref ftiler, physics, stage);
             HandleBreakingBlocks(f, ref filter, physics, stage);
             HandleCrouching(f, ref filter, physics);
             HandleGroundpound(f, ref filter, physics, stage);
@@ -1551,6 +1552,10 @@ namespace Quantum {
             }
         }
 
+        private void HandlePowerupAnims(Frame f, ref Filter filter, MarioPlayerPhysicsInfo phyiscs) {
+
+        }
+
         private Projectile* ShootHammerProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
@@ -2139,7 +2144,7 @@ namespace Quantum {
 
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
-                && mario->IsDamageable
+                && mario->IsDamageable && !mario->IsInPowerAnim(f)
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
 
             if (damageable) {
@@ -2248,6 +2253,9 @@ namespace Quantum {
                     }
                 } else if (marioAMega) {
                     bool knockbacked;
+                    if (true && !marioB->IsStarmanInvincible) {
+                        goto NormalInteractions;
+                    }
                     if (dropStars) {
                         if (marioB->IsStarmanInvincible) {
                             knockbacked = marioB->DoKnockback(f, marioBEntity, !fromRight, 1, KnockbackStrength.CollisionBump, marioAEntity, true);
@@ -2263,6 +2271,9 @@ namespace Quantum {
                     }
                     return;
                 } else if (marioBMega) {
+                    if (true && !marioA->IsStarmanInvincible) {
+                        goto NormalInteractions;
+                    }
                     bool knockbacked;
                     if (dropStars) {
                         if (marioA->IsStarmanInvincible) {
@@ -2300,9 +2311,15 @@ namespace Quantum {
                     }
                     return;
                 } else if (marioAStarman) {
+                    if (true && !marioB->IsStarmanInvincible) {
+                        goto NormalInteractions;
+                    }
                     MarioMarioAttackStarman(f, marioAEntity, marioBEntity, fromRight, dropStars);
                     return;
                 } else if (marioBStarman) {
+                    if (true && !marioA->IsStarmanInvincible) {
+                        goto NormalInteractions;
+                    }
                     MarioMarioAttackStarman(f, marioBEntity, marioAEntity, !fromRight, dropStars);
                     return;
                 }
@@ -2313,13 +2330,12 @@ namespace Quantum {
                 return;
             }
 
-
+        NormalInteractions:
             var marioAPhysicsInfo = f.FindAsset(marioA->PhysicsAsset);
             var marioBPhysicsInfo = f.FindAsset(marioB->PhysicsAsset);
 
             FP averageWalkSpeed = (marioAPhysicsInfo.WalkMaxVelocity[marioAPhysicsInfo.WalkSpeedStage] + marioBPhysicsInfo.WalkMaxVelocity[marioBPhysicsInfo.WalkSpeedStage]) / 2;
             FP velocityDifference = FPMath.Abs(marioAPhysics->Velocity.X - marioBPhysics->Velocity.X);
-
 
             if (!eitherDamageInvincible) {
                 // Blue shell cases

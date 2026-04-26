@@ -1231,6 +1231,34 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct PowerupAnim {
+    public const Int32 SIZE = 4;
+    public const Int32 ALIGNMENT = 1;
+    [FieldOffset(3)]
+    private fixed Byte _alignment_padding_[1];
+    [FieldOffset(2)]
+    public PowerupState StartingState;
+    [FieldOffset(1)]
+    public PowerupState EndingState;
+    [FieldOffset(0)]
+    public Byte Timer;
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 12781;
+        hash = hash * 31 + (Byte)StartingState;
+        hash = hash * 31 + (Byte)EndingState;
+        hash = hash * 31 + Timer.GetHashCode();
+        return hash;
+      }
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (PowerupAnim*)ptr;
+        serializer.Stream.Serialize(&p->Timer);
+        serializer.Stream.Serialize((Byte*)&p->EndingState);
+        serializer.Stream.Serialize((Byte*)&p->StartingState);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct StageTileInstance {
     public const Int32 SIZE = 16;
     public const Int32 ALIGNMENT = 8;
@@ -2723,6 +2751,9 @@ namespace Quantum {
     [FieldOffset(144)]
     [ExcludeFromPrototype()]
     public EntityRef LastAttacker;
+    [FieldOffset(84)]
+    [ExcludeFromPrototype()]
+    public QListPtr<PowerupAnim> PowerupAnimQueue;
     [FieldOffset(44)]
     [ExcludeFromPrototype()]
     public UInt16 InvincibilityFrames;
@@ -2838,6 +2869,7 @@ namespace Quantum {
         hash = hash * 31 + KnockbackGetupFrames.GetHashCode();
         hash = hash * 31 + CrushDamageInvincibilityFrames.GetHashCode();
         hash = hash * 31 + LastAttacker.GetHashCode();
+        hash = hash * 31 + PowerupAnimQueue.GetHashCode();
         hash = hash * 31 + InvincibilityFrames.GetHashCode();
         hash = hash * 31 + MegaMushroomStartFrames.GetHashCode();
         hash = hash * 31 + MegaMushroomFrames.GetHashCode();
@@ -2863,6 +2895,13 @@ namespace Quantum {
         hash = hash * 31 + CurrentSpinner.GetHashCode();
         return hash;
       }
+    }
+    public void ClearPointers(FrameBase f, EntityRef entity) {
+      PowerupAnimQueue = default;
+    }
+    public static void OnRemoved(FrameBase frame, EntityRef entity, void* ptr) {
+      var p = (Quantum.MarioPlayer*)ptr;
+      p->ClearPointers((Frame)frame, entity);
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (MarioPlayer*)ptr;
@@ -2921,6 +2960,7 @@ namespace Quantum {
         QBoolean.Serialize(&p->FireDeath, serializer);
         QBoolean.Serialize(&p->IsDead, serializer);
         QBoolean.Serialize(&p->IsRespawning, serializer);
+        QList.Serialize(&p->PowerupAnimQueue, serializer, Statics.SerializePowerupAnim);
         AssetRef.Serialize(&p->CharacterAsset, serializer);
         AssetRef.Serialize(&p->PhysicsAsset, serializer);
         AssetRef.Serialize(&p->ReserveItem, serializer);
@@ -4373,6 +4413,7 @@ namespace Quantum {
   public unsafe partial class Statics {
     public static FrameSerializer.Delegate SerializeBetterPhysicsContact;
     public static FrameSerializer.Delegate SerializeEntityRef;
+    public static FrameSerializer.Delegate SerializePowerupAnim;
     public static FrameSerializer.Delegate SerializePhysicsQueryRef;
     public static FrameSerializer.Delegate SerializePhysicsContact;
     public static FrameSerializer.Delegate SerializeBannedPlayerInfo;
@@ -4382,6 +4423,7 @@ namespace Quantum {
     static partial void InitStaticDelegatesGen() {
       SerializeBetterPhysicsContact = Quantum.BetterPhysicsContact.Serialize;
       SerializeEntityRef = EntityRef.Serialize;
+      SerializePowerupAnim = Quantum.PowerupAnim.Serialize;
       SerializePhysicsQueryRef = PhysicsQueryRef.Serialize;
       SerializePhysicsContact = Quantum.PhysicsContact.Serialize;
       SerializeBannedPlayerInfo = Quantum.BannedPlayerInfo.Serialize;
@@ -4513,6 +4555,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.PlayerInformation), Quantum.PlayerInformation.SIZE);
       typeRegistry.Register(typeof(PlayerRef), PlayerRef.SIZE);
       typeRegistry.Register(typeof(Quantum.Powerup), Quantum.Powerup.SIZE);
+      typeRegistry.Register(typeof(Quantum.PowerupAnim), Quantum.PowerupAnim.SIZE);
       typeRegistry.Register(typeof(Quantum.PowerupReserveResult), 1);
       typeRegistry.Register(typeof(Quantum.PowerupSpawnReason), 1);
       typeRegistry.Register(typeof(Quantum.PowerupState), 1);
@@ -4572,7 +4615,7 @@ namespace Quantum {
         .Add<Quantum.Koopa>(Quantum.Koopa.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Liquid>(Quantum.Liquid.Serialize, Quantum.Liquid.OnAdded, Quantum.Liquid.OnRemoved, ComponentFlags.None)
         .Add<Quantum.MarioBrosPlatform>(Quantum.MarioBrosPlatform.Serialize, null, null, ComponentFlags.None)
-        .Add<Quantum.MarioPlayer>(Quantum.MarioPlayer.Serialize, null, null, ComponentFlags.None)
+        .Add<Quantum.MarioPlayer>(Quantum.MarioPlayer.Serialize, null, Quantum.MarioPlayer.OnRemoved, ComponentFlags.None)
         .Add<Quantum.MovingPlatform>(Quantum.MovingPlatform.Serialize, Quantum.MovingPlatform.OnAdded, Quantum.MovingPlatform.OnRemoved, ComponentFlags.None)
         .Add<Quantum.ObjectiveCoin>(Quantum.ObjectiveCoin.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PhysicsObject>(Quantum.PhysicsObject.Serialize, Quantum.PhysicsObject.OnAdded, Quantum.PhysicsObject.OnRemoved, ComponentFlags.None)

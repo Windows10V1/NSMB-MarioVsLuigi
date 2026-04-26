@@ -877,6 +877,20 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.PowerupAnim))]
+  public unsafe partial class PowerupAnimPrototype : StructPrototype {
+    public Quantum.QEnum8<PowerupState> StartingState;
+    public Quantum.QEnum8<PowerupState> EndingState;
+    public Byte Timer;
+    partial void MaterializeUser(Frame frame, ref Quantum.PowerupAnim result, in PrototypeMaterializationContext context);
+    public void Materialize(Frame frame, ref Quantum.PowerupAnim result, in PrototypeMaterializationContext context = default) {
+        result.StartingState = this.StartingState;
+        result.EndingState = this.EndingState;
+        result.Timer = this.Timer;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.Projectile))]
   public unsafe partial class ProjectilePrototype : ComponentPrototype<Quantum.Projectile> {
     public AssetRef<ProjectileAsset> Asset;

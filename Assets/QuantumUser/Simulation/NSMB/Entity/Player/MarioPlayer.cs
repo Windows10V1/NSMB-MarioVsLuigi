@@ -94,7 +94,7 @@ namespace Quantum {
         public readonly bool IsDamageable => !IsStarmanInvincible && DamageInvincibilityFrames == 0;
         public readonly bool IsInKnockback => CurrentKnockback != KnockbackStrength.None;
         public readonly bool CanCollectOwnTeamsObjectiveCoins => !IsInKnockback && DamageInvincibilityFrames == 0;
-
+        public readonly bool IsInPowerAnim(Frame f) => f.ResolveList(PowerupAnimQueue).Count > 0;
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
 
         public readonly byte? GetTeam(Frame f) {
@@ -237,6 +237,16 @@ namespace Quantum {
             ReserveItem = newItem;
         }
 
+        public void QueuePowerupAnim(Frame f, PowerupState startingState, PowerupState endingState) {
+            var list = f.ResolveList(PowerupAnimQueue);
+            list.Add(new() {
+                StartingState = startingState,
+                EndingState = endingState,
+
+                Timer = 0
+            });
+        }
+
         public void Death(Frame f, EntityRef entity, bool fire, bool dropObjectives, EntityRef attacker) {
             if (IsDead) {
                 return;
@@ -292,7 +302,7 @@ namespace Quantum {
         }
 
         public bool Powerdown(Frame f, EntityRef entity, bool ignoreInvincible, EntityRef attacker) {
-            if (!ignoreInvincible && !IsDamageable) {
+            if (!ignoreInvincible && !IsDamageable && !IsInPowerAnim(f)) {
                 return false;
             }
 
@@ -335,6 +345,9 @@ namespace Quantum {
             PropellerLaunchFrames = 0;
             PropellerSpinFrames = 0;
             UsedPropellerThisJump = false;
+
+            // queue a powerUP animation here too...
+            QueuePowerupAnim(f, PreviousPowerupState, CurrentPowerupState);
 
             if (!IsDead) {
                 DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
