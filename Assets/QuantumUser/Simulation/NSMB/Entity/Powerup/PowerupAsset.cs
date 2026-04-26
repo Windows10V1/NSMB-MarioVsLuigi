@@ -119,7 +119,7 @@ public unsafe class PowerupAsset : CoinItemAsset, ISoundOverrideProvider {
         mario->IsInShell = false;
 
         // queue a powerUP animation
-        mario->QueuePowerupAnim(f, mario->PreviousPowerupState, mario->CurrentPowerupState);
+        mario->QueuePowerupAnim(f, mario->PreviousPowerupState, mario->CurrentPowerupState, false, this);
 
         if (previousPowerup != null && previousPowerup.EnterReserveIfOverridden) {
             if (mario->CurrentPowerupState != PowerupState.NoPowerup) {

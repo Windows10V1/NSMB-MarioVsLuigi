@@ -1231,31 +1231,37 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct PowerupAnim {
-    public const Int32 SIZE = 4;
-    public const Int32 ALIGNMENT = 1;
-    [FieldOffset(3)]
-    private fixed Byte _alignment_padding_[1];
+  public unsafe partial struct PowerupTransitionAnimation {
+    public const Int32 SIZE = 16;
+    public const Int32 ALIGNMENT = 8;
     [FieldOffset(2)]
     public PowerupState StartingState;
     [FieldOffset(1)]
     public PowerupState EndingState;
+    [FieldOffset(8)]
+    public AssetRef<PowerupAsset> Scriptable;
+    [FieldOffset(4)]
+    public QBoolean IsPowerdown;
     [FieldOffset(0)]
     public Byte Timer;
     public override readonly Int32 GetHashCode() {
       unchecked { 
-        var hash = 12781;
+        var hash = 21323;
         hash = hash * 31 + (Byte)StartingState;
         hash = hash * 31 + (Byte)EndingState;
+        hash = hash * 31 + Scriptable.GetHashCode();
+        hash = hash * 31 + IsPowerdown.GetHashCode();
         hash = hash * 31 + Timer.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (PowerupAnim*)ptr;
+        var p = (PowerupTransitionAnimation*)ptr;
         serializer.Stream.Serialize(&p->Timer);
         serializer.Stream.Serialize((Byte*)&p->EndingState);
         serializer.Stream.Serialize((Byte*)&p->StartingState);
+        QBoolean.Serialize(&p->IsPowerdown, serializer);
+        AssetRef.Serialize(&p->Scriptable, serializer);
     }
   }
   [StructLayout(LayoutKind.Explicit)]
@@ -2755,7 +2761,7 @@ namespace Quantum {
     [ExcludeFromPrototype()]
     [AllocateOnComponentAdded()]
     [FreeOnComponentRemoved()]
-    public QListPtr<PowerupAnim> PowerupAnimQueue;
+    public QListPtr<PowerupTransitionAnimation> PowerupAnimQueue;
     [FieldOffset(44)]
     [ExcludeFromPrototype()]
     public UInt16 InvincibilityFrames;
@@ -2969,7 +2975,7 @@ namespace Quantum {
         QBoolean.Serialize(&p->FireDeath, serializer);
         QBoolean.Serialize(&p->IsDead, serializer);
         QBoolean.Serialize(&p->IsRespawning, serializer);
-        QList.Serialize(&p->PowerupAnimQueue, serializer, Statics.SerializePowerupAnim);
+        QList.Serialize(&p->PowerupAnimQueue, serializer, Statics.SerializePowerupTransitionAnimation);
         AssetRef.Serialize(&p->CharacterAsset, serializer);
         AssetRef.Serialize(&p->PhysicsAsset, serializer);
         AssetRef.Serialize(&p->ReserveItem, serializer);
@@ -4424,7 +4430,7 @@ namespace Quantum {
   public unsafe partial class Statics {
     public static FrameSerializer.Delegate SerializeBetterPhysicsContact;
     public static FrameSerializer.Delegate SerializeEntityRef;
-    public static FrameSerializer.Delegate SerializePowerupAnim;
+    public static FrameSerializer.Delegate SerializePowerupTransitionAnimation;
     public static FrameSerializer.Delegate SerializePhysicsQueryRef;
     public static FrameSerializer.Delegate SerializePhysicsContact;
     public static FrameSerializer.Delegate SerializeBannedPlayerInfo;
@@ -4434,7 +4440,7 @@ namespace Quantum {
     static partial void InitStaticDelegatesGen() {
       SerializeBetterPhysicsContact = Quantum.BetterPhysicsContact.Serialize;
       SerializeEntityRef = EntityRef.Serialize;
-      SerializePowerupAnim = Quantum.PowerupAnim.Serialize;
+      SerializePowerupTransitionAnimation = Quantum.PowerupTransitionAnimation.Serialize;
       SerializePhysicsQueryRef = PhysicsQueryRef.Serialize;
       SerializePhysicsContact = Quantum.PhysicsContact.Serialize;
       SerializeBannedPlayerInfo = Quantum.BannedPlayerInfo.Serialize;
@@ -4566,10 +4572,10 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.PlayerInformation), Quantum.PlayerInformation.SIZE);
       typeRegistry.Register(typeof(PlayerRef), PlayerRef.SIZE);
       typeRegistry.Register(typeof(Quantum.Powerup), Quantum.Powerup.SIZE);
-      typeRegistry.Register(typeof(Quantum.PowerupAnim), Quantum.PowerupAnim.SIZE);
       typeRegistry.Register(typeof(Quantum.PowerupReserveResult), 1);
       typeRegistry.Register(typeof(Quantum.PowerupSpawnReason), 1);
       typeRegistry.Register(typeof(Quantum.PowerupState), 1);
+      typeRegistry.Register(typeof(Quantum.PowerupTransitionAnimation), Quantum.PowerupTransitionAnimation.SIZE);
       typeRegistry.Register(typeof(Quantum.Projectile), Quantum.Projectile.SIZE);
       typeRegistry.Register(typeof(Ptr), Ptr.SIZE);
       typeRegistry.Register(typeof(QBoolean), QBoolean.SIZE);

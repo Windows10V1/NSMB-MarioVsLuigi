@@ -1256,6 +1256,10 @@ namespace Quantum {
                 mario->DamageInvincibilityFrames = 0;
                 mario->InvincibilityFrames = 0;
 
+                // clear all queued transitions
+                var queue = f.ResolveList(mario->PowerupAnimQueue);
+                queue.Clear();
+
                 if (QuantumUtils.Decrement(ref mario->MegaMushroomStartFrames)) {
                     // Started
                     mario->MegaMushroomFrames = 15 * 60;
@@ -1562,13 +1566,12 @@ namespace Quantum {
 
             // do the first thing on the list
             var queue = f.ResolveList(mario->PowerupAnimQueue);
-
-            // clear list if Mega
-            if (mario->MegaMushroomStartFrames > 0) {
-                queue.Clear();
-            }
-
             var currAnim = queue.GetPointer(0);
+
+            // do the event!
+            if (currAnim->Timer == Constants.PowerupAnimLength) {
+                f.Events.MarioPlayerUpdatePowerupQueue(filter.Entity, currAnim);
+            }
 
             // now we're GOing to tick down the timer
             if (QuantumUtils.Decrement(ref currAnim->Timer)) {

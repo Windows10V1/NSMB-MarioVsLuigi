@@ -30,10 +30,12 @@ input {
 	button AllowGroundpoundWithLeftRight;
 }
 
-struct PowerupAnim {
+struct PowerupTransitionAnimation {
 	PowerupState StartingState;
 	PowerupState EndingState;
 
+	AssetRef<PowerupAsset> Scriptable;
+	bool IsPowerdown;
 	byte Timer;
 }
 
@@ -105,7 +107,7 @@ component MarioPlayer {
 	[ExcludeFromPrototype] EntityRef LastAttacker;
 
 	// Powerups
-	[ExcludeFromPrototype,AllocateOnComponentAdded,FreeOnComponentRemoved] list<PowerupAnim> PowerupAnimQueue;
+	[ExcludeFromPrototype,AllocateOnComponentAdded,FreeOnComponentRemoved] list<PowerupTransitionAnimation> PowerupAnimQueue;
     [ExcludeFromPrototype] ushort InvincibilityFrames;
 	
 	[ExcludeFromPrototype] byte MegaMushroomStartFrames;
@@ -199,6 +201,11 @@ synced event MarioPlayerCollectedPowerup {
 event MarioPlayerUsedReserveItem {
 	EntityRef Entity;
 	nothashed bool Success;
+}
+
+event MarioPlayerUpdatePowerupQueue {
+	EntityRef Entity;
+	nothashed PowerupTransitionAnimation* Anim;
 }
 
 event MarioPlayerWalljumped {

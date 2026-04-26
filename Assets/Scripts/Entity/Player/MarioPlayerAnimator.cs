@@ -198,7 +198,6 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerDied>(this, OnMarioPlayerDied);
             QuantumEvent.Subscribe<EventMarioPlayerPreRespawned>(this, OnMarioPlayerPreRespawned, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerRespawned>(this, OnMarioPlayerRespawned);
-            QuantumEvent.Subscribe<EventMarioPlayerTookDamage>(this, OnMarioPlayerTookDamage, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerPickedUpObject>(this, OnMarioPlayerPickedUpObject, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerThrewObject>(this, OnMarioPlayerThrewObject, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerMegaStart>(this, OnMarioPlayerMegaStart, FilterOutReplayFastForward);
@@ -214,6 +213,7 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerLandedWithAnimation>(this, OnMarioPlayerLandedWithAnimation, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerTaunted>(this, OnMarioPlayerTaunted);
+            QuantumEvent.Subscribe<EventMarioPlayerUpdatePowerupQueue>(this, OnMarioPlayerUpdatePowerupQueue, FilterOutReplayFastForward);
         }
 
         public override void OnActivate(Frame f) {
@@ -904,14 +904,6 @@ namespace NSMB.Entities.Player {
             lastBumpSound = Time.time;
         }
 
-        private void OnMarioPlayerTookDamage(EventMarioPlayerTookDamage e) {
-            if (e.Entity != EntityRef) {
-                return;
-            }
-
-            PlaySound(SoundEffect.Player_Sound_Powerdown);
-        }
-
         private void OnMarioPlayerRespawned(EventMarioPlayerRespawned e) {
             if (e.Entity != EntityRef) {
                 return;
@@ -1082,9 +1074,10 @@ namespace NSMB.Entities.Player {
                     PlaySound(powerup.SoundEffect);
                 }
                 */
-                PlaySound(powerup.SoundEffect, new[] { powerup });
 
                 if (powerup.State == PowerupState.MegaMushroom) {
+                    // play the sound here
+                    PlaySound(powerup.SoundEffect, new[] { powerup });
                     var mario = PredictedFrame.Unsafe.GetPointer<MarioPlayer>(EntityRef);
                     animator.Play(StateMegaScale, 0, 1f - (mario->MegaMushroomStartFrames / 90f));
                     Vector3 spawnPosition = transform.position;
@@ -1283,6 +1276,23 @@ namespace NSMB.Entities.Player {
             }
 
             PlaySound(SoundEffect.Player_Voice_Taunt);
+        }
+
+        private void OnMarioPlayerUpdatePowerupQueue(EventMarioPlayerUpdatePowerupQueue e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            var anim = e.Anim;
+
+            if (anim->IsPowerdown) {
+                PlaySound(SoundEffect.Player_Sound_Powerdown);
+            } else {
+                Frame f = PredictedFrame;
+                var powerup = f.FindAsset(anim->Scriptable);
+                PlaySound(powerup.SoundEffect, new[] { powerup });
+            }
+                
         }
     }
 }

@@ -877,15 +877,19 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.PowerupAnim))]
-  public unsafe partial class PowerupAnimPrototype : StructPrototype {
+  [Quantum.Prototypes.Prototype(typeof(Quantum.PowerupTransitionAnimation))]
+  public unsafe partial class PowerupTransitionAnimationPrototype : StructPrototype {
     public Quantum.QEnum8<PowerupState> StartingState;
     public Quantum.QEnum8<PowerupState> EndingState;
+    public AssetRef<PowerupAsset> Scriptable;
+    public QBoolean IsPowerdown;
     public Byte Timer;
-    partial void MaterializeUser(Frame frame, ref Quantum.PowerupAnim result, in PrototypeMaterializationContext context);
-    public void Materialize(Frame frame, ref Quantum.PowerupAnim result, in PrototypeMaterializationContext context = default) {
+    partial void MaterializeUser(Frame frame, ref Quantum.PowerupTransitionAnimation result, in PrototypeMaterializationContext context);
+    public void Materialize(Frame frame, ref Quantum.PowerupTransitionAnimation result, in PrototypeMaterializationContext context = default) {
         result.StartingState = this.StartingState;
         result.EndingState = this.EndingState;
+        result.Scriptable = this.Scriptable;
+        result.IsPowerdown = this.IsPowerdown;
         result.Timer = this.Timer;
         MaterializeUser(frame, ref result, in context);
     }
