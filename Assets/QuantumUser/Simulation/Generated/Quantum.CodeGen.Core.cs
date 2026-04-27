@@ -61,6 +61,11 @@ namespace Quantum {
     Groundpounded,
     InWall,
   }
+  public enum FriendlyFireOptions : byte {
+    NoInteract,
+    NoStarDrop,
+    StarLoss,
+  }
   public enum GameState : byte {
     PreGameRoom,
     WaitingForPlayers,
@@ -999,20 +1004,22 @@ namespace Quantum {
     public AssetRef<Map> Stage;
     [FieldOffset(32)]
     public AssetRef<GamemodeAsset> Gamemode;
-    [FieldOffset(8)]
-    public Int32 StarsToWin;
-    [FieldOffset(0)]
-    public Int32 CoinsForPowerup;
-    [FieldOffset(4)]
-    public Int32 Lives;
     [FieldOffset(12)]
-    public Int32 TimerMinutes;
-    [FieldOffset(24)]
-    public QBoolean TeamsEnabled;
+    public Int32 StarsToWin;
+    [FieldOffset(4)]
+    public Int32 CoinsForPowerup;
+    [FieldOffset(8)]
+    public Int32 Lives;
     [FieldOffset(16)]
-    public QBoolean CustomPowerupsEnabled;
+    public Int32 TimerMinutes;
+    [FieldOffset(28)]
+    public QBoolean TeamsEnabled;
     [FieldOffset(20)]
+    public QBoolean CustomPowerupsEnabled;
+    [FieldOffset(24)]
     public QBoolean DrawOnTimeUp;
+    [FieldOffset(0)]
+    public FriendlyFireOptions FriendlyFire;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 443;
@@ -1025,11 +1032,13 @@ namespace Quantum {
         hash = hash * 31 + TeamsEnabled.GetHashCode();
         hash = hash * 31 + CustomPowerupsEnabled.GetHashCode();
         hash = hash * 31 + DrawOnTimeUp.GetHashCode();
+        hash = hash * 31 + (Byte)FriendlyFire;
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (GameRules*)ptr;
+        serializer.Stream.Serialize((Byte*)&p->FriendlyFire);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);
         serializer.Stream.Serialize(&p->StarsToWin);
@@ -4445,6 +4454,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(FrameMetaData), FrameMetaData.SIZE);
       typeRegistry.Register(typeof(FrameTimer), FrameTimer.SIZE);
       typeRegistry.Register(typeof(Quantum.Freezable), Quantum.Freezable.SIZE);
+      typeRegistry.Register(typeof(Quantum.FriendlyFireOptions), 1);
       typeRegistry.Register(typeof(Quantum.GameRules), Quantum.GameRules.SIZE);
       typeRegistry.Register(typeof(Quantum.GameState), 1);
       typeRegistry.Register(typeof(Quantum.GamemodeSpecificData), Quantum.GamemodeSpecificData.SIZE);
@@ -4591,6 +4601,7 @@ namespace Quantum {
       FramePrinter.EnsurePrimitiveNotStripped<CallbackFlags>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.CoinType>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.EnemyKillReason>();
+      FramePrinter.EnsurePrimitiveNotStripped<Quantum.FriendlyFireOptions>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.GameState>();
       FramePrinter.EnsurePrimitiveNotStripped<IceBlockBreakReason>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.InputButtons>();

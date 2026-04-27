@@ -2132,9 +2132,12 @@ namespace Quantum {
             var marioPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
             var projectileAsset = f.FindAsset(projectile->Asset);
 
+            var rules = f.Global->Rules;
+
             bool dropStars = true;
+            bool noTeamKnockback = rules.FriendlyFire == FriendlyFireOptions.NoInteract;
             if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* ownerMario)) {
-                dropStars = ownerMario->GetTeam(f) != mario->GetTeam(f);
+                dropStars = ownerMario->GetTeam(f) != mario->GetTeam(f) || rules.FriendlyFire == FriendlyFireOptions.StarLoss;
             }
 
             bool damageable = !mario->IsInKnockback
@@ -2142,7 +2145,8 @@ namespace Quantum {
                 && mario->IsDamageable
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
 
-            if (damageable) {
+            // allow the fireball to collide, but do no knockback
+            if (damageable && (!noTeamKnockback || dropStars)) {
                 bool didKnockback = false;
                 bool damaged = false;
                 switch (projectileAsset.Effect) {
@@ -2201,13 +2205,19 @@ namespace Quantum {
                 return;
             }
 
+            // check game rules
+            var rules = f.Global->Rules;
+            bool dropStars = marioA->GetTeam(f) != marioB->GetTeam(f) || rules.FriendlyFire == FriendlyFireOptions.StarLoss;
+
+            // using drop stars as a team check
+            if (rules.FriendlyFire == FriendlyFireOptions.NoInteract && !dropStars) {
+                return;
+            }
+
             var marioATransform = f.Unsafe.GetPointer<Transform2D>(marioAEntity);
             var marioBTransform = f.Unsafe.GetPointer<Transform2D>(marioBEntity);
             var marioAPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioAEntity);
             var marioBPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioBEntity);
-
-            // Hit players
-            bool dropStars = marioA->GetTeam(f) != marioB->GetTeam(f);
 
             var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
             QuantumUtils.UnwrapWorldLocations(stage, marioATransform->Position, marioBTransform->Position, out FPVector2 marioAPosition, out FPVector2 marioBPosition);
@@ -2717,9 +2727,14 @@ namespace Quantum {
             QuantumUtils.UnwrapWorldLocations(f, marioTransform->Position, bumperPosition, out FPVector2 ourPos, out FPVector2 theirPos);
             bool onRight = ourPos.X > theirPos.X;
 
+            var rules = f.Global->Rules;
             bool dropStars = true;
             if (f.Unsafe.TryGetPointer(bumper, out MarioPlayer* bumperMario)) {
-                dropStars = bumperMario->GetTeam(f) != mario->GetTeam(f);
+                bool teamMatch = bumperMario->GetTeam(f) == mario->GetTeam(f);
+                if (rules.FriendlyFire == FriendlyFireOptions.NoInteract && teamMatch) {
+                    return;
+                }
+                dropStars = !teamMatch || rules.FriendlyFire == FriendlyFireOptions.StarLoss;
             }
 
             bool damaged = mario->DoKnockback(f, entity, !onRight, dropStars ? 1 : 0, KnockbackStrength.Normal, bumper, bypassDamageInvincibility: true);
