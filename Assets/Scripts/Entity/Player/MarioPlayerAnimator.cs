@@ -611,8 +611,7 @@ namespace NSMB.Entities.Player {
 
         private void UpdatePowerupVisuals(MarioPlayer* mario) {
             PowerupVisuals currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
-            currentPowerupVisuals ??= fallbackPowerupVisuals;
-
+            
             if (previousPowerupVisuals != currentPowerupVisuals) {
                 foreach (var powerupVisual in powerupVisuals) {
                     powerupVisual.Disable();
@@ -648,7 +647,12 @@ namespace NSMB.Entities.Player {
         }
 
         private PowerupVisuals FindPowerupVisuals(PowerupState state) {
-            return powerupVisuals.FirstOrDefault(pv => pv.State == state) ?? fallbackPowerupVisuals;
+            foreach (var visual in powerupVisuals) {
+                if (visual.State == state) {
+                    return visual;
+                }
+            }
+            return fallbackPowerupVisuals;
         }
 
         private unsafe void URPOnPreRender(ScriptableRenderContext context, Camera camera) {
