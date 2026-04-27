@@ -239,7 +239,7 @@ namespace Quantum {
             ReserveItem = newItem;
         }
 
-        public void QueuePowerupAnim(Frame f, PowerupState startingState, PowerupState endingState, bool isPowerdown, PowerupAsset powerupAsset = null) {
+        public void QueuePowerupAnim(Frame f, EntityRef marioEntity, PowerupState startingState, PowerupState endingState, bool isPowerdown, PowerupAsset powerupAsset = null) {
             var list = f.ResolveList(PowerupAnimQueue);
             list.Add(new() {
                 StartingState = startingState,
@@ -251,14 +251,19 @@ namespace Quantum {
             });
 
             // count the number of things in the list, check if 3
-            if (list.Count >= 3) {
+            const int maxTransitions = 3;
+            if (list.Count >= maxTransitions) {
                 // set the second powerUP transition's timer
                 var firstAnim = list.GetPointer(0);
                 var secondAnim = list.GetPointer(1);
                 secondAnim->Timer = firstAnim->Timer;
 
+                f.Events.MarioPlayerUpdatePowerupQueue(marioEntity, secondAnim);
+
                 // delete the current powerUP transition
-                list.RemoveAt(0);
+                if (list.Count > maxTransitions) {
+                    list.RemoveAt(0);
+                }
             }
         }
 
@@ -364,7 +369,7 @@ namespace Quantum {
             UsedPropellerThisJump = false;
 
             // queue a powerUP animation here too...
-            QueuePowerupAnim(f, PreviousPowerupState, CurrentPowerupState, true);
+            QueuePowerupAnim(f, entity, PreviousPowerupState, CurrentPowerupState, true);
 
             if (!IsDead) {
                 DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
