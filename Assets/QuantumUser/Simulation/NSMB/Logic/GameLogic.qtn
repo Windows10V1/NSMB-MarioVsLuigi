@@ -40,6 +40,13 @@ struct GameRules {
 	bool TeamsEnabled;
 	bool CustomPowerupsEnabled;
 	bool DrawOnTimeUp;
+	FriendlyFireOption FriendlyFire;
+}
+
+enum FriendlyFireOptions : Byte {
+	Off,
+	NoStarDrop,
+	On
 }
 
 enum GameState : Byte {
