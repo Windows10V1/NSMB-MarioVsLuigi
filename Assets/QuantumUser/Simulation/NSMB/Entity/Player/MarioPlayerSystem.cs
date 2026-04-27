@@ -2284,6 +2284,8 @@ namespace Quantum {
                 } else if (marioAMega) {
                     bool knockbacked;
                     if (marioB->IsInPowerTransition(f) && !marioB->IsStarmanInvincible) {
+                        // recalculate
+                        marioBAbove = dot < -Constants._0_66 && FPMath.Abs(yDiff) > Constants._0_73 * (Constants._3_50 + FP._0_25);
                         goto NormalInteractions;
                     }
                     if (dropStars) {
@@ -2304,6 +2306,7 @@ namespace Quantum {
                     return;
                 } else if (marioBMega) {
                     if (marioA->IsInPowerTransition(f) && !marioA->IsStarmanInvincible) {
+                        marioAAbove = dot > Constants._0_66 && FPMath.Abs(yDiff) > Constants._0_73 * (Constants._3_50 + FP._0_25);
                         goto NormalInteractions;
                     }
                     bool knockbacked;
