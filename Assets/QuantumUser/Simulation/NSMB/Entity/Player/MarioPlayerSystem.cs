@@ -2515,17 +2515,19 @@ namespace Quantum {
                         bool dealtKnockback = false;
                         // since starman and mega mushroom has "normal interactions" when hitting player in powering UP
                         // we want them to not lose any stars when bumping into that player
-                        bool loseStarsA = marioA->CurrentPowerupState != PowerupState.MegaMushroom;
+                        // bool loseStarsA = marioA->CurrentPowerupState != PowerupState.MegaMushroom;
                         if (marioAPhysics->IsTouchingGround && !marioAPhysics->IsUnderwater) {
-                            dealtKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars && loseStarsA ? 1 : 0, KnockbackStrength.CollisionBump, marioBEntity, bypassDamageInvincibility: true, ignoreInvincibleStates: true);
-                        } else {
+                            dealtKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars /*&& loseStarsA*/ ? 1 : 0, KnockbackStrength.CollisionBump, marioBEntity, bypassDamageInvincibility: true);
+                        } else if (!marioA->IsStarmanOrMega) {
+                            // don't do speed transfer if Mega!
                             marioAPhysics->Velocity.X = marioAPhysicsInfo.WalkMaxVelocity[marioAPhysicsInfo.RunSpeedStage] * (fromRight ? -1 : 1);
                         }
 
-                        bool loseStarsB = marioA->CurrentPowerupState != PowerupState.MegaMushroom;
+                        //bool loseStarsB = marioA->CurrentPowerupState != PowerupState.MegaMushroom;
                         if (marioBPhysics->IsTouchingGround && !marioAPhysics->IsUnderwater) {
-                            dealtKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars && loseStarsB ? 1 : 0, KnockbackStrength.CollisionBump, marioAEntity, bypassDamageInvincibility: true, ignoreInvincibleStates: true);
-                        } else {
+                            dealtKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars /*&& loseStarsB*/ ? 1 : 0, KnockbackStrength.CollisionBump, marioAEntity, bypassDamageInvincibility: true);
+                        } else if (!marioB->IsStarmanOrMega) {
+                            // don't do speed transfer if Mega!
                             marioBPhysics->Velocity.X = marioBPhysicsInfo.WalkMaxVelocity[marioBPhysicsInfo.RunSpeedStage] * (fromRight ? 1 : -1);
                         }
 

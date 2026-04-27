@@ -94,6 +94,7 @@ namespace Quantum {
         public readonly bool IsDamageable => !IsStarmanInvincible && DamageInvincibilityFrames == 0;
         public readonly bool IsInKnockback => CurrentKnockback != KnockbackStrength.None;
         public readonly bool CanCollectOwnTeamsObjectiveCoins => !IsInKnockback && DamageInvincibilityFrames == 0;
+        public readonly bool IsStarmanOrMega => IsStarmanInvincible || CurrentPowerupState == PowerupState.MegaMushroom;
         public readonly PowerupTransitionAnimation* GetFirstPowerupAnim(Frame f) => f.ResolveList(PowerupAnimQueue).GetPointer(0);
         public readonly bool IsInPowerTransition(Frame f) => f.ResolveList(PowerupAnimQueue).Count > 0;
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
@@ -248,6 +249,17 @@ namespace Quantum {
                 IsPowerdown = isPowerdown,
                 Timer = Constants.PowerupAnimLength
             });
+
+            // count the number of things in the list, check if 3
+            if (list.Count >= 3) {
+                // set the second powerUP transition's timer
+                var firstAnim = list.GetPointer(0);
+                var secondAnim = list.GetPointer(1);
+                secondAnim->Timer = firstAnim->Timer;
+
+                // delete the current powerUP transition
+                list.RemoveAt(0);
+            }
         }
 
         public void Death(Frame f, EntityRef entity, bool fire, bool dropObjectives, EntityRef attacker) {
@@ -452,7 +464,7 @@ namespace Quantum {
                 return false;
             }
 
-            if (!ignoreInvincibleStates && (CurrentPowerupState == PowerupState.MegaMushroom || IsStarmanInvincible)) {
+            if (!ignoreInvincibleStates && IsStarmanOrMega) {
                 return false;
             }
 
