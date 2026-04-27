@@ -11,6 +11,8 @@ namespace NSMB.Entities.Player {
         public List<GameObject> AdditionalGameObjects;
 
         public GameObject BaseModel;
+        public Vector3 ModelScale = Vector3.one;
+
         public Avatar AnimationAvatar;
         public RuntimeAnimatorController AnimatorOverrides;
 

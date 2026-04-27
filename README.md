@@ -118,6 +118,7 @@ Windows, Linux, and Mac Builds: https://github.com/ipodtouch0218/NSMB-MarioVsLui
 * IvythePoS *(es-la)*
 * Kate Karui *(sv-sv)*
 * Laxan3000 *(it-it)*
+* Lesnov (aka/discord:RalseiFluffBoy) *(hu-hu)*
 * LyroyTheToad *(it-it)*
 * Maestrike *(it-it)*
 * MagMah *(pt-pt)*

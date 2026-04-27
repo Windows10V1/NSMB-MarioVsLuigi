@@ -539,33 +539,6 @@ namespace NSMB.Entities.Player {
         private void HandleMiscStates(Frame f, MarioPlayer* mario, PhysicsObject* physicsObject, Freezable* freezable) {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.HandleMiscStates");
 
-            // Scale
-            Vector3 scale;
-            if (mario->MegaMushroomEndFrames > 0) {
-                float endTimer = mario->MegaMushroomEndFrames / 60f;
-                if (!mario->MegaMushroomStationaryEnd) {
-                    endTimer *= 2;
-                }
-
-                scale = Vector3.one + (Vector3.one * (Mathf.Min(1, endTimer / 1.5f) * 2.6f));
-            } else {
-                float startTimer = mario->MegaMushroomStartFrames / 60f;
-
-                scale = mario->CurrentPowerupState switch {
-                    PowerupState.MiniMushroom => Vector3.one * 0.5f,
-                    PowerupState.MegaMushroom => Vector3.one + (Vector3.one * (Mathf.Min(1, 1 - (startTimer / 1.5f)) * 2.6f)),
-                    _ => Vector3.one,
-                };
-            }
-
-            teammateStompTimer -= Time.deltaTime;
-            if (teammateStompTimer < 0) {
-                teammateStompTimer = 0;
-            }
-
-            scale.y -= Mathf.Sin(teammateStompTimer * Mathf.PI / 0.15f) * 0.2f;
-            modelRoot.transform.SetLossyScale(scale);
-
             // Shader effects
             TryCreateMaterialBlock();
             int ps = mario->CurrentPowerupState switch {
@@ -637,18 +610,50 @@ namespace NSMB.Entities.Player {
         private PowerupVisuals previousPowerupVisuals;
 
         private void UpdatePowerupVisuals(MarioPlayer* mario) {
-            PowerupVisuals newPowerupVisuals = powerupVisuals.FirstOrDefault(pv => pv.State == mario->CurrentPowerupState);
-            newPowerupVisuals ??= fallbackPowerupVisuals;
-
-            if (previousPowerupVisuals != newPowerupVisuals) {
+            PowerupVisuals currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
+            
+            if (previousPowerupVisuals != currentPowerupVisuals) {
                 foreach (var powerupVisual in powerupVisuals) {
                     powerupVisual.Disable();
                 }
-                newPowerupVisuals?.Enable(this);
-                previousPowerupVisuals = newPowerupVisuals;
+                currentPowerupVisuals?.Enable(this);
+                previousPowerupVisuals = currentPowerupVisuals;
             }
+
+            // Scale
+            Vector3 targetScale;
+            if (mario->MegaMushroomEndFrames > 0) {
+                // Interpoalte from mega scale to normal scale.
+                var megaVisuals = FindPowerupVisuals(PowerupState.MegaMushroom);
+                float timer = mario->MegaMushroomEndFrames / 90f;
+                if (!mario->MegaMushroomStationaryEnd) {
+                    timer *= 2;
+                }
+                targetScale = Vector3.Lerp(megaVisuals.ModelScale, currentPowerupVisuals.ModelScale, 1f - timer);
+            } else if (mario->MegaMushroomStartFrames > 0) {
+                // Interpolate from normal scale to mega scale.
+                var normalVisuals = FindPowerupVisuals(PowerupState.Mushroom);
+                float timer = mario->MegaMushroomStartFrames / 90f;
+                targetScale = Vector3.Lerp(normalVisuals.ModelScale, currentPowerupVisuals.ModelScale, 1f - timer);
+            } else {
+                // Just apply the scale
+                targetScale = currentPowerupVisuals.ModelScale;
+            }
+            if (teammateStompTimer > 0) {
+                targetScale.y -= Mathf.Sin(teammateStompTimer * Mathf.PI / 0.15f) * 0.2f;
+                teammateStompTimer -= Time.deltaTime;
+            }
+            modelRoot.transform.SetLossyScale(targetScale);
         }
 
+        private PowerupVisuals FindPowerupVisuals(PowerupState state) {
+            foreach (var visual in powerupVisuals) {
+                if (visual.State == state) {
+                    return visual;
+                }
+            }
+            return fallbackPowerupVisuals;
+        }
 
         private unsafe void URPOnPreRender(ScriptableRenderContext context, Camera camera) {
             if (materialBlock == null) {
@@ -679,6 +684,10 @@ namespace NSMB.Entities.Player {
             return Instantiate(particle, worldPos, rot ?? Quaternion.identity);
         }
 
+        /// <summary>
+        /// Used by animations as an event
+        /// </summary>
+        [Preserve]
         public void Footstep() {
             Frame f = PredictedFrame;
             if (IsReplayFastForwarding || !f.Exists(EntityRef)) {
@@ -753,6 +762,9 @@ namespace NSMB.Entities.Player {
             SingleParticleManager.Instance.Play(footstepParticleEffect, marioTransform->Position.ToUnityVector3());
         }
 
+        /// <summary>
+        /// Used by animations as an event
+        /// </summary>
         [Preserve]
         public void PlayMegaFootstep() {
             if (IsReplayFastForwarding) {
