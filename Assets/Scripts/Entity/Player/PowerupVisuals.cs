@@ -7,15 +7,49 @@ namespace NSMB.Entities.Player {
     [Serializable]
     public class PowerupVisuals {
 
+        //---Static Variables
+        #region Shader Properties
+        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+        private static readonly int OverallsMask = Shader.PropertyToID("_OverallsMask");
+        private static readonly int ShirtMask = Shader.PropertyToID("_ShirtMask");
+        private static readonly int CapMask = Shader.PropertyToID("_CapMask");
+        #endregion
+
+        //---Serialized Variables
         public PowerupState State;
         public List<GameObject> AdditionalGameObjects;
 
+        [Header("Model")]
         public GameObject BaseModel;
         public Vector3 ModelScale = Vector3.one;
 
+        [Header("Material")]
+        public MaterialTextureReplacement[] TextureReplacements;
+
+        [Header("Animation")]
         public Avatar AnimationAvatar;
         public RuntimeAnimatorController AnimatorOverrides;
 
+        //---Private Variables
+
+        public void InitializeMaterials(Dictionary<Material, Material> replacements) {
+            foreach (var textureReplacement in TextureReplacements) {
+                if (replacements.TryGetValue(textureReplacement.Material, out var mat)) {
+                    textureReplacement.Material = mat;
+                }
+            }
+        }
+
+        public void ApplyTextureReplacements() {
+            foreach (var replacement in TextureReplacements) {
+                Material material = replacement.Material;
+                material.SetTexture(MainTex, replacement.AlbedoTexture);
+                material.SetTexture(OverallsMask, replacement.OverallsMaskTexture);
+                material.SetTexture(ShirtMask, replacement.ShirtMaskTexture);
+                material.SetTexture(CapMask, replacement.CapMaskTexture);
+            }
+        }
+        
         public void Enable(MarioPlayerAnimator marioAnimator) {
             foreach (var gameObject in AdditionalGameObjects) {
                 gameObject.SetActive(true);
@@ -40,6 +74,8 @@ namespace NSMB.Entities.Player {
                     marioAnimator.Animator.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
                 }
             }
+
+            ApplyTextureReplacements();
         }
 
         public void Disable() {
@@ -47,6 +83,13 @@ namespace NSMB.Entities.Player {
                 gameObject.SetActive(false);
             }
             BaseModel.SetActive(false);
+        }
+
+
+        [Serializable]
+        public class MaterialTextureReplacement {
+            public Material Material;
+            public Texture AlbedoTexture, OverallsMaskTexture, ShirtMaskTexture, CapMaskTexture;
         }
     }
 }
