@@ -556,34 +556,6 @@ namespace NSMB.Entities.Player {
         private void HandleMiscStates(Frame f, MarioPlayer* mario, PhysicsObject* physicsObject, Freezable* freezable) {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.HandleMiscStates");
 
-            /*
-            // Scale
-            Vector3 scale;
-            if (mario->MegaMushroomEndFrames > 0) {
-                float endTimer = mario->MegaMushroomEndFrames / 60f;
-                if (!mario->MegaMushroomStationaryEnd) {
-                    endTimer *= 2;
-                }
-
-                scale = Vector3.one + (Vector3.one * (Mathf.Min(1, endTimer / 1.5f) * 2.6f));
-            } else {
-                float startTimer = mario->MegaMushroomStartFrames / 60f;
-
-                scale = mario->CurrentPowerupState switch {
-                    PowerupState.MiniMushroom => Vector3.one * 0.5f,
-                    PowerupState.MegaMushroom => Vector3.one + (Vector3.one * (Mathf.Min(1, 1 - (startTimer / 1.5f)) * 2.6f)),
-                    _ => Vector3.one,
-                };
-            }
-
-            teammateStompTimer -= Time.deltaTime;
-            if (teammateStompTimer < 0) {
-                teammateStompTimer = 0;
-            }
-
-            modelRoot.transform.SetLossyScale(scale);
-            */
-
             // Shader effects
             TryCreateMaterialBlock();
             int ps = DisplayPowerupState(mario, f) switch {
@@ -745,7 +717,12 @@ namespace NSMB.Entities.Player {
         }
 
         private PowerupVisuals FindPowerupVisuals(PowerupState state) {
-            return powerupVisuals.FirstOrDefault(pv => pv.State == state) ?? fallbackPowerupVisuals;
+            foreach (var visual in powerupVisuals) {
+                if (visual.State == state) {
+                    return visual;
+                }
+            }
+            return fallbackPowerupVisuals;
         }
 
         private unsafe void URPOnPreRender(ScriptableRenderContext context, Camera camera) {
