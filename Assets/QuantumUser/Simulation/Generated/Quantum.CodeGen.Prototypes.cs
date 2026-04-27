@@ -849,25 +849,6 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.PowBlock))]
-  public unsafe partial class PowBlockPrototype : ComponentPrototype<Quantum.PowBlock> {
-    public Byte RemainingCharges;
-    public Byte SpriteState;
-    public FP ExplosionRadius;
-    partial void MaterializeUser(Frame frame, ref Quantum.PowBlock result, in PrototypeMaterializationContext context);
-    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
-        Quantum.PowBlock component = default;
-        Materialize((Frame)f, ref component, in context);
-        return f.Set(entity, component) == SetResult.ComponentAdded;
-    }
-    public void Materialize(Frame frame, ref Quantum.PowBlock result, in PrototypeMaterializationContext context = default) {
-        result.RemainingCharges = this.RemainingCharges;
-        result.SpriteState = this.SpriteState;
-        result.ExplosionRadius = this.ExplosionRadius;
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.Powerup))]
   public unsafe partial class PowerupPrototype : ComponentPrototype<Quantum.Powerup> {
     public QBoolean FacingRight;
