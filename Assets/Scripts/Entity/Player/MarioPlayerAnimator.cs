@@ -495,6 +495,24 @@ namespace NSMB.Entities.Player {
             return mario->CurrentPowerupState;
         }
 
+        public void HandleSizeMismatch(ref Vector3 modelScale, PowerupTransitionAnimation* currAnim) {
+            var startingVisuals = FindPowerupVisuals(currAnim->StartingState);
+            var endingVisuals = FindPowerupVisuals(currAnim->EndingState);
+
+            Vector3 sizeDiff = startingVisuals.ModelScale - endingVisuals.ModelScale;
+            sizeDiff.y += startingVisuals.HeightInBlocks - endingVisuals.HeightInBlocks;
+
+            // multiply
+            if (sizeDiff.y > 0) {
+                sizeDiff.y -= .1f;
+            } else {
+                sizeDiff.y += .1f;
+            }
+
+            float transitionTimerNorm = (float) currAnim->Timer / Constants.PowerupAnimLength;
+            modelScale = Vector3.Lerp(modelScale, modelScale + sizeDiff, transitionTimerNorm);
+        }
+
         public void UpdateAnimatorVariables(Frame f, MarioPlayer* mario, PhysicsObject* physicsObject, Freezable* freezable, ref Input inputs) {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.UpdateAnimatorVariables");
 
@@ -614,13 +632,24 @@ namespace NSMB.Entities.Player {
             PowerupVisuals displayPowerupVisuals = FindPowerupVisuals(DisplayPowerupState(mario, f));
 
             // in transition, apply visuals based on the current transition we're doing!
+            bool sizeMismatch = false;
             if (mario->GetCurrentPowerTransition(f, out var currAnim)) {
                 currentPowerupVisuals = FindPowerupVisuals(currAnim->EndingState);
+
+                var startingVisuals = FindPowerupVisuals(currAnim->StartingState);
+                var endingVisuals = FindPowerupVisuals(currAnim->EndingState);
+
+                sizeMismatch = startingVisuals.ModelScale != endingVisuals.ModelScale || startingVisuals.HeightInBlocks != endingVisuals.HeightInBlocks;
             } else {
                 currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
             }
 
             Vector3 modelScale = currentPowerupVisuals.ModelScale;
+
+            // handle a size mismatch
+            if (sizeMismatch) {
+                HandleSizeMismatch(ref modelScale, currAnim);
+            }
 
             if (previousPowerupVisuals != currentPowerupVisuals || mario->GetCurrentPowerTransition(f, out _)) {
                 foreach (var powerupVisual in powerupVisuals) {
