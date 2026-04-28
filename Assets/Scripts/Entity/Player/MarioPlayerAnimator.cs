@@ -17,7 +17,6 @@ using UnityEngine.Rendering;
 using UnityEngine.Scripting;
 using static NSMB.Utilities.QuantumViewUtils;
 using Input = Quantum.Input;
-using System.Linq;
 
 namespace NSMB.Entities.Player {
     public unsafe class MarioPlayerAnimator : QuantumEntityViewComponent<StageContext> {
@@ -32,13 +31,12 @@ namespace NSMB.Entities.Player {
         private static readonly WaitForSeconds BlinkDelay = new(0.1f);
 
         #region Animator & Shader Hashes
-        private static readonly int ParamPowerupState = Shader.PropertyToID("PowerupState");
-        private static readonly int ParamEyeState = Shader.PropertyToID("EyeState");
+        private static readonly int ParamEyeState = Shader.PropertyToID("_EyeState");
         private static readonly int ParamModelScale = Shader.PropertyToID("ModelScale");
-        private static readonly int ParamMultiplyColor = Shader.PropertyToID("MultiplyColor");
-        private static readonly int ParamOverallsColor = Shader.PropertyToID("OverallsColor");
-        private static readonly int ParamShirtColor = Shader.PropertyToID("ShirtColor");
-        private static readonly int ParamHatUsesOverallsColor = Shader.PropertyToID("HatUsesOverallsColor");
+        private static readonly int ParamMultiplyColor = Shader.PropertyToID("_MultiplyColor");
+        private static readonly int ParamOverallsColor = Shader.PropertyToID("_OverallsColor");
+        private static readonly int ParamShirtColor = Shader.PropertyToID("_ShirtColor");
+        private static readonly int ParamCapUsesOverallsColor = Shader.PropertyToID("_CapUsesOverallsColor");
         private static readonly int ParamGlowColor = Shader.PropertyToID("GlowColor");
 
         private static readonly int StateFalling = Animator.StringToHash("falling");
@@ -46,7 +44,6 @@ namespace NSMB.Entities.Player {
         private static readonly int StateMegaScale = Animator.StringToHash("mega-scale");
         private static readonly int StateMegaCancel = Animator.StringToHash("mega-cancel");
         private static readonly int StateJumplanding = Animator.StringToHash("jumplanding");
-
         private static readonly int StateJumplandingEdge = Animator.StringToHash("jumplanding-edge");
 
         private static readonly int ParamVelocityX = Animator.StringToHash("velocityX");
@@ -128,9 +125,13 @@ namespace NSMB.Entities.Player {
         [SerializeField] private ParticleSystem dust;
         [SerializeField] private ParticleSystem sparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
 
+        [Header("Powerup Visuals")]
+        [SerializeField] private PowerupVisuals fallbackPowerupVisuals;
+        [SerializeField] private PowerupVisuals[] powerupVisuals;
+
         //---Components
         private readonly List<Renderer> renderers = new();
-        private readonly Dictionary<Renderer, List<Material>> materials = new();
+        private readonly Dictionary<Material, Material> clonedMaterials = new();
 
         //---Properties
         public Color GlowColor { get; private set; }
@@ -155,6 +156,7 @@ namespace NSMB.Entities.Player {
         private Vector3 previousPosition;
         private bool forceUpdate;
         private GameObject activeRespawnParticle;
+        private PowerupVisuals previousPowerupVisuals;
 
         public void OnValidate() {
             this.SetIfNull(ref animator);
@@ -165,15 +167,22 @@ namespace NSMB.Entities.Player {
             renderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>(true));
             foreach (Renderer r in renderers) {
                 // Get a copy of all materials.
-                // This looks jank as hell, but it works, because
-                // assigning to Renderer.material creates a COPY.
-                List<Material> matList = new();
-                r.GetSharedMaterials(matList);
-                r.SetMaterials(matList);
-                matList.Clear();
-                r.GetMaterials(matList);
-                materials[r] = matList;
+                var materials = r.sharedMaterials;
+                for (int i = 0; i < materials.Length; i++) {
+                    if (!clonedMaterials.TryGetValue(materials[i], out Material clonedMaterial)) {
+                        clonedMaterials[materials[i]] = clonedMaterial = Instantiate(materials[i]);
+                        clonedMaterial.SetColor(ParamOverallsColor, skin?.OverallsColor.AsColor ?? Color.clear);
+                        clonedMaterial.SetColor(ParamShirtColor, skin?.ShirtColor.AsColor ?? Color.clear);
+                        clonedMaterial.SetInteger(ParamCapUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
+                    }
+                    materials[i] = clonedMaterial;
+                }
+                r.sharedMaterials = materials;
             }
+            foreach (PowerupVisuals visual in powerupVisuals) {
+                visual.InitializeMaterials(clonedMaterials);
+            }
+            fallbackPowerupVisuals.InitializeMaterials(clonedMaterials);
 
             modelRotationTarget = modelRoot.transform.rotation;
 
@@ -557,15 +566,7 @@ namespace NSMB.Entities.Player {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.HandleMiscStates");
 
             // Shader effects
-            TryCreateMaterialBlock();
-            int ps = DisplayPowerupState(mario, f) switch {
-                PowerupState.FireFlower => 1,
-                PowerupState.PropellerMushroom => 2,
-                PowerupState.IceFlower => 3,
-                PowerupState.HammerSuit => 4,
-                _ => 0
-            };
-            materialBlock.SetFloat(ParamPowerupState, ps);
+            materialBlock ??= new();
             materialBlock.SetFloat(ParamEyeState, (int) (mario->IsDead || mario->IsInKnockback ? Enums.PlayerEyeState.Death : eyeState));
             materialBlock.SetFloat(ParamModelScale, modelRoot.transform.lossyScale.x * (mario->CurrentPowerupState >= PowerupState.Mushroom ? 1f : 0.5f));
 
@@ -580,11 +581,12 @@ namespace NSMB.Entities.Player {
 
             foreach (Renderer r in renderers) {
                 r.SetPropertyBlock(materialBlock);
-                foreach (var m in materials[r]) {
-                    var newShader = mario->IsStarmanInvincible ? rainbowShader : normalShader;
-                    if (m.shader != newShader) {
-                        m.shader = newShader;
-                    }
+            }
+
+            foreach (Material m in clonedMaterials.Values) {
+                var newShader = mario->IsStarmanInvincible ? rainbowShader : normalShader;
+                if (m.shader != newShader) {
+                    m.shader = newShader;
                 }
             }
 
@@ -609,26 +611,8 @@ namespace NSMB.Entities.Player {
             transform.position = new(transform.position.x, transform.position.y, newZ);
         }
 
-        private void TryCreateMaterialBlock() {
-            if (materialBlock != null) {
-                return;
-            }
-
-            materialBlock = new();
-
-            // Customizable player color
-            materialBlock.SetVector(ParamOverallsColor, skin?.OverallsColor.AsColor.linear ?? Color.clear);
-            materialBlock.SetVector(ParamShirtColor, skin?.ShirtColor != null ? skin.ShirtColor.AsColor.linear : Color.clear);
-            materialBlock.SetFloat(ParamHatUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
-        }
-
-        [SerializeField] private PowerupVisuals fallbackPowerupVisuals;
-        [SerializeField] private PowerupVisuals[] powerupVisuals;
-        private PowerupVisuals previousPowerupVisuals;
-
         private void UpdatePowerupVisuals(MarioPlayer* mario, Frame f) {
             PowerupVisuals currentPowerupVisuals = FindPowerupVisuals(DisplayPowerupState(mario, f));
-            currentPowerupVisuals ??= fallbackPowerupVisuals;
 
             Vector3 modelScale = currentPowerupVisuals.ModelScale;
 
@@ -686,6 +670,7 @@ namespace NSMB.Entities.Player {
                 foreach (var powerupVisual in powerupVisuals) {
                     powerupVisual.Disable();
                 }
+                fallbackPowerupVisuals.ApplyTextureReplacements();
                 currentPowerupVisuals?.Enable(this);
                 previousPowerupVisuals = currentPowerupVisuals;
             }

@@ -1032,9 +1032,9 @@ MonoBehaviour:
     type: 3}
   starCollectParticle: {fileID: 817659606265668166, guid: 0d07cd0662b5f394fa4d95667c1d1814,
     type: 3}
-  normalShader: {fileID: -6465566751694194690, guid: cc5645667770c9c44af52a452d76a115,
+  normalShader: {fileID: -6465566751694194690, guid: 914d964962549de41a603aa0bd374229,
     type: 3}
-  rainbowShader: {fileID: -6465566751694194690, guid: 51265e2a22315b048823fd06a96365a5,
+  rainbowShader: {fileID: -6465566751694194690, guid: 5d1d727bf3f780a489dbd612a9b28c77,
     type: 3}
   sfx: {fileID: 5377451828833222271}
   coinSfx: {fileID: 3452636116809643534}
@@ -1065,6 +1065,14 @@ MonoBehaviour:
     - {fileID: 4835436906010040340}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: b4703f4365152ac4489018942003fcf4, type: 3}
+      OverallsMaskTexture: {fileID: 2800000, guid: b17d63742da247248a1024b007e091f3,
+        type: 3}
+      ShirtMaskTexture: {fileID: 2800000, guid: 25584bb8bbd18ad42ad6e522db470286,
+        type: 3}
+      CapMaskTexture: {fileID: 2800000, guid: 8ab7b4d669f46da44bf989603206923e, type: 3}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
       type: 2}
@@ -1074,15 +1082,67 @@ MonoBehaviour:
     - {fileID: 4835436906010040340}
     BaseModel: {fileID: 7762643025404982223}
     ModelScale: {x: 0.5, y: 0.5, z: 0.5}
+    TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: a1854453357bb034e89ec419b0f57906,
       type: 2}
   - State: 0
-    AdditionalGameObjects: []
+    AdditionalGameObjects:
+    - {fileID: 4835436906010040340}
     BaseModel: {fileID: 7762643025404982223}
     ModelScale: {x: 1, y: 1, z: 1}
+    TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: a1854453357bb034e89ec419b0f57906,
+      type: 2}
+  - State: 2
+    AdditionalGameObjects:
+    - {fileID: 4835436906010040340}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    TextureReplacements: []
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
+      type: 2}
+  - State: 3
+    AdditionalGameObjects:
+    - {fileID: 4835436906010040340}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 426f7261dde484c43b572d0addce9ddf, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 2800000, guid: b17d63742da247248a1024b007e091f3,
+        type: 3}
+      CapMaskTexture: {fileID: 0}
+    - Material: {fileID: 2100000, guid: bfe0a50f3d6f5b64386c7392202ba06a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: f36399c1e757fed41afe9929e98f8274, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 0}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
+      type: 2}
+  - State: 4
+    AdditionalGameObjects:
+    - {fileID: 4835436906010040340}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 0e1bcddcd216a084888b28fb6dfe4516, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 2800000, guid: b17d63742da247248a1024b007e091f3,
+        type: 3}
+      CapMaskTexture: {fileID: 0}
+    - Material: {fileID: 2100000, guid: bfe0a50f3d6f5b64386c7392202ba06a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: c83eef7134f10394dba851dc1cef66f9, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 0}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
       type: 2}
   - State: 5
     AdditionalGameObjects:
@@ -1090,6 +1150,14 @@ MonoBehaviour:
     - {fileID: 800996017591979767}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 794ee2c17f1b5a74cb023e08e9e5e641, type: 3}
+      OverallsMaskTexture: {fileID: 2800000, guid: 21ea7aa339f58ee4fa55ce4110830b75,
+        type: 3}
+      ShirtMaskTexture: {fileID: 2800000, guid: 4d5b4f3445f52c849b160d7dfc336bac,
+        type: 3}
+      CapMaskTexture: {fileID: 0}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
       type: 2}
@@ -1099,6 +1167,7 @@ MonoBehaviour:
     - {fileID: 4835436906010040340}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
       type: 2}
@@ -1110,13 +1179,22 @@ MonoBehaviour:
     - {fileID: 5295268034335504878}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 5a7f2adc9a2d3784e804dfcbb822353b, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 2800000, guid: b17d63742da247248a1024b007e091f3,
+        type: 3}
+      CapMaskTexture: {fileID: 0}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
       type: 2}
   - State: 8
-    AdditionalGameObjects: []
+    AdditionalGameObjects:
+    - {fileID: 4835436906010040340}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 3.6, y: 3.6, z: 3.6}
+    TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
       type: 2}
@@ -7589,7 +7667,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 77fa7e39322fd5440bec69cf0275d39d,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2361662287400102458, guid: 77fa7e39322fd5440bec69cf0275d39d,
         type: 3}
@@ -8709,27 +8787,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8422425992379838804}
     m_Modifications:
-    - target: {fileID: -231537852577957333, guid: e0d3ef6bcff32414dbd34fc6ac031292,
-        type: 3}
-      propertyPath: m_Layer
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -1107893902141702450, guid: b9c007ad3b94b184fa982b69cd7b6c49,
-        type: 3}
-    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
-    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 0d584398a31da1a4086cc8a189562938, type: 2}
     - target: {fileID: -9183229118463196454, guid: b9c007ad3b94b184fa982b69cd7b6c49,
         type: 3}
       propertyPath: m_Layer
@@ -9403,7 +9460,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b9c007ad3b94b184fa982b69cd7b6c49,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 938075993848153346, guid: b9c007ad3b94b184fa982b69cd7b6c49,
         type: 3}
@@ -9660,6 +9717,27 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: -231537852577957333, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -1107893902141702450, guid: b9c007ad3b94b184fa982b69cd7b6c49,
+        type: 3}
+    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
+    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0d584398a31da1a4086cc8a189562938, type: 2}
     - target: {fileID: -870108453973568068, guid: 11535680862545e45ac6e9fdbfeee088,
         type: 3}
       propertyPath: m_LocalRotation.z
