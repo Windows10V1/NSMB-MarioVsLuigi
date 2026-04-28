@@ -22,6 +22,7 @@ namespace NSMB.Entities.Player {
         [Header("Model")]
         public GameObject BaseModel;
         public Vector3 ModelScale = Vector3.one;
+        public float HeightInBlocks = 1f;
 
         [Header("Material")]
         public MaterialTextureReplacement[] TextureReplacements;
@@ -47,13 +48,8 @@ namespace NSMB.Entities.Player {
                 material.SetTexture(CapMask, replacement.CapMaskTexture);
             }
         }
-        
-        public void Enable(MarioPlayerAnimator marioAnimator) {
-            foreach (var gameObject in AdditionalGameObjects) {
-                gameObject.SetActive(true);
-            }
-            BaseModel.SetActive(true);
 
+        public void SwapAnimations(MarioPlayerAnimator marioAnimator) {
             if (AnimationAvatar != marioAnimator.Animator.avatar) {
                 // Preserve Animations
                 int[] layers = { 0, 1, 3 };
@@ -72,14 +68,25 @@ namespace NSMB.Entities.Player {
                     marioAnimator.Animator.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
                 }
             }
-
-            ApplyTextureReplacements();
         }
 
-        public void Disable() {
+        public void EnableProps() {
+            foreach (var gameObject in AdditionalGameObjects) {
+                gameObject.SetActive(true);
+            }
+        }
+
+        public void DisableProps() {
             foreach (var gameObject in AdditionalGameObjects) {
                 gameObject.SetActive(false);
             }
+        }
+
+        public void EnableModel() {
+            BaseModel.SetActive(true);
+        }
+
+        public void DisableModel() {
             BaseModel.SetActive(false);
         }
 

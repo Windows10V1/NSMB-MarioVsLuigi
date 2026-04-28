@@ -95,9 +95,23 @@ namespace Quantum {
         public readonly bool IsInKnockback => CurrentKnockback != KnockbackStrength.None;
         public readonly bool CanCollectOwnTeamsObjectiveCoins => !IsInKnockback && DamageInvincibilityFrames == 0;
         public readonly bool IsStarmanOrMega => IsStarmanInvincible || CurrentPowerupState == PowerupState.MegaMushroom;
-        public readonly PowerupTransitionAnimation* GetFirstPowerupAnim(Frame f) => f.ResolveList(PowerupAnimQueue).GetPointer(0);
-        public readonly bool IsInPowerTransition(Frame f) => f.ResolveList(PowerupAnimQueue).Count > 0;
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
+
+        /**
+         * <summary>Outputs a pointer to the current transition animation Mario is in, if he is in one.</summary>
+         * <returns><strong>true</strong> if in a transition otherwise <strong>false</strong>.</returns>
+         */
+        public readonly bool GetCurrentPowerTransition(Frame f, out PowerupTransitionAnimation* transition) {
+            transition = null;
+            var queue = f.ResolveList(PowerupAnimQueue);
+
+            if (queue.Count == 0) {
+                return false;
+            }
+
+            transition = f.ResolveList(PowerupAnimQueue).GetPointer(0);
+            return true;
+        }
 
         public readonly byte? GetTeam(Frame f) {
             var data = QuantumUtils.GetPlayerData(f, PlayerRef);
@@ -324,7 +338,7 @@ namespace Quantum {
         }
 
         public bool Powerdown(Frame f, EntityRef entity, bool ignoreInvincible, EntityRef attacker) {
-            if (!ignoreInvincible && (!IsDamageable || IsInPowerTransition(f) || CurrentPowerupState == PowerupState.MegaMushroom)) {
+            if (!ignoreInvincible && (!IsDamageable || GetCurrentPowerTransition(f, out var _) || CurrentPowerupState == PowerupState.MegaMushroom)) {
                 return false;
             }
 

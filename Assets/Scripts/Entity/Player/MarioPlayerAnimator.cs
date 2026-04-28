@@ -482,11 +482,9 @@ namespace NSMB.Entities.Player {
 
         public PowerupState DisplayPowerupState(MarioPlayer* mario, Frame f) {
             // check if Mario is in a powerUP transition
-            if (mario->IsInPowerTransition(f)) {
-                var currAnim = f.ResolveList(mario->PowerupAnimQueue).GetPointer(0);
-
+            if (mario->GetCurrentPowerTransition(f, out var currAnim)) {
                 // now check its timer
-                bool displaySecond = currAnim->Timer / 6 % 2 == 1;
+                bool displaySecond = currAnim->Timer / Constants.PowerupAnimOscillation % 2 == 1;
                 if (displaySecond) {
                     return currAnim->EndingState;
                 } else {
@@ -612,67 +610,35 @@ namespace NSMB.Entities.Player {
         }
 
         private void UpdatePowerupVisuals(MarioPlayer* mario, Frame f) {
-            PowerupVisuals currentPowerupVisuals = FindPowerupVisuals(DisplayPowerupState(mario, f));
+            PowerupVisuals currentPowerupVisuals;
+            PowerupVisuals displayPowerupVisuals = FindPowerupVisuals(DisplayPowerupState(mario, f));
+
+            // in transition, apply visuals based on the current transition we're doing!
+            if (mario->GetCurrentPowerTransition(f, out var currAnim)) {
+                currentPowerupVisuals = FindPowerupVisuals(currAnim->EndingState);
+            } else {
+                currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
+            }
 
             Vector3 modelScale = currentPowerupVisuals.ModelScale;
 
-            if (mario->IsInPowerTransition(f)) {
-                var transition = mario->GetFirstPowerupAnim(f);
-                var beginningState = transition->StartingState;
-                var endingState = transition->EndingState;
-
-                bool startIsBig = beginningState >= PowerupState.Mushroom;
-                bool endIsBig = endingState >= PowerupState.Mushroom;
-
-                bool smallToBig = !startIsBig && startIsBig != endIsBig;
-                bool bigToSmall = !endIsBig && startIsBig != endIsBig;
-
-                // smol to big transition notes
-                // stage one: .6
-                // stage two: .5
-                // stage three: .7
-                // stage four: .6
-                // stage five: .9
-                // stage six: .8
-                int currStage = (Constants.PowerupAnimLength - transition->Timer) / Constants.PowerupAnimOscillation;
-                int stageByTwo = Math.Max(currStage / 2 - 1, 0);
-
-                if (bigToSmall || smallToBig) {
-                    currentPowerupVisuals = FindPowerupVisuals(endingState);
-
-                    // .5f + 2 to the power of stageBy2
-                    if (smallToBig) {
-                        float scaleMulti = .6f + Mathf.Pow(2, stageByTwo) / 10;
-                        if (currStage % 2 == 1) scaleMulti -= .1f;
-                        modelScale.y = scaleMulti;
-                    } else if (bigToSmall) {
-                        float scaleMulti = 1.25f - Mathf.Pow(2, stageByTwo) / 10;
-                        if (currStage % 2 == 1) scaleMulti += .1f;
-                        modelScale.y = scaleMulti;
-                    }
-                } else {
-                    // smol to mini mushroom etc
-                    var startVisuals = FindPowerupVisuals(transition->StartingState);
-                    var endingVisuals = FindPowerupVisuals(transition->EndingState);
-
-                    var startScale = startVisuals.ModelScale;
-                    var endScale = endingVisuals.ModelScale;
-
-                    var scaleDiff = endScale - startScale;
-
-                    float scaleMulti = .6f + Mathf.Pow(2, stageByTwo) / 10;
-                    if (currStage % 2 == 1) scaleMulti -= .1f;
-                    modelScale = startScale + scaleDiff * scaleMulti;
-                }
-            }
-
-            if (previousPowerupVisuals != currentPowerupVisuals) {
+            if (previousPowerupVisuals != currentPowerupVisuals || mario->GetCurrentPowerTransition(f, out _)) {
                 foreach (var powerupVisual in powerupVisuals) {
-                    powerupVisual.Disable();
+                    powerupVisual.DisableProps();
+                    powerupVisual.DisableModel();
                 }
+
                 fallbackPowerupVisuals.ApplyTextureReplacements();
-                currentPowerupVisuals?.Enable(this);
-                previousPowerupVisuals = currentPowerupVisuals;
+
+                // swap the model and animations for the next powerUP
+                currentPowerupVisuals?.EnableModel();
+                currentPowerupVisuals?.SwapAnimations(this);
+
+                // meanwhile enable the props for the displaying powerUP
+                displayPowerupVisuals?.EnableProps();
+                displayPowerupVisuals.ApplyTextureReplacements();
+
+                previousPowerupVisuals = displayPowerupVisuals;
             }
 
             // Scale
