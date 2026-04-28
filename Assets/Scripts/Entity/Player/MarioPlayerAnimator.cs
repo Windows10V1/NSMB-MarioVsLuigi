@@ -31,13 +31,12 @@ namespace NSMB.Entities.Player {
         private static readonly WaitForSeconds BlinkDelay = new(0.1f);
 
         #region Animator & Shader Hashes
-        private static readonly int ParamPowerupState = Shader.PropertyToID("PowerupState");
-        private static readonly int ParamEyeState = Shader.PropertyToID("EyeState");
+        private static readonly int ParamEyeState = Shader.PropertyToID("_EyeState");
         private static readonly int ParamModelScale = Shader.PropertyToID("ModelScale");
-        private static readonly int ParamMultiplyColor = Shader.PropertyToID("MultiplyColor");
-        private static readonly int ParamOverallsColor = Shader.PropertyToID("OverallsColor");
-        private static readonly int ParamShirtColor = Shader.PropertyToID("ShirtColor");
-        private static readonly int ParamCapUsesOverallsColor = Shader.PropertyToID("CapUsesOverallsColor");
+        private static readonly int ParamMultiplyColor = Shader.PropertyToID("_MultiplyColor");
+        private static readonly int ParamOverallsColor = Shader.PropertyToID("_OverallsColor");
+        private static readonly int ParamShirtColor = Shader.PropertyToID("_ShirtColor");
+        private static readonly int ParamCapUsesOverallsColor = Shader.PropertyToID("_CapUsesOverallsColor");
         private static readonly int ParamGlowColor = Shader.PropertyToID("GlowColor");
 
         private static readonly int StateFalling = Animator.StringToHash("falling");
@@ -45,7 +44,6 @@ namespace NSMB.Entities.Player {
         private static readonly int StateMegaScale = Animator.StringToHash("mega-scale");
         private static readonly int StateMegaCancel = Animator.StringToHash("mega-cancel");
         private static readonly int StateJumplanding = Animator.StringToHash("jumplanding");
-
         private static readonly int StateJumplandingEdge = Animator.StringToHash("jumplanding-edge");
 
         private static readonly int ParamVelocityX = Animator.StringToHash("velocityX");
@@ -173,8 +171,8 @@ namespace NSMB.Entities.Player {
                 for (int i = 0; i < materials.Length; i++) {
                     if (!clonedMaterials.TryGetValue(materials[i], out Material clonedMaterial)) {
                         clonedMaterials[materials[i]] = clonedMaterial = Instantiate(materials[i]);
-                        clonedMaterial.SetColor(ParamOverallsColor, skin?.OverallsColor.AsColor.linear ?? Color.clear);
-                        clonedMaterial.SetColor(ParamShirtColor, skin?.ShirtColor.AsColor.linear ?? Color.clear);
+                        clonedMaterial.SetColor(ParamOverallsColor, skin?.OverallsColor.AsColor ?? Color.clear);
+                        clonedMaterial.SetColor(ParamShirtColor, skin?.ShirtColor.AsColor ?? Color.clear);
                         clonedMaterial.SetInteger(ParamCapUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
                     }
                     materials[i] = clonedMaterial;
@@ -552,7 +550,7 @@ namespace NSMB.Entities.Player {
 
             // Shader effects
             materialBlock ??= new();
-            //materialBlock.SetFloat(ParamEyeState, (int) (mario->IsDead || mario->IsInKnockback ? Enums.PlayerEyeState.Death : eyeState));
+            materialBlock.SetFloat(ParamEyeState, (int) (mario->IsDead || mario->IsInKnockback ? Enums.PlayerEyeState.Death : eyeState));
             materialBlock.SetFloat(ParamModelScale, modelRoot.transform.lossyScale.x * (mario->CurrentPowerupState >= PowerupState.Mushroom ? 1f : 0.5f));
 
             Vector3 giantMultiply = Vector3.one;

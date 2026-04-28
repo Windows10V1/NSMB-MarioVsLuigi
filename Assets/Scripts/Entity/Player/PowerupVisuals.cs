@@ -30,8 +30,6 @@ namespace NSMB.Entities.Player {
         public Avatar AnimationAvatar;
         public RuntimeAnimatorController AnimatorOverrides;
 
-        //---Private Variables
-
         public void InitializeMaterials(Dictionary<Material, Material> replacements) {
             foreach (var textureReplacement in TextureReplacements) {
                 if (replacements.TryGetValue(textureReplacement.Material, out var mat)) {

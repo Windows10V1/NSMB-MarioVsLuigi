@@ -1263,6 +1263,11 @@ MonoBehaviour:
       ShirtMaskTexture: {fileID: 2800000, guid: bf5f4ebd679e6474399c9aa14e6bdbb7,
         type: 3}
       CapMaskTexture: {fileID: 0}
+    - Material: {fileID: 2100000, guid: 1f0daed7f9836b44ca751b260709c999, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: bd948f90d53655347890d90cb63dd9ae, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 0}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   - State: 4
@@ -1276,6 +1281,11 @@ MonoBehaviour:
       OverallsMaskTexture: {fileID: 0}
       ShirtMaskTexture: {fileID: 2800000, guid: bf5f4ebd679e6474399c9aa14e6bdbb7,
         type: 3}
+      CapMaskTexture: {fileID: 0}
+    - Material: {fileID: 2100000, guid: 1f0daed7f9836b44ca751b260709c999, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: a2c99e8568fc2664ebb1eb55c520ee10, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
       CapMaskTexture: {fileID: 0}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
