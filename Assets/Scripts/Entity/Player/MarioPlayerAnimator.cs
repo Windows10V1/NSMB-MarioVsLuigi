@@ -502,15 +502,13 @@ namespace NSMB.Entities.Player {
             Vector3 sizeDiff = startingVisuals.ModelScale - endingVisuals.ModelScale;
             sizeDiff.y += startingVisuals.HeightInBlocks - endingVisuals.HeightInBlocks;
 
-            // multiply
-            if (sizeDiff.y > 0) {
-                sizeDiff.y -= .1f;
-            } else {
-                sizeDiff.y += .1f;
-            }
+            //float transitionTimerNorm = (float) currAnim->Timer / Constants.PowerupAnimLength;
 
-            float transitionTimerNorm = (float) currAnim->Timer / Constants.PowerupAnimLength;
-            modelScale = Vector3.Lerp(modelScale, modelScale + sizeDiff, transitionTimerNorm);
+            // for choppyness
+            var currStage = (currAnim->Timer) / Constants.PowerupAnimOscillation;
+            float[] sizes = {0f, .25f, .15f, .5f, .4f, .85f, .75f};
+
+            modelScale = Vector3.Lerp(modelScale, modelScale + sizeDiff, sizes[currStage]);
         }
 
         public void UpdateAnimatorVariables(Frame f, MarioPlayer* mario, PhysicsObject* physicsObject, Freezable* freezable, ref Input inputs) {
