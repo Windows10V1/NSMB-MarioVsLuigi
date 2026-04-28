@@ -500,7 +500,7 @@ namespace NSMB.Entities.Player {
             var endingVisuals = FindPowerupVisuals(currAnim->EndingState);
 
             Vector3 sizeDiff = startingVisuals.ModelScale - endingVisuals.ModelScale;
-            sizeDiff.y += startingVisuals.HeightInBlocks - endingVisuals.HeightInBlocks;
+            sizeDiff.y += startingVisuals.ModelHeightInBlocks - endingVisuals.ModelHeightInBlocks;
 
             //float transitionTimerNorm = (float) currAnim->Timer / Constants.PowerupAnimLength;
 
@@ -637,7 +637,7 @@ namespace NSMB.Entities.Player {
                 var startingVisuals = FindPowerupVisuals(currAnim->StartingState);
                 var endingVisuals = FindPowerupVisuals(currAnim->EndingState);
 
-                sizeMismatch = startingVisuals.ModelScale != endingVisuals.ModelScale || startingVisuals.HeightInBlocks != endingVisuals.HeightInBlocks;
+                sizeMismatch = startingVisuals.ModelScale != endingVisuals.ModelScale || startingVisuals.ModelHeightInBlocks != endingVisuals.ModelHeightInBlocks;
             } else {
                 currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
             }

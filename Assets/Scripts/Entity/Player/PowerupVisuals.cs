@@ -22,7 +22,7 @@ namespace NSMB.Entities.Player {
         [Header("Model")]
         public GameObject BaseModel;
         public Vector3 ModelScale = Vector3.one;
-        public float HeightInBlocks = 1f;
+        public float ModelHeightInBlocks = 1f;
 
         [Header("Material")]
         public MaterialTextureReplacement[] TextureReplacements;
