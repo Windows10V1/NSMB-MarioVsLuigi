@@ -1570,7 +1570,7 @@ namespace Quantum {
             var currAnim = queue.GetPointer(0);
 
             // do the event!
-            if (currAnim->Timer == Constants.PowerupAnimLength) {
+            if (currAnim->Timer == Constants.PowerupTransitionLength) {
                 f.Events.MarioPlayerUpdatePowerupQueue(filter.Entity, currAnim);
             }
 

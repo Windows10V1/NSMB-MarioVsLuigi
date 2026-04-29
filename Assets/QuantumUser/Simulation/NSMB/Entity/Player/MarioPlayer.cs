@@ -261,12 +261,11 @@ namespace Quantum {
 
                 Scriptable = powerupAsset,
                 IsPowerdown = isPowerdown,
-                Timer = Constants.PowerupAnimLength
+                Timer = Constants.PowerupTransitionLength
             });
 
             // count the number of things in the list, check if 3
-            const int maxTransitions = 3;
-            if (list.Count > maxTransitions) {
+            if (list.Count > Constants.PowerupTransitionMax) {
                 // set the second powerUP transition's timer
                 var firstAnim = list.GetPointer(0);
                 var secondAnim = list.GetPointer(1);
