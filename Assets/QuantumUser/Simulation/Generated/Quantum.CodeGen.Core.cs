@@ -4548,8 +4548,8 @@ namespace Quantum {
   public unsafe partial class Statics {
     public static FrameSerializer.Delegate SerializeBetterPhysicsContact;
     public static FrameSerializer.Delegate SerializeEntityRef;
-    public static FrameSerializer.Delegate SerializePowerupTransitionAnimation;
     public static FrameSerializer.Delegate SerializeFPVector2;
+    public static FrameSerializer.Delegate SerializePowerupTransitionAnimation;
     public static FrameSerializer.Delegate SerializePhysicsQueryRef;
     public static FrameSerializer.Delegate SerializePhysicsContact;
     public static FrameSerializer.Delegate SerializeBannedPlayerInfo;
@@ -4559,8 +4559,8 @@ namespace Quantum {
     static partial void InitStaticDelegatesGen() {
       SerializeBetterPhysicsContact = Quantum.BetterPhysicsContact.Serialize;
       SerializeEntityRef = EntityRef.Serialize;
-      SerializePowerupTransitionAnimation = Quantum.PowerupTransitionAnimation.Serialize;
       SerializeFPVector2 = FPVector2.Serialize;
+      SerializePowerupTransitionAnimation = Quantum.PowerupTransitionAnimation.Serialize;
       SerializePhysicsQueryRef = PhysicsQueryRef.Serialize;
       SerializePhysicsContact = Quantum.PhysicsContact.Serialize;
       SerializeBannedPlayerInfo = Quantum.BannedPlayerInfo.Serialize;
