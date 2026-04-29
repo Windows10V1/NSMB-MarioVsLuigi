@@ -484,7 +484,7 @@ namespace NSMB.Entities.Player {
             // check if Mario is in a powerUP transition
             if (mario->GetCurrentPowerTransition(f, out var currAnim)) {
                 // now check its timer
-                bool displaySecond = currAnim->Timer / Constants.PowerupAnimOscillation % 2 == 1;
+                bool displaySecond = currAnim->Timer / Constants.PowerupTransitionOscillation % 2 == 1;
                 if (displaySecond) {
                     return currAnim->EndingState;
                 } else {
@@ -505,7 +505,7 @@ namespace NSMB.Entities.Player {
             //float transitionTimerNorm = (float) currAnim->Timer / Constants.PowerupAnimLength;
 
             // for choppyness
-            var currStage = (currAnim->Timer) / Constants.PowerupAnimOscillation;
+            var currStage = (currAnim->Timer) / Constants.PowerupTransitionOscillation;
             float[] sizes = {0f, .25f, .15f, .5f, .4f, .85f, .75f};
 
             modelScale = Vector3.Lerp(modelScale, modelScale + sizeDiff, sizes[currStage]);
