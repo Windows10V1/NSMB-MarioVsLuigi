@@ -266,7 +266,7 @@ namespace Quantum {
 
             // count the number of things in the list, check if 3
             const int maxTransitions = 3;
-            if (list.Count >= maxTransitions) {
+            if (list.Count > maxTransitions) {
                 // set the second powerUP transition's timer
                 var firstAnim = list.GetPointer(0);
                 var secondAnim = list.GetPointer(1);
@@ -275,9 +275,7 @@ namespace Quantum {
                 f.Events.MarioPlayerUpdatePowerupQueue(marioEntity, secondAnim);
 
                 // delete the current powerUP transition
-                if (list.Count > maxTransitions) {
-                    list.RemoveAt(0);
-                }
+                list.RemoveAt(0);
             }
         }
 
