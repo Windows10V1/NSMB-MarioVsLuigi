@@ -391,6 +391,42 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.FireSnake))]
+  public unsafe partial class FireSnakePrototype : ComponentPrototype<Quantum.FireSnake> {
+    public AssetRef<EntityPrototype> SegmentPrototype;
+    public FP JumpHorizontalSpeed;
+    public FP JumpHeightLow;
+    public FP JumpHeightHigh;
+    partial void MaterializeUser(Frame frame, ref Quantum.FireSnake result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.FireSnake component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.FireSnake result, in PrototypeMaterializationContext context = default) {
+        result.SegmentPrototype = this.SegmentPrototype;
+        result.JumpHorizontalSpeed = this.JumpHorizontalSpeed;
+        result.JumpHeightLow = this.JumpHeightLow;
+        result.JumpHeightHigh = this.JumpHeightHigh;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.FireSnakeSegment))]
+  public unsafe partial class FireSnakeSegmentPrototype : ComponentPrototype<Quantum.FireSnakeSegment> {
+    [HideInInspector()]
+    public Int32 _empty_prototype_dummy_field_;
+    partial void MaterializeUser(Frame frame, ref Quantum.FireSnakeSegment result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.FireSnakeSegment component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.FireSnakeSegment result, in PrototypeMaterializationContext context = default) {
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.Freezable))]
   public unsafe partial class FreezablePrototype : ComponentPrototype<Quantum.Freezable> {
     public FPVector2 IceBlockSize;
