@@ -253,8 +253,12 @@ namespace Quantum {
             ReserveItem = newItem;
         }
 
-        public void QueuePowerupAnim(Frame f, EntityRef marioEntity, PowerupState startingState, PowerupState endingState, bool isPowerdown, PowerupAsset powerupAsset = null) {
+        public void QueuePowerupAnim(Frame f, EntityRef marioEntity, PowerupState startingState, PowerupState endingState, bool isPowerdown, PowerupAsset powerupAsset = null, bool clearQueue = false) {
             var list = f.ResolveList(PowerupAnimQueue);
+            if (clearQueue) {
+                list.Clear();
+            }
+
             list.Add(new() {
                 StartingState = startingState,
                 EndingState = endingState,
@@ -380,7 +384,7 @@ namespace Quantum {
             UsedPropellerThisJump = false;
 
             // queue a powerUP animation here too...
-            QueuePowerupAnim(f, entity, PreviousPowerupState, CurrentPowerupState, true);
+            QueuePowerupAnim(f, entity, PreviousPowerupState, CurrentPowerupState, true, clearQueue: ignoreInvincible);
 
             if (!IsDead) {
                 DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
