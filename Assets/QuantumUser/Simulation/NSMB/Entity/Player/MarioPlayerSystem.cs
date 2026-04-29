@@ -1886,8 +1886,6 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var freezable = filter.Freezable;
 
-            QuantumUtils.Decrement(ref mario->CrushDamageInvincibilityFrames);
-
             if (freezable->IsFrozen(f) || f.Exists(mario->CurrentPipe) || mario->MegaMushroomStartFrames > 0 || (mario->MegaMushroomEndFrames > 0 && mario->MegaMushroomStationaryEnd)) {
                 return false;
             }
@@ -1896,12 +1894,9 @@ namespace Quantum {
             var transform = filter.Transform;
             Shape2D shape = filter.PhysicsCollider->Shape;
 
-            if (physicsObject->IsBeingCrushed) {
+            if (!mario->GetCurrentPowerTransition(f, out _)) {
                 // In a ceiling crusher
-                if (mario->CrushDamageInvincibilityFrames == 0) {
-                    mario->CrushDamageInvincibilityFrames = 30;
-                    mario->Powerdown(f, filter.Entity, true, filter.Entity);
-                }
+                mario->Powerdown(f, filter.Entity, true, filter.Entity);
                 return false;
             }
 

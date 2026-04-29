@@ -106,7 +106,6 @@ component MarioPlayer {
 	[ExcludeFromPrototype] int KnockbackTick;
 	[ExcludeFromPrototype] byte DamageInvincibilityFrames;
 	[ExcludeFromPrototype] byte KnockbackGetupFrames;
-	[ExcludeFromPrototype] byte CrushDamageInvincibilityFrames;
 	[ExcludeFromPrototype] EntityRef LastAttacker;
 
 	// Powerups
