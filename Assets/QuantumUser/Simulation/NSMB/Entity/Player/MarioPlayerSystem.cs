@@ -1894,7 +1894,7 @@ namespace Quantum {
             var transform = filter.Transform;
             Shape2D shape = filter.PhysicsCollider->Shape;
 
-            if (!mario->GetCurrentPowerTransition(f, out _)) {
+            if (physicsObject->IsBeingCrushed && !mario->GetCurrentPowerTransition(f, out _)) {
                 // In a ceiling crusher
                 mario->Powerdown(f, filter.Entity, true, filter.Entity);
                 return false;
