@@ -2761,7 +2761,7 @@ namespace Quantum {
     [ExcludeFromPrototype()]
     [AllocateOnComponentAdded()]
     [FreeOnComponentRemoved()]
-    public QListPtr<PowerupTransitionAnimation> PowerupAnimQueue;
+    public QListPtr<PowerupTransitionAnimation> PowerupTransitionQueue;
     [FieldOffset(44)]
     [ExcludeFromPrototype()]
     public UInt16 InvincibilityFrames;
@@ -2877,7 +2877,7 @@ namespace Quantum {
         hash = hash * 31 + KnockbackGetupFrames.GetHashCode();
         hash = hash * 31 + CrushDamageInvincibilityFrames.GetHashCode();
         hash = hash * 31 + LastAttacker.GetHashCode();
-        hash = hash * 31 + PowerupAnimQueue.GetHashCode();
+        hash = hash * 31 + PowerupTransitionQueue.GetHashCode();
         hash = hash * 31 + InvincibilityFrames.GetHashCode();
         hash = hash * 31 + MegaMushroomStartFrames.GetHashCode();
         hash = hash * 31 + MegaMushroomFrames.GetHashCode();
@@ -2905,14 +2905,14 @@ namespace Quantum {
       }
     }
     public void ClearPointers(FrameBase f, EntityRef entity) {
-      if (PowerupAnimQueue != default) f.FreeList(ref PowerupAnimQueue);
+      if (PowerupTransitionQueue != default) f.FreeList(ref PowerupTransitionQueue);
     }
     public static void OnRemoved(FrameBase frame, EntityRef entity, void* ptr) {
       var p = (Quantum.MarioPlayer*)ptr;
       p->ClearPointers((Frame)frame, entity);
     }
     public void AllocatePointers(FrameBase f, EntityRef entity) {
-      f.TryAllocateList(ref PowerupAnimQueue);
+      f.TryAllocateList(ref PowerupTransitionQueue);
     }
     public static void OnAdded(FrameBase frame, EntityRef entity, void* ptr) {
       var p = (Quantum.MarioPlayer*)ptr;
@@ -2975,7 +2975,7 @@ namespace Quantum {
         QBoolean.Serialize(&p->FireDeath, serializer);
         QBoolean.Serialize(&p->IsDead, serializer);
         QBoolean.Serialize(&p->IsRespawning, serializer);
-        QList.Serialize(&p->PowerupAnimQueue, serializer, Statics.SerializePowerupTransitionAnimation);
+        QList.Serialize(&p->PowerupTransitionQueue, serializer, Statics.SerializePowerupTransitionAnimation);
         AssetRef.Serialize(&p->CharacterAsset, serializer);
         AssetRef.Serialize(&p->PhysicsAsset, serializer);
         AssetRef.Serialize(&p->ReserveItem, serializer);

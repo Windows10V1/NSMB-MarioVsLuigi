@@ -110,7 +110,7 @@ component MarioPlayer {
 	[ExcludeFromPrototype] EntityRef LastAttacker;
 
 	// Powerups
-	[ExcludeFromPrototype,AllocateOnComponentAdded,FreeOnComponentRemoved] list<PowerupTransitionAnimation> PowerupAnimQueue;
+	[ExcludeFromPrototype,AllocateOnComponentAdded,FreeOnComponentRemoved] list<PowerupTransitionAnimation> PowerupTransitionQueue;
     [ExcludeFromPrototype] ushort InvincibilityFrames;
 	
 	[ExcludeFromPrototype] byte MegaMushroomStartFrames;

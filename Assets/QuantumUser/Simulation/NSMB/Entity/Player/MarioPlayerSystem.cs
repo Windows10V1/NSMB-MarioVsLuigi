@@ -1258,7 +1258,7 @@ namespace Quantum {
                 mario->InvincibilityFrames = 0;
 
                 // clear all queued transitions
-                var queue = f.ResolveList(mario->PowerupAnimQueue);
+                var queue = f.ResolveList(mario->PowerupTransitionQueue);
                 queue.Clear();
 
                 if (QuantumUtils.Decrement(ref mario->MegaMushroomStartFrames)) {
@@ -1566,7 +1566,7 @@ namespace Quantum {
             }
 
             // do the first thing on the list
-            var queue = f.ResolveList(mario->PowerupAnimQueue);
+            var queue = f.ResolveList(mario->PowerupTransitionQueue);
             var currAnim = queue.GetPointer(0);
 
             // do the event!

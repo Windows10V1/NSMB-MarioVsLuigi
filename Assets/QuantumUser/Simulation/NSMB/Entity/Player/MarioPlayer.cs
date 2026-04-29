@@ -103,13 +103,13 @@ namespace Quantum {
          */
         public readonly bool GetCurrentPowerTransition(Frame f, out PowerupTransitionAnimation* transition) {
             transition = null;
-            var queue = f.ResolveList(PowerupAnimQueue);
+            var queue = f.ResolveList(PowerupTransitionQueue);
 
             if (queue.Count == 0) {
                 return false;
             }
 
-            transition = f.ResolveList(PowerupAnimQueue).GetPointer(0);
+            transition = f.ResolveList(PowerupTransitionQueue).GetPointer(0);
             return true;
         }
 
@@ -253,12 +253,8 @@ namespace Quantum {
             ReserveItem = newItem;
         }
 
-        public void QueuePowerupAnim(Frame f, EntityRef marioEntity, PowerupState startingState, PowerupState endingState, bool isPowerdown, PowerupAsset powerupAsset = null, bool clearQueue = false) {
-            var list = f.ResolveList(PowerupAnimQueue);
-            if (clearQueue) {
-                list.Clear();
-            }
-
+        public void QueuePowerupAnim(Frame f, EntityRef marioEntity, PowerupState startingState, PowerupState endingState, bool isPowerdown, PowerupAsset powerupAsset = null) {
+            var list = f.ResolveList(PowerupTransitionQueue);
             list.Add(new() {
                 StartingState = startingState,
                 EndingState = endingState,
@@ -290,7 +286,7 @@ namespace Quantum {
             var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
             int oldObjectiveCount = gamemode.GetObjectiveCount(f, f.Unsafe.GetPointer<MarioPlayer>(entity));
 
-            f.ResolveList(PowerupAnimQueue).Clear();
+            f.ResolveList(PowerupTransitionQueue).Clear();
 
             IsDead = true;
             FireDeath = fire;
@@ -383,8 +379,11 @@ namespace Quantum {
             PropellerSpinFrames = 0;
             UsedPropellerThisJump = false;
 
+            if (ignoreInvincible) {
+                f.ResolveList(PowerupTransitionQueue).Clear();
+            }
             // queue a powerUP animation here too...
-            QueuePowerupAnim(f, entity, PreviousPowerupState, CurrentPowerupState, true, clearQueue: ignoreInvincible);
+            QueuePowerupAnim(f, entity, PreviousPowerupState, CurrentPowerupState, true);
 
             if (!IsDead) {
                 DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
@@ -439,7 +438,7 @@ namespace Quantum {
             IsTurnaround = false;
             ForceJumpTimer = 0;
 
-            f.ResolveList(PowerupAnimQueue).Clear();
+            f.ResolveList(PowerupTransitionQueue).Clear();
 
             physicsObject->IsFrozen = true;
             physicsObject->Velocity = FPVector2.Zero;
