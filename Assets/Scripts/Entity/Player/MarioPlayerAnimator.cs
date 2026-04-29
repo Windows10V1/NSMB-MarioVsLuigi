@@ -663,7 +663,7 @@ namespace NSMB.Entities.Player {
 
                 // meanwhile enable the props for the displaying powerUP
                 displayPowerupVisuals?.EnableProps();
-                displayPowerupVisuals.ApplyTextureReplacements();
+                displayPowerupVisuals?.ApplyTextureReplacements();
 
                 previousPowerupVisuals = displayPowerupVisuals;
             }
