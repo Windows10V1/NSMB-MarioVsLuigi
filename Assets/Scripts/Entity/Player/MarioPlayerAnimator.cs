@@ -505,7 +505,7 @@ namespace NSMB.Entities.Player {
             //float transitionTimerNorm = (float) currAnim->Timer / Constants.PowerupAnimLength;
 
             // for choppyness
-            var currStage = (currAnim->Timer) / Constants.PowerupTransitionOscillation;
+            var currStage = currAnim->Timer / Constants.PowerupTransitionOscillation;
             float[] sizes = {0f, .25f, .15f, .5f, .4f, .85f, .75f};
 
             modelScale = Vector3.Lerp(modelScale, modelScale + sizeDiff, sizes[currStage]);
