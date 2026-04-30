@@ -61,6 +61,11 @@ namespace Quantum {
     Groundpounded,
     InWall,
   }
+  public enum FriendlyFireOptions : byte {
+    NoInteract,
+    NoStarDrop,
+    StarLoss,
+  }
   public enum GameState : byte {
     PreGameRoom,
     WaitingForPlayers,
@@ -999,23 +1004,25 @@ namespace Quantum {
     public AssetRef<Map> Stage;
     [FieldOffset(40)]
     public AssetRef<GamemodeAsset> Gamemode;
-    [FieldOffset(16)]
-    public Int32 StarsToWin;
-    [FieldOffset(4)]
-    public Int32 CoinsForPowerup;
-    [FieldOffset(8)]
-    public Int32 Lives;
     [FieldOffset(20)]
-    public Int32 TimerMinutes;
-    [FieldOffset(32)]
-    public QBoolean TeamsEnabled;
-    [FieldOffset(24)]
-    public QBoolean CustomPowerupsEnabled;
-    [FieldOffset(28)]
-    public QBoolean DrawOnTimeUp;
+    public Int32 StarsToWin;
+    [FieldOffset(8)]
+    public Int32 CoinsForPowerup;
     [FieldOffset(12)]
-    public Int32 StarFountain;
+    public Int32 Lives;
+    [FieldOffset(24)]
+    public Int32 TimerMinutes;
+    [FieldOffset(36)]
+    public QBoolean TeamsEnabled;
+    [FieldOffset(28)]
+    public QBoolean CustomPowerupsEnabled;
+    [FieldOffset(32)]
+    public QBoolean DrawOnTimeUp;
     [FieldOffset(0)]
+    public FriendlyFireOptions FriendlyFire;
+    [FieldOffset(16)]
+    public Int32 StarFountain;
+    [FieldOffset(4)]
     public Int32 CoinDeathPenalty;
     public override readonly Int32 GetHashCode() {
       unchecked { 
@@ -1029,6 +1036,7 @@ namespace Quantum {
         hash = hash * 31 + TeamsEnabled.GetHashCode();
         hash = hash * 31 + CustomPowerupsEnabled.GetHashCode();
         hash = hash * 31 + DrawOnTimeUp.GetHashCode();
+        hash = hash * 31 + (Byte)FriendlyFire;
         hash = hash * 31 + StarFountain.GetHashCode();
         hash = hash * 31 + CoinDeathPenalty.GetHashCode();
         return hash;
@@ -1036,6 +1044,7 @@ namespace Quantum {
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (GameRules*)ptr;
+        serializer.Stream.Serialize((Byte*)&p->FriendlyFire);
         serializer.Stream.Serialize(&p->CoinDeathPenalty);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);
@@ -4558,6 +4567,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(FrameMetaData), FrameMetaData.SIZE);
       typeRegistry.Register(typeof(FrameTimer), FrameTimer.SIZE);
       typeRegistry.Register(typeof(Quantum.Freezable), Quantum.Freezable.SIZE);
+      typeRegistry.Register(typeof(Quantum.FriendlyFireOptions), 1);
       typeRegistry.Register(typeof(Quantum.GameRules), Quantum.GameRules.SIZE);
       typeRegistry.Register(typeof(Quantum.GameState), 1);
       typeRegistry.Register(typeof(Quantum.GamemodeSpecificData), Quantum.GamemodeSpecificData.SIZE);
@@ -4706,6 +4716,7 @@ namespace Quantum {
       FramePrinter.EnsurePrimitiveNotStripped<CallbackFlags>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.CoinType>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.EnemyKillReason>();
+      FramePrinter.EnsurePrimitiveNotStripped<Quantum.FriendlyFireOptions>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.GameState>();
       FramePrinter.EnsurePrimitiveNotStripped<IceBlockBreakReason>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.InputButtons>();
