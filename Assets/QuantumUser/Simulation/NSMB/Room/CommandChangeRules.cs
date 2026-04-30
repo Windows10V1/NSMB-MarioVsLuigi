@@ -15,9 +15,9 @@ namespace Quantum {
         public bool TeamsEnabled;
         public bool CustomPowerupsEnabled;
         public bool DrawOnTimeUp;
-        public int FriendlyFire;
         public int StarFountain;
         public int CoinDeathPenalty;
+        public int FriendlyFire;
 
         public override void Serialize(BitStream stream) {
             if (stream.Writing) {
@@ -35,9 +35,9 @@ namespace Quantum {
             stream.Serialize(ref TeamsEnabled);
             stream.Serialize(ref CustomPowerupsEnabled);
             stream.Serialize(ref DrawOnTimeUp);
-            stream.Serialize(ref FriendlyFire);
             stream.Serialize(ref StarFountain);
             stream.Serialize(ref CoinDeathPenalty);
+            stream.Serialize(ref FriendlyFire);
         }
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* playerData) {
@@ -85,14 +85,14 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.DrawOnTimeUp)) {
                 rules.DrawOnTimeUp = DrawOnTimeUp;
             }
-            if (rulesChanges.HasFlag(Rules.FriendlyFire)) {
-                rules.FriendlyFire = (FriendlyFireOptions)FriendlyFire;
-            }
             if (rulesChanges.HasFlag(Rules.StarFountain)) {
                 rules.StarFountain = StarFountain;
             }
             if (rulesChanges.HasFlag(Rules.CoinDeathPenalty)) {
                 rules.CoinDeathPenalty = CoinDeathPenalty;
+            }
+            if (rulesChanges.HasFlag(Rules.FriendlyFire)) {
+                rules.FriendlyFire = (FriendlyFireOptions) FriendlyFire;
             }
 
             f.Global->Rules = rules;
@@ -115,9 +115,9 @@ namespace Quantum {
             TeamsEnabled = 1 << 6,
             CustomPowerupsEnabled = 1 << 7,
             DrawOnTimeUp = 1 << 8,
-            FriendlyFire = 1 << 9,
-            StarFountain = 1 << 10, // only for Star Chasers
-            CoinDeathPenalty = 1 << 11, // only for Coin Runners
+            StarFountain = 1 << 9, // only for Star Chasers
+            CoinDeathPenalty = 1 << 10, // only for Coin Runners
+            FriendlyFire = 1 << 11,
         }
     }
 }

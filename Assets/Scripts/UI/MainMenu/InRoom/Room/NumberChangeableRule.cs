@@ -56,14 +56,14 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             case CommandChangeRules.Rules.TimerMinutes:
                 cmd.TimerMinutes = (int) value;
                 break;
-            case CommandChangeRules.Rules.FriendlyFire:
-                cmd.FriendlyFire = (int) value;
-                break;
             case CommandChangeRules.Rules.StarFountain:
                 cmd.StarFountain = (int) value;
                 break;
             case CommandChangeRules.Rules.CoinDeathPenalty:
                 cmd.CoinDeathPenalty = (int) value;
+                break;
+            case CommandChangeRules.Rules.FriendlyFire:
+                cmd.FriendlyFire = (int) value;
                 break;
             }
 
