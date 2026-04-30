@@ -131,6 +131,7 @@ component MarioPlayer {
 
 struct StarChasersData {
 	byte Stars;
+	byte DeathStarThreshold;
 }
 
 struct CoinRunnersData {

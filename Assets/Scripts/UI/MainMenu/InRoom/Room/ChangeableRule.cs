@@ -27,6 +27,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         [SerializeField] protected MainMenuCanvas canvas;
         [SerializeField] protected TMP_Text label;
         [SerializeField] protected string labelPrefix;
+        [SerializeField] protected string labelSuffix;
         [SerializeField] public CommandChangeRules.Rules ruleType;
         [SerializeField] private bool clickToEdit;
         [SerializeField] protected bool dontAutosave;
@@ -192,7 +193,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         }
 
         protected virtual void UpdateLabel() {
-            label.text = labelPrefix + value.ToString();
+            label.text = labelPrefix + value.ToString() + labelSuffix;
         }
 
         private void FindValue(ref GameRules rules) {
@@ -206,6 +207,8 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
                 CommandChangeRules.Rules.DrawOnTimeUp => rules.DrawOnTimeUp,
                 CommandChangeRules.Rules.CustomPowerupsEnabled => (bool) rules.CustomPowerupsEnabled,
                 CommandChangeRules.Rules.TeamsEnabled => (bool) rules.TeamsEnabled,
+                CommandChangeRules.Rules.StarFountain => rules.StarFountain,
+                CommandChangeRules.Rules.CoinDeathPenalty => rules.CoinDeathPenalty,
                 _ => null
             };
 

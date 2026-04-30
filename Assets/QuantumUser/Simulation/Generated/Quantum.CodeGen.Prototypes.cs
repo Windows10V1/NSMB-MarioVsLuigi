@@ -465,6 +465,8 @@ namespace Quantum.Prototypes {
     public QBoolean TeamsEnabled;
     public QBoolean CustomPowerupsEnabled;
     public QBoolean DrawOnTimeUp;
+    public Int32 StarFountain;
+    public Int32 CoinDeathPenalty;
     partial void MaterializeUser(Frame frame, ref Quantum.GameRules result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.GameRules result, in PrototypeMaterializationContext context = default) {
         result.Stage = this.Stage;
@@ -476,6 +478,8 @@ namespace Quantum.Prototypes {
         result.TeamsEnabled = this.TeamsEnabled;
         result.CustomPowerupsEnabled = this.CustomPowerupsEnabled;
         result.DrawOnTimeUp = this.DrawOnTimeUp;
+        result.StarFountain = this.StarFountain;
+        result.CoinDeathPenalty = this.CoinDeathPenalty;
         MaterializeUser(frame, ref result, in context);
     }
   }
@@ -968,9 +972,11 @@ namespace Quantum.Prototypes {
   [Quantum.Prototypes.Prototype(typeof(Quantum.StarChasersData))]
   public unsafe partial class StarChasersDataPrototype : StructPrototype {
     public Byte Stars;
+    public Byte DeathStarThreshold;
     partial void MaterializeUser(Frame frame, ref Quantum.StarChasersData result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.StarChasersData result, in PrototypeMaterializationContext context = default) {
         result.Stars = this.Stars;
+        result.DeathStarThreshold = this.DeathStarThreshold;
         MaterializeUser(frame, ref result, in context);
     }
   }

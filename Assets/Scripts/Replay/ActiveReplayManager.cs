@@ -150,12 +150,13 @@ namespace NSMB.Replay {
                 } while (outputStream == null && attempts < 5);
 
                 ref GameRules rules = ref f.Global->Rules;
+                var gamemodeSpecific = f.FindAsset(rules.Gamemode);
                 BinaryReplayHeader header = new() {
                     Version = GameVersion.Current,
                     UnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
                     InitialFrameNumber = jsonReplay.InitialTick,
                     ReplayLengthInFrames = jsonReplay.LastTick - jsonReplay.InitialTick,
-
+                    
                     Rules = new GameRulesPrototype {
                         Stage = rules.Stage,
                         Gamemode = rules.Gamemode,
@@ -165,6 +166,8 @@ namespace NSMB.Replay {
                         TimerMinutes = rules.TimerMinutes,
                         CustomPowerupsEnabled = rules.CustomPowerupsEnabled,
                         TeamsEnabled = rules.TeamsEnabled,
+                        StarFountain = rules.StarFountain,
+                        CoinDeathPenalty = rules.CoinDeathPenalty
                     },
                     PlayerInformation = playerInformation,
                     WinningTeam = winner,
@@ -172,6 +175,9 @@ namespace NSMB.Replay {
                         .Select(la => la.Definition.ReleaseGuid)
                         .ToList()
                 };
+
+                // gamemode specific data
+
 
                 BinaryReplayFile binaryReplay = BinaryReplayFile.FromReplayData(jsonReplay, header);
                 writtenBytes = binaryReplay.WriteToStream(outputStream);

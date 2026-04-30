@@ -46,6 +46,7 @@ MonoBehaviour:
   LooseCoinPrototype:
     Id:
       Value: 1464681621458001613
+  Order: 0
   DefaultRules:
     Stage:
       Id:
@@ -63,6 +64,8 @@ MonoBehaviour:
       Value: 1
     DrawOnTimeUp:
       Value: 0
+    StarFountain: 100
+    CoinDeathPenalty: 0
   BigStarPrototype:
     Id:
       Value: 1295981493910502871
