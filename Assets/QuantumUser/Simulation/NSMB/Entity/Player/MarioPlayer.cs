@@ -1,6 +1,4 @@
 using Photon.Deterministic;
-using System;
-using UnityEngine;
 
 namespace Quantum {
     public unsafe partial struct MarioPlayer {

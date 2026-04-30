@@ -932,17 +932,20 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct BannedPlayerInfo {
-    public const Int32 SIZE = 88;
+    public const Int32 SIZE = 136;
     public const Int32 ALIGNMENT = 4;
     [FieldOffset(40)]
     public QString48 Nickname;
     [FieldOffset(0)]
     public QStringUtf8_40 UserId;
+    [FieldOffset(88)]
+    public QStringUtf8_48 IpAddressHash;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 13763;
         hash = hash * 31 + Nickname.GetHashCode();
         hash = hash * 31 + UserId.GetHashCode();
+        hash = hash * 31 + IpAddressHash.GetHashCode();
         return hash;
       }
     }
@@ -950,6 +953,7 @@ namespace Quantum {
         var p = (BannedPlayerInfo*)ptr;
         Quantum.QStringUtf8_40.Serialize(&p->UserId, serializer);
         Quantum.QString48.Serialize(&p->Nickname, serializer);
+        Quantum.QStringUtf8_48.Serialize(&p->IpAddressHash, serializer);
     }
   }
   [StructLayout(LayoutKind.Explicit)]
@@ -2994,16 +2998,14 @@ namespace Quantum {
     public FPVector2 Gravity;
     [FieldOffset(40)]
     public FP TerminalVelocity;
-    [FieldOffset(12)]
-    public QBoolean IsFrozen;
     [FieldOffset(8)]
-    public QBoolean DisableCollision;
-    [FieldOffset(20)]
-    public QBoolean SlowInLiquids;
-    [FieldOffset(16)]
-    public QBoolean IsWaterSolid;
+    public QBoolean IsFrozen;
     [FieldOffset(4)]
-    public QBoolean BreakMegaObjects;
+    public QBoolean DisableCollision;
+    [FieldOffset(16)]
+    public QBoolean SlowInLiquids;
+    [FieldOffset(12)]
+    public QBoolean IsWaterSolid;
     [FieldOffset(96)]
     [ExcludeFromPrototype()]
     public FPVector2 Velocity;
@@ -3025,12 +3027,12 @@ namespace Quantum {
     [FieldOffset(0)]
     [ExcludeFromPrototype()]
     public Byte HoverFrames;
-    [FieldOffset(28)]
+    [FieldOffset(24)]
     [ExcludeFromPrototype()]
     [AllocateOnComponentAdded()]
     [FreeOnComponentRemoved()]
     public QListPtr<PhysicsContact> Contacts;
-    [FieldOffset(24)]
+    [FieldOffset(20)]
     [ExcludeFromPrototype()]
     [AllocateOnComponentAdded()]
     [FreeOnComponentRemoved()]
@@ -3047,7 +3049,6 @@ namespace Quantum {
         hash = hash * 31 + DisableCollision.GetHashCode();
         hash = hash * 31 + SlowInLiquids.GetHashCode();
         hash = hash * 31 + IsWaterSolid.GetHashCode();
-        hash = hash * 31 + BreakMegaObjects.GetHashCode();
         hash = hash * 31 + Velocity.GetHashCode();
         hash = hash * 31 + Parent.GetHashCode();
         hash = hash * 31 + ParentVelocity.GetHashCode();
@@ -3081,7 +3082,6 @@ namespace Quantum {
         var p = (PhysicsObject*)ptr;
         serializer.Stream.Serialize(&p->HoverFrames);
         serializer.Stream.Serialize(&p->UnderwaterCounter);
-        QBoolean.Serialize(&p->BreakMegaObjects, serializer);
         QBoolean.Serialize(&p->DisableCollision, serializer);
         QBoolean.Serialize(&p->IsFrozen, serializer);
         QBoolean.Serialize(&p->IsWaterSolid, serializer);

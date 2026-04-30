@@ -71,7 +71,9 @@ MonoBehaviour:
     CommitCommandsMode: 0
     DefaultEntityCapacity: 256
     DefaultComponentBlockCapacity: 64
-    ComponentTypeConfiguration: []
+    ComponentTypeConfiguration:
+    - Name: Quantum.MarioPlayer
+      ComponentBlockCapacity: 16
   Physics:
     Gravity:
       X:
