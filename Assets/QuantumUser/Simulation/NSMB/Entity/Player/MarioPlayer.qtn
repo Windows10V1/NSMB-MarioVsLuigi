@@ -10,8 +10,13 @@
 #define _0_075 0.075
 #define _8_25 8.25
 #define _3_75 3.75
+#define _0_73 0.73
 
 #define DamageInvincibilityFrames 120
+
+#define PowerupTransitionLength 37
+#define PowerupTransitionOscillation 6
+#define PowerupTransitionMax 3
 
 input {
 	button Up;
@@ -26,6 +31,15 @@ input {
 
 	// Buttons can be packed. And we want this to be packed.
 	button AllowGroundpoundWithLeftRight;
+}
+
+struct PowerupTransitionAnimation {
+	PowerupState StartingState;
+	PowerupState EndingState;
+
+	AssetRef<PowerupAsset> Scriptable;
+	bool IsPowerdown;
+	byte Timer;
 }
 
 enum JumpState : Byte {
@@ -92,10 +106,10 @@ component MarioPlayer {
 	[ExcludeFromPrototype] int KnockbackTick;
 	[ExcludeFromPrototype] byte DamageInvincibilityFrames;
 	[ExcludeFromPrototype] byte KnockbackGetupFrames;
-	[ExcludeFromPrototype] byte CrushDamageInvincibilityFrames;
 	[ExcludeFromPrototype] EntityRef LastAttacker;
 
 	// Powerups
+	[ExcludeFromPrototype,AllocateOnComponentAdded,FreeOnComponentRemoved] list<PowerupTransitionAnimation> PowerupTransitionQueue;
     [ExcludeFromPrototype] ushort InvincibilityFrames;
 	
 	[ExcludeFromPrototype] byte MegaMushroomStartFrames;
@@ -190,6 +204,11 @@ synced event MarioPlayerCollectedPowerup {
 event MarioPlayerUsedReserveItem {
 	EntityRef Entity;
 	nothashed bool Success;
+}
+
+event MarioPlayerUpdatePowerupQueue {
+	EntityRef Entity;
+	nothashed PowerupTransitionAnimation* Anim;
 }
 
 event MarioPlayerWalljumped {

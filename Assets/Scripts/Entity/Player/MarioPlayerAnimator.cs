@@ -207,7 +207,6 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerDied>(this, OnMarioPlayerDied);
             QuantumEvent.Subscribe<EventMarioPlayerPreRespawned>(this, OnMarioPlayerPreRespawned, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerRespawned>(this, OnMarioPlayerRespawned);
-            QuantumEvent.Subscribe<EventMarioPlayerTookDamage>(this, OnMarioPlayerTookDamage, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerPickedUpObject>(this, OnMarioPlayerPickedUpObject, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerThrewObject>(this, OnMarioPlayerThrewObject, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerMegaStart>(this, OnMarioPlayerMegaStart, FilterOutReplayFastForward);
@@ -223,6 +222,7 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerLandedWithAnimation>(this, OnMarioPlayerLandedWithAnimation, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerTaunted>(this, OnMarioPlayerTaunted);
+            QuantumEvent.Subscribe<EventMarioPlayerUpdatePowerupQueue>(this, OnMarioPlayerUpdatePowerupQueue, FilterOutReplayFastForward);
         }
 
         public override void OnActivate(Frame f) {
@@ -287,7 +287,7 @@ namespace NSMB.Entities.Player {
             var freezable = f.Unsafe.GetPointer<Freezable>(EntityRef);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(EntityRef);
 
-            UpdatePowerupVisuals(mario);
+            UpdatePowerupVisuals(mario, f);
 
             HandleMiscStates(f, mario, physicsObject, freezable);
             HandleAnimations(f, mario, physicsObject, freezable);
@@ -480,6 +480,37 @@ namespace NSMB.Entities.Player {
             }
         }
 
+        public PowerupState DisplayPowerupState(MarioPlayer* mario, Frame f) {
+            // check if Mario is in a powerUP transition
+            if (mario->GetCurrentPowerTransition(f, out var currAnim)) {
+                // now check its timer
+                bool displaySecond = currAnim->Timer / Constants.PowerupTransitionOscillation % 2 == 1;
+                if (displaySecond) {
+                    return currAnim->EndingState;
+                } else {
+                    return currAnim->StartingState;
+                }
+            }
+
+            return mario->CurrentPowerupState;
+        }
+
+        public void HandleSizeMismatch(ref Vector3 modelScale, PowerupTransitionAnimation* currAnim) {
+            var startingVisuals = FindPowerupVisuals(currAnim->StartingState);
+            var endingVisuals = FindPowerupVisuals(currAnim->EndingState);
+
+            Vector3 sizeDiff = startingVisuals.ModelScale - endingVisuals.ModelScale;
+            sizeDiff.y += startingVisuals.ModelHeightInBlocks - endingVisuals.ModelHeightInBlocks;
+
+            //float transitionTimerNorm = (float) currAnim->Timer / Constants.PowerupAnimLength;
+
+            // for choppyness
+            var currStage = currAnim->Timer / Constants.PowerupTransitionOscillation;
+            float[] sizes = {0f, .25f, .15f, .5f, .4f, .85f, .75f};
+
+            modelScale = Vector3.Lerp(modelScale, modelScale + sizeDiff, sizes[currStage]);
+        }
+
         public void UpdateAnimatorVariables(Frame f, MarioPlayer* mario, PhysicsObject* physicsObject, Freezable* freezable, ref Input inputs) {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.UpdateAnimatorVariables");
 
@@ -510,7 +541,7 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamHeadCarry, heldObject != null && heldObject->HoldAboveHead);
             animator.SetBool(ParamCarryStart, heldObject != null && heldObject->HoldAboveHead && (f.Number - mario->HoldStartFrame) < 27);
             animator.SetBool(ParamPipe, f.Exists(mario->CurrentPipe));
-            animator.SetBool(ParamBlueShell, mario->CurrentPowerupState == PowerupState.BlueShell);
+            animator.SetBool(ParamBlueShell, DisplayPowerupState(mario, f) == PowerupState.BlueShell);
             animator.SetBool(ParamMini, mario->CurrentPowerupState == PowerupState.MiniMushroom);
             animator.SetBool(ParamMega, mario->CurrentPowerupState == PowerupState.MegaMushroom);
             animator.SetBool(ParamInShell, mario->IsInShell || (mario->CurrentPowerupState == PowerupState.BlueShell && (mario->IsCrouching || mario->IsGroundpounding || mario->IsSliding) && mario->GroundpoundStartFrames <= 9));
@@ -594,16 +625,47 @@ namespace NSMB.Entities.Player {
             transform.position = new(transform.position.x, transform.position.y, newZ);
         }
 
-        private void UpdatePowerupVisuals(MarioPlayer* mario) {
-            PowerupVisuals currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
-            
-            if (previousPowerupVisuals != currentPowerupVisuals) {
+        private void UpdatePowerupVisuals(MarioPlayer* mario, Frame f) {
+            PowerupVisuals currentPowerupVisuals;
+            PowerupVisuals displayPowerupVisuals = FindPowerupVisuals(DisplayPowerupState(mario, f));
+
+            // in transition, apply visuals based on the current transition we're doing!
+            bool sizeMismatch = false;
+            if (mario->GetCurrentPowerTransition(f, out var currAnim)) {
+                currentPowerupVisuals = FindPowerupVisuals(currAnim->EndingState);
+
+                var startingVisuals = FindPowerupVisuals(currAnim->StartingState);
+                var endingVisuals = FindPowerupVisuals(currAnim->EndingState);
+
+                sizeMismatch = startingVisuals.ModelScale != endingVisuals.ModelScale || startingVisuals.ModelHeightInBlocks != endingVisuals.ModelHeightInBlocks;
+            } else {
+                currentPowerupVisuals = FindPowerupVisuals(mario->CurrentPowerupState);
+            }
+
+            Vector3 modelScale = currentPowerupVisuals.ModelScale;
+
+            // handle a size mismatch
+            if (sizeMismatch) {
+                HandleSizeMismatch(ref modelScale, currAnim);
+            }
+
+            if (previousPowerupVisuals != currentPowerupVisuals || mario->GetCurrentPowerTransition(f, out _)) {
                 foreach (var powerupVisual in powerupVisuals) {
-                    powerupVisual.Disable();
+                    powerupVisual.DisableProps();
+                    powerupVisual.DisableModel();
                 }
+
                 fallbackPowerupVisuals.ApplyTextureReplacements();
-                currentPowerupVisuals?.Enable(this);
-                previousPowerupVisuals = currentPowerupVisuals;
+
+                // swap the model and animations for the next powerUP
+                currentPowerupVisuals?.EnableModel();
+                currentPowerupVisuals?.SwapAnimations(this);
+
+                // meanwhile enable the props for the displaying powerUP
+                displayPowerupVisuals?.EnableProps();
+                displayPowerupVisuals?.ApplyTextureReplacements();
+
+                previousPowerupVisuals = displayPowerupVisuals;
             }
 
             // Scale
@@ -615,15 +677,15 @@ namespace NSMB.Entities.Player {
                 if (!mario->MegaMushroomStationaryEnd) {
                     timer *= 2;
                 }
-                targetScale = Vector3.Lerp(megaVisuals.ModelScale, currentPowerupVisuals.ModelScale, 1f - timer);
+                targetScale = Vector3.Lerp(megaVisuals.ModelScale, modelScale, 1f - timer);
             } else if (mario->MegaMushroomStartFrames > 0) {
                 // Interpolate from normal scale to mega scale.
                 var normalVisuals = FindPowerupVisuals(PowerupState.Mushroom);
                 float timer = mario->MegaMushroomStartFrames / 90f;
-                targetScale = Vector3.Lerp(normalVisuals.ModelScale, currentPowerupVisuals.ModelScale, 1f - timer);
+                targetScale = Vector3.Lerp(normalVisuals.ModelScale, modelScale, 1f - timer);
             } else {
                 // Just apply the scale
-                targetScale = currentPowerupVisuals.ModelScale;
+                targetScale = modelScale;
             }
             if (teammateStompTimer > 0) {
                 targetScale.y -= Mathf.Sin(teammateStompTimer * Mathf.PI / 0.15f) * 0.2f;
@@ -885,14 +947,6 @@ namespace NSMB.Entities.Player {
             lastBumpSound = Time.time;
         }
 
-        private void OnMarioPlayerTookDamage(EventMarioPlayerTookDamage e) {
-            if (e.Entity != EntityRef) {
-                return;
-            }
-
-            PlaySound(SoundEffect.Player_Sound_Powerdown);
-        }
-
         private void OnMarioPlayerRespawned(EventMarioPlayerRespawned e) {
             if (e.Entity != EntityRef) {
                 return;
@@ -1063,9 +1117,14 @@ namespace NSMB.Entities.Player {
                     PlaySound(powerup.SoundEffect);
                 }
                 */
-                PlaySound(powerup.SoundEffect, new[] { powerup });
+
+                if (powerup.Instant) {
+                    PlaySound(powerup.SoundEffect, new[] { powerup });
+                }
 
                 if (powerup.State == PowerupState.MegaMushroom) {
+                    // play the sound here
+                    PlaySound(powerup.SoundEffect, new[] { powerup });
                     var mario = PredictedFrame.Unsafe.GetPointer<MarioPlayer>(EntityRef);
                     animator.Play(StateMegaScale, 0, 1f - (mario->MegaMushroomStartFrames / 90f));
                     Vector3 spawnPosition = transform.position;
@@ -1264,6 +1323,23 @@ namespace NSMB.Entities.Player {
             }
 
             PlaySound(SoundEffect.Player_Voice_Taunt);
+        }
+
+        private void OnMarioPlayerUpdatePowerupQueue(EventMarioPlayerUpdatePowerupQueue e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            var anim = e.Anim;
+
+            if (anim->IsPowerdown) {
+                PlaySound(SoundEffect.Player_Sound_Powerdown);
+            } else {
+                Frame f = PredictedFrame;
+                var powerup = f.FindAsset(anim->Scriptable);
+                PlaySound(powerup.SoundEffect, new[] { powerup });
+            }
+                
         }
     }
 }

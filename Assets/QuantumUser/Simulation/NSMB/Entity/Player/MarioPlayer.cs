@@ -94,8 +94,24 @@ namespace Quantum {
         public readonly bool IsDamageable => !IsStarmanInvincible && DamageInvincibilityFrames == 0;
         public readonly bool IsInKnockback => CurrentKnockback != KnockbackStrength.None;
         public readonly bool CanCollectOwnTeamsObjectiveCoins => !IsInKnockback && DamageInvincibilityFrames == 0;
-
+        public readonly bool IsStarmanOrMega => IsStarmanInvincible || CurrentPowerupState == PowerupState.MegaMushroom;
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
+
+        /**
+         * <summary>Outputs a pointer to the current transition animation Mario is in, if he is in one.</summary>
+         * <returns><strong>true</strong> if in a transition otherwise <strong>false</strong>.</returns>
+         */
+        public readonly bool GetCurrentPowerTransition(Frame f, out PowerupTransitionAnimation* transition) {
+            transition = null;
+            var queue = f.ResolveList(PowerupTransitionQueue);
+
+            if (queue.Count == 0) {
+                return false;
+            }
+
+            transition = f.ResolveList(PowerupTransitionQueue).GetPointer(0);
+            return true;
+        }
 
         public readonly byte? GetTeam(Frame f) {
             var data = QuantumUtils.GetPlayerData(f, PlayerRef);
@@ -237,6 +253,31 @@ namespace Quantum {
             ReserveItem = newItem;
         }
 
+        public void QueuePowerupAnim(Frame f, EntityRef marioEntity, PowerupState startingState, PowerupState endingState, bool isPowerdown, PowerupAsset powerupAsset = null) {
+            var list = f.ResolveList(PowerupTransitionQueue);
+            list.Add(new() {
+                StartingState = startingState,
+                EndingState = endingState,
+
+                Scriptable = powerupAsset,
+                IsPowerdown = isPowerdown,
+                Timer = Constants.PowerupTransitionLength
+            });
+
+            // count the number of things in the list, check if 3
+            if (list.Count > Constants.PowerupTransitionMax) {
+                // set the second powerUP transition's timer
+                var firstAnim = list.GetPointer(0);
+                var secondAnim = list.GetPointer(1);
+                secondAnim->Timer = firstAnim->Timer;
+
+                f.Events.MarioPlayerUpdatePowerupQueue(marioEntity, secondAnim);
+
+                // delete the current powerUP transition
+                list.RemoveAt(0);
+            }
+        }
+
         public void Death(Frame f, EntityRef entity, bool fire, bool dropObjectives, EntityRef attacker) {
             if (IsDead) {
                 return;
@@ -244,6 +285,8 @@ namespace Quantum {
 
             var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
             int oldObjectiveCount = gamemode.GetObjectiveCount(f, f.Unsafe.GetPointer<MarioPlayer>(entity));
+
+            f.ResolveList(PowerupTransitionQueue).Clear();
 
             IsDead = true;
             FireDeath = fire;
@@ -305,7 +348,7 @@ namespace Quantum {
         }
 
         public bool Powerdown(Frame f, EntityRef entity, bool ignoreInvincible, EntityRef attacker) {
-            if (!ignoreInvincible && !IsDamageable) {
+            if (!ignoreInvincible && (!IsDamageable || GetCurrentPowerTransition(f, out var _) || CurrentPowerupState == PowerupState.MegaMushroom)) {
                 return false;
             }
 
@@ -348,6 +391,12 @@ namespace Quantum {
             PropellerLaunchFrames = 0;
             PropellerSpinFrames = 0;
             UsedPropellerThisJump = false;
+
+            if (ignoreInvincible) {
+                f.ResolveList(PowerupTransitionQueue).Clear();
+            }
+            // queue a powerUP animation here too...
+            QueuePowerupAnim(f, entity, PreviousPowerupState, CurrentPowerupState, true);
 
             if (!IsDead) {
                 DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
@@ -402,6 +451,8 @@ namespace Quantum {
             IsTurnaround = false;
             ForceJumpTimer = 0;
 
+            f.ResolveList(PowerupTransitionQueue).Clear();
+
             physicsObject->IsFrozen = true;
             physicsObject->Velocity = FPVector2.Zero;
             f.Unsafe.GetPointer<Interactable>(entity)->ColliderDisabled = false;
@@ -430,7 +481,7 @@ namespace Quantum {
             }
         }
 
-        public bool DoKnockback(Frame f, EntityRef entity, bool fromRight, int starsToDrop, KnockbackStrength strength, EntityRef attacker, bool bypassDamageInvincibility = false, ProjectileEffectType projectileEffectType = ProjectileEffectType.None, bool wasBlueShell = false) {
+        public bool DoKnockback(Frame f, EntityRef entity, bool fromRight, int starsToDrop, KnockbackStrength strength, EntityRef attacker, bool bypassDamageInvincibility = false, ProjectileEffectType projectileEffectType = ProjectileEffectType.None, bool wasBlueShell = false, bool ignoreInvincibleStates = false) {
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(entity);
             if (physicsObject->IsUnderwater) {
                 strength = KnockbackStrength.Normal;
@@ -442,6 +493,10 @@ namespace Quantum {
 
             var freezable = f.Unsafe.GetPointer<Freezable>(entity);
             if ((!bypassDamageInvincibility && DamageInvincibilityFrames > 0) || f.Exists(CurrentPipe) || (freezable->IsFrozen(f) && freezable->FrozenCubeEntity != attacker) || IsDead || MegaMushroomStartFrames > 0 || MegaMushroomEndFrames > 0) {
+                return false;
+            }
+
+            if (!ignoreInvincibleStates && IsStarmanOrMega) {
                 return false;
             }
 
