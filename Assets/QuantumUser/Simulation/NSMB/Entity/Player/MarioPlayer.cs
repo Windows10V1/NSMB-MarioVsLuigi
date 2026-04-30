@@ -98,13 +98,12 @@ namespace Quantum {
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
 
         public readonly byte? GetTeam(Frame f) {
-            /*var data = QuantumUtils.GetPlayerData(f, PlayerRef);
+            var data = QuantumUtils.GetPlayerData(f, PlayerRef);
             if (data == null) {
                 return null;
             } else {
                 return (byte) (data->RealTeam % Constants.MaxPlayers);
-            }*/
-            return 1;
+            }
         }
 
         public readonly FPVector2 GetHeldItemOffset(Frame f, EntityRef marioEntity) {
