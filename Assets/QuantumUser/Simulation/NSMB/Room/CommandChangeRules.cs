@@ -15,6 +15,7 @@ namespace Quantum {
         public bool TeamsEnabled;
         public bool CustomPowerupsEnabled;
         public bool DrawOnTimeUp;
+        public int FriendlyFire;
         public int StarFountain;
         public int CoinDeathPenalty;
 
@@ -34,6 +35,7 @@ namespace Quantum {
             stream.Serialize(ref TeamsEnabled);
             stream.Serialize(ref CustomPowerupsEnabled);
             stream.Serialize(ref DrawOnTimeUp);
+            stream.Serialize(ref FriendlyFire);
             stream.Serialize(ref StarFountain);
             stream.Serialize(ref CoinDeathPenalty);
         }
@@ -83,6 +85,9 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.DrawOnTimeUp)) {
                 rules.DrawOnTimeUp = DrawOnTimeUp;
             }
+            if (rulesChanges.HasFlag(Rules.FriendlyFire)) {
+                rules.FriendlyFire = (FriendlyFireOptions)FriendlyFire;
+            }
             if (rulesChanges.HasFlag(Rules.StarFountain)) {
                 rules.StarFountain = StarFountain;
             }
@@ -110,8 +115,9 @@ namespace Quantum {
             TeamsEnabled = 1 << 6,
             CustomPowerupsEnabled = 1 << 7,
             DrawOnTimeUp = 1 << 8,
-            StarFountain = 1 << 9, // only for Star Chasers
-            CoinDeathPenalty = 1 << 10, // only for Coin Runners
+            FriendlyFire = 1 << 9,
+            StarFountain = 1 << 10, // only for Star Chasers
+            CoinDeathPenalty = 1 << 11, // only for Coin Runners
         }
     }
 }
