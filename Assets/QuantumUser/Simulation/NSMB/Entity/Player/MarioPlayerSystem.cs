@@ -1561,7 +1561,8 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            if (!mario->GetCurrentPowerTransition(f, out var _)) {
+            // discard the current transition, we have to resolve the list anyways
+            if (!mario->GetCurrentPowerTransition(f, out _)) {
                 return;
             }
 
