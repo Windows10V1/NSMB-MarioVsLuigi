@@ -534,7 +534,7 @@ namespace Quantum {
             }
 
             CurrentKnockback = strength;
-            IsInWeakKnockback = forceWeak || (/*CurrentPowerupState != PowerupState.MegaMushroom &&*/ (strength == KnockbackStrength.CollisionBump || (strength == KnockbackStrength.FireballBump && physicsObject->IsTouchingGround)));
+            IsInWeakKnockback = forceWeak || (CurrentPowerupState != PowerupState.MegaMushroom && (strength == KnockbackStrength.CollisionBump || (strength == KnockbackStrength.FireballBump && physicsObject->IsTouchingGround)));
 
             physicsObject->Velocity = knockbackVelocity;
             physicsObject->IsTouchingGround = false;
@@ -585,9 +585,7 @@ namespace Quantum {
 
         public void ResetKnockback(Frame f, EntityRef mario) {
             KnockbackGetupFrames = 0;
-            if (CurrentPowerupState != PowerupState.MegaMushroom) {
-                DamageInvincibilityFrames = 90; // Exception: knockback does 90f instead of the usual 120f
-            }
+            DamageInvincibilityFrames = 90; // Exception: knockback does 90f instead of the usual 120f
             CurrentKnockback = KnockbackStrength.None;
             IsInWeakKnockback = false;
             FacingRight = KnockbackWasOriginallyFacingRight;
