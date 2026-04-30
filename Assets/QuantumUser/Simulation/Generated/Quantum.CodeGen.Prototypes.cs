@@ -391,6 +391,42 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.FireSnake))]
+  public unsafe partial class FireSnakePrototype : ComponentPrototype<Quantum.FireSnake> {
+    public AssetRef<EntityPrototype> SegmentPrototype;
+    public FP JumpHorizontalSpeed;
+    public FP JumpHeightLow;
+    public FP JumpHeightHigh;
+    partial void MaterializeUser(Frame frame, ref Quantum.FireSnake result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.FireSnake component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.FireSnake result, in PrototypeMaterializationContext context = default) {
+        result.SegmentPrototype = this.SegmentPrototype;
+        result.JumpHorizontalSpeed = this.JumpHorizontalSpeed;
+        result.JumpHeightLow = this.JumpHeightLow;
+        result.JumpHeightHigh = this.JumpHeightHigh;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.FireSnakeSegment))]
+  public unsafe partial class FireSnakeSegmentPrototype : ComponentPrototype<Quantum.FireSnakeSegment> {
+    [HideInInspector()]
+    public Int32 _empty_prototype_dummy_field_;
+    partial void MaterializeUser(Frame frame, ref Quantum.FireSnakeSegment result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.FireSnakeSegment component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.FireSnakeSegment result, in PrototypeMaterializationContext context = default) {
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.Freezable))]
   public unsafe partial class FreezablePrototype : ComponentPrototype<Quantum.Freezable> {
     public FPVector2 IceBlockSize;
@@ -429,7 +465,8 @@ namespace Quantum.Prototypes {
     public QBoolean TeamsEnabled;
     public QBoolean CustomPowerupsEnabled;
     public QBoolean DrawOnTimeUp;
-    public Quantum.QEnum8<FriendlyFireOptions> FriendlyFire;
+    public Int32 StarFountain;
+    public Int32 CoinDeathPenalty;
     partial void MaterializeUser(Frame frame, ref Quantum.GameRules result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.GameRules result, in PrototypeMaterializationContext context = default) {
         result.Stage = this.Stage;
@@ -441,7 +478,8 @@ namespace Quantum.Prototypes {
         result.TeamsEnabled = this.TeamsEnabled;
         result.CustomPowerupsEnabled = this.CustomPowerupsEnabled;
         result.DrawOnTimeUp = this.DrawOnTimeUp;
-        result.FriendlyFire = this.FriendlyFire;
+        result.StarFountain = this.StarFountain;
+        result.CoinDeathPenalty = this.CoinDeathPenalty;
         MaterializeUser(frame, ref result, in context);
     }
   }
@@ -934,9 +972,11 @@ namespace Quantum.Prototypes {
   [Quantum.Prototypes.Prototype(typeof(Quantum.StarChasersData))]
   public unsafe partial class StarChasersDataPrototype : StructPrototype {
     public Byte Stars;
+    public Byte DeathStarThreshold;
     partial void MaterializeUser(Frame frame, ref Quantum.StarChasersData result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.StarChasersData result, in PrototypeMaterializationContext context = default) {
         result.Stars = this.Stars;
+        result.DeathStarThreshold = this.DeathStarThreshold;
         MaterializeUser(frame, ref result, in context);
     }
   }

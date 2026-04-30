@@ -132,11 +132,11 @@ namespace Quantum {
 
                 // turn to face the player while in the shadows
                 var shouldFaceRight = false;
-                var closestMario = enemy->FindClosestPlayerToSpawnpoint(f, entity);
+                var closestMario = QuantumUtils.FindClosestAliveMario(f, enemy->Spawnpoint, out FPVector2 closestMarioPosition, stage);
 
                 // use closest player and face them
-                if (f.Unsafe.TryGetPointer(closestMario, out Transform2D* closestMarioTransform)) {
-                    QuantumUtils.WrappedDistance(f, enemy->Spawnpoint, closestMarioTransform->Position, out FP xDiff);
+                if (closestMario != EntityRef.None) {
+                    QuantumUtils.WrappedDistance(f, enemy->Spawnpoint, closestMarioPosition, out FP xDiff);
                     shouldFaceRight = xDiff < 0;
                 }
 

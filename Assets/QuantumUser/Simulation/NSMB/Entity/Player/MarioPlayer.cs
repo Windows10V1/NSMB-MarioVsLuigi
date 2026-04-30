@@ -277,6 +277,7 @@ namespace Quantum {
             WallslideLeft = false;
             ForceJumpTimer = 0;
             LastAttacker = EntityRef.None;
+            TauntFrames = 0;
             
             if (f.Unsafe.TryGetPointer(HeldEntity, out Holdable* holdable)) {
                 holdable->DropWithoutThrowing(f, HeldEntity);
@@ -286,6 +287,18 @@ namespace Quantum {
             physicsObject->IsFrozen = true;
             physicsObject->DisableCollision = true;
             physicsObject->CurrentData = default;
+
+            // set the amount of stars to drop if no longer valid
+            if (!IsValid(f) && gamemode is StarChasersGamemode) {
+                var starChasers = GamemodeData.StarChasers;
+
+                // this wacky formula is how we figure out how many stars to drop before dying
+                // to set the "DeathStarThreshold" we get the amount of stars we currently have
+                // then we multiply it by the StarFountain, rounding UP. StarFountain is value between 0 and 1
+                // round down since a star WILL be dropped on the initial death
+                FP starPercentage = (FP)f.Global->Rules.StarFountain / 100;
+                starChasers->DeathStarThreshold = (byte) (starChasers->Stars -  FPMath.FloorToInt(starChasers->Stars * starPercentage));
+            }
 
             f.Signals.OnMarioPlayerDied(entity);
             f.Events.MarioPlayerDied(entity, fire, oldObjectiveCount, attacker);

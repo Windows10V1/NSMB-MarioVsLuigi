@@ -6,6 +6,33 @@ using System;
 
 public static unsafe class QuantumUtils {
 
+    public static EntityRef FindClosestAliveMario(Frame f, FPVector2 position, out FPVector2 marioPosition, VersusStageData stage = null) {
+        if (stage == null) {
+            stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+        }
+
+        var filter = f.Filter<Transform2D, MarioPlayer>();
+        filter.UseCulling = false;
+
+        marioPosition = default;
+        EntityRef currentClosestEntity = EntityRef.None;
+        FP currentMinDistance = FP.MaxValue;
+        while (filter.NextUnsafe(out var entity, out var marioTransform, out var mario)) {
+            if (mario->IsDead) {
+                continue;
+            }
+
+            FP distance = WrappedDistanceSquared(stage, position, marioTransform->Position);
+            if (distance < currentMinDistance) {
+                currentClosestEntity = entity;
+                currentMinDistance = distance;
+                marioPosition = marioTransform->Position;
+            }
+        }
+
+        return currentClosestEntity;
+    }
+
     public static T SetFlag<T>(T value, T flag, bool set) where T : Enum {
         long longValue = (long) (object) value;
         long longFlag = (long) (object) flag;

@@ -61,11 +61,6 @@ namespace Quantum {
     Groundpounded,
     InWall,
   }
-  public enum FriendlyFireOptions : byte {
-    NoInteract,
-    NoStarDrop,
-    StarLoss,
-  }
   public enum GameState : byte {
     PreGameRoom,
     WaitingForPlayers,
@@ -998,28 +993,30 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct GameRules {
-    public const Int32 SIZE = 48;
+    public const Int32 SIZE = 56;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(40)]
+    [FieldOffset(48)]
     public AssetRef<Map> Stage;
-    [FieldOffset(32)]
+    [FieldOffset(40)]
     public AssetRef<GamemodeAsset> Gamemode;
-    [FieldOffset(12)]
+    [FieldOffset(16)]
     public Int32 StarsToWin;
     [FieldOffset(4)]
     public Int32 CoinsForPowerup;
     [FieldOffset(8)]
     public Int32 Lives;
-    [FieldOffset(16)]
-    public Int32 TimerMinutes;
-    [FieldOffset(28)]
-    public QBoolean TeamsEnabled;
     [FieldOffset(20)]
-    public QBoolean CustomPowerupsEnabled;
+    public Int32 TimerMinutes;
+    [FieldOffset(32)]
+    public QBoolean TeamsEnabled;
     [FieldOffset(24)]
+    public QBoolean CustomPowerupsEnabled;
+    [FieldOffset(28)]
     public QBoolean DrawOnTimeUp;
+    [FieldOffset(12)]
+    public Int32 StarFountain;
     [FieldOffset(0)]
-    public FriendlyFireOptions FriendlyFire;
+    public Int32 CoinDeathPenalty;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 443;
@@ -1032,15 +1029,17 @@ namespace Quantum {
         hash = hash * 31 + TeamsEnabled.GetHashCode();
         hash = hash * 31 + CustomPowerupsEnabled.GetHashCode();
         hash = hash * 31 + DrawOnTimeUp.GetHashCode();
-        hash = hash * 31 + (Byte)FriendlyFire;
+        hash = hash * 31 + StarFountain.GetHashCode();
+        hash = hash * 31 + CoinDeathPenalty.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (GameRules*)ptr;
-        serializer.Stream.Serialize((Byte*)&p->FriendlyFire);
+        serializer.Stream.Serialize(&p->CoinDeathPenalty);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);
+        serializer.Stream.Serialize(&p->StarFountain);
         serializer.Stream.Serialize(&p->StarsToWin);
         serializer.Stream.Serialize(&p->TimerMinutes);
         QBoolean.Serialize(&p->CustomPowerupsEnabled, serializer);
@@ -1269,25 +1268,29 @@ namespace Quantum {
   public unsafe partial struct StarChasersData {
     public const Int32 SIZE = 4;
     public const Int32 ALIGNMENT = 1;
+    [FieldOffset(2)]
+    private fixed Byte _alignment_padding_[2];
     [FieldOffset(1)]
-    private fixed Byte _alignment_padding_[3];
-    [FieldOffset(0)]
     public Byte Stars;
+    [FieldOffset(0)]
+    public Byte DeathStarThreshold;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 6883;
         hash = hash * 31 + Stars.GetHashCode();
+        hash = hash * 31 + DeathStarThreshold.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (StarChasersData*)ptr;
+        serializer.Stream.Serialize(&p->DeathStarThreshold);
         serializer.Stream.Serialize(&p->Stars);
     }
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct _globals_ {
-    public const Int32 SIZE = 3136;
+    public const Int32 SIZE = 3144;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(0)]
     public AssetRef<Map> Map;
@@ -1336,7 +1339,7 @@ namespace Quantum {
     public UInt16 AutomaticStageRefreshInterval;
     [FieldOffset(1822)]
     public UInt16 AutomaticStageRefreshTimer;
-    [FieldOffset(1936)]
+    [FieldOffset(1944)]
     [FramePrinter.FixedArrayAttribute(typeof(PlayerInformation), 10)]
     private fixed Byte _PlayerInfo_[1200];
     [FieldOffset(1816)]
@@ -2179,6 +2182,97 @@ namespace Quantum {
         QBoolean.Serialize(&p->IsMiniOnly, serializer);
         QBoolean.Serialize(&p->TransitionOnlyPanning, serializer);
         EntityRef.Serialize(&p->OtherPipe, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct FireSnake : Quantum.IComponent {
+    public const Int32 SIZE = 80;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(8)]
+    public AssetRef<EntityPrototype> SegmentPrototype;
+    [FieldOffset(72)]
+    public FP JumpHorizontalSpeed;
+    [FieldOffset(64)]
+    public FP JumpHeightLow;
+    [FieldOffset(56)]
+    public FP JumpHeightHigh;
+    [FieldOffset(16)]
+    [ExcludeFromPrototype()]
+    [FramePrinter.FixedArrayAttribute(typeof(EntityRef), 5)]
+    private fixed Byte _Segments_[40];
+    [FieldOffset(0)]
+    [ExcludeFromPrototype()]
+    public Byte JumpTimer;
+    public readonly FixedArray<EntityRef> Segments {
+      get {
+        fixed (byte* p = _Segments_) { return new FixedArray<EntityRef>(p, 8, 5); }
+      }
+    }
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 7919;
+        hash = hash * 31 + SegmentPrototype.GetHashCode();
+        hash = hash * 31 + JumpHorizontalSpeed.GetHashCode();
+        hash = hash * 31 + JumpHeightLow.GetHashCode();
+        hash = hash * 31 + JumpHeightHigh.GetHashCode();
+        hash = hash * 31 + HashCodeUtils.GetArrayHashCode(Segments);
+        hash = hash * 31 + JumpTimer.GetHashCode();
+        return hash;
+      }
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (FireSnake*)ptr;
+        serializer.Stream.Serialize(&p->JumpTimer);
+        AssetRef.Serialize(&p->SegmentPrototype, serializer);
+        FixedArray.Serialize(p->Segments, serializer, Statics.SerializeEntityRef);
+        FP.Serialize(&p->JumpHeightHigh, serializer);
+        FP.Serialize(&p->JumpHeightLow, serializer);
+        FP.Serialize(&p->JumpHorizontalSpeed, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct FireSnakeSegment : Quantum.IComponent {
+    public const Int32 SIZE = 104;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(8)]
+    [ExcludeFromPrototype()]
+    public EntityRef FireSnake;
+    [FieldOffset(16)]
+    [ExcludeFromPrototype()]
+    public EntityRef Parent;
+    [FieldOffset(24)]
+    [ExcludeFromPrototype()]
+    [FramePrinter.FixedArrayAttribute(typeof(FPVector2), 5)]
+    private fixed Byte _PositionBuffer_[80];
+    [FieldOffset(4)]
+    [ExcludeFromPrototype()]
+    public Int32 SpawnTick;
+    [FieldOffset(0)]
+    [ExcludeFromPrototype()]
+    public Byte Index;
+    public readonly FixedArray<FPVector2> PositionBuffer {
+      get {
+        fixed (byte* p = _PositionBuffer_) { return new FixedArray<FPVector2>(p, 16, 5); }
+      }
+    }
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 8317;
+        hash = hash * 31 + FireSnake.GetHashCode();
+        hash = hash * 31 + Parent.GetHashCode();
+        hash = hash * 31 + HashCodeUtils.GetArrayHashCode(PositionBuffer);
+        hash = hash * 31 + SpawnTick.GetHashCode();
+        hash = hash * 31 + Index.GetHashCode();
+        return hash;
+      }
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (FireSnakeSegment*)ptr;
+        serializer.Stream.Serialize(&p->Index);
+        serializer.Stream.Serialize(&p->SpawnTick);
+        EntityRef.Serialize(&p->FireSnake, serializer);
+        EntityRef.Serialize(&p->Parent, serializer);
+        FixedArray.Serialize(p->PositionBuffer, serializer, Statics.SerializeFPVector2);
     }
   }
   [StructLayout(LayoutKind.Explicit)]
@@ -3538,6 +3632,8 @@ namespace Quantum {
     public const Int32 MaxStarSpawns = 64;
     public const Int32 EnemyMaxDistFromMario = 8;
     public const Int32 EnemyHomeBoxBuffer = 8;
+    public const Int32 FireSnakeSegments = 5;
+    public const Int32 FireSnakeSegmentPositionBufferSize = 5;
     public const Int32 MaxPlayers = 10;
     public const Int32 DamageInvincibilityFrames = 120;
     /// <summary>8.5</summary>
@@ -3946,6 +4042,10 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<Quantum.Enemy>();
       BuildSignalsArrayOnComponentAdded<Quantum.EnterablePipe>();
       BuildSignalsArrayOnComponentRemoved<Quantum.EnterablePipe>();
+      BuildSignalsArrayOnComponentAdded<Quantum.FireSnake>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.FireSnake>();
+      BuildSignalsArrayOnComponentAdded<Quantum.FireSnakeSegment>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.FireSnakeSegment>();
       BuildSignalsArrayOnComponentAdded<Quantum.Freezable>();
       BuildSignalsArrayOnComponentRemoved<Quantum.Freezable>();
       BuildSignalsArrayOnComponentAdded<Quantum.GenericMover>();
@@ -4382,6 +4482,7 @@ namespace Quantum {
   public unsafe partial class Statics {
     public static FrameSerializer.Delegate SerializeBetterPhysicsContact;
     public static FrameSerializer.Delegate SerializeEntityRef;
+    public static FrameSerializer.Delegate SerializeFPVector2;
     public static FrameSerializer.Delegate SerializePhysicsQueryRef;
     public static FrameSerializer.Delegate SerializePhysicsContact;
     public static FrameSerializer.Delegate SerializeBannedPlayerInfo;
@@ -4391,6 +4492,7 @@ namespace Quantum {
     static partial void InitStaticDelegatesGen() {
       SerializeBetterPhysicsContact = Quantum.BetterPhysicsContact.Serialize;
       SerializeEntityRef = EntityRef.Serialize;
+      SerializeFPVector2 = FPVector2.Serialize;
       SerializePhysicsQueryRef = PhysicsQueryRef.Serialize;
       SerializePhysicsContact = Quantum.PhysicsContact.Serialize;
       SerializeBannedPlayerInfo = Quantum.BannedPlayerInfo.Serialize;
@@ -4451,10 +4553,11 @@ namespace Quantum {
       typeRegistry.Register(typeof(FPQuaternion), FPQuaternion.SIZE);
       typeRegistry.Register(typeof(FPVector2), FPVector2.SIZE);
       typeRegistry.Register(typeof(FPVector3), FPVector3.SIZE);
+      typeRegistry.Register(typeof(Quantum.FireSnake), Quantum.FireSnake.SIZE);
+      typeRegistry.Register(typeof(Quantum.FireSnakeSegment), Quantum.FireSnakeSegment.SIZE);
       typeRegistry.Register(typeof(FrameMetaData), FrameMetaData.SIZE);
       typeRegistry.Register(typeof(FrameTimer), FrameTimer.SIZE);
       typeRegistry.Register(typeof(Quantum.Freezable), Quantum.Freezable.SIZE);
-      typeRegistry.Register(typeof(Quantum.FriendlyFireOptions), 1);
       typeRegistry.Register(typeof(Quantum.GameRules), Quantum.GameRules.SIZE);
       typeRegistry.Register(typeof(Quantum.GameState), 1);
       typeRegistry.Register(typeof(Quantum.GamemodeSpecificData), Quantum.GamemodeSpecificData.SIZE);
@@ -4552,7 +4655,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum._globals_), Quantum._globals_.SIZE);
     }
     static partial void InitComponentTypeIdGen() {
-      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 39)
+      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 41)
         .AddBuiltInComponents()
         .Add<Quantum.BetterPhysicsObject>(Quantum.BetterPhysicsObject.Serialize, Quantum.BetterPhysicsObject.OnAdded, Quantum.BetterPhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.BigStar>(Quantum.BigStar.Serialize, null, null, ComponentFlags.None)
@@ -4570,6 +4673,8 @@ namespace Quantum {
         .Add<Quantum.DonutBlock>(Quantum.DonutBlock.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Enemy>(Quantum.Enemy.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.EnterablePipe>(Quantum.EnterablePipe.Serialize, null, null, ComponentFlags.None)
+        .Add<Quantum.FireSnake>(Quantum.FireSnake.Serialize, null, null, ComponentFlags.None)
+        .Add<Quantum.FireSnakeSegment>(Quantum.FireSnakeSegment.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Freezable>(Quantum.Freezable.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.GenericMover>(Quantum.GenericMover.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.GoldBlock>(Quantum.GoldBlock.Serialize, null, null, ComponentFlags.None)
@@ -4601,7 +4706,6 @@ namespace Quantum {
       FramePrinter.EnsurePrimitiveNotStripped<CallbackFlags>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.CoinType>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.EnemyKillReason>();
-      FramePrinter.EnsurePrimitiveNotStripped<Quantum.FriendlyFireOptions>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.GameState>();
       FramePrinter.EnsurePrimitiveNotStripped<IceBlockBreakReason>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.InputButtons>();
