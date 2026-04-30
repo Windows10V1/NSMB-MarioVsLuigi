@@ -55,6 +55,32 @@ namespace Quantum {
                     if (QuantumUtils.Decrement(ref f.Global->GameStartFrames)) {
                         // Start the game!
                         if (f.IsVerified) {
+                            if (f.Global->Rules.StageMode == StageSelectionMode.Random) {
+                                // Pick a random map
+                                var allMaps = f.Context.GetAllAssets<Map>();
+
+                                // IndexOf doesn't work because we get Map not AssetRef<Map>...
+                                int previousStageIndex = -1;
+                                for (int i = 0; i < allMaps.Count; i++) {
+                                    if (f.Global->PreviousStage == allMaps[i]) {
+                                        previousStageIndex = i;
+                                        break;
+                                    }
+                                }
+
+                                int chosenIndex;
+                                if (previousStageIndex == -1) {
+                                    // Pick any stage.
+                                    chosenIndex = f.RNG->Next(0, allMaps.Count);
+                                } else {
+                                    // Don't allow the same stage twice in a row
+                                    chosenIndex = f.RNG->Next(0, allMaps.Count - 1);
+                                    if (chosenIndex >= previousStageIndex) {
+                                        chosenIndex++;
+                                    }
+                                }
+                                f.Global->Rules.Stage = allMaps[chosenIndex];
+                            }
                             f.MapAssetRef = f.Global->Rules.Stage;
                         }
                         f.Global->PlayerLoadFrames = (ushort) (20 * f.UpdateRate);
@@ -171,7 +197,7 @@ namespace Quantum {
                     // Move back to lobby.
                     f.Global->TotalGamesPlayed++;
                     if (f.IsVerified) {
-                        //f.MapAssetRef = f.SimulationConfig.LobbyMap;
+                        f.Global->PreviousStage = f.MapAssetRef;
                         f.Map = null;
                     }
                     f.SystemEnable<StartDisabledSystemGroup>();
