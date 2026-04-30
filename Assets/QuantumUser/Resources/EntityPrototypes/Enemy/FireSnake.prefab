@@ -424,6 +424,7 @@ MonoBehaviour:
   eyesParent: {fileID: 4958006515989722192}
   maxEyesRotation: 20
   marioDistance: 7
+  slerpSpeed: 8
 --- !u!114 &-8421006057071950448
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -674,6 +675,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: firesnake_eyes
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b1cca8aaa9cba5d4c9a64b277ebdd183,
+        type: 3}
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -15,6 +15,7 @@ global {
 	byte RealPlayers;
 	byte TotalMarios; // Different from RealPlayers- count of all Marios at game start, including ones baked into the scene.
 
+	AssetRef<Map> PreviousStage;
 	int WinningTeam;
 	bool HasWinner;
 }
@@ -29,10 +30,16 @@ struct PlayerInformation {
 	bool Disqualified;
 }
 
+enum StageSelectionMode : Byte {
+	Choose,
+	Random
+}
+
 struct GameRules {
 	AssetRef<Map> Stage;
-	AssetRef<GamemodeAsset> Gamemode;
+	StageSelectionMode StageMode;
 
+	AssetRef<GamemodeAsset> Gamemode;
 	int StarsToWin;
 	int CoinsForPowerup;
 	int Lives;

@@ -111,6 +111,10 @@ namespace Quantum {
     HammerSuit,
     MegaMushroom,
   }
+  public enum StageSelectionMode : byte {
+    Choose,
+    Random,
+  }
   public enum StageTileFlags : byte {
     MirrorX = 1,
     MirrorY = 2,
@@ -997,30 +1001,33 @@ namespace Quantum {
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(48)]
     public AssetRef<Map> Stage;
+    [FieldOffset(0)]
+    public StageSelectionMode StageMode;
     [FieldOffset(40)]
     public AssetRef<GamemodeAsset> Gamemode;
-    [FieldOffset(16)]
-    public Int32 StarsToWin;
-    [FieldOffset(4)]
-    public Int32 CoinsForPowerup;
-    [FieldOffset(8)]
-    public Int32 Lives;
     [FieldOffset(20)]
-    public Int32 TimerMinutes;
-    [FieldOffset(32)]
-    public QBoolean TeamsEnabled;
-    [FieldOffset(24)]
-    public QBoolean CustomPowerupsEnabled;
-    [FieldOffset(28)]
-    public QBoolean DrawOnTimeUp;
+    public Int32 StarsToWin;
+    [FieldOffset(8)]
+    public Int32 CoinsForPowerup;
     [FieldOffset(12)]
+    public Int32 Lives;
+    [FieldOffset(24)]
+    public Int32 TimerMinutes;
+    [FieldOffset(36)]
+    public QBoolean TeamsEnabled;
+    [FieldOffset(28)]
+    public QBoolean CustomPowerupsEnabled;
+    [FieldOffset(32)]
+    public QBoolean DrawOnTimeUp;
+    [FieldOffset(16)]
     public Int32 StarFountain;
-    [FieldOffset(0)]
+    [FieldOffset(4)]
     public Int32 CoinDeathPenalty;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 443;
         hash = hash * 31 + Stage.GetHashCode();
+        hash = hash * 31 + (Byte)StageMode;
         hash = hash * 31 + Gamemode.GetHashCode();
         hash = hash * 31 + StarsToWin.GetHashCode();
         hash = hash * 31 + CoinsForPowerup.GetHashCode();
@@ -1036,6 +1043,7 @@ namespace Quantum {
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (GameRules*)ptr;
+        serializer.Stream.Serialize((Byte*)&p->StageMode);
         serializer.Stream.Serialize(&p->CoinDeathPenalty);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);
@@ -1290,7 +1298,7 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct _globals_ {
-    public const Int32 SIZE = 3144;
+    public const Int32 SIZE = 3152;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(0)]
     public AssetRef<Map> Map;
@@ -1319,11 +1327,11 @@ namespace Quantum {
     public BitSet10 PlayerLastConnectionState;
     [FieldOffset(1824)]
     public UInt16 BigStarSpawnTimer;
-    [FieldOffset(1872)]
+    [FieldOffset(1880)]
     public EntityRef MainBigStar;
-    [FieldOffset(1864)]
+    [FieldOffset(1872)]
     public BitSet64 UsedStarSpawns;
-    [FieldOffset(1888)]
+    [FieldOffset(1896)]
     public GameRules Rules;
     [FieldOffset(1818)]
     public GameState GameState;
@@ -1339,13 +1347,15 @@ namespace Quantum {
     public UInt16 AutomaticStageRefreshInterval;
     [FieldOffset(1822)]
     public UInt16 AutomaticStageRefreshTimer;
-    [FieldOffset(1944)]
+    [FieldOffset(1952)]
     [FramePrinter.FixedArrayAttribute(typeof(PlayerInformation), 10)]
     private fixed Byte _PlayerInfo_[1200];
     [FieldOffset(1816)]
     public Byte RealPlayers;
     [FieldOffset(1817)]
     public Byte TotalMarios;
+    [FieldOffset(1864)]
+    public AssetRef<Map> PreviousStage;
     [FieldOffset(1840)]
     public Int32 WinningTeam;
     [FieldOffset(1848)]
@@ -1358,7 +1368,7 @@ namespace Quantum {
     [FieldOffset(1856)]
     [AllocateOnComponentAdded()]
     public QListPtr<BannedPlayerInfo> BannedPlayerIds;
-    [FieldOffset(1880)]
+    [FieldOffset(1888)]
     public FP Timer;
     public readonly FixedArray<Input> input {
       get {
@@ -1399,6 +1409,7 @@ namespace Quantum {
         hash = hash * 31 + HashCodeUtils.GetArrayHashCode(PlayerInfo);
         hash = hash * 31 + RealPlayers.GetHashCode();
         hash = hash * 31 + TotalMarios.GetHashCode();
+        hash = hash * 31 + PreviousStage.GetHashCode();
         hash = hash * 31 + WinningTeam.GetHashCode();
         hash = hash * 31 + HasWinner.GetHashCode();
         hash = hash * 31 + Host.GetHashCode();
@@ -1445,6 +1456,7 @@ namespace Quantum {
         QBoolean.Serialize(&p->HasWinner, serializer);
         QDictionary.Serialize(&p->PlayerDatas, serializer, Statics.SerializePlayerRef, Statics.SerializeEntityRef);
         QList.Serialize(&p->BannedPlayerIds, serializer, Statics.SerializeBannedPlayerInfo);
+        AssetRef.Serialize(&p->PreviousStage, serializer);
         Quantum.BitSet64.Serialize(&p->UsedStarSpawns, serializer);
         EntityRef.Serialize(&p->MainBigStar, serializer);
         FP.Serialize(&p->Timer, serializer);
@@ -4643,6 +4655,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.Spinner), Quantum.Spinner.SIZE);
       typeRegistry.Register(typeof(SpringJoint), SpringJoint.SIZE);
       typeRegistry.Register(typeof(SpringJoint3D), SpringJoint3D.SIZE);
+      typeRegistry.Register(typeof(Quantum.StageSelectionMode), 1);
       typeRegistry.Register(typeof(Quantum.StageTileFlags), 1);
       typeRegistry.Register(typeof(Quantum.StageTileInstance), Quantum.StageTileInstance.SIZE);
       typeRegistry.Register(typeof(Quantum.StarChasersData), Quantum.StarChasersData.SIZE);
@@ -4722,6 +4735,7 @@ namespace Quantum {
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.QStringUtf8_40>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.QStringUtf8_48>();
       FramePrinter.EnsurePrimitiveNotStripped<QueryOptions>();
+      FramePrinter.EnsurePrimitiveNotStripped<Quantum.StageSelectionMode>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.StageTileFlags>();
     }
   }
