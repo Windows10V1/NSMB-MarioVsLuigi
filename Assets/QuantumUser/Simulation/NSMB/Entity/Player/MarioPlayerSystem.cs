@@ -2135,7 +2135,6 @@ namespace Quantum {
             var rules = f.Global->Rules;
 
             bool dropStars = true;
-            bool noTeamKnockback = rules.FriendlyFire == FriendlyFireOptions.NoInteract;
             if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* ownerMario)) {
                 dropStars = ownerMario->GetTeam(f) != mario->GetTeam(f) || rules.FriendlyFire == FriendlyFireOptions.StarLoss;
             }
@@ -2145,8 +2144,8 @@ namespace Quantum {
                 && mario->IsDamageable
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
 
-            // allow the fireball to collide, but do no knockback
-            if (damageable && (!noTeamKnockback || dropStars)) {
+            // allow the projectiles to collide, but do no knockback if no team attack
+            if (damageable && (rules.FriendlyFire != FriendlyFireOptions.NoInteract || dropStars)) {
                 bool didKnockback = false;
                 bool damaged = false;
                 switch (projectileAsset.Effect) {
