@@ -65,7 +65,7 @@ namespace Quantum {
                     boomerangPullForceActive = true;
                 } else {
                     FP elapsedTime = (FP)projectile->Lifetime / 60;
-                    boomerangPullForceActive = elapsedTime >= FP.FromString("0.25");
+                    boomerangPullForceActive = elapsedTime >= CalculateBoomerangReturnThreshold(asset, projectile->Speed);
                 }
             }
 
@@ -87,14 +87,23 @@ namespace Quantum {
 
             if (!projectile->IsReturning()) {
                 FP elapsedTime = (FP)projectile->Lifetime / 60; // 60 FPS
+                FP returnThreshold = CalculateBoomerangReturnThreshold(asset, projectile->Speed);
 
-                if (elapsedTime >= FP.FromString("0.25")) {
-                    FP timeIntoReturn = elapsedTime - FP.FromString("0.25");
+                if (elapsedTime >= returnThreshold) {
+                    FP timeIntoReturn = elapsedTime - returnThreshold;
                     ApplyBoomerangPullForce(f, ref filter, asset, timeIntoReturn);
                 }
             } else {
                 ApplyBoomerangPullForce(f, ref filter, asset, FP.MaxValue);
             }
+        }
+
+        private FP CalculateBoomerangReturnThreshold(ProjectileAsset asset, FP currentSpeed) {
+            const FP BASE_RETURN_TIME = FP.FromString("0.25");
+            if (currentSpeed <= 0 || asset.Speed <= 0) {
+                return BASE_RETURN_TIME;
+            }
+            return BASE_RETURN_TIME * (currentSpeed / asset.Speed);
         }
 
         private void ApplyBoomerangPullForce(Frame f, ref Filter filter, ProjectileAsset asset, FP timeIntoReturn) {
