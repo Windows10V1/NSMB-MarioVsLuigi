@@ -98,13 +98,12 @@ namespace Quantum {
             }
         }
 
-        private static readonly FP BOOMERANG_BASE_RETURN_TIME = FP.FromString("0.25");
-
         private FP CalculateBoomerangReturnThreshold(ProjectileAsset asset, FP currentSpeed) {
+            static readonly FP BASE_RETURN_TIME = FP.FromString("0.25");
             if (currentSpeed <= 0 || asset.Speed <= 0) {
-                return BOOMERANG_BASE_RETURN_TIME;
+                return BASE_RETURN_TIME;
             }
-            return BOOMERANG_BASE_RETURN_TIME * (currentSpeed / asset.Speed);
+            return BASE_RETURN_TIME * (currentSpeed / asset.Speed);
         }
 
         private void ApplyBoomerangPullForce(Frame f, ref Filter filter, ProjectileAsset asset, FP timeIntoReturn) {
