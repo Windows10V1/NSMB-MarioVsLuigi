@@ -56,14 +56,23 @@ namespace NSMB.UI.MainMenu {
             PreviewStage(QuantumUnityDB.GetGlobalAsset<VersusStageData>(QuantumUnityDB.GetGlobalAsset(map).UserAsset.Id));
         }
 
+        private unsafe void ChangeStage(QuantumGame game) {
+            Frame f = game.Frames.Predicted;
+            if (f.Global->Rules.ChooseMode == StageChooseMode.Random) {
+                PreviewStage((VersusStageData) null);
+            } else {
+                PreviewStage(f.Global->Rules.Stage);
+            }
+        }
+
         private unsafe void OnPlayerAdded(EventPlayerAdded e) {
             if (e.Game.PlayerIsLocal(e.Player)) {
-                PreviewStage(e.Game.Frames.Predicted.Global->Rules.Stage);
+                ChangeStage(e.Game);
             }
         }
 
         private unsafe void OnRulesChanged(EventRulesChanged e) {
-            PreviewStage(e.Game.Frames.Predicted.Global->Rules.Stage);
+            ChangeStage(e.Game);
         }
     }
 }

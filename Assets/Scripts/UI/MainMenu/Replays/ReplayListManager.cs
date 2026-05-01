@@ -155,7 +155,9 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             await SortReplays(default);
             await FilterReplays(default);
             await CreateReplayListEntries(default);
-            StartCoroutine(SelectAtEndOfFrame());
+            if (isActiveAndEnabled) {
+                StartCoroutine(SelectAtEndOfFrame());
+            }
             ready = true;
         }
 

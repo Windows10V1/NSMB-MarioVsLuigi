@@ -111,7 +111,7 @@ namespace Quantum {
     HammerSuit,
     MegaMushroom,
   }
-  public enum StageSelectionMode : byte {
+  public enum StageChooseMode : byte {
     Choose,
     Random,
   }
@@ -997,13 +997,15 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct GameRules {
-    public const Int32 SIZE = 56;
+    public const Int32 SIZE = 64;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(48)]
+    [FieldOffset(56)]
     public AssetRef<Map> Stage;
     [FieldOffset(0)]
-    public StageSelectionMode StageMode;
+    public StageChooseMode ChooseMode;
     [FieldOffset(40)]
+    public QHashSetPtr<AssetRef<Map>> RandomDisabledStages;
+    [FieldOffset(48)]
     public AssetRef<GamemodeAsset> Gamemode;
     [FieldOffset(20)]
     public Int32 StarsToWin;
@@ -1027,7 +1029,8 @@ namespace Quantum {
       unchecked { 
         var hash = 443;
         hash = hash * 31 + Stage.GetHashCode();
-        hash = hash * 31 + (Byte)StageMode;
+        hash = hash * 31 + (Byte)ChooseMode;
+        hash = hash * 31 + RandomDisabledStages.GetHashCode();
         hash = hash * 31 + Gamemode.GetHashCode();
         hash = hash * 31 + StarsToWin.GetHashCode();
         hash = hash * 31 + CoinsForPowerup.GetHashCode();
@@ -1041,9 +1044,12 @@ namespace Quantum {
         return hash;
       }
     }
+    public void ClearPointers(FrameBase f, EntityRef entity) {
+      RandomDisabledStages = default;
+    }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (GameRules*)ptr;
-        serializer.Stream.Serialize((Byte*)&p->StageMode);
+        serializer.Stream.Serialize((Byte*)&p->ChooseMode);
         serializer.Stream.Serialize(&p->CoinDeathPenalty);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);
@@ -1053,6 +1059,7 @@ namespace Quantum {
         QBoolean.Serialize(&p->CustomPowerupsEnabled, serializer);
         QBoolean.Serialize(&p->DrawOnTimeUp, serializer);
         QBoolean.Serialize(&p->TeamsEnabled, serializer);
+        QHashSet.Serialize(&p->RandomDisabledStages, serializer, Statics.SerializeAssetRef);
         AssetRef.Serialize(&p->Gamemode, serializer);
         AssetRef.Serialize(&p->Stage, serializer);
     }
@@ -1332,7 +1339,7 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct _globals_ {
-    public const Int32 SIZE = 3152;
+    public const Int32 SIZE = 3160;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(0)]
     public AssetRef<Map> Map;
@@ -1381,7 +1388,7 @@ namespace Quantum {
     public UInt16 AutomaticStageRefreshInterval;
     [FieldOffset(1822)]
     public UInt16 AutomaticStageRefreshTimer;
-    [FieldOffset(1952)]
+    [FieldOffset(1960)]
     [FramePrinter.FixedArrayAttribute(typeof(PlayerInformation), 10)]
     private fixed Byte _PlayerInfo_[1200];
     [FieldOffset(1816)]
@@ -1454,6 +1461,7 @@ namespace Quantum {
       }
     }
     partial void ClearPointersPartial(FrameBase f, EntityRef entity) {
+      Rules.ClearPointers(f, entity);
       PlayerDatas = default;
       BannedPlayerIds = default;
     }
@@ -4558,6 +4566,7 @@ namespace Quantum {
     public static FrameSerializer.Delegate SerializeBetterPhysicsContact;
     public static FrameSerializer.Delegate SerializeEntityRef;
     public static FrameSerializer.Delegate SerializeFPVector2;
+    public static FrameSerializer.Delegate SerializeAssetRef;
     public static FrameSerializer.Delegate SerializePowerupTransitionAnimation;
     public static FrameSerializer.Delegate SerializePhysicsQueryRef;
     public static FrameSerializer.Delegate SerializePhysicsContact;
@@ -4569,6 +4578,7 @@ namespace Quantum {
       SerializeBetterPhysicsContact = Quantum.BetterPhysicsContact.Serialize;
       SerializeEntityRef = EntityRef.Serialize;
       SerializeFPVector2 = FPVector2.Serialize;
+      SerializeAssetRef = AssetRef.Serialize;
       SerializePowerupTransitionAnimation = Quantum.PowerupTransitionAnimation.Serialize;
       SerializePhysicsQueryRef = PhysicsQueryRef.Serialize;
       SerializePhysicsContact = Quantum.PhysicsContact.Serialize;
@@ -4721,7 +4731,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.Spinner), Quantum.Spinner.SIZE);
       typeRegistry.Register(typeof(SpringJoint), SpringJoint.SIZE);
       typeRegistry.Register(typeof(SpringJoint3D), SpringJoint3D.SIZE);
-      typeRegistry.Register(typeof(Quantum.StageSelectionMode), 1);
+      typeRegistry.Register(typeof(Quantum.StageChooseMode), 1);
       typeRegistry.Register(typeof(Quantum.StageTileFlags), 1);
       typeRegistry.Register(typeof(Quantum.StageTileInstance), Quantum.StageTileInstance.SIZE);
       typeRegistry.Register(typeof(Quantum.StarChasersData), Quantum.StarChasersData.SIZE);
@@ -4801,7 +4811,7 @@ namespace Quantum {
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.QStringUtf8_40>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.QStringUtf8_48>();
       FramePrinter.EnsurePrimitiveNotStripped<QueryOptions>();
-      FramePrinter.EnsurePrimitiveNotStripped<Quantum.StageSelectionMode>();
+      FramePrinter.EnsurePrimitiveNotStripped<Quantum.StageChooseMode>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.StageTileFlags>();
     }
   }

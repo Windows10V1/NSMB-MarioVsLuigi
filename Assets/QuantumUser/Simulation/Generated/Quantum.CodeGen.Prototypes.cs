@@ -457,7 +457,9 @@ namespace Quantum.Prototypes {
   [Quantum.Prototypes.Prototype(typeof(Quantum.GameRules))]
   public unsafe partial class GameRulesPrototype : StructPrototype {
     public AssetRef<Map> Stage;
-    public Quantum.QEnum8<StageSelectionMode> StageMode;
+    public Quantum.QEnum8<StageChooseMode> ChooseMode;
+    [DynamicCollectionAttribute()]
+    public AssetRef<Map>[] RandomDisabledStages = {};
     public AssetRef<GamemodeAsset> Gamemode;
     public Int32 StarsToWin;
     public Int32 CoinsForPowerup;
@@ -471,7 +473,17 @@ namespace Quantum.Prototypes {
     partial void MaterializeUser(Frame frame, ref Quantum.GameRules result, in PrototypeMaterializationContext context);
     public void Materialize(Frame frame, ref Quantum.GameRules result, in PrototypeMaterializationContext context = default) {
         result.Stage = this.Stage;
-        result.StageMode = this.StageMode;
+        result.ChooseMode = this.ChooseMode;
+        if (this.RandomDisabledStages.Length == 0) {
+          result.RandomDisabledStages = default;
+        } else {
+          var hashSet = frame.AllocateHashSet(out result.RandomDisabledStages, this.RandomDisabledStages.Length);
+          for (int i = 0; i < this.RandomDisabledStages.Length; ++i) {
+            AssetRef<Map> tmp = default;
+            tmp = this.RandomDisabledStages[i];
+            hashSet.Add(tmp);
+          }
+        }
         result.Gamemode = this.Gamemode;
         result.StarsToWin = this.StarsToWin;
         result.CoinsForPowerup = this.CoinsForPowerup;

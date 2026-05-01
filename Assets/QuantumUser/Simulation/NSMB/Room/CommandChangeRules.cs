@@ -17,6 +17,7 @@ namespace Quantum {
         public bool DrawOnTimeUp;
         public int StarFountain;
         public int CoinDeathPenalty;
+        public StageChooseMode ChooseMode;
 
         public override void Serialize(BitStream stream) {
             if (stream.Writing) {
@@ -36,6 +37,12 @@ namespace Quantum {
             stream.Serialize(ref DrawOnTimeUp);
             stream.Serialize(ref StarFountain);
             stream.Serialize(ref CoinDeathPenalty);
+
+            if (stream.Writing) {
+                stream.WriteByte((byte) ChooseMode);
+            } else {
+                ChooseMode = (StageChooseMode) stream.ReadByte();
+            }
         }
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* playerData) {
@@ -52,11 +59,12 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.Gamemode)) {
                 gamemodeChanged = rules.Gamemode != Gamemode;
 
-                GameRules tempRules = default;
-                f.FindAsset(Gamemode).DefaultRules.Materialize(f, ref tempRules);
-                tempRules.Stage = rules.Stage;
+                GameRules newRules = default;
+                f.FindAsset(Gamemode).DefaultRules.Materialize(f, ref newRules);
+                newRules.Stage = rules.Stage;
+                newRules.RandomDisabledStages = rules.RandomDisabledStages;
 
-                rules = tempRules;
+                rules = newRules;
             }
             if (rulesChanges.HasFlag(Rules.Stage)) {
                 levelChanged = rules.Stage != Stage;
@@ -89,6 +97,9 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.CoinDeathPenalty)) {
                 rules.CoinDeathPenalty = CoinDeathPenalty;
             }
+            if (rulesChanges.HasFlag(Rules.StageChooseMode)) {
+                rules.ChooseMode = ChooseMode;
+            }
 
             f.Global->Rules = rules;
             f.Events.RulesChanged(gamemodeChanged, levelChanged);
@@ -112,6 +123,7 @@ namespace Quantum {
             DrawOnTimeUp = 1 << 8,
             StarFountain = 1 << 9, // only for Star Chasers
             CoinDeathPenalty = 1 << 10, // only for Coin Runners
+            StageChooseMode = 1 << 11,
         }
     }
 }

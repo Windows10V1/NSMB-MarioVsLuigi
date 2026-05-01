@@ -30,14 +30,15 @@ struct PlayerInformation {
 	bool Disqualified;
 }
 
-enum StageSelectionMode : Byte {
+enum StageChooseMode : Byte {
 	Choose,
 	Random
 }
 
 struct GameRules {
 	AssetRef<Map> Stage;
-	StageSelectionMode StageMode;
+	StageChooseMode ChooseMode;
+	hash_set<AssetRef<Map>> RandomDisabledStages;
 
 	AssetRef<GamemodeAsset> Gamemode;
 	int StarsToWin;
@@ -97,6 +98,11 @@ synced event HostChanged {
 synced event RulesChanged {
 	bool GamemodeChanged;
 	bool MapChanged;
+}
+
+synced event RandomStageToggled {
+	AssetRef<Map> Stage;
+	bool IsDisabled;
 }
 
 synced event HostCloseRulesPanel {
