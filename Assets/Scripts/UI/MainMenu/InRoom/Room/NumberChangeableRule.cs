@@ -1,6 +1,7 @@
 using NSMB.UI.Translation;
 using Quantum;
 using UnityEngine;
+using WebSocketSharp;
 
 namespace NSMB.UI.MainMenu.Submenus.InRoom {
     public class NumberChangeableRule : ChangeableRule {
@@ -12,6 +13,10 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         //---Serialized Variables
         [SerializeField] protected int minValue = 0, maxValue = 20, step = 1;
         [SerializeField] protected bool minimumValueIsOff;
+
+        // will search for this key when value == key
+        [SerializeField] private string overrideTranslationPrefix;
+        [SerializeField] private string[] overrideTranslationKeys;
 
         protected override void IncreaseValueInternal() {
             int intValue = (int) value;
@@ -57,6 +62,9 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             case CommandChangeRules.Rules.CoinDeathPenalty:
                 cmd.CoinDeathPenalty = (int) value;
                 break;
+            case CommandChangeRules.Rules.FriendlyFire:
+                cmd.FriendlyFire = (int) value;
+                break;
             }
 
             QuantumGame game = QuantumRunner.DefaultGame;
@@ -69,7 +77,14 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         protected override void UpdateLabel() {
             TranslationManager tm = GlobalController.Instance.translationManager;
             if (value is int intValue) {
-                label.text = labelPrefix + ((minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue + labelSuffix);
+                string text;
+                if (!overrideTranslationPrefix.IsNullOrEmpty() && !overrideTranslationKeys[intValue].IsNullOrEmpty()) {
+                    text = tm.GetTranslation(overrideTranslationPrefix + '.' + overrideTranslationKeys[intValue]);
+                } else {
+                    text = (minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue + labelSuffix;
+                }
+                label.text = labelPrefix + text;
+                //label.text = labelPrefix + ((minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue + labelSuffix);
             }
         }
     }

@@ -167,7 +167,8 @@ namespace NSMB.Replay {
                         CustomPowerupsEnabled = rules.CustomPowerupsEnabled,
                         TeamsEnabled = rules.TeamsEnabled,
                         StarFountain = rules.StarFountain,
-                        CoinDeathPenalty = rules.CoinDeathPenalty
+                        CoinDeathPenalty = rules.CoinDeathPenalty,
+                        FriendlyFire = rules.FriendlyFire,
                     },
                     PlayerInformation = playerInformation,
                     WinningTeam = winner,
