@@ -1,5 +1,6 @@
 using NSMB.UI.Translation;
 using NSMB.Utilities.Extensions;
+using Photon.Deterministic;
 using Quantum;
 using System;
 using TMPro;
@@ -18,6 +19,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
         [SerializeField] private MainMenuCanvas canvas;
         [SerializeField] private ScrollRect scroll;
         [SerializeField] private Image stageImage;
+        [SerializeField] private Material enabledMaterial, disabledMaterial;
         [SerializeField] private TMP_Text stageName, stageAuthor, stageComposer;
 
         public void Initialize(Map map, VersusStageData stage) {
@@ -31,6 +33,17 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
         }
 
+        protected override void OnEnable() {
+            base.OnEnable();
+            UpdateMaterial();
+        }
+
+        protected override void Start() {
+            base.Start();
+            QuantumEvent.Subscribe<EventRandomStageToggled>(this, OnRandomStageToggled);
+            QuantumEvent.Subscribe<EventRulesChanged>(this, OnRulesChanged);
+        }
+
         public override void OnSelect(BaseEventData eventData) {
             base.OnSelect(eventData);
             scroll.verticalNormalizedPosition = scroll.ScrollToCenter((RectTransform) transform, false);
@@ -39,23 +52,68 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
         public unsafe void OnSubmit(BaseEventData eventData) {
             eventData.Use();
 
-            CommandChangeRules cmd = new CommandChangeRules {
-                EnabledChanges = CommandChangeRules.Rules.Stage,
-                Stage = map
-            };
-
             QuantumGame game = QuantumRunner.DefaultGame;
             PlayerRef host = game.Frames.Predicted.Global->Host;
-            if (game.PlayerIsLocal(host)) {
-                game.SendCommand(game.GetLocalPlayerSlots()[game.GetLocalPlayers().IndexOf(host)], cmd);
-                canvas.PlayConfirmSound();
-            } else {
+            if (!game.PlayerIsLocal(host)) {
                 canvas.PlaySound(SoundEffect.UI_Error);
+                return;
             }
+
+            Frame f = game.Frames.Predicted;
+            DeterministicCommand cmd;
+            if (f.Global->Rules.ChooseMode == StageChooseMode.Choose) {
+                cmd = new CommandChangeRules {
+                    EnabledChanges = CommandChangeRules.Rules.Stage,
+                    Stage = map
+                };
+            } else {
+                cmd = new CommandToggleRandomStage {
+                    Stage = map
+                };
+            }
+
+            game.SendCommand(game.GetLocalPlayerSlots()[game.GetLocalPlayers().IndexOf(host)], cmd);
+            canvas.PlayConfirmSound();
         }
 
         public void OnPointerClick(PointerEventData eventData) {
             OnSubmit(eventData);
+        }
+
+        private unsafe void UpdateMaterial(bool? isDisabledNullable = null) {
+            QuantumGame game = QuantumRunner.DefaultGame;
+            if (game == null) {
+                stageImage.material = enabledMaterial;
+                return;
+            }
+
+            Frame f = QuantumRunner.DefaultGame.Frames.Predicted;
+            if (f.Global->Rules.ChooseMode != StageChooseMode.Random) {
+                stageImage.material = enabledMaterial;
+                return;
+            } 
+            
+            if (!isDisabledNullable.HasValue) {
+                if (f.TryResolveHashSet(f.Global->Rules.RandomDisabledStages, out var disabledStages)) {
+                    isDisabledNullable = disabledStages.Contains(map);
+                } else {
+                    isDisabledNullable = false;
+                }
+            }
+
+            stageImage.material = isDisabledNullable.Value ? disabledMaterial : enabledMaterial;
+        }
+
+        private void OnRulesChanged(EventRulesChanged e) {
+            UpdateMaterial();
+        }
+
+        private void OnRandomStageToggled(EventRandomStageToggled e) {
+            if (e.Stage != map) {
+                return;
+            }
+
+            UpdateMaterial(e.IsDisabled);
         }
 
         public void UpdateText() {

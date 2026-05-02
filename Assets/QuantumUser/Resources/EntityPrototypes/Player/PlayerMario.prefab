@@ -1214,6 +1214,7 @@ MonoBehaviour:
     - {fileID: 2749634281061596644}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
     TextureReplacements:
     - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
       AlbedoTexture: {fileID: 2800000, guid: fdd84ef6d4e291441a0a2c86601bba65, type: 3}
@@ -1230,6 +1231,7 @@ MonoBehaviour:
     - {fileID: 271055882594606603}
     BaseModel: {fileID: 7762643025404982223}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 0.5
     TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 347b7f77a47c4db4b85584fbfdecf63b,
@@ -1239,6 +1241,7 @@ MonoBehaviour:
     - {fileID: 271055882594606603}
     BaseModel: {fileID: 7762643025404982223}
     ModelScale: {x: 0.5, y: 0.5, z: 0.5}
+    ModelHeightInBlocks: 0.5
     TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 347b7f77a47c4db4b85584fbfdecf63b,
@@ -1248,6 +1251,7 @@ MonoBehaviour:
     - {fileID: 2749634281061596644}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
     TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
@@ -1256,6 +1260,7 @@ MonoBehaviour:
     - {fileID: 2749634281061596644}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
     TextureReplacements:
     - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
       AlbedoTexture: {fileID: 2800000, guid: 7d91199e08b62ae46bbd7275a310c08b, type: 3}
@@ -1275,6 +1280,7 @@ MonoBehaviour:
     - {fileID: 2749634281061596644}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
     TextureReplacements:
     - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
       AlbedoTexture: {fileID: 2800000, guid: 1e41f0a14781093438efc57d9d831ed8, type: 3}
@@ -1295,6 +1301,7 @@ MonoBehaviour:
     - {fileID: 8712194458326895251}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
     TextureReplacements:
     - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
       AlbedoTexture: {fileID: 2800000, guid: 9cdd12fd70cf4b646b336f4d60f6ef38, type: 3}
@@ -1311,6 +1318,7 @@ MonoBehaviour:
     - {fileID: 3629787967981286811}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
     TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
@@ -1322,6 +1330,7 @@ MonoBehaviour:
     - {fileID: 3468715832993014555}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
     TextureReplacements:
     - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
       AlbedoTexture: {fileID: 2800000, guid: 65c8e7e89b4937441816d21e8a156e69, type: 3}
@@ -1336,6 +1345,7 @@ MonoBehaviour:
     - {fileID: 2749634281061596644}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 3.6, y: 3.6, z: 3.6}
+    ModelHeightInBlocks: 1
     TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}

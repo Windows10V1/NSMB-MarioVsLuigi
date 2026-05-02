@@ -52,37 +52,36 @@ namespace Quantum {
             switch (f.Global->GameState) {
             case GameState.PreGameRoom:
                 if (f.Global->GameStartFrames > 0) {
-                    if (QuantumUtils.Decrement(ref f.Global->GameStartFrames)) {
+                    if (QuantumUtils.Decrement(ref f.Global->GameStartFrames) && f.IsVerified) {
                         // Start the game!
-                        if (f.IsVerified) {
-                            if (f.Global->Rules.StageMode == StageSelectionMode.Random) {
-                                // Pick a random map
-                                var allMaps = f.Context.GetAllAssets<Map>();
+                        AssetRef<Map> nextStage;
+                        
+                        switch (f.Global->Rules.ChooseMode) {
+                        case StageChooseMode.Choose:
+                            nextStage = f.Global->Rules.Stage;
+                            break;
+                        case StageChooseMode.Random: {
+                            // Pick a random map
+                            var allMaps = f.Context.GetAllAssets<Map>();
 
-                                // IndexOf doesn't work because we get Map not AssetRef<Map>...
-                                int previousStageIndex = -1;
-                                for (int i = 0; i < allMaps.Count; i++) {
-                                    if (f.Global->PreviousStage == allMaps[i]) {
-                                        previousStageIndex = i;
-                                        break;
-                                    }
-                                }
-
-                                int chosenIndex;
-                                if (previousStageIndex == -1) {
-                                    // Pick any stage.
-                                    chosenIndex = f.RNG->Next(0, allMaps.Count);
-                                } else {
-                                    // Don't allow the same stage twice in a row
-                                    chosenIndex = f.RNG->Next(0, allMaps.Count - 1);
-                                    if (chosenIndex >= previousStageIndex) {
-                                        chosenIndex++;
-                                    }
-                                }
-                                f.Global->Rules.Stage = allMaps[chosenIndex];
+                            // Exclude disabled maps.
+                            if (f.TryResolveHashSet(f.Global->Rules.RandomDisabledStages, out var disabledStages)) {
+                                allMaps.RemoveAll(map => disabledStages.Contains(map));
                             }
-                            f.MapAssetRef = f.Global->Rules.Stage;
+
+                            // Remove the previous map (if possible)
+                            if (allMaps.Count > 1) {
+                                allMaps.RemoveAll(map => map == f.Global->PreviousStage);
+                            }
+
+                            nextStage = allMaps[f.RNG->Next(0, allMaps.Count)];
+                            break;
                         }
+                        default:
+                            throw new ArgumentOutOfRangeException($"Unknown StageChooseMode {f.Global->Rules.ChooseMode}");
+                        }
+
+                        f.MapAssetRef = nextStage;
                         f.Global->PlayerLoadFrames = (ushort) (20 * f.UpdateRate);
                         f.Global->GameState = GameState.WaitingForPlayers;
 

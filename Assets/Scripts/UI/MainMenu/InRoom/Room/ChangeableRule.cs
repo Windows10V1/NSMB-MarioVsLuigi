@@ -210,6 +210,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
                 CommandChangeRules.Rules.StarFountain => rules.StarFountain,
                 CommandChangeRules.Rules.CoinDeathPenalty => rules.CoinDeathPenalty,
                 CommandChangeRules.Rules.FriendlyFire => (int) rules.FriendlyFire,
+                CommandChangeRules.Rules.StageChooseMode => (byte) rules.ChooseMode,
                 _ => null
             };
 
