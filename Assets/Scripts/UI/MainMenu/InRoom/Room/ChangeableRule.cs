@@ -209,7 +209,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
                 CommandChangeRules.Rules.TeamsEnabled => (bool) rules.TeamsEnabled,
                 CommandChangeRules.Rules.StarFountain => rules.StarFountain,
                 CommandChangeRules.Rules.CoinDeathPenalty => rules.CoinDeathPenalty,
-                CommandChangeRules.Rules.FriendlyFire => (int) rules.FriendlyFire,
+                CommandChangeRules.Rules.TeamAttack => (int) rules.TeamAttack,
                 CommandChangeRules.Rules.StageChooseMode => (byte) rules.ChooseMode,
                 _ => null
             };

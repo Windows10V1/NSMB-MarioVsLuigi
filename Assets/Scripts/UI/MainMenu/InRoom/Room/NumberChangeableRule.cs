@@ -1,7 +1,8 @@
 using NSMB.UI.Translation;
 using Quantum;
+using System;
+using System.Linq;
 using UnityEngine;
-using WebSocketSharp;
 
 namespace NSMB.UI.MainMenu.Submenus.InRoom {
     public class NumberChangeableRule : ChangeableRule {
@@ -13,10 +14,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         //---Serialized Variables
         [SerializeField] protected int minValue = 0, maxValue = 20, step = 1;
         [SerializeField] protected bool minimumValueIsOff;
-
-        // will search for this key when value == key
-        [SerializeField] private string overrideTranslationPrefix;
-        [SerializeField] private string[] overrideTranslationKeys;
+        [SerializeField] private NumberValueTranslationOverride[] translationOverrides;
 
         protected override void IncreaseValueInternal() {
             int intValue = (int) value;
@@ -62,8 +60,8 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             case CommandChangeRules.Rules.CoinDeathPenalty:
                 cmd.CoinDeathPenalty = (int) value;
                 break;
-            case CommandChangeRules.Rules.FriendlyFire:
-                cmd.FriendlyFire = (int) value;
+            case CommandChangeRules.Rules.TeamAttack:
+                cmd.TeamAttack = (int) value;
                 break;
             }
 
@@ -78,14 +76,19 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             TranslationManager tm = GlobalController.Instance.translationManager;
             if (value is int intValue) {
                 string text;
-                if (!overrideTranslationPrefix.IsNullOrEmpty() && !overrideTranslationKeys[intValue].IsNullOrEmpty()) {
-                    text = tm.GetTranslation(overrideTranslationPrefix + '.' + overrideTranslationKeys[intValue]);
+                if (translationOverrides.FirstOrDefault(to => to.Value == intValue) is { } translationOverride) {
+                    text = tm.GetTranslation(translationOverride.Key);
                 } else {
-                    text = (minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue + labelSuffix;
+                    text = (minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue.ToString();
                 }
-                label.text = labelPrefix + text;
-                //label.text = labelPrefix + ((minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue + labelSuffix);
+                label.text = labelPrefix + text + labelSuffix;
             }
+        }
+
+        [Serializable]
+        public class NumberValueTranslationOverride {
+            public int Value;
+            public string Key;
         }
     }
 }

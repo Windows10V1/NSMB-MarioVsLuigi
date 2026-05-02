@@ -2161,7 +2161,7 @@ namespace Quantum {
 
             bool dropStars = true;
             if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* ownerMario)) {
-                dropStars = ownerMario->GetTeam(f) != mario->GetTeam(f) || rules.FriendlyFire == FriendlyFireOptions.StarLoss;
+                dropStars = ownerMario->GetTeam(f) != mario->GetTeam(f) || rules.TeamAttack == TeamAttackOptions.Full;
             }
 
             // Mario is "damageable" when he's...
@@ -2175,7 +2175,7 @@ namespace Quantum {
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
 
             // allow the projectiles to collide, but do no knockback if no team attack
-            if (damageable && (rules.FriendlyFire != FriendlyFireOptions.NoInteract || dropStars)) {
+            if (damageable && (rules.TeamAttack != TeamAttackOptions.None || dropStars)) {
                 bool didKnockback = false;
                 switch (projectileAsset.Effect) {
                 case ProjectileEffectType.KillEnemiesAndSoftKnockbackPlayers:
@@ -2237,10 +2237,10 @@ namespace Quantum {
 
             // check game rules
             var rules = f.Global->Rules;
-            bool dropStars = marioA->GetTeam(f) != marioB->GetTeam(f) || rules.FriendlyFire == FriendlyFireOptions.StarLoss;
+            bool dropStars = marioA->GetTeam(f) != marioB->GetTeam(f) || rules.TeamAttack == TeamAttackOptions.Full;
 
             // using drop stars as a team check
-            if (rules.FriendlyFire == FriendlyFireOptions.NoInteract && !dropStars) {
+            if (rules.TeamAttack == TeamAttackOptions.None && !dropStars) {
                 return;
             }
 
@@ -2784,10 +2784,10 @@ namespace Quantum {
             bool dropStars = true;
             if (f.Unsafe.TryGetPointer(bumper, out MarioPlayer* bumperMario)) {
                 bool teamMatch = bumperMario->GetTeam(f) == mario->GetTeam(f);
-                if (rules.FriendlyFire == FriendlyFireOptions.NoInteract && teamMatch) {
+                if (rules.TeamAttack == TeamAttackOptions.None && teamMatch) {
                     return;
                 }
-                dropStars = !teamMatch || rules.FriendlyFire == FriendlyFireOptions.StarLoss;
+                dropStars = !teamMatch || rules.TeamAttack == TeamAttackOptions.Full;
             }
 
             bool damaged = mario->DoKnockback(f, entity, !onRight, dropStars ? 1 : 0, KnockbackStrength.Normal, bumper, bypassDamageInvincibility: true, ignoreInvincibleStates: true);

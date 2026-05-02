@@ -18,7 +18,7 @@ namespace Quantum {
         public int StarFountain;
         public int CoinDeathPenalty;
         public StageChooseMode ChooseMode;
-        public int FriendlyFire;
+        public int TeamAttack;
 
         public override void Serialize(BitStream stream) {
             if (stream.Writing) {
@@ -45,7 +45,7 @@ namespace Quantum {
                 ChooseMode = (StageChooseMode) stream.ReadByte();
             }
 
-            stream.Serialize(ref FriendlyFire);
+            stream.Serialize(ref TeamAttack);
         }
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* playerData) {
@@ -103,8 +103,8 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.StageChooseMode)) {
                 rules.ChooseMode = ChooseMode;
             }
-            if (rulesChanges.HasFlag(Rules.FriendlyFire)) {
-                rules.FriendlyFire = (FriendlyFireOptions) FriendlyFire;
+            if (rulesChanges.HasFlag(Rules.TeamAttack)) {
+                rules.TeamAttack = (TeamAttackOptions) TeamAttack;
             }
 
             f.Global->Rules = rules;
@@ -130,7 +130,7 @@ namespace Quantum {
             StarFountain = 1 << 9, // only for Star Chasers
             CoinDeathPenalty = 1 << 10, // only for Coin Runners
             StageChooseMode = 1 << 11,
-            FriendlyFire = 1 << 12,
+            TeamAttack = 1 << 12,
         }
     }
 }

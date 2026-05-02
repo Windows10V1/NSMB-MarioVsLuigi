@@ -468,7 +468,7 @@ namespace Quantum.Prototypes {
     public QBoolean TeamsEnabled;
     public QBoolean CustomPowerupsEnabled;
     public QBoolean DrawOnTimeUp;
-    public Quantum.QEnum8<FriendlyFireOptions> FriendlyFire;
+    public Quantum.QEnum8<TeamAttackOptions> TeamAttack;
     public Int32 StarFountain;
     public Int32 CoinDeathPenalty;
     partial void MaterializeUser(Frame frame, ref Quantum.GameRules result, in PrototypeMaterializationContext context);
@@ -493,7 +493,7 @@ namespace Quantum.Prototypes {
         result.TeamsEnabled = this.TeamsEnabled;
         result.CustomPowerupsEnabled = this.CustomPowerupsEnabled;
         result.DrawOnTimeUp = this.DrawOnTimeUp;
-        result.FriendlyFire = this.FriendlyFire;
+        result.TeamAttack = this.TeamAttack;
         result.StarFountain = this.StarFountain;
         result.CoinDeathPenalty = this.CoinDeathPenalty;
         MaterializeUser(frame, ref result, in context);

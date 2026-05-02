@@ -61,11 +61,6 @@ namespace Quantum {
     Groundpounded,
     InWall,
   }
-  public enum FriendlyFireOptions : byte {
-    NoInteract,
-    NoStarDrop,
-    StarLoss,
-  }
   public enum GameState : byte {
     PreGameRoom,
     WaitingForPlayers,
@@ -123,6 +118,11 @@ namespace Quantum {
   public enum StageTileFlags : byte {
     MirrorX = 1,
     MirrorY = 2,
+  }
+  public enum TeamAttackOptions : byte {
+    None,
+    KnockbackOnly,
+    Full,
   }
   [System.FlagsAttribute()]
   public enum InputButtons : int {
@@ -1006,7 +1006,7 @@ namespace Quantum {
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(56)]
     public AssetRef<Map> Stage;
-    [FieldOffset(1)]
+    [FieldOffset(0)]
     public StageChooseMode ChooseMode;
     [FieldOffset(40)]
     public QHashSetPtr<AssetRef<Map>> RandomDisabledStages;
@@ -1026,8 +1026,8 @@ namespace Quantum {
     public QBoolean CustomPowerupsEnabled;
     [FieldOffset(32)]
     public QBoolean DrawOnTimeUp;
-    [FieldOffset(0)]
-    public FriendlyFireOptions FriendlyFire;
+    [FieldOffset(1)]
+    public TeamAttackOptions TeamAttack;
     [FieldOffset(16)]
     public Int32 StarFountain;
     [FieldOffset(4)]
@@ -1046,7 +1046,7 @@ namespace Quantum {
         hash = hash * 31 + TeamsEnabled.GetHashCode();
         hash = hash * 31 + CustomPowerupsEnabled.GetHashCode();
         hash = hash * 31 + DrawOnTimeUp.GetHashCode();
-        hash = hash * 31 + (Byte)FriendlyFire;
+        hash = hash * 31 + (Byte)TeamAttack;
         hash = hash * 31 + StarFountain.GetHashCode();
         hash = hash * 31 + CoinDeathPenalty.GetHashCode();
         return hash;
@@ -1057,8 +1057,8 @@ namespace Quantum {
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (GameRules*)ptr;
-        serializer.Stream.Serialize((Byte*)&p->FriendlyFire);
         serializer.Stream.Serialize((Byte*)&p->ChooseMode);
+        serializer.Stream.Serialize((Byte*)&p->TeamAttack);
         serializer.Stream.Serialize(&p->CoinDeathPenalty);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);
@@ -4654,7 +4654,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(FrameMetaData), FrameMetaData.SIZE);
       typeRegistry.Register(typeof(FrameTimer), FrameTimer.SIZE);
       typeRegistry.Register(typeof(Quantum.Freezable), Quantum.Freezable.SIZE);
-      typeRegistry.Register(typeof(Quantum.FriendlyFireOptions), 1);
       typeRegistry.Register(typeof(Quantum.GameRules), Quantum.GameRules.SIZE);
       typeRegistry.Register(typeof(Quantum.GameState), 1);
       typeRegistry.Register(typeof(Quantum.GamemodeSpecificData), Quantum.GamemodeSpecificData.SIZE);
@@ -4746,6 +4745,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.StageTileInstance), Quantum.StageTileInstance.SIZE);
       typeRegistry.Register(typeof(Quantum.StarChasersData), Quantum.StarChasersData.SIZE);
       typeRegistry.Register(typeof(Quantum.StarCoin), Quantum.StarCoin.SIZE);
+      typeRegistry.Register(typeof(Quantum.TeamAttackOptions), 1);
       typeRegistry.Register(typeof(Transform2D), Transform2D.SIZE);
       typeRegistry.Register(typeof(Transform2DVertical), Transform2DVertical.SIZE);
       typeRegistry.Register(typeof(Transform3D), Transform3D.SIZE);
@@ -4805,7 +4805,6 @@ namespace Quantum {
       FramePrinter.EnsurePrimitiveNotStripped<CallbackFlags>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.CoinType>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.EnemyKillReason>();
-      FramePrinter.EnsurePrimitiveNotStripped<Quantum.FriendlyFireOptions>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.GameState>();
       FramePrinter.EnsurePrimitiveNotStripped<IceBlockBreakReason>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.InputButtons>();
@@ -4824,6 +4823,7 @@ namespace Quantum {
       FramePrinter.EnsurePrimitiveNotStripped<QueryOptions>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.StageChooseMode>();
       FramePrinter.EnsurePrimitiveNotStripped<Quantum.StageTileFlags>();
+      FramePrinter.EnsurePrimitiveNotStripped<Quantum.TeamAttackOptions>();
     }
   }
 }

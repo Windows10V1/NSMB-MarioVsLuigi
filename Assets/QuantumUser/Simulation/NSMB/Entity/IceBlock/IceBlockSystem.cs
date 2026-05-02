@@ -139,9 +139,9 @@ namespace Quantum {
                     return false;
                 } else if (iceBlock->IsSliding && iceBlock->FacingRight == rightContact) {
                     var holdable = f.Unsafe.GetPointer<Holdable>(iceBlockEntity);
-                    bool dropStars = !f.Unsafe.TryGetPointer(holdable->PreviousHolder, out MarioPlayer* holderMario) || mario->GetTeam(f) != holderMario->GetTeam(f) || f.Global->Rules.FriendlyFire == FriendlyFireOptions.StarLoss;
+                    bool dropStars = !f.Unsafe.TryGetPointer(holdable->PreviousHolder, out MarioPlayer* holderMario) || mario->GetTeam(f) != holderMario->GetTeam(f) || f.Global->Rules.TeamAttack == TeamAttackOptions.Full;
 
-                    if (!dropStars || f.Global->Rules.FriendlyFire != FriendlyFireOptions.NoInteract) {
+                    if (!dropStars || f.Global->Rules.TeamAttack != TeamAttackOptions.None) {
                         bool damaged = mario->DoKnockback(f, marioEntity, contact.Normal.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, iceBlockEntity);
                         if (damaged) {
                             FPVector2 particlePos = (f.Unsafe.GetPointer<Transform2D>(marioEntity)->Position + f.Unsafe.GetPointer<Transform2D>(iceBlockEntity)->Position) / 2;
