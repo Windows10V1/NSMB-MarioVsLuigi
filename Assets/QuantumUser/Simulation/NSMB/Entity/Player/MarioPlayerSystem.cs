@@ -2181,7 +2181,7 @@ namespace Quantum {
                 bool knockbackFromRight;
                 if (projectileAsset.IsBoomerang) {
                     // Knockback direction based on boomerang's X velocity
-                    knockbackFromRight = projectilePhysics->Velocity.X > 0;
+                    knockbackFromRight = projectilePhysics->Velocity.X < 0;
                 } else if (projectileAsset.IsSuperBall) {
                     knockbackFromRight = (projectile->Combo & 1) == 0;
                 } else {
