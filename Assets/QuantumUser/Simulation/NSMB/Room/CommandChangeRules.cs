@@ -17,8 +17,8 @@ namespace Quantum {
         public bool DrawOnTimeUp;
         public int StarFountain;
         public int CoinDeathPenalty;
-        public int FriendlyFire;
         public StageChooseMode ChooseMode;
+        public int FriendlyFire;
 
         public override void Serialize(BitStream stream) {
             if (stream.Writing) {
@@ -38,13 +38,14 @@ namespace Quantum {
             stream.Serialize(ref DrawOnTimeUp);
             stream.Serialize(ref StarFountain);
             stream.Serialize(ref CoinDeathPenalty);
-            stream.Serialize(ref FriendlyFire);
 
             if (stream.Writing) {
                 stream.WriteByte((byte) ChooseMode);
             } else {
                 ChooseMode = (StageChooseMode) stream.ReadByte();
             }
+
+            stream.Serialize(ref FriendlyFire);
         }
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* playerData) {
@@ -99,11 +100,11 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.CoinDeathPenalty)) {
                 rules.CoinDeathPenalty = CoinDeathPenalty;
             }
-            if (rulesChanges.HasFlag(Rules.FriendlyFire)) {
-                rules.FriendlyFire = (FriendlyFireOptions) FriendlyFire;
-            }
             if (rulesChanges.HasFlag(Rules.StageChooseMode)) {
                 rules.ChooseMode = ChooseMode;
+            }
+            if (rulesChanges.HasFlag(Rules.FriendlyFire)) {
+                rules.FriendlyFire = (FriendlyFireOptions) FriendlyFire;
             }
 
             f.Global->Rules = rules;
@@ -128,8 +129,8 @@ namespace Quantum {
             DrawOnTimeUp = 1 << 8,
             StarFountain = 1 << 9, // only for Star Chasers
             CoinDeathPenalty = 1 << 10, // only for Coin Runners
-            FriendlyFire = 1 << 11,
-            StageChooseMode = 1 << 12,
+            StageChooseMode = 1 << 11,
+            FriendlyFire = 1 << 12,
         }
     }
 }
