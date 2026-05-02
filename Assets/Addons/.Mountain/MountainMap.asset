@@ -37,7 +37,7 @@ MonoBehaviour:
   GridSizeX: 64
   GridSizeY: 64
   GridNodeSize: 4
-  NavMeshAssets: []
+  NavMeshLinks: []
   Regions: []
   StaticColliders2D: []
   StaticColliders3D: []
@@ -247,6 +247,8 @@ MonoBehaviour:
         IsCeilingPipe:
           Value: 1
         IsMiniOnly:
+          Value: 0
+        TransitionOnlyPanning:
           Value: 0
     - rid: 76087690700783620
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -538,6 +540,8 @@ MonoBehaviour:
           Value: 0
         IsMiniOnly:
           Value: 0
+        TransitionOnlyPanning:
+          Value: 0
     - rid: 698990280858140676
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -605,6 +609,8 @@ MonoBehaviour:
         IsCeilingPipe:
           Value: 0
         IsMiniOnly:
+          Value: 0
+        TransitionOnlyPanning:
           Value: 0
     - rid: 1129778474911793156
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -873,6 +879,8 @@ MonoBehaviour:
         IsCeilingPipe:
           Value: 1
         IsMiniOnly:
+          Value: 0
+        TransitionOnlyPanning:
           Value: 0
     - rid: 3422635461527470084
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -1467,6 +1475,8 @@ MonoBehaviour:
           Value: 0
         DisableRespawning:
           Value: 0
+        StayAtHomeWhenOffscreen:
+          Value: 1
     - rid: 7322710809212092422
       type: {class: FreezablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -1543,8 +1553,6 @@ MonoBehaviour:
         SlowInLiquids:
           Value: 1
         IsWaterSolid:
-          Value: 0
-        BreakMegaObjects:
           Value: 0
     - rid: 7322710809212092428
       type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}

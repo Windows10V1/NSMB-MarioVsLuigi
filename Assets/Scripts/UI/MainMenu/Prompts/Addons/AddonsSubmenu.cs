@@ -116,11 +116,11 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts.Addons {
                     }
 
                     foreach (string filePath in Directory.EnumerateFiles(fullNewPath)) {
-                        AddonDefinition addon = null;
+                        AddonBuildDefinition addon = null;
                         try {
                             using FileStream fs = new(filePath, FileMode.Open);
                             using ZipArchive zipArchive = new(fs);
-                            addon = await AddonManager.GetAddonDefinition(zipArchive, true);
+                            addon = await AddonManager.GetAddonReleaseDefinition(zipArchive, true);
                         } catch { }
 
                         string fileName = Path.GetFileName(filePath);
@@ -225,7 +225,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts.Addons {
 
         public class ScannedPath : IComparable<ScannedPath> {
             public AddonType Type;
-            public AddonDefinition Addon;
+            public AddonBuildDefinition Addon;
             public string FullPath;
             public string Name;
             public bool IsFolder => Type == AddonType.Folder;

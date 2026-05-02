@@ -102,9 +102,9 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
         }
 
         public class AddonOption : TMP_Dropdown.OptionData {
-            public AddonDefinition definition;
+            public AddonBuildDefinition definition;
 
-            public AddonOption(AddonDefinition def) {
+            public AddonOption(AddonBuildDefinition def) {
                 definition = def;
                 text = definition.FullName;
             }

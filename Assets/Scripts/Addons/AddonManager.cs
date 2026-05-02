@@ -218,7 +218,7 @@ namespace NSMB.Addons {
         public async Awaitable<AddonLoadResult> LoadAddonStream(Stream stream) {
             await Awaitable.BackgroundThreadAsync();
             using ZipArchive zipFile = new(stream, ZipArchiveMode.Read);
-            var addonDef = await GetAddonDefinition(zipFile, false);
+            var addonDef = await GetAddonReleaseDefinition(zipFile, false);
 
             Debug.Log($"[Addon] Loading addon {addonDef.FullName} ({addonDef.ReleaseGuid})");
 
@@ -382,7 +382,7 @@ namespace NSMB.Addons {
             try {
                 fullPath = new FileInfo(fullPath).FullName; // Clean up file paths.
                 using var zipFile = ZipFile.OpenRead(fullPath);
-                var addonDef = await GetAddonDefinition(zipFile, false);
+                var addonDef = await GetAddonReleaseDefinition(zipFile, false);
                 if (addonDef == null) {
                     return null;
                 }
@@ -429,7 +429,7 @@ namespace NSMB.Addons {
             }
         }
 
-        public static async Awaitable<AddonDefinition> GetAddonDefinition(ZipArchive zipFile, bool loadIcon) {
+        public static async Awaitable<AddonBuildDefinition> GetAddonReleaseDefinition(ZipArchive zipFile, bool loadIcon) {
             await Awaitable.BackgroundThreadAsync();
             try {
                 var entry = zipFile.GetEntry("addon.json");
@@ -438,7 +438,7 @@ namespace NSMB.Addons {
                 }
                 using StreamReader reader = new(entry.Open());
                 var addonDefJson = await reader.ReadToEndAsync();
-                var addonDef = JsonConvert.DeserializeObject<AddonDefinition>(addonDefJson);
+                var addonDef = JsonConvert.DeserializeObject<AddonBuildDefinition>(addonDefJson);
 
                 if (loadIcon) {
                     var iconEntry = zipFile.GetEntry("icon.png");
@@ -574,13 +574,13 @@ namespace NSMB.Addons {
 
 
     public class LoadedAddon {
-        public AddonDefinition Definition;
+        public AddonBuildDefinition Definition;
         public List<AssetBundle> LoadedAssetBundles;
         public List<UnityEngine.Object> RegisteredAssets;
     }
 
     public class AddonFile {
-        public AddonDefinition Definition;
+        public AddonBuildDefinition Definition;
         public string FilePath;
     }
 
