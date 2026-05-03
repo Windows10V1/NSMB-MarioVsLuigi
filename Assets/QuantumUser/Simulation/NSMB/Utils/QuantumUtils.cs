@@ -424,7 +424,14 @@ public static unsafe class QuantumUtils {
             return true;
         }
 
-        int playerDataCount = f.ComponentCount<PlayerData>();
+        // Check that at least 1 map is enabled
+        if (f.Global->Rules.ChooseMode == StageChooseMode.Random) {
+            if (f.TryResolveHashSet(f.Global->Rules.RandomDisabledStages, out var disabledStages)) {
+                if (f.Context.GetAllAssets<Map>().Count - disabledStages.Count <= 0) {
+                    return false;
+                }
+            }
+        }
         
         // Check that at least one non-spectator exists
         bool nonSpectator = false;
@@ -439,6 +446,7 @@ public static unsafe class QuantumUtils {
         }
 
         // Check that at least two teams exist
+        int playerDataCount = f.ComponentCount<PlayerData>();
         if (f.Global->Rules.TeamsEnabled && playerDataCount > 1) {
             byte? firstTeam = null;
             foreach ((_, var pd) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {

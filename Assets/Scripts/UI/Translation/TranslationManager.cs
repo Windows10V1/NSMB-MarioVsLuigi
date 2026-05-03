@@ -23,7 +23,7 @@ namespace NSMB.UI.Translation {
         [SerializeField] private string fallbackLocale = "en-us";
 
         //---Private Variables
-        private readonly Dictionary<string, List<ITranslationSource>> allTranslations = new();
+        private readonly Dictionary<string, List<ITranslationSource>> allTranslations = new(StringComparer.InvariantCultureIgnoreCase);
         private bool initialized;
 
         public void Start() {
@@ -97,12 +97,17 @@ namespace NSMB.UI.Translation {
         public void Reload() {
             Initialize();
 
-            foreach (var source in allTranslations[CurrentLocale]) {
-                try {
-                    source.Reload();
-                } catch {
-                    // Something happened to this source.
-                    // It's old state still should be loaded, so it's ok...
+            foreach ((var locale, var sourceList) in allTranslations) {
+                foreach (var source in sourceList) {
+                    try {
+                        source.Reload();
+                    } catch (Exception e) {
+                        // Something happened to this source.
+                        // It's old state still should be loaded, so it's ok...
+                        // ...maybe
+                        Debug.LogWarning($"[Translation] Failed to reload translation source for locale '{locale}': {source} (priority {source.Priority})");
+                        Debug.LogWarning(e);
+                    }
                 }
             }
         }

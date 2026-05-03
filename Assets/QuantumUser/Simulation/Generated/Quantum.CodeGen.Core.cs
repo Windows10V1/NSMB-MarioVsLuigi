@@ -1389,6 +1389,8 @@ namespace Quantum {
     public Int32 StartFrame;
     [FieldOffset(1836)]
     public Int32 TotalGamesPlayed;
+    [FieldOffset(1852)]
+    public QBoolean IsStartGameCountdownActive;
     [FieldOffset(1826)]
     public UInt16 GameStartFrames;
     [FieldOffset(1828)]
@@ -1412,10 +1414,10 @@ namespace Quantum {
     public QBoolean HasWinner;
     [FieldOffset(1844)]
     public PlayerRef Host;
-    [FieldOffset(1852)]
+    [FieldOffset(1856)]
     [AllocateOnComponentAdded()]
     public QDictionaryPtr<PlayerRef, EntityRef> PlayerDatas;
-    [FieldOffset(1856)]
+    [FieldOffset(1860)]
     [AllocateOnComponentAdded()]
     public QListPtr<BannedPlayerInfo> BannedPlayerIds;
     [FieldOffset(1888)]
@@ -1452,6 +1454,7 @@ namespace Quantum {
         hash = hash * 31 + (Byte)GameState;
         hash = hash * 31 + StartFrame.GetHashCode();
         hash = hash * 31 + TotalGamesPlayed.GetHashCode();
+        hash = hash * 31 + IsStartGameCountdownActive.GetHashCode();
         hash = hash * 31 + GameStartFrames.GetHashCode();
         hash = hash * 31 + PlayerLoadFrames.GetHashCode();
         hash = hash * 31 + AutomaticStageRefreshInterval.GetHashCode();
@@ -1505,6 +1508,7 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->WinningTeam);
         PlayerRef.Serialize(&p->Host, serializer);
         QBoolean.Serialize(&p->HasWinner, serializer);
+        QBoolean.Serialize(&p->IsStartGameCountdownActive, serializer);
         QDictionary.Serialize(&p->PlayerDatas, serializer, Statics.SerializePlayerRef, Statics.SerializeEntityRef);
         QList.Serialize(&p->BannedPlayerIds, serializer, Statics.SerializeBannedPlayerInfo);
         AssetRef.Serialize(&p->PreviousStage, serializer);

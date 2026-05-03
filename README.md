@@ -101,14 +101,14 @@ Windows, Linux, and Mac Builds: https://github.com/ipodtouch0218/NSMB-MarioVsLui
 * AprilShade *(en-gb)*
 * ArianLust *(de-de)*
 * Atwer *(fr-FR)*
-* Bilhal *(el-gr)*
+* Bilhal *(el-gr, pirate)*
 * Cecilia <3 *(es-es)*
 * Cleeaf *(sv-SE)*
 * Davodio *(de-de)*
 * Filipianosol *(pl-pl)*
 * Floofdoge *(ar-eg)*
 * Foxyyy *(es-la)*
-* Freeze *(es-la)*
+* Freeze *(es-la, pirate)*
 * HatsuneMiku *(pl-pl)*
 * haywireghost *(es-la)*
 * HD Erick Games *(pt-br)*
@@ -117,7 +117,8 @@ Windows, Linux, and Mac Builds: https://github.com/ipodtouch0218/NSMB-MarioVsLui
 * Iketarou *(ja-jp)*
 * IvythePoS *(es-la)*
 * Kate Karui *(sv-sv)*
-* Laxan3000 *(it-it)*
+* Kathie *(catspeak)*
+* Laxan3000 *(it-it, catspeak)*
 * Lesnov (aka/discord:RalseiFluffBoy) *(hu-hu)*
 * LyroyTheToad *(it-it)*
 * Maestrike *(it-it)*
@@ -143,7 +144,8 @@ Windows, Linux, and Mac Builds: https://github.com/ipodtouch0218/NSMB-MarioVsLui
 * SlavaWOW *(ru-ru)*
 * SLG64 *(es-la)*
 * Snayp *(fr-fr)*
-* SwordCatMeow *(es-es)*
+* Squidray *(pirate)*
+* SwordCatMeow *(es-es, catspeak)*
 * Thebababois369 *(id-id)*
 * Tombuntu *(ja-jp)*
 * Windows10V *(pt-br)*
