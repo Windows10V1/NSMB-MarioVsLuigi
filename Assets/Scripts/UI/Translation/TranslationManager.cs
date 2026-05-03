@@ -109,7 +109,7 @@ namespace NSMB.UI.Translation {
 
         public void RegisterTranslationSource(string locale, ITranslationSource source) {
             if (!allTranslations.TryGetValue(locale, out var sourceList)) {
-                sourceList = new();
+                allTranslations[locale] = sourceList = new();
             }
 
             if (sourceList.Contains(source)) {
@@ -118,7 +118,14 @@ namespace NSMB.UI.Translation {
 
             sourceList.Add(source);
             sourceList.Sort();
-            allTranslations[locale] = sourceList;
+        }
+
+        public bool UnregisterTranslationSource(string locale, ITranslationSource source) {
+            if (!allTranslations.TryGetValue(locale, out var sourceList)) {
+                return false;
+            }
+
+            return sourceList.Remove(source);
         }
 
         public bool TryGetTranslationForLocale(string locale, string key, out string result) {

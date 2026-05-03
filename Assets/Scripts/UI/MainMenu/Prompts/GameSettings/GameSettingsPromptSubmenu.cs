@@ -79,7 +79,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
             var stageGroups = stages
                 .Select(m => (m, m ? (VersusStageData) QuantumUnityDB.GetGlobalAsset(m.UserAsset) : null))
                 .Where(vsd => vsd.Item2)
-                .GroupBy(vsd => vsd.Item2.GroupingTranslationKey)
+                .GroupBy(vsd => string.IsNullOrWhiteSpace(vsd.Item2.GroupingTranslationKey) ? "level.header.none" : vsd.Item2.GroupingTranslationKey)
                 .OrderBy(g => IndexOfNullIsMax(headerOrder, g.Key))
                 .Select(g => new {
                     Key = g.Key,

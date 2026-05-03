@@ -30,6 +30,5 @@ namespace NSMB.UI.Translation {
             }
             return Priority.CompareTo(otherTranslationSource.Priority);
         }
-
     }
 }

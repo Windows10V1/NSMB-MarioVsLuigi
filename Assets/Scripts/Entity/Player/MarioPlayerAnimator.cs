@@ -173,7 +173,7 @@ namespace NSMB.Entities.Player {
                         clonedMaterials[materials[i]] = clonedMaterial = Instantiate(materials[i]);
                         clonedMaterial.SetColor(ParamOverallsColor, skin?.OverallsColor.AsColor ?? Color.clear);
                         clonedMaterial.SetColor(ParamShirtColor, skin?.ShirtColor.AsColor ?? Color.clear);
-                        clonedMaterial.SetInteger(ParamCapUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
+                        clonedMaterial.SetFloat(ParamCapUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
                     }
                     materials[i] = clonedMaterial;
                 }

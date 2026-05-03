@@ -37,7 +37,7 @@ MonoBehaviour:
   GridSizeX: 64
   GridSizeY: 64
   GridNodeSize: 4
-  NavMeshAssets: []
+  NavMeshLinks: []
   Regions: []
   StaticColliders2D: []
   StaticColliders3D: []
@@ -222,6 +222,8 @@ MonoBehaviour:
           Value: 0
         IsMiniOnly:
           Value: 1
+        TransitionOnlyPanning:
+          Value: 0
     - rid: 1381189363450249220
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -660,6 +662,8 @@ MonoBehaviour:
           Value: 0
         IsMiniOnly:
           Value: 0
+        TransitionOnlyPanning:
+          Value: 1
     - rid: 3121755567022931972
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -1024,6 +1028,8 @@ MonoBehaviour:
           Value: 1
         IsMiniOnly:
           Value: 1
+        TransitionOnlyPanning:
+          Value: 0
     - rid: 7020899106520301572
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -1374,8 +1380,7 @@ MonoBehaviour:
     - rid: 7437722429159374851
       type: {class: LiquidPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        LiquidType:
-          Value: 0
+        LiquidType: 0
         WidthTiles: 64
         HeightTiles:
           RawValue: 203162
@@ -1442,6 +1447,8 @@ MonoBehaviour:
           Value: 1
         IsMiniOnly:
           Value: 0
+        TransitionOnlyPanning:
+          Value: 1
     - rid: 7822228126498291716
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
