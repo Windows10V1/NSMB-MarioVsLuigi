@@ -16,6 +16,7 @@ using NSMB.UI.Game;
 using NSMB.Sound;
 using NSMB.UI;
 using System.IO;
+using NSMB.Utilities;
 
 #if UNITY_STANDALONE
 using NSMB.UI.MainMenu.Submenus.Replays;
