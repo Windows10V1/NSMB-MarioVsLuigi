@@ -1,10 +1,8 @@
 using NSMB.Replay;
 using NSMB.UI.Translation;
-using NSMB.Utilities;
 using NSMB.Utilities.Extensions;
 using SFB;
 using System;
-using System.Collections;
 using System.IO;
 using TMPro;
 using Unity.Profiling;
@@ -22,8 +20,8 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         //---Properties
         public BinaryReplayFile ReplayFile { get; private set; }
-        public bool IsTemporary => ReplayFile.FilePath.StartsWith(Path.Combine(ReplayListManager.ReplayDirectory, "temp"));
-        public bool IsFavorited => ReplayFile.FilePath.StartsWith(Path.Combine(ReplayListManager.ReplayDirectory, "favorite"));
+        public bool IsTemporary => string.IsNullOrEmpty(ReplayFile.FilePath) || ReplayFile.FilePath.StartsWith(Path.Combine(ReplayListManager.ReplayDirectory, "temp"));
+        public bool IsFavorited => !string.IsNullOrEmpty(ReplayFile.FilePath) && ReplayFile.FilePath.StartsWith(Path.Combine(ReplayListManager.ReplayDirectory, "favorite"));
         private bool Selected => manager.Selected == this;
         public bool IsOpen { get; private set; }
 

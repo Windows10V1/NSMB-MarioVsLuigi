@@ -17,7 +17,6 @@ using NSMB.Sound;
 using NSMB.UI;
 using System.IO;
 
-
 #if UNITY_STANDALONE
 using NSMB.UI.MainMenu.Submenus.Replays;
 using UnityEngine.Profiling;
@@ -50,8 +49,6 @@ namespace NSMB {
 
         [NonSerialized] public bool checkedForVersion = false, firstConnection = true;
         [NonSerialized] public int windowWidth = 1280, windowHeight = 720;
-
-        public AssetRef<CharacterAsset> defaultCharacter;
 
         //---Private Variables
         private Coroutine totalAudioFadeRoutine;
