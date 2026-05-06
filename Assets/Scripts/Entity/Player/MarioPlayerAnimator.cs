@@ -404,11 +404,14 @@ namespace NSMB.Entities.Player {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.SetFacingDirection");
             float delta = Time.deltaTime;
 
-            float angle = mario->CurrentPowerupState switch {
-                PowerupState.BlueShell => 90f,
-                PowerupState.MegaMushroom => 78.75f,
-                _ => 67.5f,
-            };
+            float angle = (mario->IsStarmanInvincible && !physicsObject->IsTouchingGround)
+                ? 0f
+                : mario->CurrentPowerupState switch {
+                    PowerupState.BlueShell => 90f,
+                    PowerupState.MegaMushroom => 78.75f,
+                    PowerupState.BoomerangFlower => 56.25f,
+                    _ => 67.5f,
+                };
             float angleR = 180 - angle;
             float angleL = 180 + angle;
 

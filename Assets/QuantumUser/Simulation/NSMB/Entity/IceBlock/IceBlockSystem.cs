@@ -125,7 +125,7 @@ namespace Quantum {
                 // Top
                 if (mario->IsGroundpoundActive) {
                     Destroy(f, iceBlockEntity, IceBlockBreakReason.Groundpounded, marioEntity);
-                    return true;
+                    return false;
                 }
             } else if (upDot <= -Constants.PhysicsGroundMaxAngleCos) {
                 // Bottom
@@ -211,7 +211,7 @@ namespace Quantum {
             }
             ice->SlidingSpeed += bonusSpeed;
             physicsObject->Velocity.Y = 0;
-            holdable->IgnoreOwnerFrames = 15;
+            holdable->IgnoreOwnerFrames = 60;
 
             if (!dropped) {
                 f.Events.MarioPlayerThrewObject(marioEntity, entity);

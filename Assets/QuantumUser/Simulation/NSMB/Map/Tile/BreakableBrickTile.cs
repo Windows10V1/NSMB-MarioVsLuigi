@@ -62,23 +62,14 @@ public unsafe class BreakableBrickTile : StageTile, IInteractableTile {
 
         } else if (f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
             var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
-            
-            if (asset.IsGoldball && BreakingRules.HasFlag(BreakableBy.Goldballs)) {
-                // Gold Ball turns this brick into a Stage Coin (only if brick allows it)
-                var coinPos = QuantumUtils.RelativeTileToWorldRounded(stage, tilePosition);
-                EntityRef newCoin = f.Create(f.SimulationConfig.StageCoinPrototype);
-                var coin = f.Unsafe.GetPointer<Coin>(newCoin);
-                // Don't mark as BakedInStage so it won't be recreated on stage reset
-                coin->CoinType = 0;
-                // Set a very high lifetime so it never despawns (won't decrement for 18+ minutes at 60 FPS)
-                coin->Lifetime = 32767;
-                var coinTransform = f.Unsafe.GetPointer<Transform2D>(newCoin);
-                coinTransform->Position = coinPos;
-                stage.SetTileRelative(f, tilePosition, default);
-                // Despawn the projectile with particle and sound effects
-                ProjectileSystem.Destroy(f, entity, asset.DestroyParticleEffect);
+
+            // Goldball effect is handled by GoldballSystem (radius-based conversion)
+            // Just mark as handled here - actual conversion happens in ProjectileSystem
+            if (asset.IsGoldball) {
                 return true;
-            } else if (asset.IsBoomerang) {
+            }
+
+            if (asset.IsBoomerang) {
                 doBreak = BreakingRules.HasFlag(BreakableBy.Boomerangs);
                 doBump = false;
                 bumpOwner = projectile->Owner;

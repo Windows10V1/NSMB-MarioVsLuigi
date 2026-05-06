@@ -21,14 +21,19 @@ namespace Quantum {
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
             var collider = filter.PhysicsCollider;
             var transform = filter.Transform;
+            var projectile = filter.Projectile;
+            var asset = f.FindAsset(projectile->Asset);
 
+            // Check for out of bounds
             if (filter.Transform->Position.Y + collider->Shape.Centroid.Y + collider->Shape.Box.Extents.Y < stage.StageWorldMin.Y) {
+                // Trigger Goldball effect before destroying if it's a Goldball
+                if (asset.IsGoldball) {
+                    GoldballSystem.TriggerGoldballEffect(f, filter.Entity, transform->Position, asset);
+                    return;
+                }
                 Destroy(f, filter.Entity, ParticleEffect.None);
                 return;
             }
-
-            var projectile = filter.Projectile;
-            var asset = f.FindAsset(projectile->Asset);
 
             // Fuck the normal update logic
             if (asset.IsSuperBall) {
@@ -43,6 +48,11 @@ namespace Quantum {
                 // Sane
                 if (projectile->Lifetime > 0 && QuantumUtils.Decrement(ref projectile->Lifetime)) {
                     // Tick-tock tick-Tock. Boom.
+                    // Trigger Goldball effect before destroying if it's a Goldball
+                    if (asset.IsGoldball) {
+                        GoldballSystem.TriggerGoldballEffect(f, filter.Entity, transform->Position, asset);
+                        return;
+                    }
                     Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                     return;
                 }
@@ -53,6 +63,11 @@ namespace Quantum {
             // Check to instant-despawn if spawned inside a wall
             if (!physicsObject->DisableCollision && !projectile->CheckedCollision) {
                 if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
+                    // Trigger Goldball effect before destroying if it's a Goldball
+                    if (asset.IsGoldball) {
+                        GoldballSystem.TriggerGoldballEffect(f, filter.Entity, transform->Position, asset);
+                        return;
+                    }
                     Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                     return;
                 }
@@ -345,6 +360,11 @@ namespace Quantum {
                 }
 
                 if (shouldDespawn) {
+                    // Trigger Goldball effect before destroying if it's a Goldball
+                    if (asset.IsGoldball) {
+                        GoldballSystem.TriggerGoldballEffect(f, filter.Entity, filter.Transform->Position, asset);
+                        return;
+                    }
                     Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                     return;
                 }
@@ -405,6 +425,12 @@ namespace Quantum {
             var projectileAsset = f.FindAsset(projectile->Asset);
 
             if (projectileAsset.DestroyOnHit) {
+                // Trigger Goldball effect before destroying if it's a Goldball
+                if (projectileAsset.IsGoldball) {
+                    var transform = f.Unsafe.GetPointer<Transform2D>(projectileEntity);
+                    GoldballSystem.TriggerGoldballEffect(f, projectileEntity, transform->Position, projectileAsset);
+                    return;
+                }
                 Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
             } else if (projectileAsset.Bounce) {
                 var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(projectileEntity);
@@ -414,6 +440,12 @@ namespace Quantum {
 
                 f.Events.EnemyKicked(hitEntity, false);
                 if (projectile->Speed < 1) {
+                    // Trigger Goldball effect before destroying if it's a Goldball
+                    if (projectileAsset.IsGoldball) {
+                        var transform = f.Unsafe.GetPointer<Transform2D>(projectileEntity);
+                        GoldballSystem.TriggerGoldballEffect(f, projectileEntity, transform->Position, projectileAsset);
+                        return;
+                    }
                     Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
                 }
             }

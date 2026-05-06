@@ -26,6 +26,8 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
 
     public bool IsGoldball = false;
 
+    public FP GoldballRadius = FP._2;
+
     public int CooldownFrames = 0;
 
     public byte MaxInstantProjectiles = 0;
