@@ -35,7 +35,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         [SerializeField] private RectTransform dropDownRectTransform;
         [SerializeField] private Color criticalColor, warningColor, favoriteColor;
         [SerializeField] private CanvasGroup canvasGroup;
-        [SerializeField] public Button button;
+        [SerializeField] public Button button, exportButton;
         [SerializeField] private Button[] compatibleButtons;
 
         //---Private Variables
@@ -169,18 +169,25 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             if (ReplayFile.LoadAllIfNeeded() == ReplayParseResult.Success) {
                 using MemoryStream stream = new((int) ReplayFile.FileSize);
                 long replaySize = ReplayFile.WriteToStream(stream);
-                DownloadFile(name, nameof(FileDownloadedCallback), ReplayFile.Header.GetDisplayName() + ".mvlreplay", stream.ToArray(), (int) replaySize);
+                DownloadFile(name, nameof(FileDownloadedCallback), $"{ReplayFile.Header.GetDisplayName()}.{ReplayListManager.ReplayFileExtension}", stream.ToArray(), (int) replaySize);
             }
 #else
             TranslationManager tm = GlobalController.Instance.translationManager;
-            StandaloneFileBrowser.SaveFilePanelAsync(tm.GetTranslation("ui.extras.replays.actions.export.prompt"), null, ReplayFile.Header.GetDisplayName(), "mvlreplay", (file) => {
+            StandaloneFileBrowser.SaveFilePanelAsync(tm.GetTranslation("ui.extras.replays.actions.export.prompt"), null, ReplayFile.Header.GetDisplayName(), ReplayListManager.ReplayFileExtension, (file) => {
                 if (string.IsNullOrWhiteSpace(file)) {
                     return;
                 }
 
-                if (ReplayFile.LoadAllIfNeeded() == ReplayParseResult.Success) {
+                if (!string.IsNullOrEmpty(ReplayFile.FilePath) && File.Exists(ReplayFile.FilePath)) {
+                    // File exists on the hard drive, just copy to the destination.
+                    File.Copy(ReplayFile.FilePath, file);
+                } else if (ReplayFile.Header.IsCompatible && ReplayFile.LoadAllIfNeeded() == ReplayParseResult.Success) {
+                    // Write using export stream
                     using FileStream stream = new(file, FileMode.OpenOrCreate);
                     ReplayFile.WriteToStream(stream);
+                } else {
+                    // Incompatible and doesn't exist on drive anymore, nothing we can really do.
+                    canvas.PlaySound(SoundEffect.UI_Error);
                 }
             });
 #endif
@@ -188,7 +195,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         [Preserve]        
         private void FileDownloadedCallback() {
-
+            // Cool... I don't care.
         }
 
         public void OnDeleteClick() {
@@ -214,13 +221,15 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             dateText.SetHorizontalAlignmentIfDifferent(rtl ? HorizontalAlignmentOptions.Right : HorizontalAlignmentOptions.Left);
             nameText.SetHorizontalAlignmentIfDifferent(rtl ? HorizontalAlignmentOptions.Right : HorizontalAlignmentOptions.Left);
 
+            foreach (var button in compatibleButtons) {
+                button.interactable = header.IsCompatible;
+            }
+            exportButton.interactable = header.IsCompatible || (!string.IsNullOrEmpty(ReplayFile.FilePath) && File.Exists(ReplayFile.FilePath));
+
             string finalWarningText;
             if (!header.IsCompatible) {
                 finalWarningText = tm.GetTranslationWithReplacements("ui.extras.replays.incompatible", "version", header.Version.ToStringIgnoreHotfix() + ".X");
                 warningText.color = criticalColor;
-                foreach (var button in compatibleButtons) {
-                    button.interactable = false;
-                }
             } else if (IsTemporary) {
                 /*
                 int? deletion = manager.GetReplaysUntilDeletion(this);

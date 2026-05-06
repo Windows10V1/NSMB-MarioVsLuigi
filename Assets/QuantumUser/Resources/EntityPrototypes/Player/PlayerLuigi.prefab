@@ -1074,6 +1074,11 @@ MonoBehaviour:
       ShirtMaskTexture: {fileID: 2800000, guid: 25584bb8bbd18ad42ad6e522db470286,
         type: 3}
       CapMaskTexture: {fileID: 2800000, guid: 8ab7b4d669f46da44bf989603206923e, type: 3}
+    - Material: {fileID: 2100000, guid: bfe0a50f3d6f5b64386c7392202ba06a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: dc09a3bb7c94a4545915912c9f3e7152, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 2800000, guid: f640f42b881bd644d9fae4f284c815f4, type: 3}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 671e2adc5dbd26a45abdf5c18398a86e,
       type: 2}

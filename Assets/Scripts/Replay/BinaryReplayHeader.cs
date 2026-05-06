@@ -90,7 +90,6 @@ namespace NSMB.Replay {
                 string rules = reader.ReadString();
                 result.Rules = JsonConvert.DeserializeObject<GameRulesPrototype>(rules, new JsonSerializerSettings());
                 if (result.Rules == null) {
-                    Debug.Log("result rules deserialize failed " + rules);
                     return ReplayParseResult.ParseFailure;
                 }
 
@@ -108,8 +107,7 @@ namespace NSMB.Replay {
                         result.AddonGuids.Add(new Guid(reader.ReadBytes(16)));
                     }
                 }
-            } catch (Exception e) {
-                Debug.Log("exception thrown " + e);
+            } catch {
                 return ReplayParseResult.ParseFailure;
             }
             return ReplayParseResult.Success;

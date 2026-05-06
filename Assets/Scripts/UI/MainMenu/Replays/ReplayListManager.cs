@@ -30,7 +30,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 #endif
 
         //---Static Variables
-        private static readonly string ReplayFileExtension = "mvlreplay";
+        public static readonly string ReplayFileExtension = "mvlreplay";
         public static ReplayListManager Instance { get; private set; }
         public static string ReplayDirectory { get; private set; } 
         public static string TempDirectory { get; private set; }
@@ -78,6 +78,9 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         private bool ready;
         private CancellationTokenSource currentCancellationSource;
+#if !UNITY_WEBGL
+        private readonly object lockObject = new();
+#endif
 
         [RuntimeInitializeOnLoadMethod]
         public static void CreateDirectories() {
@@ -347,48 +350,55 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 return;
             }
 
-            await Awaitable.MainThreadAsync();
+            try {
 
-            int page = Mathf.Clamp(pageNullable ?? CurrentPage, 0, PageCount - 1);
-            CurrentPage = page;
+                await Awaitable.MainThreadAsync();
 
-            await ClearReplayListEntries(cancellationToken);
+                int page = Mathf.Clamp(pageNullable ?? CurrentPage, 0, PageCount - 1);
+                CurrentPage = page;
 
-            string previousHeader = null;
-            var displayingReplays = DisplayingReplays;
-            ReplayListEntry focusEntry = null, previousEntry = null;
-            int start = page * entriesPerPage;
-            for (int i = start; i < start + entriesPerPage; i++) {
-                if (i >= displayingReplays.Count) {
-                    break;
+                await ClearReplayListEntries(cancellationToken);
+
+                string previousHeader = null;
+                var displayingReplays = DisplayingReplays;
+                ReplayListEntry focusEntry = null, previousEntry = null;
+                int start = page * entriesPerPage;
+                for (int i = start; i < start + entriesPerPage; i++) {
+                    if (i >= displayingReplays.Count) {
+                        break;
+                    }
+
+                    var replay = displayingReplays[i];
+                    string header = GetHeader(replay);
+                    if (header != previousHeader) {
+                        AcquireHeader(header);
+                        previousHeader = header;
+                    }
+                    var replayListEntry = AcquireReplayListEntry(replay, previousEntry);
+
+                    if (replay == focus) {
+                        focusEntry = replayListEntry;
+                    }
+
+                    previousEntry = replayListEntry;
                 }
 
-                var replay = displayingReplays[i];
-                string header = GetHeader(replay);
-                if (header != previousHeader) {
-                    AcquireHeader(header);
-                    previousHeader = header;
-                }
-                var replayListEntry = AcquireReplayListEntry(replay, previousEntry);
-
-                if (replay == focus) {
-                    focusEntry = replayListEntry;
+                if (focusEntry) {
+                    Select(focusEntry, false);
+                    scrollRect.ScrollToCenter((RectTransform) focusEntry.transform, false);
+                } else {
+                    Select(GetFirstReplayEntry(), false);
+                    scrollRect.verticalNormalizedPosition = 1;
                 }
 
-                previousEntry = replayListEntry;
+                CreatePageNumbers();
+                UpdateNoReplaysText();
+                loadingIcon.SetActive(false);
+            } catch {
+                // Move exceptions to the main thread so they're printed.
+                await Awaitable.MainThreadAsync();
+                throw;
             }
-
-            if (focusEntry) {
-                Select(focusEntry, false);
-                scrollRect.ScrollToCenter((RectTransform) focusEntry.transform, false);
-            } else {
-                Select(GetFirstReplayEntry(), false);
-                scrollRect.verticalNormalizedPosition = 1;
-            }
-
-            CreatePageNumbers();
-            UpdateNoReplaysText();
-            loadingIcon.SetActive(false);
         }
 
         public async Awaitable ClearReplayListEntries(CancellationToken cancellationToken) {

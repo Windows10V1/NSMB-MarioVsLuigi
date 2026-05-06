@@ -109,6 +109,7 @@ Windows, Linux, and Mac Builds: https://github.com/ipodtouch0218/NSMB-MarioVsLui
 * Floofdoge *(ar-eg)*
 * Foxyyy *(es-la)*
 * Freeze *(es-la, pirate)*
+* GrayLuigi *(es-la)*
 * HatsuneMiku *(pl-pl)*
 * haywireghost *(es-la)*
 * HD Erick Games *(pt-br)*
