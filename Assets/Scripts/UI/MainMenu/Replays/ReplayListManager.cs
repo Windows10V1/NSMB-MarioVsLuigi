@@ -84,6 +84,9 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         private CancellationTokenSource currentCancellationSource;
         private readonly object lockObject = new();
 
+        private volatile int findFilesProcessed;
+        private int findFilesTotal;
+
         [RuntimeInitializeOnLoadMethod]
         public static void CreateDirectories() {
             ReplayDirectory = Path.Combine(Application.persistentDataPath, "replays");
@@ -148,6 +151,19 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
             Settings.Controls.UI.Previous.performed -= OnPrevious;
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
+        }
+
+        public void Update() {
+#if UNITY_EDITOR
+            if (!UnityEditor.EditorApplication.isPlaying) {
+                return;
+            }
+#endif
+
+            if (progressBar.activeInHierarchy) {
+                progressBarFill.fillAmount = (float) findFilesProcessed / findFilesTotal;
+                progressBarText.text = $"{findFilesProcessed} / {findFilesTotal}";
+            }
         }
 
         public void AddReplay(BinaryReplayFile replayFile) {
@@ -463,15 +479,33 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 return;
             }
 
+            async Awaitable ResetProgressBar() {
+                await Awaitable.MainThreadAsync();
+                findFilesProcessed = 0;
+                findFilesTotal = 0;
+                progressBar.SetActive(false);
+                progressBarFill.fillAmount = 0;
+                progressBarText.text = "";
+            }
+
             try {
+                await Awaitable.MainThreadAsync();
+
+                await ResetProgressBar();
+                progressBar.SetActive(true);
+                
                 await Awaitable.BackgroundThreadAsync();
 
                 string[] foundReplayFiles = Directory.GetFiles(ReplayDirectory, $"*.{ReplayFileExtension}", SearchOption.AllDirectories);
+                findFilesTotal = foundReplayFiles.Length;
 
                 HashSet<string> newLoadedFilepaths = new();
                 HashSet<BinaryReplayFile> newFoundReplays = new();
                 foreach (var filepath in foundReplayFiles) {
+                    findFilesProcessed++;
+
                     if (cancellationToken.IsCancellationRequested) {
+                        await ResetProgressBar();
                         return;
                     }
 
@@ -492,6 +526,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 }
 
                 if (cancellationToken.IsCancellationRequested) {
+                    await ResetProgressBar();
                     return;
                 }
 
@@ -505,9 +540,11 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 }
             } catch {
                 // Move exceptions to the main thread so they're printed.
-                await Awaitable.MainThreadAsync();
+                await ResetProgressBar();
                 throw;
             }
+
+            await ResetProgressBar();
         }
 #endif
 
