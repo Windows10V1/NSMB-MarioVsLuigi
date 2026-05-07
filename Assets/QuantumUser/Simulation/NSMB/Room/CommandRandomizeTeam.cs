@@ -36,8 +36,9 @@ namespace Quantum
                 playerData->RequestedTeam = (byte) team;
                 playerData->IsTeamLocked = true;
                 playerEntityRefs.RemoveAt(index);
+                f.Events.PlayerDataChanged(playerData->PlayerRef);
+                f.Events.PlayerTeamRandomized(playerData->PlayerRef, (byte) team);
             }
-            f.Events.PlayerDataChanged(sender);
         }
     }
 }

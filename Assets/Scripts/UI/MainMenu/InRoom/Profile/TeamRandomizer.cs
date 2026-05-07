@@ -50,6 +50,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             var game = QuantumRunner.DefaultGame;
             Frame f = game.Frames.Predicted;
             selected = team.teamCount;
+            PlayerRef host = f.Global->Host;
 
             var teams = AssetRepository<TeamAsset>.AllAssets;
             var selectableTeams = Enumerable.Range(0, teams.Count).ToList();
@@ -63,8 +64,9 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
                 selectableTeams.RemoveAt(index);
             }
 
-            foreach (int slot in game.GetLocalPlayerSlots()) {
-                game.SendCommand(slot, new CommandRandomizeTeam {
+            if (game.PlayerIsLocal(host)) {
+                int hostSlot = game.GetLocalPlayerSlots()[game.GetLocalPlayers().IndexOf(host)];
+                game.SendCommand(hostSlot, new CommandRandomizeTeam {
                     Teams = selectableTeams.ToArray(),
                 });
             }
