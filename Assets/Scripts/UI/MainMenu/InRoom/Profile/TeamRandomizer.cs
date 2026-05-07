@@ -1,7 +1,7 @@
-using JimmysUnityUtilities;
 using NSMB.Utilities;
-using Photon.Deterministic;
 using Quantum;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Button = UnityEngine.UI.Button;
@@ -13,19 +13,17 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         [SerializeField] private MainMenuCanvas canvas;
         [SerializeField] private GameObject blockerTemplate;
         [SerializeField] public GameObject content;
-        [SerializeField] private TeamButton[] buttons;
+        [SerializeField] private TeamRandButton[] buttons;
         [SerializeField] private Button button;
         [SerializeField] private Image flag;
-        [SerializeField] private Sprite disabledSprite;
+        [SerializeField] private Sprite enabledSprite, disabledSprite;
 
         //---Private Variables
         private GameObject blockerInstance;
         private int selected;
 
         public void Initialize() {
-            QuantumEvent.Subscribe<EventPlayerDataChanged>(this, OnPlayerDataChanged);
             QuantumEvent.Subscribe<EventRulesChanged>(this, OnRulesChanged);
-            QuantumEvent.Subscribe<EventPlayerTeamChangedByHost>(this, OnPlayerTeamChangedByHost);
         }
 
         public void OnEnable() {
@@ -48,34 +46,30 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             Close(true);
         }
 
-        public unsafe void RandomizeTeam(TeamButton team) {
+        public unsafe void RandomizeTeam(TeamRandButton team) {
             var game = QuantumRunner.DefaultGame;
             Frame f = game.Frames.Predicted;
-            selected = team.index + 1;
+            selected = team.teamCount;
 
             var teams = AssetRepository<TeamAsset>.AllAssets;
-            byte[] numTeams = new byte[selected];
+            var selectableTeams = Enumerable.Range(0, teams.Count).ToList();
+            List<int> selectedTeams = new();
 
-            // select two random colors to be the teams
-            for (int i = 0; i < numTeams.Length; i++) {
-                byte checkTeam = (byte)f.RNG->Next(0, teams.Count);
-                bool teamExists = numTeams.IndexOf(checkTeam) != -1;
-
-                if (teamExists) {
-                    continue;
-                }
-
-                numTeams[i] = checkTeam;
+            // select random colors to be the teams
+            for (int i = 0; i < selected; i++) {
+                int index = f.RNG->Next(0, selectableTeams.Count);
+                
+                selectedTeams.Add(selectableTeams[index]);
+                selectableTeams.RemoveAt(index);
             }
 
             foreach (int slot in game.GetLocalPlayerSlots()) {
                 game.SendCommand(slot, new CommandRandomizeTeam {
-                    Teams = numTeams,
+                    Teams = selectableTeams.ToArray(),
                 });
             }
 
-            TeamAsset teamScriptable = teams[selected % teams.Count];
-            flag.sprite = Settings.Instance.GraphicsColorblind ? teamScriptable.spriteColorblind : teamScriptable.spriteNormal;
+            Close(false);
             canvas.PlayConfirmSound();
             canvas.EventSystem.SetSelectedGameObject(button.gameObject);
         }
@@ -113,56 +107,16 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             Frame f = game.Frames.Predicted;
 
             if (f.Global->Rules.TeamsEnabled) {
-                var teams = f.Context.GetAllAssets<TeamAsset>();
-                TeamAsset team = teams[selected % teams.Count];
-                flag.sprite = Settings.Instance.GraphicsColorblind ? team.spriteColorblind : team.spriteNormal;
+                flag.sprite = enabledSprite;
+                button.interactable = true;
             } else {
                 flag.sprite = disabledSprite;
-            }
-        }
-
-        private unsafe void OnColorblindModeChanged() {
-            var game = QuantumRunner.DefaultGame;
-            if (game == null) {
-                return;
-            }
-
-            Frame f = game.Frames.Predicted;
-            if (f.Global->Rules.TeamsEnabled) {
-                var teams = f.Context.GetAllAssets<TeamAsset>();
-                TeamAsset team = teams[selected % teams.Count];
-                flag.sprite = Settings.Instance.GraphicsColorblind ? team.spriteColorblind : team.spriteNormal;
+                button.interactable = false;
             }
         }
 
         private unsafe void OnRulesChanged(EventRulesChanged e) {
             UpdateButtonInteractable(e.Game);
-        }
-
-        private unsafe void OnPlayerTeamChangedByHost(EventPlayerTeamChangedByHost e) {
-            if (e.Game.PlayerIsLocal(e.Player)) {
-                UpdateButtonInteractable(e.Game);
-
-                if (!e.Clear) {
-                    Close(false);
-                }
-            }
-        }
-
-        private unsafe void OnPlayerDataChanged(EventPlayerDataChanged e) {
-            if (!e.Game.PlayerIsLocal(e.Player)) {
-                return;
-            }
-
-            Frame f = e.Game.Frames.Predicted;
-            var playerData = QuantumUtils.GetPlayerData(f, e.Player);
-            selected = playerData->RequestedTeam;
-
-            if (f.Global->Rules.TeamsEnabled) {
-                var teams = f.Context.GetAllAssets<TeamAsset>();
-                TeamAsset team = teams[selected % teams.Count];
-                flag.sprite = Settings.Instance.GraphicsColorblind ? team.spriteColorblind : team.spriteNormal;
-            }
         }
     }
 }

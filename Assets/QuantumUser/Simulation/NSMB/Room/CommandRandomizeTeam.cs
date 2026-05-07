@@ -5,7 +5,7 @@ using System.Linq;
 namespace Quantum
 {
     public class CommandRandomizeTeam : DeterministicCommand, ILobbyCommand {
-        public byte[] Teams;
+        public int[] Teams;
 
         public override void Serialize(BitStream stream) {
             stream.Serialize(ref Teams);
@@ -13,38 +13,31 @@ namespace Quantum
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* senderData) {
             int teams = Teams.Length;
-            if (teams < 2 || teams > 5 || f.Global->Host != sender) {
+            // GOtta stop those filthy cheaters :/
+            if (teams < 2 || teams > 5 || !senderData->IsRoomHost) {
                 return;
             }
 
-            // Count the number of players
-            int numPlayers = 0;
-            foreach ((_, var playerData) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
+            // cannot store pointers, store entityRef to the players
+            List<EntityRef> playerEntityRefs = new();
+            foreach ((var entityRef, var playerData) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
                 if (!playerData->ManualSpectator) {
-                    numPlayers++;
+                    playerEntityRefs.Add(entityRef);
                 }
             }
 
-            // Generate the possible team assignments
-            int assignmentsPerTeam = numPlayers / teams;
-            List<byte> teamAssignments = new();
-            foreach (int team in Enumerable.Range(0, 5).Take(teams)) {
-                for (int i = 0; i < assignmentsPerTeam; i++) {
-                    teamAssignments.Add((byte)team);
-                }
-            }
+            // now handle the list, this alGOrithm prevents infinite loops!
+            int loopCount = playerEntityRefs.Count;
+            for (int i = 0; i < loopCount; i++) {
+                int team = Teams[i % teams];
+                int index = f.RNG->Next(0, playerEntityRefs.Count);
 
-            foreach ((_, var data) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
-                // Choose a random team the list
-                if (teamAssignments.Count > 0) {
-                    int index = f.RNG->Next(0, teamAssignments.Count);
-                    data->RequestedTeam = teamAssignments[index];
-                    teamAssignments.RemoveAt(index);
-                } else {
-                    data->RequestedTeam = (byte) f.RNG->Next(0, teams);
-                }
-                data->IsTeamLocked = true;
+                var playerData = f.Unsafe.GetPointer<PlayerData>(playerEntityRefs[index]);
+                playerData->RequestedTeam = (byte) team;
+                playerData->IsTeamLocked = true;
+                playerEntityRefs.RemoveAt(index);
             }
+            f.Events.PlayerDataChanged(sender);
         }
     }
 }

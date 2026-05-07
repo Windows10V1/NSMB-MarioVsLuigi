@@ -207,5 +207,13 @@ namespace NSMB.Chat {
                 }
             }
         }
+
+        private void OnPlayerTeamRandomized(EventPlayerTeamChangedByHost e) {
+            if (e.Game.PlayerIsLocal(e.Player)) {
+                Frame f = e.Game.Frames.Predicted;
+                var teams = f.Context.GetAllAssets<TeamAsset>();
+                AddSystemMessage("ui.inroom.chat.player.randomizeteam", Blue, "team", teams[e.Team].nameTranslationKey);
+            }
+        }
     }
 }
