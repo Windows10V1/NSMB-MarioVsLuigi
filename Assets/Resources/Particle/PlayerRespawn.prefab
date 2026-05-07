@@ -715,7 +715,7 @@ ParticleSystem:
     angle: 25
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
-    radiusThickness: 0.34
+    radiusThickness: 0.13
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
     m_Rotation: {x: 0, y: 0, z: 0}
@@ -798,7 +798,7 @@ ParticleSystem:
     sphericalDirectionAmount: 0
     randomPositionAmount: 0
     radius:
-      value: 0.83
+      value: 0.7
       mode: 0
       spread: 0
       speed:
@@ -6430,9 +6430,9 @@ ParticleSystem:
     uvChannelMask: -1
     rowMode: 1
     sprites:
-    - sprite: {fileID: -8208681469431356528, guid: 44d89780fdefc5a469c274b803319826,
+    - sprite: {fileID: -7258045529573623539, guid: 7f7982f6a912fd441b68e83897d8d193,
         type: 3}
-    - sprite: {fileID: -992076701038686190, guid: 44d89780fdefc5a469c274b803319826,
+    - sprite: {fileID: 5202412404262303114, guid: 7f7982f6a912fd441b68e83897d8d193,
         type: 3}
     flipU: 0
     flipV: 0
