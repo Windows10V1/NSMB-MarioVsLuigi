@@ -101,6 +101,10 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         }
 #endif
 
+        public void Initialize() {
+            Instance = this;
+        }
+
         protected override void OnEnable() {
             base.OnEnable();
 #if UNITY_EDITOR
@@ -109,6 +113,17 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 return;
             }
 #endif
+
+            sortDropdown.value = 0;
+            ascendingToggle.isOn = false;
+            searchField.SetTextWithoutNotify("");
+            replayTemplate.gameObject.SetActive(false);
+            scrollRect.verticalNormalizedPosition = 1;
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) layout.transform);
+            Canvas.ForceUpdateCanvases();
+
+            ready = false;
+            _ = LoadReplays();
 
             Settings.Controls.UI.Next.performed += OnNext;
             Settings.Controls.UI.Previous.performed += OnPrevious;
@@ -127,29 +142,10 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
             CancelExistingTask();
             _ = ClearReplayListEntries(default);
-            
+
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
             Settings.Controls.UI.Previous.performed -= OnPrevious;
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
-        }
-
-        public void Initialize() {
-            Instance = this;
-        }
-
-        public void Show() {
-            sortDropdown.value = 0;
-            ascendingToggle.isOn = false;
-            searchField.SetTextWithoutNotify("");
-            replayTemplate.gameObject.SetActive(false);
-            scrollRect.verticalNormalizedPosition = 1;
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) layout.transform);
-            Canvas.ForceUpdateCanvases();
-
-            ready = false;
-            _ = LoadReplays();
-
-            OnLanguageChanged(GlobalController.Instance.translationManager);
         }
 
         public void AddReplay(BinaryReplayFile replayFile) {
