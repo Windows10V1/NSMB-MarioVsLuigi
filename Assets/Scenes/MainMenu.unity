@@ -4652,7 +4652,7 @@ MonoBehaviour:
     m_SelectOnUp: {fileID: 2125415779}
     m_SelectOnDown: {fileID: 1370509651}
     m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
+    m_SelectOnRight: {fileID: 412715808}
   m_Transition: 2
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
@@ -16675,8 +16675,9 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 501548763}
-        m_TargetAssemblyTypeName: NSMB.UI.MainMenu.TeamChooser, Assembly-CSharp
+      - m_Target: {fileID: 501548766}
+        m_TargetAssemblyTypeName: NSMB.UI.MainMenu.Submenus.InRoom.TeamRandomizer,
+          Assembly-CSharp
         m_MethodName: Close
         m_Mode: 6
         m_Arguments:
@@ -18068,7 +18069,7 @@ MonoBehaviour:
     m_WrapAround: 0
     m_SelectOnUp: {fileID: 2125415779}
     m_SelectOnDown: {fileID: 1370509651}
-    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnLeft: {fileID: 109377865}
     m_SelectOnRight: {fileID: 0}
   m_Transition: 2
   m_Colors:
@@ -47479,8 +47480,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 791989381}
   m_HandleRect: {fileID: 791989380}
   m_Direction: 2
-  m_Value: 1
-  m_Size: 1
+  m_Value: 0
+  m_Size: 0.8258103
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -63049,7 +63050,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000015258789}
+  m_AnchoredPosition: {x: 0, y: 0.000030517578}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
 --- !u!114 &1576260155
