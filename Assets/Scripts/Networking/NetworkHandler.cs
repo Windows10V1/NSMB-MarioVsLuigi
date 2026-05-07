@@ -430,18 +430,7 @@ namespace NSMB.Networking {
         }
 
         private void OnGameStateChanged(EventGameStateChanged e) {
-            if (!Client.IsConnectedAndReady
-                || !Client.LocalPlayer.IsMasterClient) {
-                return;
-            }
-
-            BooleanProperties props = (int) Client.CurrentRoom.CustomProperties[Enums.NetRoomProperties.BoolProperties];
-            props.GameStarted = e.NewState != GameState.PreGameRoom;
-
-            Client.CurrentRoom.SetCustomProperties(new PhotonHashtable {
-                { Enums.NetRoomProperties.BoolProperties, (int) props }
-            });
-
+            UpdateRealtimeProperties();
             QuantumRunner.Default.Session.MaxVerifiedTicksPerUpdate = e.NewState == GameState.Playing ? 8 : int.MaxValue;
         }
 

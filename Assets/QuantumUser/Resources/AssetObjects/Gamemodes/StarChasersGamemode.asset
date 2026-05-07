@@ -51,8 +51,9 @@ MonoBehaviour:
     Stage:
       Id:
         Value: 438935048561577377
-    StageMode:
+    ChooseMode:
       Value: 0
+    RandomDisabledStages: []
     Gamemode:
       Id:
         Value: 326486899682662279
@@ -66,7 +67,7 @@ MonoBehaviour:
       Value: 1
     DrawOnTimeUp:
       Value: 0
-    FriendlyFire:
+    TeamAttack:
       Value: 1
     StarFountain: 100
     CoinDeathPenalty: 0

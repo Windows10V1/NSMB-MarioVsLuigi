@@ -120,7 +120,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts.Addons {
                         try {
                             using FileStream fs = new(filePath, FileMode.Open);
                             using ZipArchive zipArchive = new(fs);
-                            addon = await AddonManager.GetAddonReleaseDefinition(zipArchive, true);
+                            addon = await AddonManager.GetAddonBuildDefinition(zipArchive, true);
                         } catch { }
 
                         string fileName = Path.GetFileName(filePath);

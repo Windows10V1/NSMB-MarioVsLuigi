@@ -29,8 +29,7 @@ namespace NSMB.UI.Options.Loaders {
                 }
             }));
 
-            string current = tm.CurrentLocale;
-            int currentIndex = locales.IndexOf(current);
+            int currentIndex = locales.IndexOf(tm.CurrentLocale);
             spo.SetValue(currentIndex);
         }
 

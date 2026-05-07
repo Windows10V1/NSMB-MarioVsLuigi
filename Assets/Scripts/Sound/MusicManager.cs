@@ -1,6 +1,7 @@
 using NSMB.Quantum;
 using NSMB.Replay;
 using NSMB.UI.Loading;
+using NSMB.Utilities;
 using NSMB.Utilities.Extensions;
 using Quantum;
 using UnityEngine;

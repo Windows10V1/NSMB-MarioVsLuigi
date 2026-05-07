@@ -135,20 +135,10 @@ namespace NSMB.Replay {
             // Write binary replay
             string now = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
             string finalFilePath = Path.Combine(replayFolder, $"Replay-{now}.mvlreplay");
-            int attempts = 0;
 
-            FileStream outputStream = null;
+            Stream outputStream = null;
             long writtenBytes;
             try {
-                do {
-                    try {
-                        outputStream = new FileStream(finalFilePath, FileMode.Create);
-                    } catch {
-                        // Failed to create file; maybe they have two copies of the game open?
-                        finalFilePath = Path.Combine(replayFolder, $"Replay-{now}-{++attempts}.mvlreplay");
-                    }
-                } while (outputStream == null && attempts < 5);
-
                 ref GameRules rules = ref f.Global->Rules;
                 var gamemodeSpecific = f.FindAsset(rules.Gamemode);
                 BinaryReplayHeader header = new() {
@@ -177,13 +167,30 @@ namespace NSMB.Replay {
                         .ToList()
                 };
 
-                // gamemode specific data
-
-
                 BinaryReplayFile binaryReplay = BinaryReplayFile.FromReplayData(jsonReplay, header);
+
+#if !UNITY_WEBGL
+                // Write to file
+                int attempts = 0;
+                do {
+                    try {
+                        outputStream = new FileStream(finalFilePath, FileMode.Create);
+                    } catch {
+                        // Failed to create file; maybe they have two copies of the game open?
+                        finalFilePath = Path.Combine(replayFolder, $"Replay-{now}-{++attempts}.mvlreplay");
+                    }
+                } while (outputStream == null && attempts < 5);
+
                 writtenBytes = binaryReplay.WriteToStream(outputStream);
+#else
+                outputStream = new DummyStream();
+                writtenBytes = binaryReplay.WriteToStream(outputStream);
+#endif
+
+                // Register replay file immediately, because WebGL can't load replays from the filesystem.
+                ReplayListManager.Instance.AddReplay(binaryReplay);
             } finally {
-                outputStream.Dispose();
+                outputStream?.Dispose();
             }
 
             SavedRecordingPath = finalFilePath;

@@ -4,8 +4,7 @@ using System;
 using UnityEngine;
 
 namespace NSMB.Addons {
-
-    [CreateAssetMenu(fileName = "New AddonDefinition", menuName = "Addon Definition", order = 0)]
+    [CreateAssetMenu(fileName = "New Addon Definition", menuName = "Addon/Addon Definition", order = 0)]
     public class AddonDefinition : ScriptableObject {
         public string AddonId;
         public string DisplayName;

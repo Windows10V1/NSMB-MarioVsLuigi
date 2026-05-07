@@ -128,12 +128,13 @@ namespace NSMB.UI.Pause {
         }
 
         public void OnNavigate(InputAction.CallbackContext context) {
-            if (!isPaused) {
+            Vector2 input = context.ReadValue<Vector2>();
+            if (context.canceled || input.sqrMagnitude < 0.01f) {
+                inputted = false;
                 return;
             }
 
-            if (context.canceled) {
-                inputted = false;
+            if (!isPaused) {
                 return;
             }
 
@@ -141,7 +142,6 @@ namespace NSMB.UI.Pause {
                 return;
             }
 
-            Vector2 input = context.ReadValue<Vector2>();
             if (isInConfirmation) {
                 bool rtl = GlobalController.Instance.translationManager.RightToLeft;
                 if ((!rtl && input.x < 0.2f) || (rtl && input.x > 0.2f)) {

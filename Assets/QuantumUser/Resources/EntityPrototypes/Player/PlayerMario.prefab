@@ -1223,6 +1223,11 @@ MonoBehaviour:
       ShirtMaskTexture: {fileID: 2800000, guid: 027c0cc20477d9449a771cca38f723da,
         type: 3}
       CapMaskTexture: {fileID: 2800000, guid: d5a82e89d71842c4c9ac25792b1b167b, type: 3}
+    - Material: {fileID: 2100000, guid: 1f0daed7f9836b44ca751b260709c999, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 4e9995b475b3f6946b5201a471a91255, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 2800000, guid: ba1beaff1a0d78a468190ca3d1b515df, type: 3}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   powerupVisuals:
@@ -7579,6 +7584,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: -5430573481974842246, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: -5356195424620648968, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Enabled
@@ -7594,6 +7604,11 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 79d64c3704b5a04478d2e62d27983ae2, type: 2}
+    - target: {fileID: -4819223349682164798, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: -4538532988964370611, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_LocalScale.z
@@ -7720,6 +7735,11 @@ PrefabInstance:
       value: 18
       objectReference: {fileID: 0}
     - target: {fileID: -1935865798303682339, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: -1755918832597639538, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Layer
       value: 18
@@ -8619,6 +8639,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: cap_in_hand
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 07936316a63132e4588a62a5167a505a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 07936316a63132e4588a62a5167a505a,
         type: 3}

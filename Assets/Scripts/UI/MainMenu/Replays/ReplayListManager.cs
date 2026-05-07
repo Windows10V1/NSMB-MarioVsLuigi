@@ -30,7 +30,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 #endif
 
         //---Static Variables
-        private static readonly string ReplayFileExtension = "mvlreplay";
+        public static readonly string ReplayFileExtension = "mvlreplay";
         public static ReplayListManager Instance { get; private set; }
         public static string ReplayDirectory { get; private set; } 
         public static string TempDirectory { get; private set; }
@@ -45,7 +45,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         private int SortIndex => sortDropdown.value;
         private bool SortAscending => ascendingToggle.isOn;
         public int PageCount => ((DisplayingReplays.Count - 1) / entriesPerPage) + 1;
-        public int CurrentPage { get; set; }
+        public int CurrentPage { get; set; } = -1;
 
         //---Serialized Variables
         [SerializeField] public MainMenuCanvas canvas;
@@ -78,6 +78,9 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         private bool ready;
         private CancellationTokenSource currentCancellationSource;
+#if !UNITY_WEBGL
+        private readonly object lockObject = new();
+#endif
 
         [RuntimeInitializeOnLoadMethod]
         public static void CreateDirectories() {
@@ -98,6 +101,10 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         }
 #endif
 
+        public void Initialize() {
+            Instance = this;
+        }
+
         protected override void OnEnable() {
             base.OnEnable();
 #if UNITY_EDITOR
@@ -106,6 +113,17 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 return;
             }
 #endif
+
+            sortDropdown.value = 0;
+            ascendingToggle.isOn = false;
+            searchField.SetTextWithoutNotify("");
+            replayTemplate.gameObject.SetActive(false);
+            scrollRect.verticalNormalizedPosition = 1;
+            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) layout.transform);
+            Canvas.ForceUpdateCanvases();
+
+            ready = false;
+            _ = LoadReplays();
 
             Settings.Controls.UI.Next.performed += OnNext;
             Settings.Controls.UI.Previous.performed += OnPrevious;
@@ -124,29 +142,23 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
             CancelExistingTask();
             _ = ClearReplayListEntries(default);
-            
+
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
             Settings.Controls.UI.Previous.performed -= OnPrevious;
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
         }
 
-        public void Initialize() {
-            Instance = this;
-        }
+        public void AddReplay(BinaryReplayFile replayFile) {
+            if (!string.IsNullOrEmpty(replayFile.FilePath)) {
+                if (loadedFilepaths.Contains(replayFile.FilePath)) {
+                    return;
+                }
 
-        public void Show() {
-            sortDropdown.value = 0;
-            ascendingToggle.isOn = false;
-            searchField.SetTextWithoutNotify("");
-            replayTemplate.gameObject.SetActive(false);
-            scrollRect.verticalNormalizedPosition = 1;
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) layout.transform);
-            Canvas.ForceUpdateCanvases();
+                loadedFilepaths.Add(replayFile.FilePath);
+            }
+            allReplays.Add(replayFile);
 
-            ready = false;
-            _ = LoadReplays();
-
-            OnLanguageChanged(GlobalController.Instance.translationManager);
+            UpdateNoReplaysText();
         }
 
         private async Awaitable LoadReplays() {
@@ -324,11 +336,8 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             await Awaitable.MainThreadAsync();
 
             int index = allReplays.IndexOf(focus);
-            if (index == -1) {
-                return;
-            }
+            int page = (index != -1) ? index / entriesPerPage : 0;
 
-            int page = index / entriesPerPage;
             await CreateReplayListEntries(cancellationToken, page, focus);
         }
 
@@ -337,55 +346,55 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 return;
             }
 
-            await Awaitable.MainThreadAsync();
+            try {
 
-            if (pageNullable is int page) {
-                if (CurrentPage == page) {
-                    return;
+                await Awaitable.MainThreadAsync();
+
+                int page = Mathf.Clamp(pageNullable ?? CurrentPage, 0, PageCount - 1);
+                CurrentPage = page;
+
+                await ClearReplayListEntries(cancellationToken);
+
+                string previousHeader = null;
+                var displayingReplays = DisplayingReplays;
+                ReplayListEntry focusEntry = null, previousEntry = null;
+                int start = page * entriesPerPage;
+                for (int i = start; i < start + entriesPerPage; i++) {
+                    if (i >= displayingReplays.Count) {
+                        break;
+                    }
+
+                    var replay = displayingReplays[i];
+                    string header = GetHeader(replay);
+                    if (header != previousHeader) {
+                        AcquireHeader(header);
+                        previousHeader = header;
+                    }
+                    var replayListEntry = AcquireReplayListEntry(replay, previousEntry);
+
+                    if (replay == focus) {
+                        focusEntry = replayListEntry;
+                    }
+
+                    previousEntry = replayListEntry;
                 }
-            } else {
-                page = CurrentPage;
+
+                if (focusEntry) {
+                    Select(focusEntry, false);
+                    scrollRect.ScrollToCenter((RectTransform) focusEntry.transform, false);
+                } else {
+                    Select(GetFirstReplayEntry(), false);
+                    scrollRect.verticalNormalizedPosition = 1;
+                }
+
+                CreatePageNumbers();
+                UpdateNoReplaysText();
+                loadingIcon.SetActive(false);
+            } catch {
+                // Move exceptions to the main thread so they're printed.
+                await Awaitable.MainThreadAsync();
+                throw;
             }
-            page = Mathf.Clamp(page, 0, PageCount - 1);
-            CurrentPage = page;
-
-            await ClearReplayListEntries(cancellationToken);
-
-            string previousHeader = null;
-            var displayingReplays = DisplayingReplays;
-            ReplayListEntry focusEntry = null, previousEntry = null;
-            int start = page * entriesPerPage;
-            for (int i = start; i < start + entriesPerPage; i++) {
-                if (i >= displayingReplays.Count) {
-                    break;
-                }
-
-                var replay = displayingReplays[i];
-                string header = GetHeader(replay);
-                if (header != previousHeader) {
-                    AcquireHeader(header);
-                    previousHeader = header;
-                }
-                var replayListEntry = AcquireReplayListEntry(replay, previousEntry);
-
-                if (replay == focus) {
-                    focusEntry = replayListEntry;
-                }
-
-                previousEntry = replayListEntry;
-            }
-
-            if (focusEntry) {
-                Select(focusEntry, false);
-                scrollRect.ScrollToCenter((RectTransform) focusEntry.transform, false);
-            } else {
-                Select(GetFirstReplayEntry(), false);
-                scrollRect.verticalNormalizedPosition = 1;
-            }
-
-            CreatePageNumbers();
-            UpdateNoReplaysText();
-            loadingIcon.SetActive(false);
         }
 
         public async Awaitable ClearReplayListEntries(CancellationToken cancellationToken) {
@@ -437,6 +446,14 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             return result;
         }
 
+#if UNITY_WEBGL
+#pragma warning disable CS1998 // Disable 'Async method runs synchronously' warning
+        private async Awaitable FindReplays(CancellationToken cancellationToken) {
+            // WebGL can't load from filesystem- so do nothing. Kthx.
+            return;
+        }
+#pragma warning restore CS1998
+#else
         private async Awaitable FindReplays(CancellationToken cancellationToken) {
             if (cancellationToken.IsCancellationRequested) {
                 return;
@@ -445,6 +462,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             try {
                 await Awaitable.BackgroundThreadAsync();
 
+                HashSet<string> newLoadedFilepaths = new();
                 HashSet<BinaryReplayFile> newFoundReplays = new();
                 foreach (var filepath in Directory.EnumerateFiles(ReplayDirectory, $"*.{ReplayFileExtension}", SearchOption.AllDirectories)) {
                     if (cancellationToken.IsCancellationRequested) {
@@ -452,13 +470,11 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                     }
 
                     // Should never *be* locked, but just in case. (user spams or something)
-                    lock (loadedFilepaths) {
-                        if (loadedFilepaths.Contains(filepath)) {
-                            // Already loaded
-                            continue;
-                        }
-                        loadedFilepaths.Add(filepath);
+                    if (loadedFilepaths.Contains(filepath)) {
+                        // Already loaded
+                        continue;
                     }
+                    newLoadedFilepaths.Add(filepath);
 
                     if (BinaryReplayFile.TryLoadNewFromFile(filepath, includeReplayData: false, out var parsedReplay) != ReplayParseResult.Success) {
                         // Not a valid replay file
@@ -473,13 +489,21 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                     return;
                 }
 
-                allReplays.AddRange(newFoundReplays);
+                await Awaitable.MainThreadAsync();
+
+                lock (lockObject) {
+                    foreach (var path in newLoadedFilepaths) {
+                        loadedFilepaths.Add(path);
+                    }
+                    allReplays.AddRange(newFoundReplays);
+                }
             } catch {
                 // Move exceptions to the main thread so they're printed.
                 await Awaitable.MainThreadAsync();
                 throw;
             }
         }
+#endif
 
         private async Awaitable FilterReplays(CancellationToken cancellationToken) {
             if (cancellationToken.IsCancellationRequested) {
@@ -644,6 +668,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         }
 
         private async Awaitable ImportFile(string filepath, bool makeCopy) {
+            try {
 #if UNITY_WEBGL && !UNITY_EDITOR
             using UnityEngine.Networking.UnityWebRequest downloadRequest = new(filepath, "GET");
             downloadRequest.downloadHandler = new UnityEngine.Networking.DownloadHandlerBuffer();
@@ -653,34 +678,39 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
             ReplayParseResult parseResult = BinaryReplayFile.TryLoadNewFromStream(memStream, true, out BinaryReplayFile parsedReplay);
 #else
-            ReplayParseResult parseResult = BinaryReplayFile.TryLoadNewFromFile(filepath, true, out BinaryReplayFile parsedReplay);
+                ReplayParseResult parseResult = BinaryReplayFile.TryLoadNewFromFile(filepath, true, out BinaryReplayFile parsedReplay);
 #endif
 
-            if (parseResult != ReplayParseResult.Success) {
-                GlobalController.Instance.PlaySound(SoundEffect.UI_Error);
-                Debug.LogWarning($"[Replay] Failed to parse {filepath} as a replay: {parseResult}");
-                return;
-            }
-
-            // Good to go.
-            parsedReplay.Header.UnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
-
-            if (makeCopy) {
-                // Write into the replays folder (not copy, since we changed the timestamp in the header...)
-                string newPath = Path.Combine(ReplayDirectory, "saved", $"{parsedReplay.Header.UnixTimestamp}.{ReplayFileExtension}");
-                using (FileStream fs = new FileStream(newPath, FileMode.Create)) {
-                    parsedReplay.WriteToStream(fs);
+                if (parseResult != ReplayParseResult.Success) {
+                    GlobalController.Instance.PlaySound(SoundEffect.UI_Error);
+                    Debug.LogWarning($"[Replay] Failed to parse {filepath} as a replay: {parseResult}");
+                    return;
                 }
-                parsedReplay.FilePath = newPath;
+
+                // Good to go.
+                parsedReplay.Header.UnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds();
+
+                if (makeCopy) {
+                    // Write into the replays folder (not copy, since we changed the timestamp in the header...)
+                    string newPath = Path.Combine(ReplayDirectory, "saved", $"{parsedReplay.Header.UnixTimestamp}.{ReplayFileExtension}");
+                    using (FileStream fs = new FileStream(newPath, FileMode.Create)) {
+                        parsedReplay.WriteToStream(fs);
+                    }
+                    parsedReplay.FilePath = newPath;
+                }
+
+                AddReplay(parsedReplay);
+                Debug.Log(parsedReplay.Header.GetDisplayName());
+
+                await StartNewTaskSequence(async (cancellationToken) => {
+                    await SortReplays(cancellationToken);
+                    await FilterReplays(cancellationToken);
+                    await CreateReplayListEntries(cancellationToken, parsedReplay);
+                });
+            } catch (Exception e) {
+                Debug.Log(e);
+                throw;
             }
-
-            allReplays.Add(parsedReplay);
-
-            await StartNewTaskSequence(async (cancellationToken) => {
-                await SortReplays(cancellationToken);
-                await FilterReplays(cancellationToken);
-                await CreateReplayListEntries(cancellationToken, parsedReplay);
-            });
         }
 
         private async Awaitable StartNewTaskSequence(Func<CancellationToken, Awaitable> asyncTask) {

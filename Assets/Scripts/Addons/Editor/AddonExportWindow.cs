@@ -112,6 +112,11 @@ namespace NSMB.Editor {
             selectedAddon.EditorDefinition.IconTexture = selectedAddon.BuildDefinition.IconTexture = (Texture2D) EditorGUILayout.ObjectField("Icon", selectedAddon.BuildDefinition.IconTexture, typeof(Texture2D), false);
 
             if (GUILayout.Button("Build")) {
+                if (string.IsNullOrWhiteSpace(selectedAddon.BuildDefinition.ReleaseVersion)) {
+                    EditorUtility.DisplayDialog("Invalid addon definition", "Please fill out this build's version!", "Ok");
+                    return;
+                }
+
                 string savePath = $"ExportedAddons/{selectedAddon.FolderName}-{selectedAddon.BuildDefinition.ReleaseVersion}";
 
                 if (Directory.Exists(savePath)) {
