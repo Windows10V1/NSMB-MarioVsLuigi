@@ -50,6 +50,7 @@ namespace NSMB.Chat {
             QuantumEvent.Subscribe<EventPlayerKickedFromRoom>(this, OnPlayerKickedFromRoom, FilterOutReplay);
             QuantumEvent.Subscribe<EventPlayerUnbanned>(this, OnPlayerUnbanned, FilterOutReplay);
             QuantumEvent.Subscribe<EventPlayerTeamChangedByHost>(this, OnPlayerTeamChangedByHost, FilterOutReplay);
+            QuantumEvent.Subscribe<EventPlayerTeamRandomized>(this, OnPlayerTeamRandomized, FilterOutReplay);
         }
 
         private void OnUpdateView(CallbackUpdateView e) {
@@ -206,6 +207,14 @@ namespace NSMB.Chat {
                 } else {
                     AddSystemMessage("ui.inroom.chat.player.changeteam.unlocked", Blue);
                 }
+            }
+        }
+
+        private void OnPlayerTeamRandomized(EventPlayerTeamRandomized e) {
+            if (e.Game.PlayerIsLocal(e.Player)) {
+                Frame f = e.Game.Frames.Predicted;
+                var teams = f.Context.GetAllAssets<TeamAsset>();
+                AddSystemMessage("ui.inroom.chat.player.randomizeteam", Blue, "team", teams[e.Team].nameTranslationKey);
             }
         }
     }
