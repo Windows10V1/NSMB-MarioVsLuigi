@@ -65,6 +65,10 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         [SerializeField] private int entriesPerPage = 25;
         [SerializeField] private int pageListNearbyNumbers = 2;
 
+        [SerializeField] private GameObject progressBar;
+        [SerializeField] private TMP_Text progressBarText;
+        [SerializeField] private Image progressBarFill;
+
         //---Private Variables
         private readonly List<ReplayListEntry> replayListEntries = new();
         private readonly List<TMP_Text> headers = new();
@@ -78,9 +82,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         private bool ready;
         private CancellationTokenSource currentCancellationSource;
-#if !UNITY_WEBGL
         private readonly object lockObject = new();
-#endif
 
         [RuntimeInitializeOnLoadMethod]
         public static void CreateDirectories() {
@@ -149,14 +151,16 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         }
 
         public void AddReplay(BinaryReplayFile replayFile) {
-            if (!string.IsNullOrEmpty(replayFile.FilePath)) {
-                if (loadedFilepaths.Contains(replayFile.FilePath)) {
-                    return;
-                }
+            lock (lockObject) {
+                if (!string.IsNullOrEmpty(replayFile.FilePath)) {
+                    if (loadedFilepaths.Contains(replayFile.FilePath)) {
+                        return;
+                    }
 
-                loadedFilepaths.Add(replayFile.FilePath);
+                    loadedFilepaths.Add(replayFile.FilePath);
+                }
+                allReplays.Add(replayFile);
             }
-            allReplays.Add(replayFile);
 
             UpdateNoReplaysText();
         }
@@ -462,9 +466,11 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             try {
                 await Awaitable.BackgroundThreadAsync();
 
+                string[] foundReplayFiles = Directory.GetFiles(ReplayDirectory, $"*.{ReplayFileExtension}", SearchOption.AllDirectories);
+
                 HashSet<string> newLoadedFilepaths = new();
                 HashSet<BinaryReplayFile> newFoundReplays = new();
-                foreach (var filepath in Directory.EnumerateFiles(ReplayDirectory, $"*.{ReplayFileExtension}", SearchOption.AllDirectories)) {
+                foreach (var filepath in foundReplayFiles) {
                     if (cancellationToken.IsCancellationRequested) {
                         return;
                     }
@@ -791,10 +797,12 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 return;
             }
 
-            replayListEntries.Remove(replay);
-            allReplays.Remove(replay.ReplayFile);
-            searchResults.Remove(replay.ReplayFile);
-            loadedFilepaths.Remove(replay.ReplayFile.FilePath);
+            lock (lockObject) {
+                replayListEntries.Remove(replay);
+                allReplays.Remove(replay.ReplayFile);
+                searchResults.Remove(replay.ReplayFile);
+                loadedFilepaths.Remove(replay.ReplayFile.FilePath);
+            }
 
             replay.gameObject.SetActive(false);
         }

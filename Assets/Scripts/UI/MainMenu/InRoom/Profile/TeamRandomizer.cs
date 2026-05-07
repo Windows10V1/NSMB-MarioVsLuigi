@@ -20,7 +20,6 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
 
         //---Private Variables
         private GameObject blockerInstance;
-        private int selected;
 
         public void Initialize() {
             QuantumEvent.Subscribe<EventRulesChanged>(this, OnRulesChanged);
@@ -42,34 +41,17 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
 
         public void SetEnabled(bool value) {
             button.interactable = value;
-
             Close(true);
         }
 
         public unsafe void RandomizeTeam(TeamRandButton team) {
             var game = QuantumRunner.DefaultGame;
             Frame f = game.Frames.Predicted;
-            selected = team.teamCount;
             PlayerRef host = f.Global->Host;
 
-            var teams = AssetRepository<TeamAsset>.AllAssets;
-            var selectableTeams = Enumerable.Range(0, teams.Count).ToList();
-            List<int> selectedTeams = new();
-
-            // select random colors to be the teams
-            for (int i = 0; i < selected; i++) {
-                int index = f.RNG->Next(0, selectableTeams.Count);
-                
-                selectedTeams.Add(selectableTeams[index]);
-                selectableTeams.RemoveAt(index);
-            }
-
-            if (game.PlayerIsLocal(host)) {
-                int hostSlot = game.GetLocalPlayerSlots()[game.GetLocalPlayers().IndexOf(host)];
-                game.SendCommand(hostSlot, new CommandRandomizeTeam {
-                    Teams = selectableTeams.ToArray(),
-                });
-            }
+            game.SendCommand(game.GetLocalPlayerSlots()[game.GetLocalPlayers().IndexOf(host)], new CommandRandomizeAllTeams {
+                Teams = team.teamCount
+            });
 
             Close(false);
             canvas.PlayConfirmSound();
@@ -79,16 +61,19 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         public unsafe void Open() {
             var game = QuantumRunner.DefaultGame;
             Frame f = game.Frames.Predicted;
-            var playerData = QuantumUtils.GetPlayerData(f, game.GetLocalPlayers()[0]);
+            PlayerRef host = f.Global->Host;
 
-            int selected = Mathf.Clamp(playerData->RequestedTeam, 0, AssetRepository<TeamAsset>.AllAssetRefs.Count);
+            if (!game.PlayerIsLocal(host)) {
+                canvas.PlaySound(SoundEffect.UI_Error);
+                return;
+            }
 
             blockerInstance = Instantiate(blockerTemplate, canvas.transform);
             blockerInstance.SetActive(true);
             content.SetActive(true);
 
             canvas.PlayCursorSound();
-            canvas.EventSystem.SetSelectedGameObject(buttons[selected].gameObject);
+            canvas.EventSystem.SetSelectedGameObject(buttons[0].gameObject);
         }
 
         public void Close(bool playSound) {

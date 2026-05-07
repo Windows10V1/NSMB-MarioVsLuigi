@@ -2,20 +2,31 @@ using Photon.Deterministic;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Quantum
-{
-    public class CommandRandomizeTeam : DeterministicCommand, ILobbyCommand {
-        public int[] Teams;
+namespace Quantum {
+    public class CommandRandomizeAllTeams : DeterministicCommand, ILobbyCommand {
+
+        public int Teams;
 
         public override void Serialize(BitStream stream) {
             stream.Serialize(ref Teams);
         }
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* senderData) {
-            int teams = Teams.Length;
             // GOtta stop those filthy cheaters :/
-            if (teams < 2 || teams > 5 || !senderData->IsRoomHost) {
+            if (Teams < 2 || Teams > 5 || !senderData->IsRoomHost) {
                 return;
+            }
+
+            // Select [Teams] random teams we're gonna use
+            List<int> teams = Enumerable.Range(0, 5).ToList();
+            while (teams.Count > Teams) {
+                teams.RemoveAt(f.RNG->Next(0, teams.Count));
+            }
+
+            // Shuffle the teams list
+            for (int i = teams.Count - 1; i > 0; i--) {
+                int randomIndex = f.RNG->Next(0, i + 1);
+                (teams[i], teams[randomIndex]) = (teams[randomIndex], teams[i]);
             }
 
             // cannot store pointers, store entityRef to the players
@@ -29,12 +40,12 @@ namespace Quantum
             // now handle the list, this alGOrithm prevents infinite loops!
             int loopCount = playerEntityRefs.Count;
             for (int i = 0; i < loopCount; i++) {
-                int team = Teams[i % teams];
+                int team = teams[i % Teams];
                 int index = f.RNG->Next(0, playerEntityRefs.Count);
 
                 var playerData = f.Unsafe.GetPointer<PlayerData>(playerEntityRefs[index]);
                 playerData->RequestedTeam = (byte) team;
-                playerData->IsTeamLocked = true;
+                playerData->IsTeamLocked = playerData->PlayerRef != sender; // Don't self-lock the host
                 playerEntityRefs.RemoveAt(index);
                 f.Events.PlayerDataChanged(playerData->PlayerRef);
                 f.Events.PlayerTeamRandomized(playerData->PlayerRef, (byte) team);

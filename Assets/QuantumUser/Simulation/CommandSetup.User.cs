@@ -23,7 +23,7 @@ namespace Quantum {
             factories.Add(new CommandChangeHost());
             factories.Add(new CommandUpdatePing());
             factories.Add(new CommandSetInSettings());
-            factories.Add(new CommandRandomizeTeam());
+            factories.Add(new CommandRandomizeAllTeams());
 
             // Chat
             factories.Add(new CommandSendChatMessage());
