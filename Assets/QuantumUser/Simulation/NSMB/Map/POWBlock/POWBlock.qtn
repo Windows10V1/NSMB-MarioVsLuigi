@@ -1,0 +1,18 @@
+component POWBlock {
+	bool HoldAboveHead;
+	bool IsCoinItem;
+
+	[ExcludeFromPrototype] EntityRef Holder;
+	[ExcludeFromPrototype] EntityRef PreviousHolder;
+	[ExcludeFromPrototype] byte IgnoreOwnerFrames;
+	[ExcludeFromPrototype] bool FacingRight;
+	[ExcludeFromPrototype] bool IsBeingThrown;
+	[ExcludeFromPrototype] bool HasLanded;
+}
+
+event POWBlockActivated {
+	EntityRef Entity;
+	EntityRef Activator;
+}
+
+signal OnThrowPOWBlock(EntityRef entity, EntityRef mario, bool crouching, bool dropped);

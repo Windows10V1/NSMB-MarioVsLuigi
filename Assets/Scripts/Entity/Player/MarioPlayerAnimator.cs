@@ -102,7 +102,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, cloudHead, cloudScarf, frogModel;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, cloudHead, cloudScarf, frogModel;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -255,7 +255,7 @@ namespace NSMB.Entities.Player {
                 return;
             }
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
-            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") && mario->CurrentPowerupState != PowerupState.PenguinSuit && mario->CurrentPowerupState != PowerupState.FrogSuit);
+            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") && mario->CurrentPowerupState != PowerupState.PenguinSuit && mario->CurrentPowerupState != PowerupState.FrogSuit && mario->CurrentPowerupState != PowerupState.PropellerMushroom);
         }
 
         public override void OnUpdateView() {
@@ -665,6 +665,7 @@ namespace NSMB.Entities.Player {
             blueShell.SetActive(mario->CurrentPowerupState == PowerupState.BlueShell);
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             propellerHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.PropellerMushroom);
+            propellerBody.SetActive(mario->CurrentPowerupState == PowerupState.PropellerMushroom);
             HammerHelm.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.HammerSuit);
             HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
             boomerangHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.BoomerangFlower);
