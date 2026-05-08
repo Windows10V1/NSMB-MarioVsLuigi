@@ -32,13 +32,15 @@ MonoBehaviour:
   LockTo45Degrees: 0
   InheritShooterVelocity: 1
   HasCollision: 1
-  DoesntEffectBlueShell: 0
+  DoesntEffectBlueShell: 1
   CollectCoins: 1
   DestroyParticleEffect: 8
   ShootSound: 106
   IsBoomerang: 1
   IsSuperBall: 0
   IsGoldball: 0
+  GoldballRadius:
+    RawValue: 131072
   CooldownFrames: 0
   MaxInstantProjectiles: 1
   MaxProjectileCount: 1

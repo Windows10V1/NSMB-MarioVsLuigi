@@ -4892,14 +4892,12 @@ GameObject:
   - component: {fileID: 8010249587145537842}
   - component: {fileID: 6774445834162848449}
   - component: {fileID: 128866428235369491}
-  - component: {fileID: 3667974533863622642}
-  - component: {fileID: -3666527222284582322}
   - component: {fileID: 5404140305981615203}
   - component: {fileID: 6632058151646472582}
   - component: {fileID: -4922457863048937646}
   m_Layer: 20
   m_Name: CloudBlock
-  m_TagString: platform
+  m_TagString: CloudBlock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5012,9 +5010,9 @@ MonoBehaviour:
       IsPersistent: 1
       CompoundShapes: []
     LayerSource: 1
-    Layer: 20
+    Layer: 14
     CallbackFlags:
-      Value: 0
+      Value: 448
   PhysicsBody:
     IsEnabled: 0
     Config2D: 116
@@ -5184,55 +5182,6 @@ MonoBehaviour:
   OnEntityDestroyed:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3667974533863622642
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010249587145537848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 385320c580a374c44b3da48163df570b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypePhysicsObject
-  Prototype:
-    Gravity:
-      X:
-        RawValue: 0
-      Y:
-        RawValue: 0
-    TerminalVelocity:
-      RawValue: 0
-    IsFrozen:
-      Value: 0
-    DisableCollision:
-      Value: 0
-    SlowInLiquids:
-      Value: 0
-    IsWaterSolid:
-      Value: 0
-    BreakMegaObjects:
-      Value: 0
---- !u!114 &-3666527222284582322
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010249587145537848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e64dab71434552b4cb3f460dc92213d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypeProjectile
-  Prototype:
-    Asset:
-      Id:
-        Value: 323175042763833291
-    Speed:
-      RawValue: 0
-    Lifetime: 300
 --- !u!114 &5404140305981615203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5281,7 +5230,7 @@ MonoBehaviour:
       Y:
         RawValue: 9830
     BroadRadius:
-      RawValue: 131072
+      RawValue: 81920
 --- !u!1001 &1159980504268623263
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5290,11 +5239,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 4362537826607974049}
     m_Modifications:
-    - target: {fileID: 8164078558771037576, guid: f46b8fc151393264695663a47f3ba684,
-        type: 3}
-      propertyPath: m_Layer
-      value: 19
-      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: a284b9e564c6f9a4ba0fb3f184efc633,
         type: 3}
       propertyPath: m_LocalScale.x
@@ -5384,6 +5328,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8164078558771037576, guid: f46b8fc151393264695663a47f3ba684,
+        type: 3}
+      propertyPath: m_Layer
+      value: 19
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: a284b9e564c6f9a4ba0fb3f184efc633, type: 3}

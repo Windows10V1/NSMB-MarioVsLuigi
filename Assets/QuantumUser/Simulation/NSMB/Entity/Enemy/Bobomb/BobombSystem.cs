@@ -228,7 +228,7 @@ namespace Quantum {
             var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
 
             switch (projectileAsset.Effect) {
-            case ProjectileEffectType.Goldball:
+            case ProjectileEffectType.GoldBall:
             case ProjectileEffectType.Hammer:
             case ProjectileEffectType.Boomerang:
             case ProjectileEffectType.SuperBall: {

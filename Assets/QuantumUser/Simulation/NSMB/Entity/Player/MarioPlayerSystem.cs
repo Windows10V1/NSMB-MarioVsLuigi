@@ -2172,7 +2172,7 @@ namespace Quantum {
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && mario->IsDamageable
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
-                && !(mario->CurrentPowerupState == PowerupState.GoldFlower && projectileAsset.Effect == ProjectileEffectType.Goldball);
+                && !(mario->CurrentPowerupState == PowerupState.GoldFlower && projectileAsset.Effect == ProjectileEffectType.GoldBall);
 
             if (damageable) {
                 bool didKnockback = false;
@@ -2191,7 +2191,7 @@ namespace Quantum {
                 switch (projectileAsset.Effect) {
                 case ProjectileEffectType.None:
                     break;
-                case ProjectileEffectType.Goldball:
+                case ProjectileEffectType.GoldBall:
                     if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
                         damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
                     }

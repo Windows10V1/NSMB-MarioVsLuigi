@@ -74,7 +74,7 @@ namespace Quantum {
             var piranhaPlant = f.Unsafe.GetPointer<PiranhaPlant>(piranhaPlantEntity);
 
             switch (projectileAsset.Effect) {
-            case ProjectileEffectType.Goldball:
+            case ProjectileEffectType.GoldBall:
             case ProjectileEffectType.Hammer:
             case ProjectileEffectType.Boomerang:
             case ProjectileEffectType.Fire:

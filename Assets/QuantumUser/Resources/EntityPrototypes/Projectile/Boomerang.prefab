@@ -88,9 +88,9 @@ MonoBehaviour:
         RawValue: 0
       BoxExtents:
         X:
-          RawValue: 16384
+          RawValue: 10923
         Y:
-          RawValue: 9830
+          RawValue: 8192
       PositionOffset:
         X:
           RawValue: -2458
@@ -333,8 +333,6 @@ MonoBehaviour:
     SlowInLiquids:
       Value: 0
     IsWaterSolid:
-      Value: 0
-    BreakMegaObjects:
       Value: 0
 --- !u!114 &3977285621181604314
 MonoBehaviour:
