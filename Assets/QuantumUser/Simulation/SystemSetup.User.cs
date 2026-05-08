@@ -42,7 +42,6 @@ namespace Quantum {
                     new BreakableObjectSystem(),
                     new MarioPlayerSystem(),
                     new CoinSystem(),
-                    new GoldBlockSystem(),
                     new WrappingObjectSystem(),
                     new BigStarSystem(),
                     new StarCoinSystem(),

@@ -466,21 +466,6 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.GoldBlock))]
-  public unsafe partial class GoldBlockPrototype : ComponentPrototype<Quantum.GoldBlock> {
-    [HideInInspector()]
-    public Int32 _empty_prototype_dummy_field_;
-    partial void MaterializeUser(Frame frame, ref Quantum.GoldBlock result, in PrototypeMaterializationContext context);
-    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
-        Quantum.GoldBlock component = default;
-        Materialize((Frame)f, ref component, in context);
-        return f.Set(entity, component) == SetResult.ComponentAdded;
-    }
-    public void Materialize(Frame frame, ref Quantum.GoldBlock result, in PrototypeMaterializationContext context = default) {
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.Goomba))]
   public unsafe partial class GoombaPrototype : ComponentPrototype<Quantum.Goomba> {
     public FP Speed;
@@ -709,23 +694,6 @@ namespace Quantum.Prototypes {
         return f.Set(entity, component) == SetResult.ComponentAdded;
     }
     public void Materialize(Frame frame, ref Quantum.ObjectiveCoin result, in PrototypeMaterializationContext context = default) {
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.POWBlock))]
-  public unsafe partial class POWBlockPrototype : ComponentPrototype<Quantum.POWBlock> {
-    public QBoolean HoldAboveHead;
-    public QBoolean IsCoinItem;
-    partial void MaterializeUser(Frame frame, ref Quantum.POWBlock result, in PrototypeMaterializationContext context);
-    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
-        Quantum.POWBlock component = default;
-        Materialize((Frame)f, ref component, in context);
-        return f.Set(entity, component) == SetResult.ComponentAdded;
-    }
-    public void Materialize(Frame frame, ref Quantum.POWBlock result, in PrototypeMaterializationContext context = default) {
-        result.HoldAboveHead = this.HoldAboveHead;
-        result.IsCoinItem = this.IsCoinItem;
         MaterializeUser(frame, ref result, in context);
     }
   }
