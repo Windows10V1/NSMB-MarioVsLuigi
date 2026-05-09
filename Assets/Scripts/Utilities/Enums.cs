@@ -11,6 +11,10 @@ public static class Enums {
         Normal, HalfBlink, FullBlink, Death, Pain, Pissed, Happy
     }
 
+    public enum CloudFaceState {
+        CloudNormal, CloudHappy
+    }
+
     //---Sound effects
     [Flags]
     public enum SpecialPowerupMusic {
