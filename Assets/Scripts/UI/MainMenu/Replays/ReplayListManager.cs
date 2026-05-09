@@ -39,6 +39,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         //---Properties
         public ReplayListEntry Selected { get; set; }
+        public List<ReplayListEntry> ReplayListEntries => replayListEntries;
         public List<BinaryReplayFile> AllReplays => allReplays;
         public List<BinaryReplayFile> DisplayingReplays => string.IsNullOrEmpty(SearchTerm) ? allReplays : searchResults;
         private string SearchTerm => searchField.text?.Trim();

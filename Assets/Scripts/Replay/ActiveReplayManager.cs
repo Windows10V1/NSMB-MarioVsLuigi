@@ -148,7 +148,7 @@ namespace NSMB.Replay {
                     ReplayLengthInFrames = jsonReplay.LastTick - jsonReplay.InitialTick,
                     
                     Rules = new GameRulesPrototype {
-                        Stage = rules.Stage,
+                        Stage = f.MapAssetRef,
                         Gamemode = rules.Gamemode,
                         StarsToWin = rules.StarsToWin,
                         CoinsForPowerup = rules.CoinsForPowerup,
