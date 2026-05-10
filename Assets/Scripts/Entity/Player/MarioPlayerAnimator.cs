@@ -102,7 +102,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangHelmet, boomerangShell, cloudHead, cloudScarf, frogModel;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, frogModel;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -120,11 +120,6 @@ namespace NSMB.Entities.Player {
         [SerializeField] private LoopingSoundPlayer dustPlayer, drillPlayer, goldFlowerPlayer;
         [SerializeField] private LoopingSoundData wallSlideData, shellSlideData, spinnerDrillData, propellerDrillData, goldFlowerData;
 
-        [Header("Gold Block")]
-        [SerializeField] private Transform smallGoldBlockBone;
-        [SerializeField] private Transform largeGoldBlockBone;
-        [SerializeField] private Mesh goldBlockMesh;
-
         [Header("Particle Systems")]
         [SerializeField] private ParticleSystem dust;
         [SerializeField] private ParticleSystem sparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
@@ -136,8 +131,6 @@ namespace NSMB.Entities.Player {
         //---Properties
         public Color GlowColor { get; private set; }
         public bool DisableHeadwear { get; set; }
-        public Transform ActiveGoldBlockBone => smallGoldBlockBone.gameObject.activeInHierarchy ? smallGoldBlockBone : largeGoldBlockBone;
-        public Mesh GoldBlockMesh => goldBlockMesh;
         public GameObject PropellerBlades => propeller;
         
         //---Private Variables
@@ -255,7 +248,7 @@ namespace NSMB.Entities.Player {
                 return;
             }
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
-            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") && mario->CurrentPowerupState != PowerupState.PenguinSuit && mario->CurrentPowerupState != PowerupState.FrogSuit && mario->CurrentPowerupState != PowerupState.PropellerMushroom);
+            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") && mario->CurrentPowerupState != PowerupState.PenguinSuit && mario->CurrentPowerupState != PowerupState.FrogSuit && mario->CurrentPowerupState != PowerupState.PropellerMushroom && mario->CurrentPowerupState != PowerupState.BoomerangFlower && mario->CurrentPowerupState != PowerupState.CloudFlower);
         }
 
         public override void OnUpdateView() {
@@ -668,10 +661,8 @@ namespace NSMB.Entities.Player {
             propellerBody.SetActive(mario->CurrentPowerupState == PowerupState.PropellerMushroom);
             HammerHelm.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.HammerSuit);
             HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
-            boomerangHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.BoomerangFlower);
-            boomerangShell.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
-            cloudHead.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.CloudFlower);
-            cloudScarf.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
+            boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
+            cloudModel.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.CloudFlower);
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 5bcaa5d1e0454824fafb5532d4599902
+guid: 3e430b83da9335a46b9b575c4c412e03
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -92,15 +92,16 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName: mario_all_root
     hasTranslationDoF: 0
-    hasExtraRoot: 0
+    hasExtraRoot: 1
     skeletonHasParents: 1
-  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  lastHumanDescriptionAvatarSource: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0,
+    type: 3}
   autoGenerateAvatarMappingIfUnspecified: 1
   animationType: 2
   humanoidOversampling: 1
-  avatarSetup: 0
+  avatarSetup: 2
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
   importBlendShapeDeformPercent: 1
   remapMaterialsIfMaterialImportModeIsNone: 0
