@@ -390,6 +390,7 @@ namespace NSMB.UI.Game.Replay {
 
         private void OnGameDestroyed(CallbackGameDestroyed e) {
             Time.timeScale = 1;
+            Time.captureDeltaTime = 0;
         }
 
         private unsafe void OnGameResynced(CallbackGameResynced e) {
