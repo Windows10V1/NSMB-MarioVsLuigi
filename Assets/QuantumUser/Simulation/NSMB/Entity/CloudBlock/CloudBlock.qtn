@@ -1,0 +1,21 @@
+component CloudBlock {
+	AssetRef<CloudBlockAsset> Asset;
+	[ExcludeFromPrototype] EntityRef Owner;
+	[ExcludeFromPrototype] int Lifetime;
+	[ExcludeFromPrototype] bool IsDestroying;
+	[ExcludeFromPrototype] bool IsSummoning;
+	[ExcludeFromPrototype] byte SquishCooldownFrames;
+}
+
+event CloudBlockSquished {
+	EntityRef Entity;
+}
+
+event CloudBlockHardSquished {
+	EntityRef Entity;
+}
+
+event CloudBlockDestroyed {
+	EntityRef Entity;
+	FPVector2 Position;
+}

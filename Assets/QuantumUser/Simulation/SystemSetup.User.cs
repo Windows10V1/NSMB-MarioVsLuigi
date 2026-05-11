@@ -47,6 +47,7 @@ namespace Quantum {
                     new StarCoinSystem(),
                     new HoldableObjectSystem(),
                     new IceBlockSystem(),
+                    new CloudBlockSystem(),
                     new CameraSystem(),
                     new LiquidSystem(),
                     new MarioBrosPlatformSystem(),

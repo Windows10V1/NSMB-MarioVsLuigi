@@ -336,7 +336,7 @@ namespace NSMB.Entities.Player {
 
             dustPlayer.SetSoundData((mario->IsInShell || mario->IsSliding || mario->IsPenguinSliding || mario->IsCrouchedInShell) ? shellSlideData : wallSlideData);
             drillPlayer.SetSoundData(mario->IsPropellerFlying ? propellerDrillData : spinnerDrillData);
-            // Gold Flower emits sound
+            
             bool hasGoldFlower = mario->CurrentPowerupState == PowerupState.GoldFlower;
             if (hasGoldFlower && !disableParticles) {
                 if (goldFlowerPlayer.Source.clip != goldFlowerData?.clip) {
@@ -402,6 +402,7 @@ namespace NSMB.Entities.Player {
                 : mario->CurrentPowerupState switch {
                     PowerupState.BlueShell => 90f,
                     PowerupState.MegaMushroom => 78.75f,
+                    PowerupState.FrogSuit => 78.75f,
                     PowerupState.BoomerangFlower => 56.25f,
                     _ => 67.5f,
                 };
@@ -451,6 +452,11 @@ namespace NSMB.Entities.Player {
 
             } else if (mario->IsSpinnerFlying || mario->IsPropellerFlying) {
                 modelRotationTarget *= Quaternion.Euler(0, (-1200 - ((mario->PropellerLaunchFrames / 60f) * 1400) - (mario->IsDrilling ? 900 : 0) + (mario->IsPropellerFlying && mario->PropellerSpinFrames == 0 && physicsObject->Velocity.Y < 0 ? 700 : 0)) * delta, 0);
+                modelRotateInstantly = true;
+
+            } else if (mario->CloudSpinFrames > 0) {
+                const float CLOUD_SPIN_ANGULAR_VELOCITY = 1440f; // 360 degrees in 0.25 seconds
+                modelRotationTarget *= Quaternion.Euler(0, CLOUD_SPIN_ANGULAR_VELOCITY * delta, 0);
                 modelRotateInstantly = true;
 
             } else if (mario->IsWallsliding) {
@@ -605,7 +611,7 @@ namespace NSMB.Entities.Player {
             if (pissedEyeStateTimer < 0) pissedEyeStateTimer = 0;
 
             // Trigger happy state on doublejump and triplejump
-            if ((mario->JumpState == JumpState.DoubleJump || mario->JumpState == JumpState.TripleJump) && happyEyeStateTimer == 0) {
+            if ((mario->JumpState == JumpState.DoubleJump || mario->JumpState == JumpState.TripleJump) && !physicsObject->IsTouchingGround && happyEyeStateTimer == 0) {
                 happyEyeStateTimer = 0.3f;
             }
 
