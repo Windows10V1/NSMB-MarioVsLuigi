@@ -10,6 +10,10 @@ public unsafe class CoinItemAsset : AssetObject {
     public TypeFlags Flags = TypeFlags.SpawnableFromCoins | TypeFlags.SpawnableFromRouletteBlock | TypeFlags.LaunchableFromBlock;
     public int MaxNumberOfItems = 0;
 
+#if QUANTUM_UNITY
+    public string TranslationKey;
+#endif
+
     public FPVector2 CameraSpawnOffset = new(0, FP.FromString("1.68"));
 
     public virtual int CountItemsExisting(Frame f) {
