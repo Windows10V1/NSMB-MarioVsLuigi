@@ -22,7 +22,17 @@ namespace Quantum {
 
         public abstract void CheckForGameEnd(Frame f);
 
-        public abstract int GetObjectiveCount(Frame f, PlayerRef player);
+        public virtual int GetObjectiveCount(Frame f, PlayerRef player) {
+            foreach ((_, var mario) in f.Unsafe.GetComponentBlockIterator<MarioPlayer>()) {
+                if (player != mario->PlayerRef) {
+                    continue;
+                }
+
+                return GetObjectiveCount(f, mario);
+            }
+
+            return -1;
+        }
 
         public abstract int GetObjectiveCount(Frame f, MarioPlayer* mario);
 

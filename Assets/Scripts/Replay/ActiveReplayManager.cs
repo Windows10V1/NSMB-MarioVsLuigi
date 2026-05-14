@@ -141,12 +141,27 @@ namespace NSMB.Replay {
             try {
                 ref GameRules rules = ref f.Global->Rules;
                 var gamemodeSpecific = f.FindAsset(rules.Gamemode);
+
+                DictionaryEntry_AssetRefCoinItemAsset_FP[] customSpawnWeights;
+                if (f.TryResolveDictionary(rules.CoinItemCustomSpawnWeights, out var customWeights)) {
+                    customSpawnWeights = new DictionaryEntry_AssetRefCoinItemAsset_FP[customWeights.Count];
+                    int count = 0;
+                    foreach ((var key, var value) in customWeights) {
+                        customSpawnWeights[count++] = new DictionaryEntry_AssetRefCoinItemAsset_FP {
+                            Key = key,
+                            Value = value
+                        };
+                    }
+                } else {
+                    customSpawnWeights = null;
+                }
+
                 BinaryReplayHeader header = new() {
                     Version = GameVersion.Current,
                     UnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
                     InitialFrameNumber = jsonReplay.InitialTick,
                     ReplayLengthInFrames = jsonReplay.LastTick - jsonReplay.InitialTick,
-                    
+
                     Rules = new GameRulesPrototype {
                         Stage = f.MapAssetRef,
                         Gamemode = rules.Gamemode,
@@ -159,6 +174,7 @@ namespace NSMB.Replay {
                         StarFountain = rules.StarFountain,
                         CoinDeathPenalty = rules.CoinDeathPenalty,
                         TeamAttack = rules.TeamAttack,
+                        CoinItemCustomSpawnWeights = customSpawnWeights,
                     },
                     PlayerInformation = playerInformation,
                     WinningTeam = winner,
