@@ -204,7 +204,9 @@ namespace NSMB.Replay {
 #endif
 
                 // Register replay file immediately, because WebGL can't load replays from the filesystem.
-                ReplayListManager.Instance.AddReplay(binaryReplay);
+                if (ReplayListManager.Instance) {
+                    ReplayListManager.Instance.AddReplay(binaryReplay);
+                }
             } finally {
                 outputStream?.Dispose();
             }

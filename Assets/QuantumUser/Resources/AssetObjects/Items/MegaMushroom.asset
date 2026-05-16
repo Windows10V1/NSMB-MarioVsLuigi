@@ -28,6 +28,8 @@ MonoBehaviour:
   BlockSpawnSoundEffect: 99
   Flags: 3
   MaxNumberOfItems: 0
+  CanSpawnAfterSeconds:
+    RawValue: 1310720
   TranslationKey: coinitem.megamushroom
   CameraSpawnOffset:
     X:

@@ -28,6 +28,8 @@ MonoBehaviour:
   BlockSpawnSoundEffect: 69
   Flags: 19
   MaxNumberOfItems: 0
+  CanSpawnAfterSeconds:
+    RawValue: 1310720
   TranslationKey: coinitem.starman
   CameraSpawnOffset:
     X:

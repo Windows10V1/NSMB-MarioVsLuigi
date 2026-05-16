@@ -9,6 +9,7 @@ public unsafe class CoinItemAsset : AssetObject {
     public SoundEffect BlockSpawnSoundEffect = SoundEffect.World_Block_Powerup;
     public TypeFlags Flags = TypeFlags.SpawnableFromCoins | TypeFlags.SpawnableFromRouletteBlock | TypeFlags.LaunchableFromBlock;
     public int MaxNumberOfItems = 0;
+    public FP CanSpawnAfterSeconds = 0;
 
 #if QUANTUM_UNITY
     public string TranslationKey;
@@ -94,7 +95,7 @@ public unsafe class CoinItemAsset : AssetObject {
     }
 
     public virtual bool CanSpawn(Frame f, bool fromRouletteBlock) {
-        if (fromRouletteBlock && !Flags.HasFlag(TypeFlags.SpawnableFromCoins)) {
+        if (!fromRouletteBlock && !Flags.HasFlag(TypeFlags.SpawnableFromCoins)) {
             return false;
         }
         if (fromRouletteBlock && !Flags.HasFlag(TypeFlags.SpawnableFromRouletteBlock)) {
@@ -104,6 +105,10 @@ public unsafe class CoinItemAsset : AssetObject {
             return false;
         }
         if (Flags.HasFlag(TypeFlags.LivesEnabledOnly) && !f.Global->Rules.IsLivesEnabled) {
+            return false;
+        }
+        FP secondsSinceStart = (FP) (f.Number - f.Global->StartFrame) * f.DeltaTime;
+        if (secondsSinceStart < CanSpawnAfterSeconds) {
             return false;
         }
         if (MaxNumberOfItems > 0 && CountItemsExisting(f) >= MaxNumberOfItems) {
