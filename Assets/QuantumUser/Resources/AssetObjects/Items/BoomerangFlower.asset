@@ -20,7 +20,7 @@ MonoBehaviour:
     Id:
       Value: 1411567273613795187
   SpawnChance:
-    RawValue: 61440
+    RawValue: 57344
   AboveAverageBonus:
     RawValue: -131072
   BelowAverageBonus:
@@ -76,4 +76,10 @@ MonoBehaviour:
   StatePriority: 2
   ItemPriority: 2
   EnterReserveIfOverridden: 1
-  SfxOverrides: []
+  SfxOverrides:
+  - SoundEffect: 109
+    Mode: 0
+    Priority: 1
+    PlayGlobally: 0
+    AudioClips:
+    - {fileID: 8300000, guid: c69eed39a26e9b54b96f655f21d88489, type: 3}

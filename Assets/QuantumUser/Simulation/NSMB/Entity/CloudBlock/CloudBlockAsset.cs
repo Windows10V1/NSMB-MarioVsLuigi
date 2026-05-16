@@ -9,6 +9,7 @@ public class CloudBlockAsset : AssetObject, ISoundOverrideProvider {
     public int CooldownFrames = 0;
     public int InstantCooldownFrames = 0;
     public FP BounceVelocity = FP.FromFloat_UNSAFE(0f);
+    public FP GroundpoundBounceVelocity = FP.FromFloat_UNSAFE(0f);
     public SoundEffect SummonSound = SoundEffect.Enemy_Generic_Freeze;
     public SoundEffectOverride[] SfxOverrides;
 

@@ -5,7 +5,6 @@ namespace Quantum {
 
         private static readonly FP CLOUD_SPAWN_VERTICAL_OFFSET = FP._0_10;
         private static readonly FP SEMISOLID_MARGIN = FP._0_05;
-        private const byte SQUISH_COOLDOWN = 10;
 
         public struct Filter {
             public EntityRef Entity;
@@ -23,10 +22,6 @@ namespace Quantum {
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
             var cloudBlock = filter.CloudBlock;
             var asset = f.FindAsset(cloudBlock->Asset);
-
-            if (cloudBlock->SquishCooldownFrames > 0) {
-                cloudBlock->SquishCooldownFrames--;
-            }
 
             if (cloudBlock->IsSummoning) {
                 if (cloudBlock->Lifetime > asset.LifetimeFrames - asset.SummonAnimationFrames) {
@@ -83,8 +78,7 @@ namespace Quantum {
             } else {
                 // Entity is landing on top of the cloud; trigger squish
                 var cloudBlock = f.Unsafe.GetPointer<CloudBlock>(contact.Entity);
-                if (!cloudBlock->IsDestroying && cloudBlock->SquishCooldownFrames == 0) {
-                    cloudBlock->SquishCooldownFrames = SQUISH_COOLDOWN;
+                if (!cloudBlock->IsDestroying) {
                     f.Events.CloudBlockSquished(contact.Entity);
                 }
             }
@@ -109,12 +103,11 @@ namespace Quantum {
                     } else {
                         // Trigger hard-squish animation and bounce player upwards
                         f.Events.CloudBlockHardSquished(cloudBlockEntity);
-                        physicsObject->Velocity.Y = asset.BounceVelocity;
+                        physicsObject->Velocity.Y = asset.GroundpoundBounceVelocity;
                         physicsObject->IsTouchingGround = false;
                         physicsObject->WasTouchingGround = false;
                         mario->IsGroundpounding = false;
                         mario->IsGroundpoundActive = false;
-                        mario->DoEntityBounce = true;
                         mario->JumpState = JumpState.None;
                         mario->PropellerDrillCooldown = 30;
                         return false; // Stop groundpound
@@ -124,8 +117,7 @@ namespace Quantum {
                     if (mario->CurrentPowerupState == PowerupState.MegaMushroom) {
                         // Trigger hard-squish animation but no bouncing
                         f.Events.CloudBlockHardSquished(cloudBlockEntity);
-                    } else if (!cloudBlock->IsDestroying && cloudBlock->SquishCooldownFrames == 0) {
-                        cloudBlock->SquishCooldownFrames = SQUISH_COOLDOWN;
+                    } else if (!cloudBlock->IsDestroying) {
                         f.Events.CloudBlockSquished(cloudBlockEntity);
                     }
                 }
@@ -140,8 +132,7 @@ namespace Quantum {
             FP upDot = FPVector2.Dot(contact.Normal, FPVector2.Up);
             if (upDot >= Constants.PhysicsGroundMaxAngleCos) {
                 // Enemy landing on top of the cloud; trigger squish
-                if (!cloudBlock->IsDestroying && cloudBlock->SquishCooldownFrames == 0) {
-                    cloudBlock->SquishCooldownFrames = SQUISH_COOLDOWN;
+                if (!cloudBlock->IsDestroying) {
                     f.Events.CloudBlockSquished(cloudBlockEntity);
                 }
             }
@@ -154,8 +145,7 @@ namespace Quantum {
             }
 
             var cloudBlock = f.Unsafe.GetPointer<CloudBlock>(entity);
-            if (!cloudBlock->IsDestroying && cloudBlock->SquishCooldownFrames == 0) {
-                cloudBlock->SquishCooldownFrames = SQUISH_COOLDOWN;
+            if (!cloudBlock->IsDestroying) {
                 f.Events.CloudBlockSquished(entity);
             }
         }
@@ -174,14 +164,9 @@ namespace Quantum {
                 mario->CloudCount--;
             }
             if (mario->CloudCount == 0) {
-                if (mario->CloudSetMaxReached) {
-                    var asset = f.FindAsset(f.SimulationConfig.CloudBlockAsset);
-                    if (asset != null) {
-                        mario->CloudCooldownFrames = (ushort) asset.CooldownFrames;
-                    }
-                    mario->CloudSetMaxReached = false;
-                }
                 mario->CloudHeightLocked = false;
+                mario->CloudSetMaxReached = false;
+                // Cooldown is already running, no need to reapply
             }
         }
 
@@ -210,14 +195,13 @@ namespace Quantum {
                 mario->CloudFirstSummonY = spawnY;
                 mario->CloudHeightLocked = true;
             } else {
-                if (potentialSpawnY > mario->CloudFirstSummonY) {
-                    // Higher than locked height - lock to previous height
-                    spawnY = mario->CloudFirstSummonY;
-                } else {
-                    // Lower than or equal to locked height - spawn at actual height
-                    spawnY = potentialSpawnY;
-                    mario->CloudFirstSummonY = spawnY;
+                // Always lock to the highest point (minimum Y value)
+                if (potentialSpawnY < mario->CloudFirstSummonY) {
+                    // Found a higher position on screen - update locked height
+                    mario->CloudFirstSummonY = potentialSpawnY;
                 }
+                // Always spawn at the locked (highest) height
+                spawnY = mario->CloudFirstSummonY;
             }
 
             FPVector2 spawnPos = new FPVector2(ownerTransform->Position.X, spawnY);
@@ -229,10 +213,12 @@ namespace Quantum {
             mario->CloudCount++;
             if (mario->CloudCount >= asset.MaxCloudCount) {
                 mario->CloudSetMaxReached = true;
+                // Apply full cooldown immediately when max is reached
+                mario->CloudCooldownFrames = (ushort) asset.CooldownFrames;
+            } else {
+                // Instant cooldown before next cloud can be spawned (only if not at max)
+                mario->CloudCooldownFrames = (ushort) asset.InstantCooldownFrames;
             }
-
-            // Instant cooldown before next cloud can be spawned
-            mario->CloudCooldownFrames = (ushort) asset.InstantCooldownFrames;
 
             // Reset momentum + upward bounce
             var ownerPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(owner);

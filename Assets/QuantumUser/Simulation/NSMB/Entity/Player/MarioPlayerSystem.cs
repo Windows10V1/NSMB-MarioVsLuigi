@@ -1411,14 +1411,16 @@ namespace Quantum {
                 return;
             }
 
-            if (mario->IsDead || filter.Freezable->IsFrozen(f) || mario->IsGroundpounding || (mario->IsInKnockback && mario->CurrentPowerupState != PowerupState.CloudFlower) || f.Exists(mario->CurrentPipe)
+            if (mario->IsDead || filter.Freezable->IsFrozen(f) || mario->IsGroundpounding || f.Exists(mario->CurrentPipe)
                 || f.Exists(mario->HeldEntity) || mario->IsCrouching || mario->IsSliding) {
                 return;
             }
 
             switch (mario->CurrentPowerupState) {
             case PowerupState.CloudFlower: {
-                CloudBlockSystem.SummonCloudBlock(f, filter.Entity, mario, filter.Transform, physics);
+                if (!physicsObject->IsTouchingGround) {
+                    CloudBlockSystem.SummonCloudBlock(f, filter.Entity, mario, filter.Transform, physics);
+                }
                 break;
             }
             case PowerupState.PenguinSuit:
@@ -2191,6 +2193,9 @@ namespace Quantum {
                     if (!damaged) {
                         didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
                         damaged = true;
+                        
+                        // Emit projectile hit event with effect type for sound effects
+                        f.Events.ProjectileHitPlayer(marioEntity, projectileAsset.Effect);
                     }
                     break;
                 case ProjectileEffectType.Freeze:

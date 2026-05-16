@@ -11,6 +11,7 @@ using Quantum.Profiling;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using NSMB.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -102,7 +103,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, frogModel;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -151,6 +152,12 @@ namespace NSMB.Entities.Player {
         private bool forceUpdate;
         private GameObject activeRespawnParticle;
         private PowerupState previousPowerupState;
+        
+        // Cloud buddy position interpolation
+        private readonly Queue<Vector3> positionHistory = new(15);
+        private const int CLOUD_BUDDY_1_DELAY = 5;  // 5 frames delay
+        private const int CLOUD_BUDDY_2_DELAY = 10; // 10 frames delay
+        private const int CLOUD_BUDDY_3_DELAY = 15; // 15 frames delay
 
         public void OnValidate() {
             this.SetIfNull(ref animator);
@@ -209,6 +216,7 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventPhysicsObjectLanded>(this, OnPhysicsObjectLanded, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerLandedWithAnimation>(this, OnMarioPlayerLandedWithAnimation, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventProjectileHitPlayer>(this, OnProjectileHitPlayer, FilterOutReplayFastForward);
         }
 
         public override void OnActivate(Frame f) {
@@ -249,6 +257,39 @@ namespace NSMB.Entities.Player {
             }
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
             largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") && mario->CurrentPowerupState != PowerupState.PenguinSuit && mario->CurrentPowerupState != PowerupState.FrogSuit && mario->CurrentPowerupState != PowerupState.PropellerMushroom && mario->CurrentPowerupState != PowerupState.BoomerangFlower && mario->CurrentPowerupState != PowerupState.CloudFlower);
+            
+            // Update position history and cloud buddy positions
+            positionHistory.Enqueue(transform.position);
+            if (positionHistory.Count > CLOUD_BUDDY_3_DELAY) {
+                positionHistory.Dequeue();
+            }
+            UpdateCloudBuddyPositions();
+        }
+
+        private void UpdateCloudBuddyPositions() {
+            // Get historical position for each cloud buddy based on delay
+            Vector3 buddy1Pos = GetHistoricalPosition(CLOUD_BUDDY_1_DELAY);
+            Vector3 buddy2Pos = GetHistoricalPosition(CLOUD_BUDDY_2_DELAY);
+            Vector3 buddy3Pos = GetHistoricalPosition(CLOUD_BUDDY_3_DELAY);
+
+            // Apply positions to cloud buddies
+            cloudBuddy1.transform.position = buddy1Pos;
+            cloudBuddy2.transform.position = buddy2Pos;
+            cloudBuddy3.transform.position = buddy3Pos;
+        }
+
+        private Vector3 GetHistoricalPosition(int framesBack) {
+            if (positionHistory.Count == 0) {
+                return transform.position;
+            }
+
+            int index = positionHistory.Count - framesBack;
+            if (index < 0) {
+                // Not enough history yet, return the oldest position we have
+                return positionHistory.Peek();
+            }
+
+            return positionHistory.ElementAt(index);
         }
 
         public override void OnUpdateView() {
@@ -669,6 +710,15 @@ namespace NSMB.Entities.Player {
             HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudModel.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.CloudFlower);
+            if (mario->CurrentPowerupState == PowerupState.CloudFlower) {
+                cloudBuddy1.SetActive(mario->CloudCount < 3);
+                cloudBuddy2.SetActive(mario->CloudCount < 2);
+                cloudBuddy3.SetActive(mario->CloudCount < 1);
+            } else {
+                cloudBuddy1.SetActive(false);
+                cloudBuddy2.SetActive(false);
+                cloudBuddy3.SetActive(false);
+            }
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;
@@ -1342,6 +1392,18 @@ namespace NSMB.Entities.Player {
             }
 
             sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
+        }
+
+        private void OnProjectileHitPlayer(EventProjectileHitPlayer e) {
+            if (e.Player != EntityRef) {
+                return;
+            }
+
+            if (e.Effect == ProjectileEffectType.Boomerang) {
+                PlaySound(SoundEffect.Powerup_BoomerangFlower_Pierce);
+            } else {
+                PlaySound(SoundEffect.Powerup_HammerSuit_Bounce);
+            }
         }
     }
 }

@@ -287,6 +287,11 @@ event MarioPlayerSummonedCloudBlock {
 	EntityRef Entity;
 }
 
+event ProjectileHitPlayer {
+	EntityRef Player;
+	ProjectileEffectType Effect;
+}
+
 event MarioPlayerStompedByTeammate {
 	EntityRef Entity;
 }

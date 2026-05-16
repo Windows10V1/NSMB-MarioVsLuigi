@@ -6,13 +6,12 @@ using static NSMB.Utilities.QuantumViewUtils;
 namespace Quantum {
     public unsafe class CloudBlockAnimator : QuantumEntityViewComponent {
 
-        private static readonly int AnimSummon = Animator.StringToHash("summon");
-        private static readonly int AnimIdle = Animator.StringToHash("idle");
-        private static readonly int AnimSoftSquish = Animator.StringToHash("soft-squish");
-        private static readonly int AnimHardSquish = Animator.StringToHash("hard-squish");
-        private static readonly int AnimDestroy = Animator.StringToHash("destroy");
+        private static readonly int TriggerDestroy = Animator.StringToHash("Destroy");
+        private static readonly int TriggerLand = Animator.StringToHash("Land");
+        private static readonly int TriggerGroundpound = Animator.StringToHash("Groundpound");
 
         [SerializeField] private Animator animator;
+        [SerializeField] private GameObject summonParticle;
         [SerializeField] private GameObject destroyParticle;
 
         public void OnValidate() {
@@ -26,10 +25,7 @@ namespace Quantum {
         }
 
         public override void OnActivate(Frame f) {
-            if (animator != null) {
-                animator.Play(AnimSummon);
-            }
-            SpawnDestroyParticle();
+            SpawnSummonParticle();
         }
 
         public override void OnUpdateView() {
@@ -37,38 +33,28 @@ namespace Quantum {
             if (!f.Exists(EntityRef)) {
                 return;
             }
-
             if (animator == null) {
                 return;
             }
-
             var cloudBlock = f.Unsafe.GetPointer<CloudBlock>(EntityRef);
-            int currentState = animator.GetCurrentAnimatorStateInfo(0).shortNameHash;
-            bool inOneShot = currentState == AnimSoftSquish || currentState == AnimHardSquish;
-
-            if (cloudBlock->IsDestroying) {
-                if (currentState != AnimDestroy) {
-                    animator.Play(AnimDestroy);
-                }
-            } else if (cloudBlock->IsSummoning) {
-                if (currentState != AnimSummon) {
-                    animator.Play(AnimSummon);
-                }
-            } else if (!inOneShot && currentState != AnimIdle) {
-                animator.Play(AnimIdle);
-            }
-        }
-
-        public override void OnDeactivate() {
-            SpawnDestroyParticle();
         }
 
         private void OnCloudBlockSquished(EventCloudBlockSquished e) {
             if (e.Entity != EntityRef) {
                 return;
             }
+            Frame f = PredictedFrame;
+            if (!f.Exists(EntityRef)) {
+                return;
+            }
+            var cloudBlock = f.Unsafe.GetPointer<CloudBlock>(EntityRef);
+            // Prevent soft squishes during summon/destroy
+            if (cloudBlock->IsSummoning || cloudBlock->IsDestroying) {
+                return;
+            }
             if (animator != null) {
-                animator.Play(AnimSoftSquish);
+                animator.SetTrigger(TriggerLand);
+                return;
             }
         }
 
@@ -76,8 +62,18 @@ namespace Quantum {
             if (e.Entity != EntityRef) {
                 return;
             }
+            Frame f = PredictedFrame;
+            if (!f.Exists(EntityRef)) {
+                return;
+            }
+            var cloudBlock = f.Unsafe.GetPointer<CloudBlock>(EntityRef);
+            // Prevent hard squishes during summon/destroy
+            if (cloudBlock->IsSummoning || cloudBlock->IsDestroying) {
+                return;
+            }
             if (animator != null) {
-                animator.Play(AnimHardSquish);
+                animator.SetTrigger(TriggerGroundpound);
+                return;
             }
         }
 
@@ -86,7 +82,19 @@ namespace Quantum {
                 return;
             }
             if (animator != null) {
-                animator.Play(AnimDestroy);
+                animator.SetTrigger(TriggerDestroy);
+            }
+            SpawnDestroyParticle();
+        }
+
+        private void SpawnSummonParticle() {
+            if (summonParticle == null) {
+                return;
+            }
+            var instance = Instantiate(summonParticle, transform.position, transform.rotation);
+            var ps = instance.GetComponent<ParticleSystem>();
+            if (ps != null) {
+                ps.Play();
             }
         }
 
@@ -98,7 +106,6 @@ namespace Quantum {
             var ps = instance.GetComponent<ParticleSystem>();
             if (ps != null) {
                 ps.Play();
-                Destroy(instance, ps.main.duration + ps.main.startLifetime.constantMax);
             }
         }
     }

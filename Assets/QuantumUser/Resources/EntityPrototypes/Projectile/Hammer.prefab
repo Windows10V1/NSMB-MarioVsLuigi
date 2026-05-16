@@ -88,9 +88,9 @@ MonoBehaviour:
         RawValue: 0
       BoxExtents:
         X:
-          RawValue: 10945
+          RawValue: 8192
         Y:
-          RawValue: 10945
+          RawValue: 8192
       PositionOffset:
         X:
           RawValue: 0
@@ -334,8 +334,6 @@ MonoBehaviour:
       Value: 0
     IsWaterSolid:
       Value: 0
-    BreakMegaObjects:
-      Value: 0
 --- !u!114 &3977285621181604314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +520,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5082207059470328561
 Transform:
   m_ObjectHideFlags: 0

@@ -19,10 +19,12 @@ MonoBehaviour:
   LifetimeFrames: 300
   SummonAnimationFrames: 40
   DestroyAnimationFrames: 40
-  MaxCloudCount: 255
-  CooldownFrames: 300
+  MaxCloudCount: 3
+  CooldownFrames: 600
   InstantCooldownFrames: 60
   BounceVelocity:
     RawValue: 458752
+  GroundpoundBounceVelocity:
+    RawValue: 1048576
   SummonSound: 25
   SfxOverrides: []
