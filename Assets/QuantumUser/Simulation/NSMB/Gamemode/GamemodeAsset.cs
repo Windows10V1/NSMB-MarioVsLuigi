@@ -72,6 +72,10 @@ namespace Quantum {
                 return false;
             }
 
+            if (f.Global->Rules.IsCoinItemDisabled(f, coinItem)) {
+                return false;
+            }
+
             return coinItem.CanSpawn(f, fromRouletteBlock);
         }
 
