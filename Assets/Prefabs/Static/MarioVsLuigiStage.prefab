@@ -428,7 +428,7 @@ MonoBehaviour:
       type: 3}
     offset: {x: 0, y: 0.25, z: 0}
   - particle: 9
-    prefab: {fileID: 5903185039186744869, guid: 1edf7e2cb13961e40b41297574f63680,
+    prefab: {fileID: 5903185039186744869, guid: bb5e1f89250638e42a12a730fc71a294,
       type: 3}
     offset: {x: 0, y: 0.25, z: 0}
 --- !u!1 &4420296297805007934
@@ -842,6 +842,7 @@ MonoBehaviour:
         Value: 0
     PlayerNickname: 
     UserId: 
+    IpAddressHash: 
     UseColoredNickname: 0
     NicknameColor: 
     Character:

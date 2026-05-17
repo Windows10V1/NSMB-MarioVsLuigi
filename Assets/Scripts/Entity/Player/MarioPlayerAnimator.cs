@@ -153,11 +153,8 @@ namespace NSMB.Entities.Player {
         private GameObject activeRespawnParticle;
         private PowerupState previousPowerupState;
         
-        // Cloud buddy position interpolation
-        private readonly Queue<Vector3> positionHistory = new(15);
-        private const int CLOUD_BUDDY_1_DELAY = 5;  // 5 frames delay
-        private const int CLOUD_BUDDY_2_DELAY = 10; // 10 frames delay
-        private const int CLOUD_BUDDY_3_DELAY = 15; // 15 frames delay
+        // Cloud buddy spline-based movement
+        private CloudBuddySplineMovement cloudBuddyMovement;
 
         public void OnValidate() {
             this.SetIfNull(ref animator);
@@ -176,6 +173,17 @@ namespace NSMB.Entities.Player {
                 matList.Clear();
                 r.GetMaterials(matList);
                 materials[r] = matList;
+                cloudBuddyMovement = new CloudBuddySplineMovement();
+
+                // Prime the position history with current position
+                for (int i = 0; i < 60; i++) {
+                    cloudBuddyMovement.UpdateCloudBuddyPositions(
+                        transform.position,
+                        cloudBuddy1.transform,
+                        cloudBuddy2.transform,
+                        cloudBuddy3.transform
+                    );
+                }
             }
 
             modelRotationTarget = models.transform.rotation;
@@ -239,6 +247,7 @@ namespace NSMB.Entities.Player {
             MarioPlayerInitialized?.Invoke(Game, f, this);
 
             forceUpdate = true;
+            cloudBuddyMovement?.ClearHistory();
             OnUpdateView();
         }
 
@@ -256,40 +265,21 @@ namespace NSMB.Entities.Player {
                 return;
             }
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
-            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") && mario->CurrentPowerupState != PowerupState.PenguinSuit && mario->CurrentPowerupState != PowerupState.FrogSuit && mario->CurrentPowerupState != PowerupState.PropellerMushroom && mario->CurrentPowerupState != PowerupState.BoomerangFlower && mario->CurrentPowerupState != PowerupState.CloudFlower);
-            
-            // Update position history and cloud buddy positions
-            positionHistory.Enqueue(transform.position);
-            if (positionHistory.Count > CLOUD_BUDDY_3_DELAY) {
-                positionHistory.Dequeue();
-            }
-            UpdateCloudBuddyPositions();
-        }
+            largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") &&
+            mario->CurrentPowerupState != PowerupState.PenguinSuit &&
+            mario->CurrentPowerupState != PowerupState.FrogSuit &&
+            mario->CurrentPowerupState != PowerupState.PropellerMushroom &&
+            mario->CurrentPowerupState != PowerupState.BoomerangFlower &&
+            mario->CurrentPowerupState != PowerupState.CloudFlower);
 
-        private void UpdateCloudBuddyPositions() {
-            // Get historical position for each cloud buddy based on delay
-            Vector3 buddy1Pos = GetHistoricalPosition(CLOUD_BUDDY_1_DELAY);
-            Vector3 buddy2Pos = GetHistoricalPosition(CLOUD_BUDDY_2_DELAY);
-            Vector3 buddy3Pos = GetHistoricalPosition(CLOUD_BUDDY_3_DELAY);
-
-            // Apply positions to cloud buddies
-            cloudBuddy1.transform.position = buddy1Pos;
-            cloudBuddy2.transform.position = buddy2Pos;
-            cloudBuddy3.transform.position = buddy3Pos;
-        }
-
-        private Vector3 GetHistoricalPosition(int framesBack) {
-            if (positionHistory.Count == 0) {
-                return transform.position;
-            }
-
-            int index = positionHistory.Count - framesBack;
-            if (index < 0) {
-                // Not enough history yet, return the oldest position we have
-                return positionHistory.Peek();
-            }
-
-            return positionHistory.ElementAt(index);
+            // Update cloud buddy positions using spline interpolation
+            // Use world position of player directly
+            cloudBuddyMovement.UpdateCloudBuddyPositions(
+                transform.position,
+                cloudBuddy1.transform,
+                cloudBuddy2.transform,
+                cloudBuddy3.transform
+            );
         }
 
         public override void OnUpdateView() {
@@ -438,12 +428,9 @@ namespace NSMB.Entities.Player {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.SetFacingDirection");
             float delta = Time.deltaTime;
 
-            float angle = (mario->IsStarmanInvincible && !physicsObject->IsTouchingGround)
-                ? 0f
-                : mario->CurrentPowerupState switch {
+            float angle = mario->CurrentPowerupState switch {
                     PowerupState.BlueShell => 90f,
                     PowerupState.MegaMushroom => 78.75f,
-                    PowerupState.FrogSuit => 78.75f,
                     PowerupState.BoomerangFlower => 56.25f,
                     _ => 67.5f,
                 };

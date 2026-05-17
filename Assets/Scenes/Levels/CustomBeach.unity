@@ -1380,6 +1380,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7177057303658333091, guid: dcdc633a29f212843ae9cbdf4be58fb2,
         type: 3}
+      propertyPath: UseFindUpdater
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7177057303658333091, guid: dcdc633a29f212843ae9cbdf4be58fb2,
+        type: 3}
       propertyPath: particles.Array.size
       value: 4
       objectReference: {fileID: 0}
@@ -1387,7 +1392,7 @@ PrefabInstance:
         type: 3}
       propertyPath: particles.Array.data[3].prefab
       value: 
-      objectReference: {fileID: 5903185039186744869, guid: 1edf7e2cb13961e40b41297574f63680,
+      objectReference: {fileID: 5903185039186744869, guid: bb5e1f89250638e42a12a730fc71a294,
         type: 3}
     - target: {fileID: 7177057303658333091, guid: dcdc633a29f212843ae9cbdf4be58fb2,
         type: 3}
