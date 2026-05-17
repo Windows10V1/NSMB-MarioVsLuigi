@@ -124,6 +124,10 @@ namespace NSMB.Sound {
             return clips;
         }
 
+        public IList<AudioClip> PlayOneShotGlobally(SoundEffect sfx, IList<ISoundOverrideProvider> extraProviders = null, int? variant = null, float volume = 1) {
+            return PlayOneShot(globalSfxSource, sfx, extraProviders, variant, volume);
+        }
+
         private AudioClip PlayOverride(AudioSource localSfxSource, SoundEffectOverride sfxOverride, int? variant, float volume) {
             var clips = sfxOverride.AudioClips;
             if (clips == null || clips.Length == 0) {

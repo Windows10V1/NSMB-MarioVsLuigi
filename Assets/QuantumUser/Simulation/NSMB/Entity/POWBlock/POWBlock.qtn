@@ -1,0 +1,16 @@
+component POWBlock {
+	byte MaxUses;
+
+	[ExcludeFromPrototype] byte Uses;
+	[ExcludeFromPrototype] EntityRef SpawnOwner;
+	[ExcludeFromPrototype] EntityRef Activator;
+	[ExcludeFromPrototype] bool WasThrown;
+	[ExcludeFromPrototype] bool CanGroundActivate;
+}
+
+event POWBlockActivated {
+	EntityRef Entity;
+	EntityRef Activator;
+	FPVector2 Position;
+	byte Uses;
+}

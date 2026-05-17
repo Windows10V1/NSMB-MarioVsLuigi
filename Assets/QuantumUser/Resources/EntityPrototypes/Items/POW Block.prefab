@@ -185,6 +185,7 @@ PrefabInstance:
     - {fileID: 3019108884791320526, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19, type: 3}
     - {fileID: 1256801405142820976, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19, type: 3}
     - {fileID: 2210952625023297629, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19, type: 3}
+    - {fileID: 7318776400371000510, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -196,6 +197,18 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2463053080377982868}
+    - targetCorrespondingSourceObject: {fileID: 1017215213198693191, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5563608477350179011}
+    - targetCorrespondingSourceObject: {fileID: 1017215213198693191, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7341099020984412858}
+    - targetCorrespondingSourceObject: {fileID: 1017215213198693191, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3857087544421184485}
   m_SourcePrefab: {fileID: 100100000, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19, type: 3}
 --- !u!1 &8509900707630130961 stripped
 GameObject:
@@ -224,7 +237,7 @@ MonoBehaviour:
     IgnoreMovement:
       Value: 1
     CanCrushEntities:
-      Value: 1
+      Value: 0
 --- !u!114 &2463053080377982868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -240,3 +253,54 @@ MonoBehaviour:
   Prototype:
     HoldAboveHead:
       Value: 1
+--- !u!114 &5563608477350179011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8509900707630130961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00aca0db97ec4a279343f18c4cc7e907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypePOWBlock
+  Prototype:
+    MaxUses: 3
+--- !u!114 &7341099020984412858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8509900707630130961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5692a7ccb42f4c79b56da3c4303fb1e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NSMB.Entities.World.POWBlockAnimator
+  sRenderer: {fileID: 8637938864149294636}
+  useSprites:
+  - {fileID: -1303093240, guid: 794bc215dd02bf34ab2cfae7702bfdfd, type: 3}
+  - {fileID: 1512579996, guid: 794bc215dd02bf34ab2cfae7702bfdfd, type: 3}
+  - {fileID: -280334765, guid: 794bc215dd02bf34ab2cfae7702bfdfd, type: 3}
+--- !u!114 &3857087544421184485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8509900707630130961}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9bb5ba24fc1efae4bab9294e76e613fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypeWrappingObject
+  Prototype:
+    _empty_prototype_dummy_field_: 0
+--- !u!212 &8637938864149294636 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 1145319354374527610, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+    type: 3}
+  m_PrefabInstance: {fileID: 8648285965656749142}
+  m_PrefabAsset: {fileID: 0}
