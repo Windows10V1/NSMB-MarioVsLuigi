@@ -250,21 +250,6 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.CloudBlock))]
-  public unsafe partial class CloudBlockPrototype : ComponentPrototype<Quantum.CloudBlock> {
-    public AssetRef<CloudBlockAsset> Asset;
-    partial void MaterializeUser(Frame frame, ref Quantum.CloudBlock result, in PrototypeMaterializationContext context);
-    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
-        Quantum.CloudBlock component = default;
-        Materialize((Frame)f, ref component, in context);
-        return f.Set(entity, component) == SetResult.ComponentAdded;
-    }
-    public void Materialize(Frame frame, ref Quantum.CloudBlock result, in PrototypeMaterializationContext context = default) {
-        result.Asset = this.Asset;
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.Coin))]
   public unsafe partial class CoinPrototype : ComponentPrototype<Quantum.Coin> {
     public Quantum.QEnum8<CoinType> CoinType;

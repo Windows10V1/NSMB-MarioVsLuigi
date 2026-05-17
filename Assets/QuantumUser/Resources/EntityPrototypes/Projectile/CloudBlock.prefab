@@ -94,11 +94,9 @@ GameObject:
   - component: {fileID: 8010249587145537842}
   - component: {fileID: 6774445834162848449}
   - component: {fileID: 128866428235369491}
-  - component: {fileID: 62512393388079681}
   - component: {fileID: 5404140305981615203}
   - component: {fileID: 6632058151646472582}
   - component: {fileID: -4922457863048937646}
-  - component: {fileID: 4209860924708413441}
   m_Layer: 19
   m_Name: CloudBlock
   m_TagString: CloudBlock
@@ -386,21 +384,6 @@ MonoBehaviour:
   OnEntityDestroyed:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &62512393388079681
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010249587145537848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aab5844f41cb438408911b99db52e74d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::NSMB.Entities.CloudBlock.CloudBlockAnimator
-  animator: {fileID: 268321761262937821}
-  summonParticle: {fileID: 7144699201501204624}
-  destroyParticle: {fileID: 4551220996623865892}
 --- !u!114 &5404140305981615203
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -450,22 +433,6 @@ MonoBehaviour:
         RawValue: 9830
     BroadRadius:
       RawValue: 131072
---- !u!114 &4209860924708413441
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8010249587145537848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 13c8b770365aecd4aa4bd98410e8b185, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypeCloudBlock
-  Prototype:
-    Asset:
-      Id:
-        Value: 537043810669730237
 --- !u!1001 &876206767125043530
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -534,12 +501,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 739e2f42b51330f42a7332e15d5dd484, type: 3}
---- !u!1 &4551220996623865892 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3675436524114575726, guid: 739e2f42b51330f42a7332e15d5dd484,
-    type: 3}
-  m_PrefabInstance: {fileID: 876206767125043530}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5658642334641548674 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4805165230231647432, guid: 739e2f42b51330f42a7332e15d5dd484,

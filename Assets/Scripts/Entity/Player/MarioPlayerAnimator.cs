@@ -152,9 +152,6 @@ namespace NSMB.Entities.Player {
         private bool forceUpdate;
         private GameObject activeRespawnParticle;
         private PowerupState previousPowerupState;
-        
-        // Cloud buddy spline-based movement
-        private CloudBuddySplineMovement cloudBuddyMovement;
 
         public void OnValidate() {
             this.SetIfNull(ref animator);
@@ -173,17 +170,6 @@ namespace NSMB.Entities.Player {
                 matList.Clear();
                 r.GetMaterials(matList);
                 materials[r] = matList;
-                cloudBuddyMovement = new CloudBuddySplineMovement();
-
-                // Prime the position history with current position
-                for (int i = 0; i < 60; i++) {
-                    cloudBuddyMovement.UpdateCloudBuddyPositions(
-                        transform.position,
-                        cloudBuddy1.transform,
-                        cloudBuddy2.transform,
-                        cloudBuddy3.transform
-                    );
-                }
             }
 
             modelRotationTarget = models.transform.rotation;
@@ -247,7 +233,6 @@ namespace NSMB.Entities.Player {
             MarioPlayerInitialized?.Invoke(Game, f, this);
 
             forceUpdate = true;
-            cloudBuddyMovement?.ClearHistory();
             OnUpdateView();
         }
 
@@ -271,15 +256,6 @@ namespace NSMB.Entities.Player {
             mario->CurrentPowerupState != PowerupState.PropellerMushroom &&
             mario->CurrentPowerupState != PowerupState.BoomerangFlower &&
             mario->CurrentPowerupState != PowerupState.CloudFlower);
-
-            // Update cloud buddy positions using spline interpolation
-            // Use world position of player directly
-            cloudBuddyMovement.UpdateCloudBuddyPositions(
-                transform.position,
-                cloudBuddy1.transform,
-                cloudBuddy2.transform,
-                cloudBuddy3.transform
-            );
         }
 
         public override void OnUpdateView() {

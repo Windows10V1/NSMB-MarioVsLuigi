@@ -1854,49 +1854,6 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct CloudBlock : Quantum.IComponent {
-    public const Int32 SIZE = 32;
-    public const Int32 ALIGNMENT = 8;
-    [FieldOffset(16)]
-    public AssetRef<CloudBlockAsset> Asset;
-    [FieldOffset(24)]
-    [ExcludeFromPrototype()]
-    public EntityRef Owner;
-    [FieldOffset(4)]
-    [ExcludeFromPrototype()]
-    public Int32 Lifetime;
-    [FieldOffset(8)]
-    [ExcludeFromPrototype()]
-    public QBoolean IsDestroying;
-    [FieldOffset(12)]
-    [ExcludeFromPrototype()]
-    public QBoolean IsSummoning;
-    [FieldOffset(0)]
-    [ExcludeFromPrototype()]
-    public Byte SquishCooldownFrames;
-    public override readonly Int32 GetHashCode() {
-      unchecked { 
-        var hash = 11273;
-        hash = hash * 31 + Asset.GetHashCode();
-        hash = hash * 31 + Owner.GetHashCode();
-        hash = hash * 31 + Lifetime.GetHashCode();
-        hash = hash * 31 + IsDestroying.GetHashCode();
-        hash = hash * 31 + IsSummoning.GetHashCode();
-        hash = hash * 31 + SquishCooldownFrames.GetHashCode();
-        return hash;
-      }
-    }
-    public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (CloudBlock*)ptr;
-        serializer.Stream.Serialize(&p->SquishCooldownFrames);
-        serializer.Stream.Serialize(&p->Lifetime);
-        QBoolean.Serialize(&p->IsDestroying, serializer);
-        QBoolean.Serialize(&p->IsSummoning, serializer);
-        AssetRef.Serialize(&p->Asset, serializer);
-        EntityRef.Serialize(&p->Owner, serializer);
-    }
-  }
-  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct Coin : Quantum.IComponent {
     public const Int32 SIZE = 16;
     public const Int32 ALIGNMENT = 4;
@@ -3995,8 +3952,6 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<CharacterController2D>();
       BuildSignalsArrayOnComponentAdded<CharacterController3D>();
       BuildSignalsArrayOnComponentRemoved<CharacterController3D>();
-      BuildSignalsArrayOnComponentAdded<Quantum.CloudBlock>();
-      BuildSignalsArrayOnComponentRemoved<Quantum.CloudBlock>();
       BuildSignalsArrayOnComponentAdded<Quantum.Coin>();
       BuildSignalsArrayOnComponentRemoved<Quantum.Coin>();
       BuildSignalsArrayOnComponentAdded<Quantum.CoinItem>();
@@ -4490,7 +4445,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.CameraController), Quantum.CameraController.SIZE);
       typeRegistry.Register(typeof(CharacterController2D), CharacterController2D.SIZE);
       typeRegistry.Register(typeof(CharacterController3D), CharacterController3D.SIZE);
-      typeRegistry.Register(typeof(Quantum.CloudBlock), Quantum.CloudBlock.SIZE);
       typeRegistry.Register(typeof(Quantum.Coin), Quantum.Coin.SIZE);
       typeRegistry.Register(typeof(Quantum.CoinItem), Quantum.CoinItem.SIZE);
       typeRegistry.Register(typeof(Quantum.CoinType), 1);
@@ -4616,7 +4570,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum._globals_), Quantum._globals_.SIZE);
     }
     static partial void InitComponentTypeIdGen() {
-      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 40)
+      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 39)
         .AddBuiltInComponents()
         .Add<Quantum.BetterPhysicsObject>(Quantum.BetterPhysicsObject.Serialize, Quantum.BetterPhysicsObject.OnAdded, Quantum.BetterPhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.BigStar>(Quantum.BigStar.Serialize, null, null, ComponentFlags.None)
@@ -4627,7 +4581,6 @@ namespace Quantum {
         .Add<Quantum.BulletBill>(Quantum.BulletBill.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.BulletBillLauncher>(Quantum.BulletBillLauncher.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.CameraController>(Quantum.CameraController.Serialize, null, null, ComponentFlags.None)
-        .Add<Quantum.CloudBlock>(Quantum.CloudBlock.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Coin>(Quantum.Coin.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.CoinItem>(Quantum.CoinItem.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.ComboKeeper>(Quantum.ComboKeeper.Serialize, null, null, ComponentFlags.None)
