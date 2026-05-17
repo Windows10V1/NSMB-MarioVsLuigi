@@ -103,7 +103,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel, SuperHammer;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -605,6 +605,7 @@ namespace NSMB.Entities.Player {
                 PowerupState.CloudFlower => 5,
                 PowerupState.SuperBallFlower => 6,
                 PowerupState.FrogSuit => 7,
+                PowerupState.BuilderSuit => 8,
                 _ => 0
             };
             materialBlock.SetFloat(ParamPowerupState, ps);
@@ -683,6 +684,7 @@ namespace NSMB.Entities.Player {
                 cloudBuddy3.SetActive(false);
             }
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
+            SuperHammer.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit);
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;
             bool changedAvatar = animator.avatar != targetAvatar;
