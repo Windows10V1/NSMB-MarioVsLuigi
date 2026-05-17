@@ -3,6 +3,7 @@ using System.IO;
 using UnityEngine;
 
 namespace NSMB.Utilities {
+    [Serializable]
     public struct GameVersion : IEquatable<GameVersion>, IComparable<GameVersion> {
 
         private static GameVersion? _current;

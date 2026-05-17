@@ -1,5 +1,7 @@
 using NSMB.UI.Translation;
 using Quantum;
+using System;
+using System.Linq;
 using UnityEngine;
 
 namespace NSMB.UI.MainMenu.Submenus.InRoom {
@@ -12,6 +14,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         //---Serialized Variables
         [SerializeField] protected int minValue = 0, maxValue = 20, step = 1;
         [SerializeField] protected bool minimumValueIsOff;
+        [SerializeField] private NumberValueTranslationOverride[] translationOverrides;
 
         protected override void IncreaseValueInternal() {
             int intValue = (int) value;
@@ -51,6 +54,15 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             case CommandChangeRules.Rules.TimerMinutes:
                 cmd.TimerMinutes = (int) value;
                 break;
+            case CommandChangeRules.Rules.StarFountain:
+                cmd.StarFountain = (int) value;
+                break;
+            case CommandChangeRules.Rules.CoinDeathPenalty:
+                cmd.CoinDeathPenalty = (int) value;
+                break;
+            case CommandChangeRules.Rules.TeamAttack:
+                cmd.TeamAttack = (int) value;
+                break;
             }
 
             QuantumGame game = QuantumRunner.DefaultGame;
@@ -63,8 +75,20 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         protected override void UpdateLabel() {
             TranslationManager tm = GlobalController.Instance.translationManager;
             if (value is int intValue) {
-                label.text = labelPrefix + ((minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue);
+                string text;
+                if (translationOverrides.FirstOrDefault(to => to.Value == intValue) is { } translationOverride) {
+                    text = tm.GetTranslation(translationOverride.Key);
+                } else {
+                    text = (minimumValueIsOff && intValue == minValue) ? tm.GetTranslation("ui.generic.off") : intValue.ToString();
+                }
+                label.text = labelPrefix + text + labelSuffix;
             }
+        }
+
+        [Serializable]
+        public class NumberValueTranslationOverride {
+            public int Value;
+            public string Key;
         }
     }
 }

@@ -15,6 +15,10 @@ namespace Quantum {
         public bool TeamsEnabled;
         public bool CustomPowerupsEnabled;
         public bool DrawOnTimeUp;
+        public int StarFountain;
+        public int CoinDeathPenalty;
+        public StageChooseMode ChooseMode;
+        public int TeamAttack;
 
         public override void Serialize(BitStream stream) {
             if (stream.Writing) {
@@ -32,6 +36,16 @@ namespace Quantum {
             stream.Serialize(ref TeamsEnabled);
             stream.Serialize(ref CustomPowerupsEnabled);
             stream.Serialize(ref DrawOnTimeUp);
+            stream.Serialize(ref StarFountain);
+            stream.Serialize(ref CoinDeathPenalty);
+
+            if (stream.Writing) {
+                stream.WriteByte((byte) ChooseMode);
+            } else {
+                ChooseMode = (StageChooseMode) stream.ReadByte();
+            }
+
+            stream.Serialize(ref TeamAttack);
         }
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* playerData) {
@@ -48,11 +62,12 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.Gamemode)) {
                 gamemodeChanged = rules.Gamemode != Gamemode;
 
-                GameRules tempRules = default;
-                f.FindAsset(Gamemode).DefaultRules.Materialize(f, ref tempRules);
-                tempRules.Stage = rules.Stage;
+                GameRules newRules = default;
+                f.FindAsset(Gamemode).DefaultRules.Materialize(f, ref newRules);
+                newRules.Stage = rules.Stage;
+                newRules.RandomDisabledStages = rules.RandomDisabledStages;
 
-                rules = tempRules;
+                rules = newRules;
             }
             if (rulesChanges.HasFlag(Rules.Stage)) {
                 levelChanged = rules.Stage != Stage;
@@ -79,6 +94,18 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.DrawOnTimeUp)) {
                 rules.DrawOnTimeUp = DrawOnTimeUp;
             }
+            if (rulesChanges.HasFlag(Rules.StarFountain)) {
+                rules.StarFountain = StarFountain;
+            }
+            if (rulesChanges.HasFlag(Rules.CoinDeathPenalty)) {
+                rules.CoinDeathPenalty = CoinDeathPenalty;
+            }
+            if (rulesChanges.HasFlag(Rules.StageChooseMode)) {
+                rules.ChooseMode = ChooseMode;
+            }
+            if (rulesChanges.HasFlag(Rules.TeamAttack)) {
+                rules.TeamAttack = (TeamAttackOptions) TeamAttack;
+            }
 
             f.Global->Rules = rules;
             f.Events.RulesChanged(gamemodeChanged, levelChanged);
@@ -100,6 +127,10 @@ namespace Quantum {
             TeamsEnabled = 1 << 6,
             CustomPowerupsEnabled = 1 << 7,
             DrawOnTimeUp = 1 << 8,
+            StarFountain = 1 << 9, // only for Star Chasers
+            CoinDeathPenalty = 1 << 10, // only for Coin Runners
+            StageChooseMode = 1 << 11,
+            TeamAttack = 1 << 12,
         }
     }
 }

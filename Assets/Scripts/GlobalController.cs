@@ -16,7 +16,7 @@ using NSMB.UI.Game;
 using NSMB.Sound;
 using NSMB.UI;
 using System.IO;
-
+using NSMB.Utilities;
 
 #if UNITY_STANDALONE
 using NSMB.UI.MainMenu.Submenus.Replays;
@@ -25,9 +25,6 @@ using UnityEngine.Profiling;
 
 namespace NSMB {
     public class GlobalController : Singleton<GlobalController> {
-
-        //---Events
-        public static event Action ResolutionChanged;
 
         //---Public Variables
         public TranslationManager translationManager;
@@ -50,8 +47,6 @@ namespace NSMB {
 
         [NonSerialized] public bool checkedForVersion = false, firstConnection = true;
         [NonSerialized] public int windowWidth = 1280, windowHeight = 720;
-
-        public AssetRef<CharacterAsset> defaultCharacter;
 
         //---Private Variables
         private Coroutine totalAudioFadeRoutine;
@@ -147,7 +142,6 @@ namespace NSMB {
             if (windowWidth != newWindowWidth || windowHeight != newWindowHeight) {
                 windowWidth = newWindowWidth;
                 windowHeight = newWindowHeight;
-                ResolutionChanged?.Invoke();
             }
 
         }

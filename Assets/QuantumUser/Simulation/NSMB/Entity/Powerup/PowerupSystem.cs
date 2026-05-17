@@ -29,19 +29,9 @@ namespace Quantum {
             var transform = filter.Transform;
 
             if (asset.AvoidPlayers && physicsObject->IsTouchingGround) {
-                FPVector2? closestMarioPosition = null;
-                FP? closestDistance = null;
-                var allPlayers = f.Filter<MarioPlayer, Transform2D>();
-                while (allPlayers.NextUnsafe(out _, out _, out Transform2D* marioTransform)) {
-                    FP distance = QuantumUtils.WrappedDistance(stage, marioTransform->Position, transform->Position);
-                    if (closestDistance == null || distance < closestDistance) {
-                        closestMarioPosition = marioTransform->Position;
-                        closestDistance = distance;
-                    }
-                }
-
-                if (closestMarioPosition.HasValue) {
-                    powerup->FacingRight = QuantumUtils.WrappedDirectionSign(stage, closestMarioPosition.Value, transform->Position) == -1;
+                var closestMario = QuantumUtils.FindClosestAliveMario(f, transform->Position, out FPVector2 closestMarioPosition, stage);
+                if (closestMario != EntityRef.None) {
+                    powerup->FacingRight = QuantumUtils.WrappedDirectionSign(stage, closestMarioPosition, transform->Position) == -1;
                 }
             }
 

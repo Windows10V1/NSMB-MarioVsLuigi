@@ -28,6 +28,7 @@ public unsafe class PowerupAsset : CoinItemAsset, ISoundOverrideProvider {
 
     public sbyte StatePriority = -1, ItemPriority = -1;
     public bool EnterReserveIfOverridden = true;
+    public bool Instant = false;
 
     public SoundEffectOverride[] SfxOverrides;
 
@@ -117,6 +118,11 @@ public unsafe class PowerupAsset : CoinItemAsset, ISoundOverrideProvider {
         mario->IsDrilling &= mario->IsSpinnerFlying;
         mario->PropellerLaunchFrames = 0;
         mario->IsInShell = false;
+
+        // queue a powerUP animation
+        if (!Instant) {
+            mario->QueuePowerupAnim(f, marioEntity, mario->PreviousPowerupState, mario->CurrentPowerupState, false, this);
+        }
 
         if (previousPowerup != null && previousPowerup.EnterReserveIfOverridden) {
             if (mario->CurrentPowerupState != PowerupState.NoPowerup) {

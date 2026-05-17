@@ -2,7 +2,7 @@ using Quantum;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
-namespace NSMB.Utilities {
+namespace NSMB.Utilities.Extensions {
     public static class StringExtensions {
 
         public const int NicknameMin = 2, NicknameMax = 20;
@@ -17,7 +17,7 @@ namespace NSMB.Utilities {
 
         private static readonly string NicknameRegex = $"^[\\w]{{{NicknameMin},{NicknameMax}}}";
         public static bool IsValidNickname(this string input) {
-            if (input == null) {
+            if (string.IsNullOrEmpty(input)) {
                 return false;
             }
 

@@ -6,6 +6,33 @@ using System;
 
 public static unsafe class QuantumUtils {
 
+    public static EntityRef FindClosestAliveMario(Frame f, FPVector2 position, out FPVector2 marioPosition, VersusStageData stage = null) {
+        if (stage == null) {
+            stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+        }
+
+        var filter = f.Filter<Transform2D, MarioPlayer>();
+        filter.UseCulling = false;
+
+        marioPosition = default;
+        EntityRef currentClosestEntity = EntityRef.None;
+        FP currentMinDistance = FP.MaxValue;
+        while (filter.NextUnsafe(out var entity, out var marioTransform, out var mario)) {
+            if (mario->IsDead) {
+                continue;
+            }
+
+            FP distance = WrappedDistanceSquared(stage, position, marioTransform->Position);
+            if (distance < currentMinDistance) {
+                currentClosestEntity = entity;
+                currentMinDistance = distance;
+                marioPosition = marioTransform->Position;
+            }
+        }
+
+        return currentClosestEntity;
+    }
+
     public static T SetFlag<T>(T value, T flag, bool set) where T : Enum {
         long longValue = (long) (object) value;
         long longFlag = (long) (object) flag;
@@ -397,7 +424,14 @@ public static unsafe class QuantumUtils {
             return true;
         }
 
-        int playerDataCount = f.ComponentCount<PlayerData>();
+        // Check that at least 1 map is enabled
+        if (f.Global->Rules.ChooseMode == StageChooseMode.Random) {
+            if (f.TryResolveHashSet(f.Global->Rules.RandomDisabledStages, out var disabledStages)) {
+                if (f.Context.GetAllAssets<Map>().Count - disabledStages.Count <= 0) {
+                    return false;
+                }
+            }
+        }
         
         // Check that at least one non-spectator exists
         bool nonSpectator = false;
@@ -412,6 +446,7 @@ public static unsafe class QuantumUtils {
         }
 
         // Check that at least two teams exist
+        int playerDataCount = f.ComponentCount<PlayerData>();
         if (f.Global->Rules.TeamsEnabled && playerDataCount > 1) {
             byte? firstTeam = null;
             foreach ((_, var pd) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {

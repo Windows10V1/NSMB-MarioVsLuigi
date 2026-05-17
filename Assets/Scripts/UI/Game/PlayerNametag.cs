@@ -76,39 +76,36 @@ namespace NSMB.UI.Game {
                 return;
             }
 
-            // Bodge: for some reason, the TryGetPointer throws an exception in 3.1 in `Has`. No idea/
-            try {
-                Frame f = game.Frames.Predicted;
-                if (!f.Unsafe.TryGetPointer(Entity, out MarioPlayer* mario)) {
-                    return;
+            Frame f = game.Frames.Predicted;
+            if (!f.Unsafe.TryGetPointer(Entity, out MarioPlayer* mario)) {
+                return;
+            }
+
+            nametag.SetActive(elements.Entity != Entity && !(mario->IsDead && (mario->IsRespawning || transform.position.y <= stage.StageWorldMin.Y.AsFloat + 0.1f)) && f.Global->GameState >= GameState.Playing);
+            if (!nametag.activeInHierarchy) {
+                return;
+            }
+
+            var shape = f.Unsafe.GetPointer<PhysicsCollider2D>(Entity)->Shape;
+            Vector2 worldPos = parent.ModelRoot.transform.position;
+            worldPos.y += shape.Box.Extents.Y.AsFloat * 2.4f + 0.5f;
+
+            Camera cam = elements.Camera;
+            if (stage.IsWrappingLevel) {
+                // Wrapping
+                if (Mathf.Abs(worldPos.x - cam.transform.position.x) > (stage.TileDimensions.X * 0.25f)) {
+                    worldPos.x += (cam.transform.position.x > ((stage.StageWorldMin.X + stage.StageWorldMax.X) / 2).AsFloat ? 1 : -1) * (stage.TileDimensions.X * 0.5f);
                 }
+            }
 
-                nametag.SetActive(elements.Entity != Entity && !(mario->IsDead && (mario->IsRespawning || transform.position.y <= stage.StageWorldMin.Y.AsFloat + 0.1f)) && f.Global->GameState >= GameState.Playing);
-                if (!nametag.activeInHierarchy) {
-                    return;
-                }
+            RectTransform parentTransform = (RectTransform) transform.parent;
+            transform.localPosition = (cam.WorldToViewportPoint(worldPos) * 2) - Vector3.one;
+            transform.localPosition = transform.localPosition.Multiply(parentTransform.rect.size / 2);
+            transform.localScale = Vector3.one * (3.5f / cam.orthographicSize);
 
-                var shape = f.Unsafe.GetPointer<PhysicsCollider2D>(Entity)->Shape;
-                Vector2 worldPos = parent.models.transform.position;
-                worldPos.y += shape.Box.Extents.Y.AsFloat * 2.4f + 0.5f;
-
-                Camera cam = elements.Camera;
-                if (stage.IsWrappingLevel) {
-                    // Wrapping
-                    if (Mathf.Abs(worldPos.x - cam.transform.position.x) > (stage.TileDimensions.X * 0.25f)) {
-                        worldPos.x += (cam.transform.position.x > ((stage.StageWorldMin.X + stage.StageWorldMax.X) / 2).AsFloat ? 1 : -1) * (stage.TileDimensions.X * 0.5f);
-                    }
-                }
-
-                RectTransform parentTransform = (RectTransform) transform.parent;
-                transform.localPosition = (cam.WorldToViewportPoint(worldPos) * 2) - Vector3.one;
-                transform.localPosition = transform.localPosition.Multiply(parentTransform.rect.size / 2);
-                transform.localScale = Vector3.one * (3.5f / cam.orthographicSize);
-
-                if (!nicknameColor.Constant) {
-                    text.color = nicknameColor.Sample();
-                }
-            } catch { }
+            if (!nicknameColor.Constant) {
+                text.color = nicknameColor.Sample();
+            }
         }
 
         public unsafe void UpdateText(Frame f) {
@@ -200,7 +197,9 @@ namespace NSMB.UI.Game {
         }
 
         private void OnColorblindModeChanged() {
-            UpdateText(QuantumRunner.DefaultGame.Frames.Predicted);
+            if (QuantumRunner.DefaultGame != null) {
+                UpdateText(QuantumRunner.DefaultGame.Frames.Predicted);
+            }
         }
     }
 }

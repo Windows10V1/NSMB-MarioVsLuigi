@@ -8,7 +8,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: mat_blueshell
-  m_Shader: {fileID: -6465566751694194690, guid: cc5645667770c9c44af52a452d76a115,
+  m_Shader: {fileID: -6465566751694194690, guid: 914d964962549de41a603aa0bd374229,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -57,8 +57,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HatMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: de07a01239bc839479c9ccd4c40cff77, type: 3}
+        m_Texture: {fileID: 2800000, guid: 8301373c08169994b86469eaa260c7db, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -69,12 +73,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OverallsMask:
+        m_Texture: {fileID: 2800000, guid: 0cf743dadec2dde40b894fd9202c3b51, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShirtMask:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StarmanGradient:
+        m_Texture: {fileID: 2800000, guid: d6fa11c722df8c245a6ca48664463032, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _StarmanTexture:
@@ -134,6 +150,7 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _HatUsesOverallsColor: 0
     - _Metallic: 0
     - _Mode: 0
     - _MultiPowerupMaterial: 0
@@ -146,6 +163,7 @@ Material:
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
+    - _StarmanSpeed: 0.75
     - _Surface: 0
     - _UVSec: 0
     - _WorkflowMode: 1
@@ -158,6 +176,9 @@ Material:
     - _BaseColor: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MultiplyColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OverallsColor: {r: 0, g: 0, b: 0, a: 0}
+    - _ShirtColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

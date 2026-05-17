@@ -47,7 +47,7 @@ namespace NSMB.Replay {
             writer.Write(CustomName);
 
             // Rules
-            writer.Write(JsonConvert.SerializeObject(Rules));
+            writer.Write(JsonConvert.SerializeObject(Rules, Formatting.None));
 
             // Players
             writer.Write((byte) PlayerInformation.Length);
@@ -87,7 +87,8 @@ namespace NSMB.Replay {
                 result.CustomName = reader.ReadString();
 
                 // Rules
-                result.Rules = JsonConvert.DeserializeObject<GameRulesPrototype>(reader.ReadString());
+                string rules = reader.ReadString();
+                result.Rules = JsonConvert.DeserializeObject<GameRulesPrototype>(rules, new JsonSerializerSettings());
                 if (result.Rules == null) {
                     return ReplayParseResult.ParseFailure;
                 }

@@ -104,7 +104,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts.Addons {
                         if (LoadResultTranslationKeys.TryGetValue(loadAddonResult.Result, out var translationKey)) {
                             var text = GlobalController.Instance.translationManager.GetTranslationWithReplacements(translationKey,
                                 "version", GameVersion.Current.ToStringIgnoreHotfix() + ".X",
-                                "addon", loadAddonResult.IncompatibleWith?.Definition?.FullName);
+                                "addon", loadAddonResult.IncompatibleWith?.Definition.FullName);
                             stateText.text = text;
                             if (blankStateTextCoroutine != null) {
                                 StopCoroutine(blankStateTextCoroutine);

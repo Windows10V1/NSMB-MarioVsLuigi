@@ -13,6 +13,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using Navigation = UnityEngine.UI.Navigation;
 
 namespace NSMB.UI.MainMenu.Submenus.Prompts {
     public class GameSettingsPromptSubmenu : PromptSubmenu, IInRoomCallbacks {
@@ -29,16 +30,15 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
         public override GameObject BackButton => tabs[activeTab].BackButton;
 
         //---Serialized Variables
+        [SerializeField] private List<GameSettingsPanel> tabs;
+        [SerializeField] private Color activeTabColor = Color.white, inactiveTabColor = Color.gray;
+
         [Header("Map Selection")]
         [SerializeField] private TMP_Text headerTemplate;
         [SerializeField] private GameObject horizontalTemplate;
         [SerializeField] private StageSelectionButton stageSelectionButtonTemplate;
         [SerializeField] private string[] headerOrder;
-
-        [Header("Game Settings")]
-        [SerializeField] private List<GameSettingsPanel> tabs;
-        [SerializeField] private TMP_Text descriptionText;
-        [SerializeField] private Color activeTabColor = Color.white, inactiveTabColor = Color.gray;
+        [SerializeField] private Selectable mapChooseMode;
 
         [Header("Room Settings")]
         [SerializeField] private TMP_Text maxPlayerSliderValue;
@@ -49,7 +49,6 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
         //---Private Variables
         private int activeTab = 0;
         private readonly List<ChangeableRule> rules = new();
-        private CommandChangeRules.Rules currentRule;
         private bool _roomIdVisible;
 
         private List<GameObject> allMapListGameObjects = new();
@@ -80,7 +79,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
             var stageGroups = stages
                 .Select(m => (m, m ? (VersusStageData) QuantumUnityDB.GetGlobalAsset(m.UserAsset) : null))
                 .Where(vsd => vsd.Item2)
-                .GroupBy(vsd => vsd.Item2.GroupingTranslationKey)
+                .GroupBy(vsd => string.IsNullOrWhiteSpace(vsd.Item2.GroupingTranslationKey) ? "level.header.none" : vsd.Item2.GroupingTranslationKey)
                 .OrderBy(g => IndexOfNullIsMax(headerOrder, g.Key))
                 .Select(g => new {
                     Key = g.Key,
@@ -88,6 +87,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
                 });
 
             TranslationManager tm = GlobalController.Instance.translationManager;
+            List<StageSelectionButton> firstButtonRow = null;
             List<StageSelectionButton> previousButtonRow = null;
             List<StageSelectionButton> currentButtonRow = null;
             foreach (var grouping in stageGroups) {
@@ -109,6 +109,9 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
 
                         row = Instantiate(horizontalTemplate, horizontalTemplate.transform.parent);
                         row.SetActive(true);
+                        if (firstButtonRow == null) {
+                            firstButtonRow = currentButtonRow;
+                        }
                         allMapListGameObjects.Add(row);
                         previousButton = null;
                     }
@@ -145,6 +148,19 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
                 var nav2 = backButton.navigation;
                 nav2.selectOnUp = currentButtonRow[currentButtonRow.Count / 2];
                 backButton.navigation = nav2;
+            }
+
+            if (firstButtonRow != null) {
+                foreach (var button in firstButtonRow) {
+                    Navigation nav = button.navigation;
+                    nav.selectOnUp = mapChooseMode;
+                    button.navigation = nav;
+                }
+
+                Navigation nav2 = mapChooseMode.navigation;
+                nav2.mode = Navigation.Mode.Explicit;
+                nav2.selectOnDown = firstButtonRow[firstButtonRow.Count / 2];
+                mapChooseMode.navigation = nav2;
             }
         }
 

@@ -152,7 +152,11 @@ namespace Quantum {
             var collider = f.Unsafe.GetPointer<PhysicsCollider2D>(entity);
             int coinsToSpawn = (10 + 5 * (amount - 1)) / coinDivideFactor;
             SpawnObjectiveCoins(f, transform->Position + collider->Shape.Centroid + (FPVector2.Up * collider->Shape.Box.Extents.Y), coinsToSpawn, excludeTeamNumber, selfDamage);
-            mario->GamemodeData.CoinRunners->ObjectiveCoins -= (int) FPMath.Min(mario->GamemodeData.CoinRunners->ObjectiveCoins, coinsToSpawn) / 2;
+
+            // avoid results being slightly off
+            if (!mario->IsDead) {
+                mario->GamemodeData.CoinRunners->ObjectiveCoins -= (int) FPMath.Min(mario->GamemodeData.CoinRunners->ObjectiveCoins, coinsToSpawn) / 2;
+            }
             f.Events.MarioPlayerObjectiveCoinsChanged(entity);
         }
 
@@ -183,11 +187,14 @@ namespace Quantum {
         }
 
         public void OnMarioPlayerDied(Frame f, EntityRef entity) {
-            // Lose half of all coins
             var mario = f.Unsafe.GetPointer<MarioPlayer>(entity);
             var transform = f.Unsafe.GetPointer<Transform2D>(entity);
 
-            mario->GamemodeData.CoinRunners->ObjectiveCoins -= mario->GamemodeData.CoinRunners->ObjectiveCoins / 5;
+            // do 100 - DeathPenalty as 100% means losing all your coins
+            var coinRunData = mario->GamemodeData.CoinRunners;
+
+            FP removePercentage = (FP) f.Global->Rules.CoinDeathPenalty / 100;
+            coinRunData->ObjectiveCoins -= (int) (coinRunData->ObjectiveCoins * removePercentage);
             f.Events.MarioPlayerObjectiveCoinsChanged(entity);
         }
 

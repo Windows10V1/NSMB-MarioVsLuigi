@@ -2,6 +2,7 @@ using JimmysUnityUtilities;
 using NSMB.Chat;
 using NSMB.UI.Elements;
 using NSMB.Utilities;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using System;
 using System.Collections.Generic;

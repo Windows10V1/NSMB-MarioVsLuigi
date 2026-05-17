@@ -28,6 +28,9 @@ MonoBehaviour:
   BlockSpawnSoundEffect: 99
   Flags: 3
   MaxNumberOfItems: 0
+  CanSpawnAfterSeconds:
+    RawValue: 1310720
+  TranslationKey: coinitem.megamushroom
   CameraSpawnOffset:
     X:
       RawValue: 0
@@ -76,6 +79,7 @@ MonoBehaviour:
   StatePriority: 4
   ItemPriority: 4
   EnterReserveIfOverridden: 1
+  Instant: 1
   SfxOverrides: []
   GrowAnimationDuration:
     RawValue: 98304
