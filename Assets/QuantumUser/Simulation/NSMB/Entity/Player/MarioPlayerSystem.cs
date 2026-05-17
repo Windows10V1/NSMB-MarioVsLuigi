@@ -1348,10 +1348,8 @@ namespace Quantum {
                 f.Unsafe.GetPointer<ComboKeeper>(filter.Entity)->Combo = 0;
             }
             QuantumUtils.Decrement(ref mario->PropellerSpinFrames);
-            QuantumUtils.Decrement(ref mario->CloudSpinFrames);
             QuantumUtils.Decrement(ref mario->ProjectileDelayFrames);
             QuantumUtils.Decrement(ref mario->ProjectileCooldownFrames);
-            QuantumUtils.Decrement(ref mario->CloudCooldownFrames);
             if (QuantumUtils.Decrement(ref mario->ProjectileVolleyFrames)) {
                 mario->CurrentVolley = 0;
             }
@@ -1417,12 +1415,7 @@ namespace Quantum {
             }
 
             switch (mario->CurrentPowerupState) {
-            case PowerupState.CloudFlower: {
-                if (!physicsObject->IsTouchingGround) {
-                    CloudBlockSystem.SummonCloudBlock(f, filter.Entity, mario, filter.Transform, physics);
-                }
-                break;
-            }
+            case PowerupState.CloudFlower:
             case PowerupState.PenguinSuit:
             case PowerupState.FireFlower:
             case PowerupState.HammerSuit:

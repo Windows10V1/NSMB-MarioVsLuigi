@@ -48,7 +48,6 @@ namespace Quantum {
                     new HoldableObjectSystem(),
                     new POWBlockSystem(),
                     new IceBlockSystem(),
-                    new CloudBlockSystem(),
                     new CameraSystem(),
                     new LiquidSystem(),
                     new MarioBrosPlatformSystem(),

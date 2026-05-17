@@ -458,11 +458,6 @@ namespace NSMB.Entities.Player {
                 modelRotationTarget *= Quaternion.Euler(0, (-1200 - ((mario->PropellerLaunchFrames / 60f) * 1400) - (mario->IsDrilling ? 900 : 0) + (mario->IsPropellerFlying && mario->PropellerSpinFrames == 0 && physicsObject->Velocity.Y < 0 ? 700 : 0)) * delta, 0);
                 modelRotateInstantly = true;
 
-            } else if (mario->CloudSpinFrames > 0) {
-                const float CLOUD_SPIN_ANGULAR_VELOCITY = 1440f; // 360 degrees in 0.25 seconds
-                modelRotationTarget *= Quaternion.Euler(0, CLOUD_SPIN_ANGULAR_VELOCITY * delta, 0);
-                modelRotateInstantly = true;
-
             } else if (mario->IsWallsliding) {
                 modelRotationTarget = Quaternion.Euler(0, mario->WallslideRight ? angleR : angleL, 0);
             } else {
@@ -674,15 +669,6 @@ namespace NSMB.Entities.Player {
             HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudModel.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.CloudFlower);
-            if (mario->CurrentPowerupState == PowerupState.CloudFlower) {
-                cloudBuddy1.SetActive(mario->CloudCount < 3);
-                cloudBuddy2.SetActive(mario->CloudCount < 2);
-                cloudBuddy3.SetActive(mario->CloudCount < 1);
-            } else {
-                cloudBuddy1.SetActive(false);
-                cloudBuddy2.SetActive(false);
-                cloudBuddy3.SetActive(false);
-            }
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
             SuperHammer.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit);
             
