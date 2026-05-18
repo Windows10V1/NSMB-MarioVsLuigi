@@ -1,22 +1,23 @@
 ﻿using NSMB.Addons;
 using NSMB.Networking;
 using NSMB.Quantum;
+using NSMB.Replay;
+using NSMB.Sound;
+using NSMB.UI;
+using NSMB.UI.Game;
 using NSMB.UI.Loading;
 using NSMB.UI.Options;
 using NSMB.UI.Translation;
+using NSMB.Utilities;
 using NSMB.Utilities.Extensions;
 using Quantum;
 using System;
 using System.Collections;
+using System.IO;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
-using NSMB.UI.Game;
-using NSMB.Sound;
-using NSMB.UI;
-using System.IO;
-using NSMB.Utilities;
 
 #if UNITY_STANDALONE
 using NSMB.UI.MainMenu.Submenus.Replays;
@@ -45,7 +46,7 @@ namespace NSMB {
 
         public PlayerSlotInfo[] playerSlots;
 
-        [NonSerialized] public bool checkedForVersion = false, firstConnection = true;
+        [NonSerialized] public bool checkedForVersion = false, firstConnection = true, bootedWithReplayArg;
         [NonSerialized] public int windowWidth = 1280, windowHeight = 720;
 
         //---Private Variables
@@ -73,6 +74,14 @@ namespace NSMB {
             QuantumEvent.Subscribe<EventStartGameEndFade>(this, OnStartGameEndFade);
             QuantumCallback.Subscribe<CallbackUnitySceneLoadDone>(this, OnUnitySceneLoadDone);
             loadingCanvas.Startup();
+
+            var commandLineArgs = Environment.GetCommandLineArgs();
+            for (int i = 0; i < commandLineArgs.Length; i++) {
+                if (commandLineArgs[i] == "-replay" && commandLineArgs.Length > i + 1) {
+                    StartReplayFromArgs(commandLineArgs[i + 1]);
+                    break;
+                }
+            }
         }
 
         public void OnDestroy() {
@@ -192,6 +201,16 @@ namespace NSMB {
                 fullscreenFadeImage.color = color;
                 yield return null;
             }
+        }
+
+        private void StartReplayFromArgs(string argReplayPath) {
+            using FileStream input = new(argReplayPath, FileMode.Open);
+            if (BinaryReplayFile.TryLoadNewFromStream(input, true, out var result) != ReplayParseResult.Success) {
+                Debug.LogError("Failed to parse replay file when booting with cmdline args...");
+                return;
+            }
+            bootedWithReplayArg = true;
+            ActiveReplayManager.Instance.StartReplayPlayback(result);
         }
 
         private void OnStartGameEndFade(EventStartGameEndFade e) {
