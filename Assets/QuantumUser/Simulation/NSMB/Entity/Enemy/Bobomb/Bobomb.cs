@@ -14,7 +14,7 @@ namespace Quantum {
             f.Unsafe.GetPointer<Interactable>(entity)->ColliderDisabled = false;
         }
 
-        public void Kick(Frame f, EntityRef entity, EntityRef initiator, FP speed) {
+        public readonly void Kick(Frame f, EntityRef entity, EntityRef initiator, FP speed) {
             var enemy = f.Unsafe.GetPointer<Enemy>(entity);
             var initiatorTransform = f.Unsafe.GetPointer<Transform2D>(initiator);
             var bobombTransform = f.Unsafe.GetPointer<Transform2D>(entity);
@@ -34,7 +34,7 @@ namespace Quantum {
             f.Events.PlayComboSound(entity, 0);
         }
 
-        public void Kill(Frame f, EntityRef bobombEntity, EntityRef killerEntity, KillReason reason) {
+        public readonly void Kill(Frame f, EntityRef bobombEntity, EntityRef killerEntity, EnemyKillReason reason) {
             var enemy = f.Unsafe.GetPointer<Enemy>(bobombEntity);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(bobombEntity);
             var bobombTransform = f.Unsafe.GetPointer<Transform2D>(bobombEntity);
@@ -43,11 +43,8 @@ namespace Quantum {
 
             if (reason.ShouldSpawnCoin()) {
                 // Spawn coin
-                EntityRef coinEntity = f.Create(f.SimulationConfig.LooseCoinPrototype);
-                var coinTransform = f.Unsafe.GetPointer<Transform2D>(coinEntity);
-                var coinPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(coinEntity);
-                coinTransform->Position = position;
-                coinPhysicsObject->Velocity.Y = f.RNG->Next(Constants._4_50, 5);
+                var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+                gamemode.SpawnLooseCoin(f, position);
             }
 
             // Fall off screen
@@ -74,6 +71,7 @@ namespace Quantum {
             f.Events.PlayComboSound(bobombEntity, combo);
 
             enemy->IsDead = true;
+            enemy->SetDelayedRespawn();
 
             // Holdable
             var holdable = f.Unsafe.GetPointer<Holdable>(bobombEntity);

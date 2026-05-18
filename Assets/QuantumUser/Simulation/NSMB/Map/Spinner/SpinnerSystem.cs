@@ -71,15 +71,20 @@ namespace Quantum {
             marios.Clear();
         }
 
-        public static void OnSpinnerMarioPlayerInteraction(Frame f, EntityRef marioEntity, EntityRef spinnerEntity, PhysicsContact contact) {
-            if (FPVector2.Dot(contact.Normal, FPVector2.Up) < PhysicsObjectSystem.GroundMaxAngle) {
-                return;
+        public static bool OnSpinnerMarioPlayerInteraction(Frame f, EntityRef marioEntity, EntityRef spinnerEntity, PhysicsContact contact) {
+            if (FPVector2.Dot(contact.Normal, FPVector2.Up) < Constants.PhysicsGroundMaxAngleCos) {
+                return false;
+            }
+
+            if (f.Unsafe.TryGetPointer(marioEntity, out PhysicsObject* marioPhysics) && marioPhysics->IsUnderwater) {
+                return false;
             }
 
             var spinner = f.Unsafe.GetPointer<Spinner>(spinnerEntity);
             QHashSet<EntityRef> mariosSet = f.ResolveHashSet(spinner->MariosOnPlatform);
 
             mariosSet.Add(marioEntity);
+            return false;
         }
     }
 }

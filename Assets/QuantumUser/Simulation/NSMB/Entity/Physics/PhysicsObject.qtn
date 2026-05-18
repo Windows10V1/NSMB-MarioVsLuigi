@@ -1,3 +1,6 @@
+#define PhysicsRaycastSkin 0.05
+#define PhysicsSkin 0.005
+#define PhysicsGroundMaxAngleCos 0.07612 // 1 - cos(22.5 degrees)
 #define OnePixelPerFrame 1.875
 import enum PhysicsFlags(byte);
 
@@ -8,7 +11,6 @@ component PhysicsObject {
     bool DisableCollision;
     bool SlowInLiquids;
     bool IsWaterSolid;
-    bool BreakMegaObjects;
     
     [ExcludeFromPrototype] FPVector2 Velocity;
     [ExcludeFromPrototype] EntityRef Parent;
@@ -34,7 +36,7 @@ struct PhysicsContact {
     FPVector2 Normal;
     FP Distance;
     int Frame;
-    Vector2Int Tile;
+    IntVector2 Tile;
     EntityRef Entity;
 }
 

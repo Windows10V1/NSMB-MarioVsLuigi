@@ -2,14 +2,27 @@ using Photon.Deterministic;
 
 namespace Quantum {
     public unsafe partial struct Enemy {
-        public bool IsAlive => !IsDead && IsActive;
+        public readonly bool IsAlive => !IsDead && IsActive;
+
+        /**
+         * <summary>
+         * Sets the respawn data for the enemy
+         * </summary>
+         * <param name="waitTime">How long to wait until the enemy respawns in frames.</param>
+         * <param name="sparklesTime">When the sparkles will spawn (based off time remaining) also in frames.</param>
+         */
+        public void SetDelayedRespawn(int waitTime = 420, int sparklesTime = 80) {
+            RespawnTimer = waitTime;
+            RespawnSparklesTimer = sparklesTime;
+        }
 
         public void Respawn(Frame f, EntityRef entity) {
             var transform = f.Unsafe.GetPointer<Transform2D>(entity);
 
             IsActive = true;
             IsDead = false;
-            FacingRight = false;
+            IgnoreOffscreen = false;
+            SetDelayedRespawn(0, 0);
             transform->Teleport(f, Spawnpoint);
 
             if (f.Unsafe.TryGetPointer(entity, out PhysicsObject* physicsObject)) {
@@ -17,6 +30,18 @@ namespace Quantum {
                 physicsObject->Velocity = FPVector2.Zero;
                 physicsObject->DisableCollision = false;
             }
+
+            // face left by default
+            var shouldFaceRight = false;
+            var closestMario = QuantumUtils.FindClosestAliveMario(f, Spawnpoint, out _);
+
+            // use closest player and face them
+            if (f.Unsafe.TryGetPointer(closestMario, out Transform2D* marioTransform)) {
+                QuantumUtils.WrappedDistance(f, Spawnpoint, marioTransform->Position, out FP xDiff);
+                shouldFaceRight = xDiff < 0;
+            }
+
+            FacingRight = shouldFaceRight;
         }
 
         public void ChangeFacingRight(Frame f, EntityRef entity, bool newFacingRight) {

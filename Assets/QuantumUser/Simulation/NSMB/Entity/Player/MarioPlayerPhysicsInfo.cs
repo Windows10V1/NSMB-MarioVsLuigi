@@ -9,7 +9,9 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     public int WalkSpeedStage = 1, RunSpeedStage = 3, StarSpeedStage = 4;
     public FP[] WalkMaxVelocity = FF(new[] { 0.9375f, 2.8125f, 4.21875f, 5.625f, 8.4375f });
     public FP[] WalkAcceleration = FF(new[] { 7.91015625f, 3.955081725f, 3.515625f, 2.63671875f, 84.375f });
-    public FP WalkBlueShellMultiplier = FF(0.9f);
+    // Blue Shell multipliers
+    public byte ShellNormalStage = 0, ShellSlopeStage = 1, ShellFastSlopeStage = 2, ShellStarStage = 3;
+    public FP[] WalkBlueShellMultiplier = FF(new[] { 0.9f, 1f, 1.1f, 0.75f });
     public FP WalkButtonReleaseDeceleration = FF(3.9550781196f);
 
     // Turnaround
@@ -36,6 +38,7 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     // --- Hitboxes
     public FP SmallHitboxHeight = FF(0.42f);
     public FP LargeHitboxHeight = FF(0.82f);
+    public FP BlueShellHitboxHeight = FF(0.42f);
 
     // --- Jumping
     public byte JumpBufferFrames = 12;
@@ -129,6 +132,14 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     public byte PropellerSpinFrames = 30;
     public FP PropellerLaunchVelocity = 6;
     public byte PropellerLaunchFrames = 60;
+
+    public FPVector2 IceBlockSmallSize = new FPVector2(FP.FromString("0.65"), FP.FromString("0.65"));
+    public FPVector2 IceBlockBigSize = new FPVector2(FP.FromString("0.65"), FP.FromString("1.3"));
+    public FPVector2 IceBlockSmallOffset = FPVector2.Zero;
+    public FPVector2 IceBlockBigOffset = FPVector2.Zero;
+    public byte IceBlockPickupFreezeFrames = 20;
+
+    public byte MegaMushroomStepInterval = 20;
 
     private static FP FF(float x) {
         return FP.FromFloat_UNSAFE(x);

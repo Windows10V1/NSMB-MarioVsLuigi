@@ -69,9 +69,11 @@ MonoBehaviour:
       Value: 1807224053054112962
   Entities:
     CommitCommandsMode: 0
-    DefaultEntityCapacity: 1024
-    DefaultComponentBlockCapacity: 128
-    ComponentTypeConfiguration: []
+    DefaultEntityCapacity: 256
+    DefaultComponentBlockCapacity: 64
+    ComponentTypeConfiguration:
+    - Name: Quantum.MarioPlayer
+      ComponentBlockCapacity: 16
   Physics:
     Gravity:
       X:
@@ -81,7 +83,6 @@ MonoBehaviour:
       Z:
         RawValue: 0
     SolverType: 1
-    UsePhysicsNativeLib: 0
     SolverIterations: 4
     PositionSolverIterations: 2
     UseJoints: 0
@@ -113,6 +114,7 @@ MonoBehaviour:
     AngularSleepToleranceInRad:
       RawValue: 2288
     AllowCCD: 0
+    InvokeSpeculativeCallbacks: 1
     CCDLinearVelocityThreshold:
       RawValue: 196608
     CCDAngularVelocityThreshold:
@@ -194,129 +196,15 @@ MonoBehaviour:
   DeltaTimeType: 0
   ThreadCount: 4
   ChecksumSnapshotHistoryLengthSeconds:
-    RawValue: 196608
+    RawValue: 65536
   ChecksumErrorDumpOptions: 0
-  HeapTrackingMode: 1
+  HeapTrackingMode: 0
   HeapPageShift: 15
   HeapPageCount: 256
   HeapExtraCount: 1
   InvisibleSolidTile:
     Id:
-      Value: 282924479522535788
-  AllPowerups:
-  - Id:
-      Value: 390055422968795145
-  - Id:
-      Value: 296548766860541996
-  - Id:
-      Value: 279725308049324760
-  - Id:
-      Value: 271390802845879304
-  - Id:
-      Value: 378514462062875007
-  - Id:
-      Value: 269903407669338010
-  - Id:
-      Value: 328877894917160747
-  - Id:
-      Value: 372382251364764784
-  - Id:
-      Value: 402398838204577684
-  - Id:
-      Value: 421291512996345105
-  FallbackPowerup:
-    Id:
-      Value: 390055422968795145
-  AllStages:
-  - Id:
-      Value: 438935048561577377
-  - Id:
-      Value: 422133218138107384
-  - Id:
-      Value: 472204063534919154
-  - Id:
-      Value: 329327285755650127
-  - Id:
-      Value: 372220640476305493
-  - Id:
-      Value: 365460248894597713
-  - Id:
-      Value: 420358832928607506
-  - Id:
-      Value: 328495164863943948
-  - Id:
-      Value: 269186410886596865
-  - Id:
-      Value: 280769179842433036
-  - Id:
-      Value: 372234066173501830
-  - Id:
-      Value: 503647763446439242
-  CharacterDatas:
-  - Id:
-      Value: 532063855470386108
-  - Id:
-      Value: 485289843648077326
-  Palettes:
-  - Id:
-      Value: 0
-  - Id:
-      Value: 520065536123357703
-  - Id:
-      Value: 359165249679469206
-  - Id:
-      Value: 454459291395690797
-  - Id:
-      Value: 439818323390480907
-  - Id:
-      Value: 382817490487173616
-  - Id:
-      Value: 523410392730610906
-  - Id:
-      Value: 524740824993114785
-  - Id:
-      Value: 531445013469831101
-  - Id:
-      Value: 425669587075414699
-  - Id:
-      Value: 451175776753330594
-  - Id:
-      Value: 305528157120426054
-  - Id:
-      Value: 504563041428027805
-  - Id:
-      Value: 388220319941842390
-  - Id:
-      Value: 278130574760325123
-  - Id:
-      Value: 318461744176949519
-  - Id:
-      Value: 398166620170367761
-  - Id:
-      Value: 459398035224653976
-  - Id:
-      Value: 448831233412633846
-  - Id:
-      Value: 421237760296031664
-  - Id:
-      Value: 482111089418591160
-  - Id:
-      Value: 408521781682520198
-  - Id:
-      Value: 410277434916936612
-  - Id:
-      Value: 484478936524730291
-  Teams:
-  - Id:
-      Value: 382742106279861433
-  - Id:
-      Value: 423273233552518485
-  - Id:
-      Value: 434877241313458872
-  - Id:
-      Value: 413209515111157446
-  - Id:
-      Value: 466583187519537156
+      Value: 4423967472839712564
   FireballPrototype:
     Id:
       Value: 1460912212237464861
@@ -326,32 +214,12 @@ MonoBehaviour:
   HammerPrototype:
     Id:
       Value: 1406353302584805307
-  BigStarPrototype:
-    Id:
-      Value: 1295981493910502871
   BlockBumpPrototype:
     Id:
       Value: 1308320651839637093
-  LooseCoinPrototype:
-    Id:
-      Value: 1464681621458001613
   IceBlockPrototype:
     Id:
       Value: 1386525317044462577
-  DefaultRules:
-    Stage:
-      Id:
-        Value: 438935048561577377
-    StarsToWin: 10
-    CoinsForPowerup: 8
-    Lives: 0
-    TimerSeconds: 0
-    TeamsEnabled:
-      Value: 0
-    CustomPowerupsEnabled:
-      Value: 1
-    DrawOnTimeUp:
-      Value: 0
 --- !u!114 &-100545808229499591
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -435,6 +303,8 @@ MonoBehaviour:
   CharacterController3DConfig: {fileID: 8491722975622669967}
   NavMeshAgentConfig: {fileID: -100545808229499591}
   SystemsConfig: {fileID: 398352223551057686}
+  InputActionAsset: {fileID: -944628639613478452, guid: 8a2679cf1c581ca41a337897e3dc5a06,
+    type: 3}
 --- !u!114 &398352223551057686
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,13 +2,13 @@ using Photon.Deterministic;
 
 namespace Quantum {
     public unsafe partial struct Boo {
-        public void Respawn(Frame f, EntityRef entity) {
+        public readonly void Respawn(Frame f, EntityRef entity) {
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(entity);
             physicsObject->DisableCollision = true;
             physicsObject->Gravity = FPVector2.Zero;
         }
 
-        public void Kill(Frame f, EntityRef booEntity, EntityRef killerEntity, KillReason reason) {
+        public readonly void Kill(Frame f, EntityRef booEntity, EntityRef killerEntity, EnemyKillReason reason) {
             var enemy = f.Unsafe.GetPointer<Enemy>(booEntity);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(booEntity);
 
@@ -35,6 +35,7 @@ namespace Quantum {
             f.Events.PlayComboSound(booEntity, combo);
 
             enemy->IsDead = true;
+            enemy->SetDelayedRespawn(sparklesTime: 120);
 
             var collider = f.Unsafe.GetPointer<PhysicsCollider2D>(booEntity);
             FPVector2 center = booTransform->Position + collider->Shape.Centroid;

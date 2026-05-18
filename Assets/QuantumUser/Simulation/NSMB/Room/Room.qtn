@@ -7,6 +7,7 @@ global {
 struct BannedPlayerInfo {
 	QString<48> Nickname;
 	QStringUtf8<40> UserId;
+	QStringUtf8<48> IpAddressHash;
 }
 
 event PlayerStartedTyping {
@@ -25,4 +26,15 @@ synced event PlayerKickedFromRoom {
 
 synced event PlayerUnbanned {
 	BannedPlayerInfo PlayerInfo;
+}
+
+synced event PlayerTeamChangedByHost {
+	PlayerRef Player;
+	byte Team;
+	bool Clear;
+}
+
+synced event PlayerTeamRandomized {
+	PlayerRef Player;
+	byte Team;
 }

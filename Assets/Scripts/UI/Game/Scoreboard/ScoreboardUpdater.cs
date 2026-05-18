@@ -1,10 +1,10 @@
-using NSMB.Extensions;
+using NSMB.Utilities;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using System;
 using System.Collections.Generic;
 using System.Text;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -21,11 +21,11 @@ namespace NSMB.UI.Game.Scoreboard {
         [SerializeField] private GameObject teamHeader;
         [SerializeField] private TMP_Text spectatorText, teamHeaderText;
         [SerializeField] private Animator animator;
-        [SerializeField] private InputActionReference toggleScoreboardAction;
 
         //---Private Variables
         private readonly List<ScoreboardEntry> entries = new();
         private bool isToggled;
+        private StringBuilder stringBuilder = new();
 
         public void OnValidate() {
             this.SetIfNull(ref playerElements, UnityExtensions.GetComponentType.Parent);
@@ -36,13 +36,12 @@ namespace NSMB.UI.Game.Scoreboard {
         }
 
         public void OnEnable() {
-            toggleScoreboardAction.action.performed += OnToggleScoreboard;
-            toggleScoreboardAction.action.actionMap.Enable();
+            Settings.Controls.UI.Scoreboard.performed += OnToggleScoreboard;
             Settings.OnColorblindModeChanged += OnColorblindModeChanged;
         }
 
         public void OnDisable() {
-            toggleScoreboardAction.action.performed -= OnToggleScoreboard;
+            Settings.Controls.UI.Scoreboard.performed -= OnToggleScoreboard;
             Settings.OnColorblindModeChanged -= OnColorblindModeChanged;
         }
 
@@ -57,6 +56,8 @@ namespace NSMB.UI.Game.Scoreboard {
             QuantumCallback.Subscribe<CallbackUpdateView>(this, OnUpdateView);
             QuantumEvent.Subscribe<EventMarioPlayerDied>(this, OnMarioPlayerDied);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedStar>(this, OnMarioPlayerCollectedStar);
+            QuantumEvent.Subscribe<EventMarioPlayerObjectiveCoinsChanged>(this, OnMarioPlayerObjectiveCoinsChanged);
+            QuantumEvent.Subscribe<EventMarioPlayerCollectedStarCoin>(this, OnMarioPlayerCollectedStarCoin);
             QuantumEvent.Subscribe<EventMarioPlayerDroppedStar>(this, OnMarioPlayerDroppedStar);
             QuantumEvent.Subscribe<EventMarioPlayerRespawned>(this, OnMarioPlayerRespawned);
             QuantumEvent.Subscribe<EventPlayerAdded>(this, OnPlayerAdded);
@@ -81,8 +82,7 @@ namespace NSMB.UI.Game.Scoreboard {
                 ref PlayerInformation info = ref f.Global->PlayerInfo[i];
 
                 EntityRef entity = default;
-                var filter = f.Filter<MarioPlayer>();
-                while (filter.NextUnsafe(out EntityRef marioEntity, out MarioPlayer* mario)) {
+                foreach ((var marioEntity, var mario) in f.Unsafe.GetComponentBlockIterator<MarioPlayer>()) { 
                     if (mario->PlayerRef == info.PlayerRef) {
                         entity = marioEntity;
                         break;
@@ -98,41 +98,38 @@ namespace NSMB.UI.Game.Scoreboard {
         }
 
         public unsafe void SortScoreboard(Frame f) {
-            entries.Sort((se1, se2) => {
-                if (f.Exists(se1.Target) && !f.Exists(se2.Target)) {
+            var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+            entries.Sort((a, b) => {
+                f.Unsafe.TryGetPointer(a.Target, out MarioPlayer* marioA);
+                f.Unsafe.TryGetPointer(b.Target, out MarioPlayer* marioB);
+
+                if (marioA != null && marioB == null) {
                     return -1;
-                } else if (f.Exists(se2.Target) && !f.Exists(se1.Target)) {
+                } else if (marioA == null && marioB != null) {
                     return 1;
-                } else if (!f.Exists(se1.Target) && !f.Exists(se2.Target)) {
-                    return 0;
+                } else if (marioA == null && marioB == null) {
+                    goto indexBasedSorting;
                 }
 
-                var mario1 = f.Unsafe.GetPointer<MarioPlayer>(se1.Target);
-                var mario2 = f.Unsafe.GetPointer<MarioPlayer>(se2.Target);
-
-                if (mario1->Disconnected ^ mario2->Disconnected) {
-                    if (mario1->Disconnected) {
+                if (marioA->Disconnected ^ marioB->Disconnected) {
+                    if (marioA->Disconnected) {
                         return 1;
                     } else {
                         return -1;
                     }
                 }
 
-                if (f.Global->Rules.IsLivesEnabled && ((mario1->Lives == 0) ^ (mario2->Lives == 0))) {
-                    return mario2->Lives - mario1->Lives;
-                }
-
-                int starDiff = mario2->Stars - mario1->Stars;
+                int starDiff = gamemode.GetObjectiveCount(f, marioB) - gamemode.GetObjectiveCount(f, marioA);
                 if (starDiff != 0) {
                     return starDiff;
                 }
 
-                var playerDataOne = QuantumUtils.GetPlayerData(f, mario1->PlayerRef);
-                var playerDataTwo = QuantumUtils.GetPlayerData(f, mario2->PlayerRef);
-                if (playerDataOne == null || playerDataTwo == null) {
-                    return 0;
+                if (f.Global->Rules.IsLivesEnabled && (marioA->Lives != marioB->Lives)) {
+                    return marioB->Lives - marioA->Lives;
                 }
-                return playerDataOne->JoinTick - playerDataTwo->JoinTick;
+
+            indexBasedSorting:
+                return a.Index - b.Index;
             });
 
             foreach (var entry in entries) {
@@ -149,41 +146,43 @@ namespace NSMB.UI.Game.Scoreboard {
                 return;
             }
 
-            AssetRef<TeamAsset>[] teamAssets = f.SimulationConfig.Teams;
-            StringBuilder result = new();
+            stringBuilder.Clear();
 
-            Span<short> teamStars = stackalloc short[10];
-            QuantumUtils.GetAllTeamsStars(f, teamStars);
-            int aliveTeams = QuantumUtils.GetValidTeams(f);
-            for (int i = 0; i < 10; i++) {
-                if ((aliveTeams & (1 << i)) == 0) {
+            var teams = f.Context.GetAllAssets<TeamAsset>();
+            var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+            Span<int> teamObjectiveCounts = stackalloc int[Constants.MaxPlayers];
+            gamemode.GetAllTeamsObjectiveCounts(f, teamObjectiveCounts);
+
+            int validTeams = QuantumUtils.GetValidTeams(f);
+            for (int i = 0; i < teamObjectiveCounts.Length; i++) {
+                if ((validTeams & (1 << i)) == 0) {
                     // Invalid team
                     continue;
                 }
 
-                short stars = teamStars[i];
-                if (stars < 0) {
-                    stars = 0;
+                int objectiveCount = teamObjectiveCounts[i];
+                if (objectiveCount < 0) {
+                    objectiveCount = 0;
                 }
-                TeamAsset team = f.FindAsset(teamAssets[i]);
-                result.Append(Settings.Instance.GraphicsColorblind ? team.textSpriteColorblind : team.textSpriteNormal);
-                result.Append(Utils.Utils.GetSymbolString("x" + stars));
+                TeamAsset team = teams[i];
+                stringBuilder.Append(Settings.Instance.GraphicsColorblind ? team.textSpriteColorblind : team.textSpriteNormal);
+                stringBuilder.Append(Utils.GetSymbolString("x" + objectiveCount));
             }
 
-            teamHeaderText.text = result.ToString();
+            teamHeaderText.SetText(stringBuilder);
         }
 
         public unsafe void UpdateSpectatorCount(Frame f) {
             int spectators = 0;
-            var playerDataFilter = f.Filter<PlayerData>();
-            while (playerDataFilter.NextUnsafe(out _, out PlayerData* playerData)) {
+
+            foreach ((_, var playerData) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
                 if (playerData->IsSpectator) {
                     spectators++;
                 }
             }
 
             if (spectators > 0) {
-                spectatorText.text = "<sprite name=room_spectator>" + Utils.Utils.GetSymbolString("x" + spectators.ToString());
+                spectatorText.text = "<sprite name=room_spectator>" + Utils.GetSymbolString("x" + spectators.ToString());
             } else {
                 spectatorText.text = "";
             }
@@ -247,6 +246,14 @@ namespace NSMB.UI.Game.Scoreboard {
             UpdateTeamHeader(e.Game.Frames.Predicted);
         }
 
+        private void OnMarioPlayerCollectedStarCoin(EventMarioPlayerCollectedStarCoin e) {
+            UpdateTeamHeader(e.Game.Frames.Predicted);
+        }
+
+        private void OnMarioPlayerObjectiveCoinsChanged(EventMarioPlayerObjectiveCoinsChanged e) {
+            UpdateTeamHeader(e.Game.Frames.Predicted);
+        }
+
         private void OnMarioPlayerRespawned(EventMarioPlayerRespawned e) {
             if (e.Entity != Target) {
                 return;
@@ -266,7 +273,7 @@ namespace NSMB.UI.Game.Scoreboard {
         }
 
         private void OnColorblindModeChanged() {
-            UpdateTeamHeader(NetworkHandler.Game.Frames.Predicted);
+            UpdateTeamHeader(QuantumRunner.DefaultGame.Frames.Predicted);
         }
 
         private void OnGameResynced(CallbackGameResynced e) {

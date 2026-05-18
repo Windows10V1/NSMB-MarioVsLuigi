@@ -179,6 +179,7 @@ namespace Photon.Realtime
             }
             catch
             {
+                // ignored / not of interest
             }
 
             this.sock = null;
@@ -360,8 +361,13 @@ namespace Photon.Realtime
         {
             base.Init();
 
+            #if UNITY_EDITOR && !UNITY_6000_0_OR_NEWER
             // to work around an issue with UnityWebRequest in Editor (2021 at least), use http to ping in-Editor
-            string scheme = UnityEngine.Application.isEditor ? "http://" : "https://";
+            string scheme = "http://";
+            #else
+            string scheme = "https://";
+            #endif
+
             address = $"{scheme}{address}/photon/m/?ping&r={UnityEngine.Random.Range(0, 10000)}";
 
             this.webRequest = UnityWebRequest.Get(address);

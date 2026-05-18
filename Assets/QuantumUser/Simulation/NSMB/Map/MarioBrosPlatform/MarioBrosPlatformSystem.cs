@@ -6,17 +6,18 @@ namespace Quantum {
             f.Context.Interactions.Register<MarioPlayer, MarioBrosPlatform>(f, OnMarioBrosPlatformMarioPlayerInteraction);
         }
 
-        public static void OnMarioBrosPlatformMarioPlayerInteraction(Frame f, EntityRef marioEntity, EntityRef platformEntity, PhysicsContact contact) {
+        public static bool OnMarioBrosPlatformMarioPlayerInteraction(Frame f, EntityRef marioEntity, EntityRef platformEntity, PhysicsContact contact) {
             var transform = f.Unsafe.GetPointer<Transform2D>(platformEntity);
 
             FPVector2 down = FPVector2.Rotate(FPVector2.Down, transform->Rotation);
             FP dot = FPVector2.Dot(down, contact.Normal);
 
-            if (dot > PhysicsObjectSystem.GroundMaxAngle) {
+            if (dot > Constants.PhysicsGroundMaxAngleCos) {
                 // Hit the ground
                 BlockBumpSystem.Bump(f, contact.Position, marioEntity, false, true);
                 f.Events.MarioBrosPlatformBumped(platformEntity, contact.Position + (FPVector2.Down * FP._0_25));
             }
+            return false;
         }
     }
 }

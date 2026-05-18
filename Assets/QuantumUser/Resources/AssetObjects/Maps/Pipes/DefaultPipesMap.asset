@@ -720,7 +720,7 @@ MonoBehaviour:
           Y:
             RawValue: -65536
         Rotation:
-          RawValue: 0
+          RawValue: 11796480
     - rid: 448232034075148289
       type: {class: PhysicsCollider2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
       data:
@@ -774,6 +774,8 @@ MonoBehaviour:
           Value: 1
         IsMiniOnly:
           Value: 0
+        TransitionOnlyPanning:
+          Value: 1
     - rid: 448232034075148292
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -852,6 +854,8 @@ MonoBehaviour:
         IgnorePlayerWhenRespawning:
           Value: 1
         DisableRespawning:
+          Value: 0
+        StayAtHomeWhenOffscreen:
           Value: 0
     - rid: 692988744814297093
       type: {class: FreezablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -950,6 +954,8 @@ MonoBehaviour:
         IsCeilingPipe:
           Value: 0
         IsMiniOnly:
+          Value: 0
+        TransitionOnlyPanning:
           Value: 0
     - rid: 710687458932555780
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -1255,10 +1261,8 @@ MonoBehaviour:
     - rid: 1228244940237045763
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 1228244940237045764
@@ -1453,10 +1457,8 @@ MonoBehaviour:
     - rid: 1490357482822828035
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 1490357482822828036
@@ -1834,10 +1836,8 @@ MonoBehaviour:
     - rid: 2408951176692236291
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 2408951176692236292
@@ -2093,10 +2093,8 @@ MonoBehaviour:
     - rid: 3046290891393204227
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 3046290891393204228
@@ -2718,10 +2716,8 @@ MonoBehaviour:
     - rid: 4425783480768528387
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 4425783480768528388
@@ -2855,10 +2851,8 @@ MonoBehaviour:
     - rid: 4536070920158052355
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 4536070920158052356
@@ -2949,6 +2943,8 @@ MonoBehaviour:
         IgnorePlayerWhenRespawning:
           Value: 1
         DisableRespawning:
+          Value: 0
+        StayAtHomeWhenOffscreen:
           Value: 0
     - rid: 4642328894244913157
       type: {class: FreezablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -3047,6 +3043,8 @@ MonoBehaviour:
         IsCeilingPipe:
           Value: 0
         IsMiniOnly:
+          Value: 0
+        TransitionOnlyPanning:
           Value: 0
     - rid: 4673924657949179908
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -3169,10 +3167,8 @@ MonoBehaviour:
     - rid: 5056653011921666051
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 5056653011921666052
@@ -3245,10 +3241,8 @@ MonoBehaviour:
     - rid: 5144414138117652483
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 5144414138117652484
@@ -3321,10 +3315,8 @@ MonoBehaviour:
     - rid: 5333697330434539523
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 5333697330434539524
@@ -3641,10 +3633,8 @@ MonoBehaviour:
     - rid: 6079776462347436035
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 6079776462347436036
@@ -3717,10 +3707,8 @@ MonoBehaviour:
     - rid: 6161637325680934915
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 6161637325680934916
@@ -4045,6 +4033,8 @@ MonoBehaviour:
           Value: 0
         IsMiniOnly:
           Value: 0
+        TransitionOnlyPanning:
+          Value: 1
     - rid: 7089375187459637252
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -4166,10 +4156,8 @@ MonoBehaviour:
     - rid: 7569613850400522243
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 7569613850400522244
@@ -4486,10 +4474,8 @@ MonoBehaviour:
     - rid: 8514637143069425667
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 8514637143069425668

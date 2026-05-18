@@ -3,11 +3,11 @@ using Photon.Deterministic;
 namespace Quantum {
     public unsafe partial struct Goomba {
 
-        public void Respawn(Frame f, EntityRef entity) {
+        public readonly void Respawn(Frame f, EntityRef entity) {
             f.Unsafe.GetPointer<Interactable>(entity)->ColliderDisabled = false;
         }
 
-        public void Kill(Frame f, EntityRef goombaEntity, EntityRef killerEntity, KillReason reason) {
+        public readonly void Kill(Frame f, EntityRef goombaEntity, EntityRef killerEntity, EnemyKillReason reason) {
             var enemy = f.Unsafe.GetPointer<Enemy>(goombaEntity);
             var goomba = f.Unsafe.GetPointer<Goomba>(goombaEntity);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(goombaEntity);
@@ -18,14 +18,11 @@ namespace Quantum {
 
             if (reason.ShouldSpawnCoin()) {
                 // Spawn coin
-                EntityRef coinEntity = f.Create(f.SimulationConfig.LooseCoinPrototype);
-                var coinTransform = f.Unsafe.GetPointer<Transform2D>(coinEntity);
-                var coinPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(coinEntity);
-                coinTransform->Position = center;
-                coinPhysicsObject->Velocity.Y = f.RNG->Next(Constants._4_50, 5);
+                var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+                gamemode.SpawnLooseCoin(f, center);
             }
 
-            if (reason != KillReason.Normal) {
+            if (reason != EnemyKillReason.Normal) {
                 // Fall off screen
                 if (f.Unsafe.TryGetPointer(killerEntity, out Transform2D* killerTransform)) {
                     QuantumUtils.UnwrapWorldLocations(f, goombaTransform->Position, killerTransform->Position, out FPVector2 ourPos, out FPVector2 theirPos);
@@ -55,6 +52,7 @@ namespace Quantum {
             }
 
             enemy->IsDead = true;
+            enemy->SetDelayedRespawn();
             f.Unsafe.GetPointer<Interactable>(goombaEntity)->ColliderDisabled = true;
 
             var collider = f.Unsafe.GetPointer<PhysicsCollider2D>(goombaEntity);

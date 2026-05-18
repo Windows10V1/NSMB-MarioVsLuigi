@@ -1,6 +1,4 @@
 using Photon.Deterministic;
-using System;
-using UnityEngine;
 
 namespace Quantum {
     public unsafe partial struct Koopa {
@@ -50,7 +48,7 @@ namespace Quantum {
             f.Events.EnemyKicked(entity, false);
         }
 
-        public void Kill(Frame f, EntityRef koopaEntity, EntityRef killerEntity, KillReason reason) {
+        public void Kill(Frame f, EntityRef koopaEntity, EntityRef killerEntity, EnemyKillReason reason) {
             var enemy = f.Unsafe.GetPointer<Enemy>(koopaEntity);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(koopaEntity);
             var holdable = f.Unsafe.GetPointer<Holdable>(koopaEntity);
@@ -69,11 +67,8 @@ namespace Quantum {
 
             if (reason.ShouldSpawnCoin()) {
                 // Spawn coin
-                EntityRef coinEntity = f.Create(f.SimulationConfig.LooseCoinPrototype);
-                var coinTransform = f.Unsafe.GetPointer<Transform2D>(coinEntity);
-                var coinPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(coinEntity);
-                coinTransform->Position = center;
-                coinPhysicsObject->Velocity.Y = f.RNG->Next(Constants._4_50, 5);
+                var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+                gamemode.SpawnLooseCoin(f, center);
             }
 
             // Fall off screen
@@ -104,6 +99,7 @@ namespace Quantum {
             IsInShell = false;
             IsKicked = false;
             IsFlipped = false;
+            enemy->SetDelayedRespawn();
 
             f.Events.EnemyKilled(koopaEntity, killerEntity, reason, center);
         }

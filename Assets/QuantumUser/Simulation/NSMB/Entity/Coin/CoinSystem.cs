@@ -1,11 +1,12 @@
 using Photon.Deterministic;
 
 namespace Quantum {
-    public unsafe class CoinSystem : SystemMainThreadFilterStage<CoinSystem.Filter>, ISignalOnStageReset, ISignalOnMarioPlayerCollectedCoin,
+    public unsafe class CoinSystem : SystemMainThreadEntityFilter<Coin, CoinSystem.Filter>, ISignalOnStageReset, ISignalOnMarioPlayerCollectedCoin,
         ISignalOnEntityBumped, ISignalOnEntityCrushed {
 
         private static readonly FP BounceThreshold = FP._1_50;
         private static readonly FP BounceStrength = Constants._0_66;
+        private static readonly FP GroundFriction = FP.FromString("0.95");
 
         public struct Filter {
             public EntityRef Entity;
@@ -23,32 +24,48 @@ namespace Quantum {
             var coin = filter.Coin;
             QuantumUtils.Decrement(ref coin->UncollectableFrames);
 
-            if (!coin->IsFloating) {
+            if (!coin->CoinType.HasFlag(CoinType.BakedInStage)) {
                 if (coin->Lifetime == 480) {
                     // Eject
-                    PhysicsObjectSystem.TryEject((FrameThreadSafe) f, entity, stage);
+                    PhysicsObjectSystem.TryEject(f, entity, stage);
                 }
                 if (QuantumUtils.Decrement(ref coin->Lifetime)
-                    || filter.Transform->Position.Y < stage.StageWorldMin.Y) {
+                    || (coin->UncollectableFrames == 0 && filter.Transform->Position.Y < stage.StageWorldMin.Y)) {
 
                     f.Events.CollectableDespawned(entity, filter.Transform->Position, false);
                     f.Destroy(entity);
                     return;
                 }
 
-                var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(entity);
-                foreach (var contact in f.ResolveList(physicsObject->Contacts)) {
-                    if (FPVector2.Dot(contact.Normal, FPVector2.Up) < PhysicsObjectSystem.GroundMaxAngle) {
-                        continue;
+                if (f.Unsafe.TryGetPointer(entity, out PhysicsObject* physicsObject)) {
+                    bool invertX = false, invertY = false, applyFriction = false;
+                    foreach (var contact in f.ResolveList(physicsObject->Contacts)) {
+                        if (FPMath.Abs(FPVector2.Dot(contact.Normal, FPVector2.Up)) < Constants.PhysicsGroundMaxAngleCos) {
+                            // Wall touch
+                            invertX = true;
+                        } else if (FPVector2.Dot(contact.Normal, FPVector2.Up) >= Constants.PhysicsGroundMaxAngleCos) {
+                            // Ground touch
+                            applyFriction = true;
+                            if (physicsObject->PreviousFrameVelocity.Y < -BounceThreshold) {
+                                physicsObject->IsTouchingGround = false;
+                                invertY = true;
+                            } else {
+                                physicsObject->Velocity.Y = 0;
+                            }
+                        }
                     }
 
-                    if (physicsObject->PreviousFrameVelocity.Y < -BounceThreshold) {
-                        physicsObject->Velocity = physicsObject->PreviousFrameVelocity;
-                        physicsObject->Velocity.Y *= -BounceStrength;
-                        physicsObject->IsTouchingGround = false;
+                    if (invertX) {
+                        physicsObject->Velocity.X = physicsObject->PreviousFrameVelocity.X * -BounceStrength;
+                    }
+                    if (invertY) {
+                        physicsObject->Velocity.Y = physicsObject->PreviousFrameVelocity.Y * -BounceStrength;
+                    }
+                    if (/*!coin->CoinType.HasFlag(CoinType.Objective) &&*/ (invertX || invertY)) {
                         f.Events.CoinBounced(entity, *coin);
-                    } else {
-                        physicsObject->Velocity.Y = 0;
+                    }
+                    if (applyFriction) {
+                        physicsObject->Velocity.X *= GroundFriction;
                     }
                 }
             }
@@ -63,7 +80,7 @@ namespace Quantum {
         public void OnStageReset(Frame f, QBoolean full) {
             var allCoins = f.Filter<Coin, Interactable>();
             while (allCoins.NextUnsafe(out EntityRef entity, out Coin* coin, out Interactable* interactable)) {
-                if (!full && (!coin->IsCollected || !coin->IsFloating)) {
+                if (!full && (!coin->IsCollected || !coin->CoinType.HasFlag(CoinType.BakedInStage))) {
                     continue;
                 }
 
@@ -71,7 +88,7 @@ namespace Quantum {
                 interactable->ColliderDisabled = false;
                 f.Events.CoinChangeCollected(entity, *coin, false);
 
-                if (coin->IsDotted && (!coin->IsCurrentlyDotted || full)) {
+                if (coin->CoinType.HasFlag(CoinType.Dotted) && (!coin->IsCurrentlyDotted || full)) {
                     coin->IsCurrentlyDotted = true;
                     f.Events.CoinChangedType(entity, *coin);
                 }
@@ -93,12 +110,20 @@ namespace Quantum {
                 return;
             }
 
+            if (f.Unsafe.TryGetPointer(coinEntity, out ObjectiveCoin* objectiveCoin)) {
+                var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
+                bool sameTeam = ((mario->GetTeam(f) + 1) ?? int.MinValue) == objectiveCoin->UncollectableByTeam;
+                if (mario->IsDead || (sameTeam && (!mario->CanCollectOwnTeamsObjectiveCoins || objectiveCoin->SpawnedViaSelfDamage))) {
+                    return;
+                }
+            }
+
             var coinTransform = f.Unsafe.GetPointer<Transform2D>(coinEntity);
             var coinCollider = f.Unsafe.GetPointer<PhysicsCollider2D>(coinEntity);
             var coinInteractable = f.Unsafe.GetPointer<Interactable>(coinEntity);
-            f.Signals.OnMarioPlayerCollectedCoin(marioEntity, f.Unsafe.GetPointer<MarioPlayer>(marioEntity), coinTransform->Position + coinCollider->Shape.Centroid, false, false);
+            f.Signals.OnMarioPlayerCollectedCoin(marioEntity, coinEntity, coinTransform->Position + coinCollider->Shape.Centroid, false, false);
 
-            if (coin->IsFloating) {
+            if (coin->CoinType.HasFlag(CoinType.BakedInStage)) {
                 coin->IsCollected = true;
                 coinInteractable->ColliderDisabled = true;
                 f.Events.CoinChangeCollected(coinEntity, *coin, true);
@@ -108,23 +133,33 @@ namespace Quantum {
             }
         }
 
-        public void OnMarioPlayerCollectedCoin(Frame f, EntityRef marioEntity, MarioPlayer* mario, FPVector2 worldLocation, QBoolean fromBlock, QBoolean downwards) {
+        public void OnMarioPlayerCollectedCoin(Frame f, EntityRef marioEntity, EntityRef coinEntity, FPVector2 worldLocation, QBoolean fromBlock, QBoolean downwards) {
+            if (f.Unsafe.TryGetPointer(coinEntity, out Coin* coin) && coin->CoinType.HasFlag(CoinType.Objective)) {
+                // Objective coin. Let the ObjectiveCoin system handle this.
+                return;
+            }
+
+            // Normal, powerup coin.
+            var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
+            EntityRef spawnedItem = EntityRef.None;
+
             byte newCoins = (byte) (mario->Coins + 1);
             bool item = newCoins == f.Global->Rules.CoinsForPowerup;
             if (item) {
                 mario->Coins = 0;
-                MarioPlayerSystem.SpawnItem(f, marioEntity, mario, default);
+                spawnedItem = MarioPlayerSystem.SpawnItem(f, marioEntity, mario, default, fromBlock);
             } else {
                 mario->Coins = newCoins;
             }
 
-            f.Events.MarioPlayerCollectedCoin(marioEntity, *mario, newCoins, item, worldLocation, fromBlock, downwards);
+            f.Events.MarioPlayerCollectedCoin(marioEntity, newCoins, spawnedItem, worldLocation, fromBlock, downwards);
         }
 
-        public void OnEntityBumped(Frame f, EntityRef entity, FPVector2 position, EntityRef bumpOwner, QBoolean fromBelow) {
-            if (!f.Unsafe.TryGetPointer(entity, out Coin* coin)
-                || !f.Unsafe.TryGetPointer(entity, out Transform2D* transform)
-                || coin->IsCollected) {
+        public void OnEntityBumped(Frame f, EntityRef coinEntity, FPVector2 position, EntityRef bumpOwner, QBoolean fromBelow) {
+            if (!f.Unsafe.TryGetPointer(coinEntity, out Coin* coin)
+                || !f.Unsafe.TryGetPointer(coinEntity, out Transform2D* transform)
+                || coin->IsCollected
+                || coin->UncollectableFrames > 0) {
                 return;
             }
 
@@ -134,19 +169,26 @@ namespace Quantum {
                 }
                 return;
             } else if (!coin->IsCollected && f.Unsafe.TryGetPointer(bumpOwner, out MarioPlayer* mario)) {
-                f.Signals.OnMarioPlayerCollectedCoin(bumpOwner, mario, transform->Position, false, false);
+                if (f.Unsafe.TryGetPointer(coinEntity, out ObjectiveCoin* objectiveCoin)) {
+                    bool sameTeam = ((mario->GetTeam(f) + 1) ?? int.MinValue) == objectiveCoin->UncollectableByTeam;
+                    if (mario->IsDead || (sameTeam && (!mario->CanCollectOwnTeamsObjectiveCoins || objectiveCoin->SpawnedViaSelfDamage))) {
+                        return;
+                    }
+                }
 
-                if (coin->IsFloating) {
+                f.Signals.OnMarioPlayerCollectedCoin(bumpOwner, coinEntity, transform->Position, false, false);
+
+                if (coin->CoinType.HasFlag(CoinType.BakedInStage)) {
                     coin->IsCollected = true;
-                    f.Events.CoinChangeCollected(entity, *coin, true);
+                    f.Events.CoinChangeCollected(coinEntity, *coin, true);
                 } else {
-                    f.Destroy(entity);
+                    f.Destroy(coinEntity);
                 }
             }
         }
 
         public void OnEntityCrushed(Frame f, EntityRef entity) {
-            if (f.Unsafe.TryGetPointer(entity, out Coin* coin) && !coin->IsFloating) {
+            if (f.Unsafe.TryGetPointer(entity, out Coin* coin) && !coin->CoinType.HasFlag(CoinType.BakedInStage)) {
                 coin->Lifetime = 0;
             }
         }

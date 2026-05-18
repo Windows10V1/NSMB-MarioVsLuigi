@@ -6,20 +6,23 @@ namespace Quantum {
             ChompFrames = 0;
             WaitingFrames = 216;
             PopupAnimationTime = 0;
+
+            var enemy = f.Unsafe.GetPointer<Enemy>(entity);
+            enemy->IsDead = false;
+            enemy->IsActive = true;
         }
 
-        public void Kill(Frame f, EntityRef piranhaPlantEntity, EntityRef killerEntity, KillReason reason) {
+        public void Kill(Frame f, EntityRef piranhaPlantEntity, EntityRef killerEntity, EnemyKillReason reason) {
             var enemy = f.Unsafe.GetPointer<Enemy>(piranhaPlantEntity);
 
-            FPVector2 position = f.Unsafe.GetPointer<Transform2D>(piranhaPlantEntity)->Position;
+            var piranhaPlantTransform = f.Unsafe.GetPointer<Transform2D>(piranhaPlantEntity);
+            var piranhaPlantCollider = f.Unsafe.GetPointer<PhysicsCollider2D>(piranhaPlantEntity);
+            FPVector2 center = piranhaPlantTransform->Position + piranhaPlantCollider->Shape.Centroid;
 
             if (reason.ShouldSpawnCoin()) {
                 // Spawn coin
-                EntityRef coinEntity = f.Create(f.SimulationConfig.LooseCoinPrototype);
-                var coinTransform = f.Unsafe.GetPointer<Transform2D>(coinEntity);
-                var coinPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(coinEntity);
-                coinTransform->Position = position;
-                coinPhysicsObject->Velocity.Y = f.RNG->Next(Constants._4_50, 5);
+                var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+                gamemode.SpawnLooseCoin(f, center);
             }
 
             // Combo sound
@@ -35,11 +38,10 @@ namespace Quantum {
             PopupAnimationTime = 0;
             enemy->IsDead = true;
             enemy->IsActive = false;
+            enemy->SetDelayedRespawn();
 
             f.Unsafe.GetPointer<Interactable>(piranhaPlantEntity)->ColliderDisabled = true;
 
-            var collider = f.Unsafe.GetPointer<PhysicsCollider2D>(piranhaPlantEntity);
-            FPVector2 center = position + collider->Shape.Centroid;
             f.Events.EnemyKilled(piranhaPlantEntity, killerEntity, reason, center);
         }
     }

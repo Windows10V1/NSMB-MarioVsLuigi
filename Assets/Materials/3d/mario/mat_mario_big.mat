@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 9
+  version: 10
 --- !u!21 &2100000
 Material:
   serializedVersion: 8
@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: mat_mario_big
-  m_Shader: {fileID: -6465566751694194690, guid: cc5645667770c9c44af52a452d76a115,
+  m_Shader: {fileID: -6465566751694194690, guid: 914d964962549de41a603aa0bd374229,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -30,7 +30,7 @@ Material:
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
-  m_CustomRenderQueue: 2000
+  m_CustomRenderQueue: -1
   stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
@@ -39,7 +39,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - EyeTextures:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 18700000, guid: 86d0d983b7ffae444b5e270df0725c3a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - FireFlowerTexture:
@@ -54,12 +54,20 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _CapMask:
+        m_Texture: {fileID: 2800000, guid: d5a82e89d71842c4c9ac25792b1b167b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HatMask:
+        m_Texture: {fileID: 2800000, guid: d5a82e89d71842c4c9ac25792b1b167b, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 1e194172011c9194f88aa6415127a062, type: 3}
+        m_Texture: {fileID: 2800000, guid: fdd84ef6d4e291441a0a2c86601bba65, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
@@ -70,8 +78,24 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _OverallsMask:
+        m_Texture: {fileID: 2800000, guid: bf5f4ebd679e6474399c9aa14e6bdbb7, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _ShirtMask:
+        m_Texture: {fileID: 2800000, guid: 027c0cc20477d9449a771cca38f723da, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _SpecGlossMap:
         m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StarmanTexture:
+        m_Texture: {fileID: 2800000, guid: f8e99b8cba71b0d428f6a2627c456fe1, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _Texture2DAsset_29995f3b5d8644c49da8e0a3bd527517_Out_0_Texture2D:
+        m_Texture: {fileID: 2800000, guid: d6fa11c722df8c245a6ca48664463032, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Textures:
@@ -93,6 +117,7 @@ Material:
     m_Ints: []
     m_Floats:
     - FireFlower: 0
+    - HatUsesOverallsColor: 0
     - IsEyeTexture: 0
     - OutlineSize: 0.01
     - PowerupState: 0
@@ -100,6 +125,7 @@ Material:
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
+    - _CapUsesOverallsColor: 0
     - _Cull: 2
     - _Cutoff: 0.5
     - _DstBlend: 0
@@ -107,6 +133,7 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
+    - _HatUsesOverallsColor: 0
     - _Metallic: 0
     - _MultiPowerupMaterial: 1
     - _OcclusionStrength: 1
@@ -128,6 +155,9 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _MultiplyColor: {r: 1, g: 1, b: 1, a: 1}
+    - _OverallsColor: {r: 0.027320892, g: 0.027320892, b: 0.027320892, a: 1}
+    - _ShirtColor: {r: 0.3967553, g: 0.3967553, b: 0.3967553, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -1,6 +1,6 @@
 using JimmysUnityUtilities;
-using NSMB.Extensions;
 using NSMB.Sound;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using System;
 using System.Collections;
@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
+using static NSMB.Utilities.QuantumViewUtils;
 
 namespace NSMB.UI.Game.Results {
     public class ResultsHandler : MonoBehaviour {
@@ -37,26 +38,44 @@ namespace NSMB.UI.Game.Results {
             }
             template.gameObject.SetActive(false);
 
-            QuantumEvent.Subscribe<EventGameEnded>(this, OnGameEnded);
             QuantumCallback.Subscribe<CallbackGameResynced>(this, OnGameResynced);
+            QuantumCallback.Subscribe<CallbackSimulateFinished>(this, OnSimulateFinished);
+            QuantumEvent.Subscribe<EventGameEnded>(this, OnGameEnded);
+
             parent.SetActive(false);
 
-            if (NetworkHandler.Game != null) {
-                Frame f = NetworkHandler.Game.Frames.Predicted;
+            var game = QuantumRunner.DefaultGame;
+            if (game != null) {
+                Frame f = game.Frames.Predicted;
                 if (f.Global->GameState == GameState.Ended) {
                     endingCoroutine = StartCoroutine(RunEndingSequence(f, 0));
                 }
             }
         }
 
+        private unsafe void OnSimulateFinished(CallbackSimulateFinished e) {
+            if (!IsReplay) {
+                return;
+            }
+
+            Frame f = e.Game.Frames.Verified;
+            if (e.Game.Session.IsReplayFinished && f.Global->GameState == GameState.Playing) {
+                // Ended replay without EventGameEnded...
+
+                // Is this a dirty hack?
+                f.Global->GameState = GameState.Ended;
+                f.Events.GameEnded(true, -1, false);
+            }
+        }
+
         private void OnGameEnded(EventGameEnded e) {
-            if (!e.EndedByHost || NetworkHandler.IsReplay) {
-                endingCoroutine = StartCoroutine(RunEndingSequence(e.Game.Frames.Predicted, NetworkHandler.IsReplay ? replayDelayUntilStart : delayUntilStart));
+            if (!e.EndedByHost || IsReplay) {
+                endingCoroutine = StartCoroutine(RunEndingSequence(e.Game.Frames.Verified, IsReplay ? replayDelayUntilStart : delayUntilStart));
             }
         }
 
         private IEnumerator RunEndingSequence(Frame f, float delay) {
-            yield return new WaitForSeconds(delay);
+            yield return new WaitForSecondsRealtime(delay);
 
             parent.SetActive(true);
             FindFirstObjectByType<LoopingMusicPlayer>().Play(musicData);
@@ -69,11 +88,13 @@ namespace NSMB.UI.Game.Results {
         }
 
         public unsafe void InitializeResultsEntries(Frame f, float additionalDelay) {
+            var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+
             // Generate scores
             Dictionary<int, int> teamRankings = null;
             if (f.Global->HasWinner) {
-                Span<short> teamScores = stackalloc short[10];
-                QuantumUtils.GetAllTeamsStars(f, teamScores);
+                Span<int> teamScores = stackalloc int[10];
+                gamemode.GetAllTeamsObjectiveCounts(f, teamScores);
 
                 Dictionary<int, int> teamScoresDict = new();
                 for (int i = 0; i < teamScores.Length; i++) {
@@ -81,20 +102,20 @@ namespace NSMB.UI.Game.Results {
                 }
 
                 teamRankings = new();
-                int previousStarCount = -1;
+                int previousObjectiveCount = -1;
                 int repeatedCount = 0;
                 int currentRanking = 1;
-                foreach ((int teamIndex, int stars) in teamScoresDict.OrderByDescending(x => x.Value)) {
-                    if (stars < 0) {
+                foreach ((int teamIndex, int objectiveCount) in teamScoresDict.OrderByDescending(x => x.Value)) {
+                    if (objectiveCount < 0) {
                         teamRankings[teamIndex] = Constants.MaxPlayers;
-                    } else if (previousStarCount == stars) {
+                    } else if (previousObjectiveCount == objectiveCount) {
                         repeatedCount++;
                         teamRankings[teamIndex] = currentRanking - 1;
                     } else {
                         currentRanking += repeatedCount;
                         teamRankings[teamIndex] = currentRanking;
                         currentRanking++;
-                        previousStarCount = stars;
+                        previousObjectiveCount = objectiveCount;
                         repeatedCount = 0;
                     }
                 }
@@ -102,29 +123,33 @@ namespace NSMB.UI.Game.Results {
 
             // Initialize results screen by player star counts
             int initializeCount = 0;
-            List<PlayerInformation> infos = new();
+            List<(int, PlayerInformation)> infos = new();
             for (int i = 0; i < f.Global->RealPlayers; i++) {
-                infos.Add(f.Global->PlayerInfo[i]);
+                infos.Add((i, f.Global->PlayerInfo[i]));
             }
             infos.Sort((x, y) => {
-                int starDiff = y.GetStarCount(f) - x.GetStarCount(f);
-                if (starDiff != 0) {
-                    return starDiff;
+                var xInfo = x.Item2;
+                var yInfo = y.Item2;
+
+                int objectiveDiff = gamemode.GetObjectiveCount(f, yInfo.PlayerRef) - gamemode.GetObjectiveCount(f, xInfo.PlayerRef);
+                if (objectiveDiff != 0) {
+                    return objectiveDiff;
                 }
 
-                int xRank = teamRankings != null ? teamRankings[x.Team] : Constants.MaxPlayers;
-                int yRank = teamRankings != null ? teamRankings[y.Team] : Constants.MaxPlayers;
+                int xRank = teamRankings != null ? teamRankings[xInfo.Team] : Constants.MaxPlayers;
+                int yRank = teamRankings != null ? teamRankings[yInfo.Team] : Constants.MaxPlayers;
                 return xRank - yRank;
             });
-            foreach (var info in infos) {
+
+            foreach ((var index, var info) in infos) {
                 int rank = teamRankings != null ? teamRankings[info.Team] : Constants.MaxPlayers;
-                entries[initializeCount].Initialize(f, info, rank, (initializeCount * delayPerEntry) + additionalDelay, info.GetStarCount(f));
+                entries[initializeCount].Initialize(f, gamemode, index, rank, (initializeCount * delayPerEntry) + additionalDelay, gamemode.GetObjectiveCount(f, info.PlayerRef));
                 initializeCount++;
             }
 
             // Initialize remaining scores
             for (int i = initializeCount; i < entries.Count; i++) {
-                entries[i].Initialize(f, null, -1, (i * delayPerEntry) + additionalDelay);
+                entries[i].Initialize(f, gamemode, null, -1, (i * delayPerEntry) + additionalDelay);
             }
         }
 

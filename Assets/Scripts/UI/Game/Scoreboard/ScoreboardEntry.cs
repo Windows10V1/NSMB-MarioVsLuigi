@@ -1,4 +1,5 @@
-using NSMB.Utils;
+using NSMB.Utilities;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using System.Text;
 using TMPro;
@@ -6,43 +7,47 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace NSMB.UI.Game.Scoreboard {
-    public class ScoreboardEntry : MonoBehaviour {
+    public unsafe class ScoreboardEntry : MonoBehaviour {
 
         //---Properties
         public EntityRef Target { get; private set; }
+        public int Index { get; set; }
 
         //---Serialized Variables
-        [SerializeField] private Image background, pingIndicator;
+        [SerializeField] private Image background, pingIndicator, teamSprite;
         [SerializeField] private TMP_Text nicknameText, scoreText;
 
         //---Private Variables
         private ScoreboardUpdater updater;
-        private int informationIndex;
         private NicknameColor nicknameColor = NicknameColor.White;
         private string cachedNickname, cachedPingSymbol;
         private bool nicknameMayHaveChanged;
+        private StringBuilder stringBuilder = new();
 
         public void Start() {
             QuantumCallback.Subscribe<CallbackGameResynced>(this, OnGameResynced);
             QuantumEvent.Subscribe<EventMarioPlayerDied>(this, OnMarioPlayerDied);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedStar>(this, OnMarioPlayerCollectedStar);
+            QuantumEvent.Subscribe<EventMarioPlayerObjectiveCoinsChanged>(this, OnMarioPlayerObjectiveCoinsChanged);
             QuantumEvent.Subscribe<EventMarioPlayerDroppedStar>(this, OnMarioPlayerDroppedStar);
             QuantumEvent.Subscribe<EventMarioPlayerPreRespawned>(this, OnMarioPlayerPreRespawned);
             QuantumEvent.Subscribe<EventMarioPlayerDestroyed>(this, OnMarioPlayerDestroyed);
             QuantumEvent.Subscribe<EventPlayerRemoved>(this, OnPlayerRemoved);
+            QuantumEvent.Subscribe<EventPlayerDataChanged>(this, OnPlayerDataChanged);
 
-            if (NetworkHandler.Game != null) {
-                UpdateEntry(NetworkHandler.Game.Frames.Predicted);
+            var game = QuantumRunner.DefaultGame;
+            if (game != null) {
+                UpdateEntry(game.Frames.Predicted);
             }
         }
 
-        public unsafe void Initialize(Frame f, int index, EntityRef target, ScoreboardUpdater updater) {
+        public void Initialize(Frame f, int index, EntityRef target, ScoreboardUpdater updater) {
             Target = target;
+            Index = index;
             this.updater = updater;
 
-            informationIndex = index;
             ref PlayerInformation info = ref f.Global->PlayerInfo[index];
-            cachedNickname = info.Nickname.ToString().ToValidUsername(f, info.PlayerRef);
+            cachedNickname = info.Nickname.ToString().ToValidNickname(f, info.PlayerRef);
             nicknameColor = NicknameColor.Parse(info.NicknameColor.ToString());
             nicknameText.color = nicknameColor.Sample();
             nicknameMayHaveChanged = true;
@@ -51,42 +56,79 @@ namespace NSMB.UI.Game.Scoreboard {
             gameObject.SetActive(true);
         }
 
+        public void OnEnable() {
+            Settings.OnColorblindModeChanged += OnColorblindModeChanged;
+        }
+
+        public void OnDisable() {
+            Settings.OnColorblindModeChanged -= OnColorblindModeChanged;
+        }
+
         public void Update() {
             if (!nicknameColor.Constant) {
                 nicknameText.color = nicknameColor.Sample();
             }
         }
 
-        public unsafe void UpdateEntry(Frame f) {
-            ref PlayerInformation info = ref f.Global->PlayerInfo[informationIndex];
-
+        public void UpdatePing(Frame f) {
+            ref PlayerInformation info = ref f.Global->PlayerInfo[Index];
             var playerData = QuantumUtils.GetPlayerData(f, info.PlayerRef);
             int ping = (!info.Disconnected && playerData != null) ? playerData->Ping : -1;
-            pingIndicator.sprite = Utils.Utils.GetPingSprite(ping);
+            pingIndicator.sprite = Utils.GetPingSprite(ping);
+        }
+
+        public void UpdateEntry(Frame f) {
+            var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+            ref PlayerInformation info = ref f.Global->PlayerInfo[Index];
+            
+            UpdatePing(f);
+
             if (nicknameMayHaveChanged) {
                 nicknameText.text = cachedNickname;
                 nicknameMayHaveChanged = false;
             }
 
-            Color backgroundColor = Utils.Utils.GetPlayerColor(f, info.PlayerRef, considerDisqualifications: true);
-            backgroundColor.a = 0.5f;
+            Color backgroundColor = Utils.GetPlayerColor(f, info.PlayerRef, considerDisqualifications: true);
+            backgroundColor.a = 0.6f;
             background.color = backgroundColor;
 
-            CharacterAsset character = f.FindAsset(f.SimulationConfig.CharacterDatas[info.Character]);
-            int stars = 0;
+            if (Settings.Instance.GraphicsColorblind) {
+                if (f.Global->Rules.TeamsEnabled) {
+                    var teams = f.Context.GetAllAssets<TeamAsset>();
+                    if (info.Team < teams.Count) {
+                        var team = teams[info.Team];
+                        teamSprite.sprite = team.spriteColorblind;
+                    } else {
+                        teamSprite.sprite = null;
+                    }
+                } else {
+                    var slot = Utils.GetPlayerSlotInfo(Index);
+                    if (slot) {
+                        teamSprite.sprite = slot.Sprite;
+                    } else {
+                        teamSprite.sprite = null;
+                    }
+                }
+                teamSprite.gameObject.SetActive(true);
+            } else {
+                teamSprite.gameObject.SetActive(false);
+            }
+
+            var character = QuantumViewUtils.FindAssetOrDefault(info.Character);
+            int objective = 0;
             int lives = 0;
             if (f.Unsafe.TryGetPointer(Target, out MarioPlayer* mario)) {
-                stars = mario->Stars;
+                objective = Mathf.Max(0, gamemode.GetObjectiveCount(f, mario));
                 lives = mario->Disconnected ? 0 : mario->Lives;
             }
 
-            StringBuilder scoreBuilder = new();
+            stringBuilder.Clear();
             if (f.Global->Rules.IsLivesEnabled) {
-                scoreBuilder.Append(character.UiString).Append(Utils.Utils.GetSymbolString(lives.ToString()));
+                stringBuilder.Append(character.UiString).Append(Utils.GetSymbolString(lives.ToString()));
             }
-            scoreBuilder.Append(Utils.Utils.GetSymbolString('S' + stars.ToString()));
+            stringBuilder.Append(Utils.GetSymbolString(gamemode.ObjectiveSymbolPrefix + objective.ToString()));
 
-            scoreText.text = scoreBuilder.ToString();
+            scoreText.SetText(stringBuilder);
             updater.RequestSorting = true;
         }
 
@@ -104,6 +146,23 @@ namespace NSMB.UI.Game.Scoreboard {
             }
 
             UpdateEntry(e.Game.Frames.Predicted);
+        }
+
+        private void OnMarioPlayerObjectiveCoinsChanged(EventMarioPlayerObjectiveCoinsChanged e) {
+            if (e.Entity != Target) {
+                return;
+            }
+
+            UpdateEntry(e.Game.Frames.Predicted);
+        }
+
+        private void OnPlayerDataChanged(EventPlayerDataChanged e) {
+            Frame f = e.Game.Frames.Predicted;
+            if (e.Player != f.Global->PlayerInfo[Index].PlayerRef) {
+                return;
+            }
+
+            UpdateEntry(f);
         }
 
         private void OnMarioPlayerDroppedStar(EventMarioPlayerDroppedStar e) {
@@ -134,13 +193,17 @@ namespace NSMB.UI.Game.Scoreboard {
             UpdateEntry(e.Game.Frames.Predicted);
         }
 
-        private unsafe void OnPlayerRemoved(EventPlayerRemoved e) {
+        private void OnPlayerRemoved(EventPlayerRemoved e) {
             Frame f = e.Game.Frames.Verified;
-            ref PlayerInformation info = ref f.Global->PlayerInfo[informationIndex];
-            cachedNickname = info.Nickname.ToString().ToValidUsername(f, info.PlayerRef);
+            ref PlayerInformation info = ref f.Global->PlayerInfo[Index];
+            cachedNickname = info.Nickname.ToString().ToValidNickname(f, info.PlayerRef);
             nicknameMayHaveChanged = true;
 
             UpdateEntry(f);
+        }
+
+        private void OnColorblindModeChanged() {
+            UpdateEntry(QuantumRunner.DefaultGame.Frames.Predicted);
         }
     }
 }

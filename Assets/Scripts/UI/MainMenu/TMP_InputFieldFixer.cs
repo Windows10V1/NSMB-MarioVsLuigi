@@ -1,65 +1,79 @@
-using NSMB.UI.MainMenu;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class TMP_InputFieldFixer : MonoBehaviour {
+namespace NSMB.UI.MainMenu {
+    public class TMP_InputFieldFixer : MonoBehaviour {
 
-    //---Serialized Variables
-    [SerializeField] private float deadzone = 0.35f;
+        //---Private Variables
+        private int heldDirection;
 
-    //---Private Variables
-    private bool activated;
-
-    public void OnEnable() {
-        Settings.Controls.UI.Navigate.performed += OnNavigate;
-        Settings.Controls.UI.Navigate.canceled += OnNavigate;
-    }
-
-    public void OnDisable() {
-        Settings.Controls.UI.Navigate.performed -= OnNavigate;
-        Settings.Controls.UI.Navigate.canceled -= OnNavigate;
-    }
-
-    public void OnNavigate(InputAction.CallbackContext context) {
-        var osk = FindFirstObjectByType<OnScreenKeyboard>();
-        if (osk && osk.IsOpen) {
-            return;
+        public void OnEnable() {
+            Settings.Controls.UI.Navigate.performed += OnNavigate;
+            Settings.Controls.UI.Navigate.canceled += OnNavigate;
         }
 
-        Vector2 vec = context.ReadValue<Vector2>();
-        float y = vec.y;
-        EventSystem system = EventSystem.current;
+        public void OnDisable() {
+            Settings.Controls.UI.Navigate.performed -= OnNavigate;
+            Settings.Controls.UI.Navigate.canceled -= OnNavigate;
+        }
 
-        // "context.control.name.Length != 1" is bullshit... i don't trust this.
-        if (Mathf.Abs(y) > deadzone && context.control.name.Length != 1) {
-            if (!activated) {
-                // https://discussions.unity.com/t/tab-between-input-fields/547817/10
-                if (system.currentSelectedGameObject && system.currentSelectedGameObject.TryGetComponent(out TMP_InputField selected)) {
-                    Selectable next;
-                    if (y > 0) {
-                        // up
-                        next = selected.FindSelectableOnUp();
-                    } else {
-                        // down
-                        next = selected.FindSelectableOnDown();
-                    }
+        public void OnNavigate(InputAction.CallbackContext context) {
+            float y = context.ReadValue<Vector2>().y;
 
-                    if (next) {
-                        system.SetSelectedGameObject(next.gameObject);
-                        if (next.TryGetComponent(out TMP_InputField nextInputField)) {
-                            nextInputField.OnPointerClick(new PointerEventData(system));
-                        }
-                        system.sendNavigationEvents = false;
+            // No need for a deadzone because the input action processor handles it
+            int currentDirection;
+            if (y > 0) {
+                currentDirection = 1;
+            } else if (y < 0) {
+                currentDirection = -1;
+            } else {
+                currentDirection = 0;
+            }
+
+            if (heldDirection == currentDirection) {
+                return;
+            }
+
+            var osk = OnScreenKeyboard.Instance;
+            if (osk && osk.IsOpen) {
+                heldDirection = currentDirection;
+                return;
+            }
+
+            EventSystem eventSystem = EventSystem.current;
+            GameObject selectedObject = eventSystem.currentSelectedGameObject;
+            if (!selectedObject) {
+                heldDirection = currentDirection;
+                eventSystem.sendNavigationEvents = true;
+                return;
+            }
+
+            if (!selectedObject.TryGetComponent(out TMP_InputField selectedText)) {
+                heldDirection = currentDirection;
+                eventSystem.sendNavigationEvents = true;
+                return;
+            }
+
+            // We are selecting a text object.
+
+            // "context.control.name.Length != 1" is bullshit... i don't trust this.
+            // (for context (heh), 1-length names are to make movement directions on keyboard
+            // for typing characters (like W/S) not navigate while typing)
+            if (currentDirection != 0 && context.control.name.Length != 1) {
+                Selectable next = currentDirection == 1 ? selectedText.FindSelectableOnUp() : selectedText.FindSelectableOnDown();
+                if (next) {
+                    eventSystem.SetSelectedGameObject(next.gameObject);
+                    if (next.TryGetComponent(out TMP_InputField nextInputField)) {
+                        nextInputField.OnPointerClick(new PointerEventData(eventSystem));
                     }
                 }
-                activated = true;
+                eventSystem.sendNavigationEvents = false;
             }
-        } else {
-            activated = false;
-            system.sendNavigationEvents = true;
+
+            heldDirection = currentDirection;
         }
     }
 }

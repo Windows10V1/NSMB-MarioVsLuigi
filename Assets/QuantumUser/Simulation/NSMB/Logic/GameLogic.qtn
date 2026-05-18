@@ -6,13 +6,18 @@ global {
 	GameState GameState;
 	int StartFrame;
 	int TotalGamesPlayed;
+
+	bool IsStartGameCountdownActive;
 	ushort GameStartFrames;
 	ushort PlayerLoadFrames;
+	ushort AutomaticStageRefreshInterval;
+	ushort AutomaticStageRefreshTimer;
 
 	array<PlayerInformation>[MaxPlayers] PlayerInfo;
 	byte RealPlayers;
-	byte TotalMarios;
+	byte TotalMarios; // Different from RealPlayers- count of all Marios at game start, including ones baked into the scene.
 
+	AssetRef<Map> PreviousStage;
 	int WinningTeam;
 	bool HasWinner;
 }
@@ -22,21 +27,41 @@ struct PlayerInformation {
 	QString<48> Nickname;
 	QStringUtf8<48> NicknameColor;
 	byte Team;
-	byte Character;
+	AssetRef<CharacterAsset> Character;
 	bool Disconnected;
 	bool Disqualified;
 }
 
+enum StageChooseMode : Byte {
+	Choose,
+	Random
+}
+
 struct GameRules {
 	AssetRef<Map> Stage;
+	StageChooseMode ChooseMode;
+	hash_set<AssetRef<Map>> RandomDisabledStages;
 
+	AssetRef<GamemodeAsset> Gamemode;
 	int StarsToWin;
 	int CoinsForPowerup;
 	int Lives;
-	int TimerSeconds;
+	int TimerMinutes;
 	bool TeamsEnabled;
 	bool CustomPowerupsEnabled;
 	bool DrawOnTimeUp;
+
+	// these are advanced rules
+	TeamAttackOptions TeamAttack;
+	int StarFountain; // divide this number by 100, options 0, 1/4, 2/4, 3/4, ALL
+	int CoinDeathPenalty; // divide this number by 100. 0 for NONE, 100 for ALL
+	dictionary<AssetRef<CoinItemAsset>, FP> CoinItemCustomSpawnWeights;
+}
+
+enum TeamAttackOptions : Byte {
+	None,
+	KnockbackOnly,
+	Full
 }
 
 enum GameState : Byte {
@@ -68,7 +93,7 @@ event PlayerDataChanged {
 	PlayerRef Player;
 }
 
-event StartingCountdownChanged {
+synced event StartingCountdownChanged {
 	bool IsGameStarting;
 }
 
@@ -81,7 +106,22 @@ synced event HostChanged {
 }
 
 synced event RulesChanged {
-	bool LevelChanged;
+	bool GamemodeChanged;
+	bool MapChanged;
+}
+
+synced event RandomStageToggled {
+	AssetRef<Map> Stage;
+	bool IsDisabled;
+}
+
+synced event CoinItemCustomSpawnWeightChanged {
+	AssetRef<CoinItemAsset> CoinItem;
+	FP NewWeight;
+}
+
+synced event HostCloseRulesPanel {
+
 }
 
 synced event PlayerLoaded {
@@ -103,5 +143,9 @@ synced event GameEnded {
 }
 
 event StartGameEndFade {
+
+}
+
+synced event StageAutoRefresh {
 
 }

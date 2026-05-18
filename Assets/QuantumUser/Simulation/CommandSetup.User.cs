@@ -4,12 +4,13 @@ using Photon.Deterministic;
 namespace Quantum {
     public static partial class DeterministicCommandSetup {
         static partial void AddCommandFactoriesUser(ICollection<IDeterministicCommandFactory> factories, RuntimeConfig gameConfig, SimulationConfig simulationConfig) {
-            // In game
+            // --- In game
             factories.Add(new CommandSpawnReserveItem());
+            factories.Add(new CommandTaunt());
             factories.Add(new CommandHostEndGame());
             factories.Add(new CommandEndGameContinue());
 
-            // --- In room
+            // --- In pre-game room
             // Start Game
             factories.Add(new CommandToggleCountdown());
             factories.Add(new CommandToggleReady());
@@ -18,9 +19,12 @@ namespace Quantum {
             // Change Data
             factories.Add(new CommandChangePlayerData());
             factories.Add(new CommandChangeRules());
+            factories.Add(new CommandToggleRandomStage());
+            factories.Add(new CommandChangeCoinItemAdjustment());
             factories.Add(new CommandChangeHost());
             factories.Add(new CommandUpdatePing());
             factories.Add(new CommandSetInSettings());
+            factories.Add(new CommandRandomizeAllTeams());
 
             // Chat
             factories.Add(new CommandSendChatMessage());
@@ -30,6 +34,8 @@ namespace Quantum {
             factories.Add(new CommandBanPlayer());
             factories.Add(new CommandKickPlayer());
             factories.Add(new CommandUnbanPlayer());
+            factories.Add(new CommandAssignTeam());
+            factories.Add(new CommandMvLDebugCmd());
         }
     }
 }

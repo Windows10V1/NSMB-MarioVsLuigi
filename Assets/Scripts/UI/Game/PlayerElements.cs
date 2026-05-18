@@ -1,20 +1,25 @@
-﻿using NSMB.Entities.Player;
-using NSMB.Extensions;
-using NSMB.Translation;
+﻿using NSMB.Cameras;
+using NSMB.Entities.Player;
+using NSMB.Quantum;
+using NSMB.Sound;
+using NSMB.UI.Game.Replay;
 using NSMB.UI.Game.Scoreboard;
 using NSMB.UI.Pause;
-using NSMB.Utils;
+using NSMB.UI.Translation;
+using NSMB.Utilities;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using static NSMB.Utilities.QuantumViewUtils;
 
 namespace NSMB.UI.Game {
-    public class PlayerElements : QuantumSceneViewComponent {
+    public unsafe class PlayerElements : QuantumSceneViewComponent {
 
+        //---Static Variables
         public static HashSet<PlayerElements> AllPlayerElements = new();
         public event Action OnCameraFocusChanged;
 
@@ -24,7 +29,6 @@ namespace NSMB.UI.Game {
         public Canvas Canvas => canvas;
         public Camera Camera => ourCamera;
         public Camera ScrollCamera => scrollCamera;
-        public Camera UICamera => uiCamera;
         public CameraAnimator CameraAnimator => cameraAnimator;
         public ReplayUI ReplayUi => replayUi;
         public PauseMenuManager PauseMenu => pauseMenu;
@@ -34,14 +38,14 @@ namespace NSMB.UI.Game {
         [SerializeField] private Canvas canvas;
         [SerializeField] private UIUpdater uiUpdater;
         [SerializeField] private CameraAnimator cameraAnimator;
-        [SerializeField] private Camera ourCamera, scrollCamera, uiCamera;
+        [SerializeField] private Camera ourCamera, scrollCamera;
         [SerializeField] private InputCollector inputCollector;
         [SerializeField] private ScoreboardUpdater scoreboardUpdater;
         [SerializeField] private ReplayUI replayUi;
         [SerializeField] private PauseMenuManager pauseMenu;
 
-        [SerializeField] public GameObject spectationUI;
-        [SerializeField] private TMP_Text spectatingText;
+        [SerializeField] public GameObject spectationUI, spectatingArrows;
+        [SerializeField] private TMP_Text spectatingText, spectateModeSwitchPrompt;
         [SerializeField] private PlayerNametag nametagPrefab;
         [SerializeField] public GameObject nametagCanvas;
 
@@ -62,18 +66,51 @@ namespace NSMB.UI.Game {
         public override void OnActivate(Frame f) {
             AllPlayerElements.Add(this);
             Settings.Controls.UI.Navigate.performed += OnNavigate;
+            Settings.Controls.UI.Navigate.canceled += OnNavigate;
             Settings.Controls.UI.SpectatePlayerByIndex.performed += SpectatePlayerIndex;
             Settings.Controls.UI.Next.performed += SpectateNextPlayer;
             Settings.Controls.UI.Previous.performed += SpectatePreviousPlayer;
+            Settings.Controls.UI.Submit.performed += OnSubmit;
+            Settings.OnNametagVisibilityChanged += OnNametagVisibilityChanged;
             TranslationManager.OnLanguageChanged += OnLanguageChanged;
+
+            if (Game.Session.IsReplay) {
+                StartSpectating();
+                
+                if (PlayerPrefs.HasKey("id")) {
+                    string userId = PlayerPrefs.GetString("id");
+                    for (int i = 0; i < f.MaxPlayerCount; i++) {
+                        RuntimePlayer player = f.GetPlayerData(i);
+                        if (player == null || player.UserId != userId) {
+                            continue;
+                        }
+
+                        foreach ((var entity, var mario) in f.Unsafe.GetComponentBlockIterator<MarioPlayer>()) {
+                            if (mario->PlayerRef != i) {
+                                continue;
+                            }
+
+                            // This is our player. Default to them.
+                            Entity = entity;
+                            cameraAnimator.Mode = CameraAnimator.CameraMode.FollowPlayer;
+                            UpdateSpectateUI();
+                            break;
+                        }
+                        break;
+                    }
+                }
+            }
         }
 
         public override void OnDeactivate() {
             AllPlayerElements.Remove(this);
             Settings.Controls.UI.Navigate.performed -= OnNavigate;
+            Settings.Controls.UI.Navigate.canceled -= OnNavigate;
             Settings.Controls.UI.SpectatePlayerByIndex.performed -= SpectatePlayerIndex;
             Settings.Controls.UI.Next.performed -= SpectateNextPlayer;
             Settings.Controls.UI.Previous.performed -= SpectatePreviousPlayer;
+            Settings.Controls.UI.Submit.performed -= OnSubmit;
+            Settings.OnNametagVisibilityChanged -= OnNametagVisibilityChanged;
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
         }
 
@@ -115,7 +152,7 @@ namespace NSMB.UI.Game {
             if (!f.Exists(Entity) && f.Global->GameState >= GameState.Starting && CameraAnimator.Mode == CameraAnimator.CameraMode.FollowPlayer) {
                 if (spectating) {
                     // Find a new player to spectate
-                    SpectateNextPlayer();
+                    SpectateNextPlayer(0);
                 } else {
                     // Spectating
                     StartSpectating();
@@ -128,109 +165,140 @@ namespace NSMB.UI.Game {
                 return;
             }
 
+            TranslationManager tm = GlobalController.Instance.translationManager;
             Frame f = PredictedFrame;
             if (f.Unsafe.TryGetPointer(Entity, out MarioPlayer* mario)) {
-                RuntimePlayer runtimePlayer = f.GetPlayerData(mario->PlayerRef);
-                string username = runtimePlayer.PlayerNickname.ToValidUsername(f, mario->PlayerRef);
+                string nickname = "noname";
+                for (int i = 0; i < f.Global->RealPlayers; i++) {
+                    if (f.Global->PlayerInfo[i].PlayerRef == mario->PlayerRef) {
+                        nickname = f.Global->PlayerInfo[i].Nickname.ToString().ToValidNickname(f, mario->PlayerRef);
+                        break;
+                    }
+                }
 
-                TranslationManager tm = GlobalController.Instance.translationManager;
-                spectatingText.text = tm.GetTranslationWithReplacements("ui.game.spectating", "playername", username);
+                spectatingText.text = tm.GetTranslationWithReplacements("ui.game.spectating", "playername", nickname);
+                spectateModeSwitchPrompt.text = tm.GetTranslation("ui.replay.camera.freecam");
+                spectatingArrows.SetActive(true);
+            } else {
+                spectatingText.text = tm.GetTranslation("ui.replay.camera.freecam");
+                spectateModeSwitchPrompt.text = tm.GetTranslation("ui.game.players");
+                spectatingArrows.SetActive(false);
             }
 
             OnCameraFocusChanged?.Invoke();
+
+            if (f.Global->GameState == GameState.Playing) {
+                FindFirstObjectByType<MusicManager>().HandleMusic(true);
+            }
         }
 
         public void StartSpectating() {
             spectating = true;
-            spectationUI.SetActive(!NetworkHandler.IsReplay);
-            if (!NetworkHandler.IsReplay) {
-                if (GlobalController.Instance.loadingCanvas.isActiveAndEnabled) {
-                    GlobalController.Instance.loadingCanvas.EndLoading(NetworkHandler.Game);
+            spectationUI.SetActive(!IsReplay);
+            if (!IsReplay && GlobalController.Instance.loadingCanvas.isActiveAndEnabled) {
+                GlobalController.Instance.loadingCanvas.EndLoading(QuantumRunner.DefaultGame);
+            }
+
+            SpectateNextPlayer(0);
+        }
+
+        public unsafe void SpectateNextPlayer(InputAction.CallbackContext context) {
+            if (!spectating || cameraAnimator.Mode != CameraAnimator.CameraMode.FollowPlayer
+                || pauseMenu.IsPaused || Game.Frames.Predicted.Global->GameState >= GameState.Ended) {
+                return;
+            }
+
+            SpectateNextPlayer(1);
+        }
+        
+        public unsafe void SpectateNextPlayer(int increment) {
+            Frame f = PredictedFrame;
+
+            int marioCount = f.ComponentCount<MarioPlayer>();
+            if (marioCount <= 0) {
+                return;
+            }
+
+            List<(EntityRef, PlayerRef)> marios = new();
+            foreach ((var entity, var mario) in f.Unsafe.GetComponentBlockIterator<MarioPlayer>()) {
+                marios.Add((entity, mario->PlayerRef));
+            }
+            marios.Sort((a, b) => {
+                int indexA = int.MaxValue;
+                int indexB = int.MaxValue;
+
+                for (int i = 0; i < f.Global->RealPlayers; i++) {
+                    PlayerRef player = f.Global->PlayerInfo[i].PlayerRef;
+                    if (player == a.Item2) {
+                        indexA = i;
+                    } else if (player == b.Item2) {
+                        indexB = i;
+                    }
                 }
-            }
-
-            SpectateNextPlayer();
-        }
-
-        public void SpectateNextPlayer(InputAction.CallbackContext context) {
-            if (!spectating) {
-                return;
-            }
-
-            SpectateNextPlayer();
-        }
-
-        public unsafe void SpectateNextPlayer() {
-            Frame f = PredictedFrame;
-
-            int marioCount = f.ComponentCount<MarioPlayer>();
-            if (marioCount <= 0) {
-                return;
-            }
-
-            List<EntityRef> marios = new(marioCount);
-            var marioFilter = f.Filter<MarioPlayer>();
-            marioFilter.UseCulling = false;
-            while (marioFilter.NextUnsafe(out EntityRef entity, out _)) {
-                marios.Add(entity);
-            }
-            marios.Sort((a, b) => {
-                return a.Index - b.Index;
+                return indexA - indexB;
             });
-            int currentIndex = marios.IndexOf(Entity);
-            Entity = marios[(currentIndex + 1) % marioCount];
+            
+            int currentIndex = marios.IndexOf(x => x.Item1 == Entity);
+            int nextIndex = (int) Mathf.Repeat(currentIndex + increment, marioCount);
+            CameraAnimator.Mode = CameraAnimator.CameraMode.FollowPlayer;
+            Entity = marios[nextIndex].Item1;
+
             UpdateSpectateUI();
         }
 
-        public void SpectatePreviousPlayer(InputAction.CallbackContext context) {
-            if (!spectating) {
+        public unsafe void SpectatePreviousPlayer(InputAction.CallbackContext context) {
+            if (!spectating || cameraAnimator.Mode != CameraAnimator.CameraMode.FollowPlayer
+                || pauseMenu.IsPaused || Game.Frames.Predicted.Global->GameState >= GameState.Ended) {
                 return;
             }
 
-            SpectatePreviousPlayer();
+            SpectateNextPlayer(-1);
         }
 
-        public unsafe void SpectatePreviousPlayer() {
-            Frame f = PredictedFrame;
-
-            int marioCount = f.ComponentCount<MarioPlayer>();
-            if (marioCount <= 0) {
-                return;
-            }
-
-            List<EntityRef> marios = new(marioCount);
-            var marioFilter = f.Filter<MarioPlayer>();
-            marioFilter.UseCulling = false;
-            while (marioFilter.NextUnsafe(out EntityRef entity, out _)) {
-                marios.Add(entity);
-            }
-            marios.Sort((a, b) => {
-                return a.Index - b.Index;
-            });
-            int currentIndex = marios.IndexOf(Entity);
-            Entity = marios[(currentIndex - 1 + marioCount) % marioCount];
-            UpdateSpectateUI();
+        public bool IsOurCamera(Camera camera) {
+            return camera == Camera || camera == ScrollCamera;
         }
 
-        private void OnNavigate(InputAction.CallbackContext context) {
-            if (!spectating || EventSystem.current != spectationUI) {
+        private unsafe void OnNavigate(InputAction.CallbackContext context) {
+            if (!spectating || cameraAnimator.Mode != CameraAnimator.CameraMode.FollowPlayer
+                || pauseMenu.IsPaused || Game.Frames.Predicted.Global->GameState >= GameState.Ended) {
+                previousNavigate = Vector2.zero;
                 return;
             }
 
             Vector2 newPosition = context.ReadValue<Vector2>();
             if (previousNavigate.x > -0.3f && newPosition.x <= -0.3f) {
                 // Left
-                SpectatePreviousPlayer();
+                SpectateNextPlayer(-1);
             }
             if (previousNavigate.x < 0.3f && newPosition.x >= 0.3f) {
                 // Right
-                SpectateNextPlayer();
+                SpectateNextPlayer(1);
             }
             previousNavigate = newPosition;
         }
 
+        private unsafe void OnSubmit(InputAction.CallbackContext context) {
+            if (!spectating || pauseMenu.IsPaused || Game.Session.IsReplay
+                || Game.Frames.Predicted.Global->GameState >= GameState.Ended) {
+                return;
+            }
+
+            // Change mode
+            if (cameraAnimator.Mode == CameraAnimator.CameraMode.FollowPlayer) {
+                cameraAnimator.Mode = CameraAnimator.CameraMode.Freecam;
+                Entity = EntityRef.None;
+
+            } else if (cameraAnimator.Mode == CameraAnimator.CameraMode.Freecam) {
+                CameraAnimator.Mode = CameraAnimator.CameraMode.FollowPlayer;
+                Entity = scoreboardUpdater.EntityAtPosition(0);
+            }
+            UpdateSpectateUI();
+        }
+
         private unsafe void SpectatePlayerIndex(InputAction.CallbackContext context) {
-            if (!spectating || Game.Frames.Predicted.Global->GameState >= GameState.Ended) {
+            if (!spectating || Game.Frames.Predicted.Global->GameState >= GameState.Ended
+                || pauseMenu.IsPaused) {
                 return;
             }
 
@@ -245,6 +313,10 @@ namespace NSMB.UI.Game {
                     UpdateSpectateUI();
                 }
             }
+        }
+
+        private void OnNametagVisibilityChanged() {
+            nametagCanvas.SetActive(Settings.Instance.GraphicsPlayerNametags);
         }
 
         private void OnLanguageChanged(TranslationManager tm) {

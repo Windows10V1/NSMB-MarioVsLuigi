@@ -7,17 +7,23 @@ namespace Quantum {
         }
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* playerData) {
-            if (f.Global->GameState != GameState.PreGameRoom && !playerData->IsRoomHost) {
+            if (f.Global->GameState != GameState.PreGameRoom
+                || !playerData->IsRoomHost) {
                 // Only the host can start the countdown.
                 return;
             }
 
-            bool gameStarting = f.Global->GameStartFrames == 0;
-            if (gameStarting && !QuantumUtils.IsGameStartable(f)) {
-                return;
+            if (f.Global->IsStartGameCountdownActive) {
+                if (!QuantumUtils.IsGameStartable(f)) {
+                    return;
+                }
+                f.Global->GameStartFrames = 0;
+                f.Global->IsStartGameCountdownActive = false;
+            } else {
+                f.Global->GameStartFrames = (ushort) (3 * f.UpdateRate);
+                f.Global->IsStartGameCountdownActive = true;
             }
-            f.Global->GameStartFrames = (ushort) (gameStarting ? 3 * f.UpdateRate : 0);
-            f.Events.StartingCountdownChanged(gameStarting);
+            f.Events.StartingCountdownChanged(f.Global->IsStartGameCountdownActive);
         }
     }
 }

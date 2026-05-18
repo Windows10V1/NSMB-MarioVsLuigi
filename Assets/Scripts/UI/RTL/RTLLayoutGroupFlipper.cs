@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -46,7 +45,7 @@ namespace NSMB.UI.RTL {
                 }
             }
 
-            LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) component.transform);
+            LayoutRebuilder.MarkLayoutForRebuild((RectTransform) component.transform);
         }
     }
 }

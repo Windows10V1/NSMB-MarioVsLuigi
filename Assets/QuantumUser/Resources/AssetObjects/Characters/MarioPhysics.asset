@@ -31,8 +31,15 @@ MonoBehaviour:
   - RawValue: 230400
   - RawValue: 172800
   - RawValue: 5529600
+  ShellNormalStage: 0
+  ShellSlopeStage: 1
+  ShellFastSlopeStage: 2
+  ShellStarStage: 3
   WalkBlueShellMultiplier:
-    RawValue: 58982
+  - RawValue: 58982
+  - RawValue: 65536
+  - RawValue: 72090
+  - RawValue: 58982
   WalkButtonReleaseDeceleration:
     RawValue: 259200
   SlowTurnaroundAcceleration:
@@ -238,3 +245,25 @@ MonoBehaviour:
   PropellerLaunchVelocity:
     RawValue: 393216
   PropellerLaunchFrames: 60
+  IceBlockSmallSize:
+    X:
+      RawValue: 42598
+    Y:
+      RawValue: 45548
+  IceBlockBigSize:
+    X:
+      RawValue: 42598
+    Y:
+      RawValue: 78643
+  IceBlockSmallOffset:
+    X:
+      RawValue: 2294
+    Y:
+      RawValue: -3473
+  IceBlockBigOffset:
+    X:
+      RawValue: 0
+    Y:
+      RawValue: 0
+  IceBlockPickupFreezeFrames: 20
+  MegaMushroomStepInterval: 18

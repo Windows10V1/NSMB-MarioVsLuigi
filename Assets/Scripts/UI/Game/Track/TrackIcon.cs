@@ -1,20 +1,20 @@
-using NSMB.Extensions;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace NSMB.UI.Game.Track {
-    public abstract class TrackIcon : QuantumSceneViewComponent {
+    public class TrackIcon : QuantumSceneViewComponent {
 
         //---Serialized Variables
         [SerializeField] private float trackMinX, trackMaxX;
-        [SerializeField] protected Image image;
+        [SerializeField] protected Image image, upArrow, downArrow;
 
         //---Private Variables
         protected EntityRef targetEntity;
         protected Transform targetTransform;
-        protected VersusStageData stage;
         protected PlayerElements playerElements;
+        protected VersusStageData stage;
 
         private float levelWidthReciprocal;
         private float levelMinX;
@@ -24,19 +24,37 @@ namespace NSMB.UI.Game.Track {
             this.SetIfNull(ref image);
         }
 
-        public void Initialize(PlayerElements playerElements, EntityRef targetEntity, Transform targetTransform, VersusStageData stage) {
+        public void Initialize(PlayerElements playerElements, EntityRef targetEntity, Transform targetTransform) {
             this.playerElements = playerElements;
             this.targetEntity = targetEntity;
             this.targetTransform = targetTransform;
-            this.stage = stage;
+
+            Frame f = Updater.ObservedGame.Frames.Predicted;
+            stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+            
             levelMinX = stage.StageWorldMin.X.AsFloat;
             trackWidth = trackMaxX - trackMinX;
-            levelWidthReciprocal = 2f / stage.TileDimensions.x;
+            levelWidthReciprocal = 2f / stage.TileDimensions.X;
+
+            name = $"TrackIcon ({targetEntity})";
+            OnLateUpdateView();
         }
 
         public override void OnLateUpdateView() {
+            if (!targetTransform) {
+                return;
+            }
+
             float percentage = (targetTransform.position.x - levelMinX) * levelWidthReciprocal;
             transform.localPosition = new(percentage * trackWidth - trackMaxX, transform.localPosition.y, transform.localPosition.z);
+
+            if (upArrow && downArrow) {
+                var camera = playerElements.Camera;
+                float offset = camera.orthographicSize - 0.25f;
+
+                upArrow.enabled = camera.transform.position.y + offset < targetTransform.position.y;
+                downArrow.enabled = camera.transform.position.y - offset > targetTransform.position.y;
+            }
         }
     }
 }

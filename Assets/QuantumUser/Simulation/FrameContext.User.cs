@@ -1,9 +1,26 @@
 ﻿using Photon.Deterministic;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using static Quantum.InteractionSystem;
 
 namespace Quantum {
     public partial class FrameContextUser {
+
+        //---Assets
+        private readonly Dictionary<Type, object> allAssets = new();
+
+        public List<T> GetAllAssets<T>() where T : AssetObject {
+            if (!allAssets.ContainsKey(typeof(T))) {
+                var query = ResourceManager.GetAssets(new AssetObjectQuery { Type = typeof(T) }).Cast<T>();
+                if (typeof(IOrderedAsset).IsAssignableFrom(typeof(T))) {
+                    query = query.OrderBy(asset => ((IOrderedAsset) asset).Order);
+                }
+                allAssets[typeof(T)] = query.Cast<T>().ToList();
+            }
+
+            return (List<T>) allAssets[typeof(T)];
+        }
 
         //---Physics
         public LayerMask ExcludeEntityAndPlayerMask, PlayerOnlyMask;
@@ -20,8 +37,8 @@ namespace Quantum {
         }
 
         //---Culling
-        public readonly List<EntityRef> CullingIgnoredEntities = new();
-        public readonly List<FPVector2> CullingCameraPositions = new();
+        public readonly HashSet<EntityRef> CullingIgnoredEntities = new();
+        public readonly HashSet<FPVector2> CullingCameraPositions = new();
         public FP MaxCameraOrthoSize = 7;
 
         //---Interactions
@@ -30,7 +47,7 @@ namespace Quantum {
         public class InteractionContext {
 
             public delegate void HitboxInteractor(Frame f, EntityRef firstEntity, EntityRef secondEntity);
-            public delegate void PlatformInteractor(Frame f, EntityRef entity, EntityRef platformEntity, PhysicsContact contact);
+            public delegate bool PlatformInteractor(Frame f, EntityRef entity, EntityRef platformEntity, PhysicsContact contact);
 
             public readonly List<(int, int)> hitboxInteractorMap = new();
             public readonly List<HitboxInteractor> hitboxInteractors = new();

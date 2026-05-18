@@ -1,6 +1,6 @@
 using Photon.Deterministic;
 using Quantum.Collections;
-using UnityEngine;
+using Quantum.Physics2D;
 
 namespace Quantum {
     public unsafe class MovingPlatformSystem : SystemMainThreadEntityFilter<MovingPlatform, MovingPlatformSystem.Filter> {
@@ -11,6 +11,7 @@ namespace Quantum {
             public MovingPlatform* Platform;
             public PhysicsCollider2D* Collider;
         }
+
         private ComponentGetter<PhysicsObjectSystem.Filter> PhysicsObjectSystemFilterGetter;
 
         public override void OnInit(Frame f) {
@@ -19,6 +20,10 @@ namespace Quantum {
         }
 
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
+            if (!filter.Collider->Enabled) {
+                return;
+            }
+
             TryMove(f, ref filter, stage);
         }
 
@@ -33,80 +38,93 @@ namespace Quantum {
         }
 
         private void TryMoveShape(Frame f, ref Filter filter, VersusStageData stage, QList<PhysicsQueryRef> queries, Shape2D* shape, int index) {
-            FPVector2 velocity = filter.Platform->Velocity * f.DeltaTime;
-            /*
-            if (velocity == FPVector2.Zero) {
-                return;
-            }
-            */
-
             if (shape->Type == Shape2DType.Compound) {
                 shape->Compound.GetShapes(f, out Shape2D* subshapes, out int subshapeCount);
                 for (int i = 0; i < subshapeCount; i++) {
-                    TryMoveShape(f, ref filter, stage, queries, subshapes + i, i + index);
+                    TryMoveShape(f, ref filter, stage, queries, subshapes + i, (i * 2) + index);
                 }
                 return;
             }
-            
-            var entity = filter.Entity;
+
+            // normal
             var hits = f.Physics2D.GetQueryHits(queries[index]);
-
             for (int i = 0; i < hits.Count; i++) {
-                var hit = hits[i];
-                
-                if (hit.Entity == entity) {
-                    continue;
-                }
-                if (!PhysicsObjectSystemFilterGetter.TryGet(f, hit.Entity, out var physicsSystemFilter)) {
-                    continue;
-                }
-                var physicsObject = physicsSystemFilter.PhysicsObject;
-                if (physicsObject->IsFrozen || physicsObject->DisableCollision) {
-                    continue;
-                }
+                ProcessHit(f, ref filter, shape, hits[i], stage);
+            }
 
-                bool movingAway = FPVector2.Dot(physicsObject->Velocity.Normalized, velocity.Normalized) >= 0;
-                if (shape->Type == Shape2DType.Edge) {
-                    // Semisolid logic
-                    if (movingAway || physicsSystemFilter.Transform->Position.Y < hit.Point.Y) {
-                        continue;
-                    } else {
-                        movingAway = !movingAway;
-                    }
+            if (!f.DestroyPending(filter.Entity) || !f.Exists(filter.Entity)) {
+                // Destroyed in movement callback
+                return;
+            }
+
+            // level wrap seam
+            var hits2 = f.Physics2D.GetQueryHits(queries[index + 1]);
+            for (int i = 0; i < hits2.Count; i++) {
+                ProcessHit(f, ref filter, shape, hits2[i], stage);
+            }
+        }
+
+        private void ProcessHit(Frame f, ref Filter filter, Shape2D* shape, Hit hit, VersusStageData stage) {
+            var platform = filter.Platform;
+            var entity = filter.Entity;
+            FPVector2 velocity = platform->Velocity * f.DeltaTime;
+
+            if (hit.Entity == entity) {
+                return;
+            }
+            if (!PhysicsObjectSystemFilterGetter.TryGet(f, hit.Entity, out var physicsSystemFilter)) {
+                return;
+            }
+            var physicsObject = physicsSystemFilter.PhysicsObject;
+            if (physicsObject->IsFrozen || physicsObject->DisableCollision) {
+                return;
+            }
+
+            bool movingAway = FPVector2.Dot(physicsObject->Velocity.Normalized, velocity.Normalized) >= 0;
+            if (shape->Type == Shape2DType.Edge) {
+                // Semisolid logic
+                FP lowerEdge = physicsSystemFilter.Transform->Position.Y + physicsSystemFilter.Collider->Shape.Centroid.Y - physicsSystemFilter.Collider->Shape.Box.Extents.Y;
+                bool below = lowerEdge < (hit.Point.Y - (platform->Velocity.Y * 2 * f.DeltaTime));
+                if (movingAway || below) {
+                    return;
+                } else {
+                    movingAway = !movingAway;
                 }
+            }
 
-                PhysicsContact newContact = new PhysicsContact {
-                    Position = hit.Point,
-                    Normal = -hit.Normal,
-                    Distance = velocity.Magnitude * hit.CastDistanceNormalized,
-                    Entity = entity,
-                    Frame = f.Number,
-                    Tile = new(-1, -1)
-                };
-                bool keepContact = true;
-                foreach (var callback in f.Context.PreContactCallbacks) {
-                    callback?.Invoke(f, stage, hit.Entity, newContact, ref keepContact);
-                }
+            PhysicsContact newContact = new PhysicsContact {
+                Position = hit.Point,
+                Normal = -hit.Normal,
+                Distance = velocity.Magnitude * hit.CastDistanceNormalized,
+                Entity = entity,
+                Frame = f.Number,
+                Tile = new(-1, -1)
+            };
 
-                if (!keepContact) {
-                    continue;
-                }
+            bool keepContact = true;
+            foreach (var callback in f.Context.PreContactCallbacks) {
+                callback?.Invoke(f, stage, hit.Entity, newContact, ref keepContact);
+            }
 
-                FP moveDistance = hit.OverlapPenetration;
-                FPVector2 moveVector = -hit.Normal * (moveDistance * f.UpdateRate);
+            if (!keepContact) {
+                return;
+            }
 
-                var contacts = f.ResolveList(physicsObject->Contacts);
-                PhysicsObjectSystem.MoveVertically((FrameThreadSafe) f, moveVector, ref physicsSystemFilter, stage, contacts, out bool tempHit1);
-                PhysicsObjectSystem.MoveHorizontally((FrameThreadSafe) f, moveVector, ref physicsSystemFilter, stage, contacts, out bool tempHit2);
+            FP moveDistance = hit.OverlapPenetration;
+            FPVector2 moveVector = -hit.Normal * (moveDistance * f.UpdateRate);
 
-                if (!movingAway) {
-                    contacts.Add(newContact);
-                }
+            var contacts = f.ResolveList(physicsObject->Contacts);
+            PhysicsObjectSystem.MoveVertically(f, moveVector, ref physicsSystemFilter, stage, contacts, out bool tempHit1);
+            PhysicsObjectSystem.MoveHorizontally(f, moveVector, ref physicsSystemFilter, stage, contacts, out bool tempHit2);
 
-                if (filter.Platform->CanCrushEntities && (tempHit1 || tempHit2) && shape->Type != Shape2DType.Edge) {
-                    // Crushed
-                    physicsObject->IsBeingCrushed = true;
-                }
+            bool addContact = !movingAway || FPVector3.Project(physicsObject->Velocity.XYO, platform->Velocity.Normalized.XYO).Magnitude < platform->Velocity.Magnitude;
+            if (addContact) {
+                contacts.Add(newContact);
+            }
+
+            if (platform->CanCrushEntities && (tempHit1 || tempHit2) && shape->Type != Shape2DType.Edge) {
+                // Crushed
+                physicsObject->IsBeingCrushed = true;
             }
         }
     }

@@ -2,7 +2,9 @@ using Photon.Deterministic;
 using Quantum.Physics2D;
 
 namespace Quantum {
-    public unsafe class BigStarSystem : SystemMainThread, ISignalOnReturnToRoom {
+    public unsafe class BigStarSystem : SystemMainThread, ISignalOnReturnToRoom, ISignalOnMarioPlayerDropObjective {
+
+        public override bool StartEnabled => false;
 
         public override void OnInit(Frame f) {
             f.Context.Interactions.Register<BigStar, MarioPlayer>(f, OnBigStarMarioInteraction);
@@ -29,12 +31,12 @@ namespace Quantum {
             bool spawnedStar = false;
             for (int i = 0; i < spawnpoints; i++) {
                 // Find a spot...
-                if (f.Global->UsedStarSpawnCount == spawnpoints) {
+                int bitsSet = usedSpawnpoints.GetSetCount();
+                if (bitsSet >= spawnpoints) {
                     usedSpawnpoints.ClearAll();
-                    f.Global->UsedStarSpawnCount = 0;
                 }
 
-                int count = f.RNG->Next(0, spawnpoints - f.Global->UsedStarSpawnCount);
+                int count = f.RNG->Next(0, spawnpoints - bitsSet);
                 int index = 0;
                 for (int j = 0; j < spawnpoints; j++) {
                     if (!usedSpawnpoints.IsSet(j)) {
@@ -46,7 +48,6 @@ namespace Quantum {
                     }
                 }
                 usedSpawnpoints.Set(index);
-                f.Global->UsedStarSpawnCount++;
 
                 // Spawn a star.
                 FPVector2 position = stage.BigStarSpawnpoints[index];
@@ -54,7 +55,8 @@ namespace Quantum {
 
                 if (hits.Count == 0) {
                     // Hit no players
-                    EntityRef newEntity = f.Create(f.SimulationConfig.BigStarPrototype);
+                    var gamemode = (StarChasersGamemode) f.FindAsset(f.Global->Rules.Gamemode);
+                    EntityRef newEntity = f.Create(gamemode.BigStarPrototype);
                     f.Global->MainBigStar = newEntity;
                     var newStarTransform = f.Unsafe.GetPointer<Transform2D>(newEntity);
                     var newStar = f.Unsafe.GetPointer<BigStar>(newEntity);
@@ -64,12 +66,15 @@ namespace Quantum {
                     newStar->IsStationary = true;
                     newStarPhysicsObject->DisableCollision = true;
                     spawnedStar = true;
+                    f.Events.BigCollectableAttemptedSpawn(index, position, Success: true);
                     break;
+                } else {
+                    f.Events.BigCollectableAttemptedSpawn(index, position, Success: false);
                 }
-            }
 
-            if (!spawnedStar) {
-                f.Global->BigStarSpawnTimer = 30;
+                if (!spawnedStar) {
+                    f.Global->BigStarSpawnTimer = 30;
+                }
             }
         }
 
@@ -83,13 +88,29 @@ namespace Quantum {
             }
 
             var transform = f.Unsafe.GetPointer<Transform2D>(entity);
-            if (QuantumUtils.Decrement(ref bigStar->Lifetime) || (transform->Position.Y < stage.StageWorldMin.Y && bigStar->UncollectableFrames == 0)) {
+            if (QuantumUtils.Decrement(ref bigStar->Lifetime)) {
+                // Timer despawn
                 f.Events.CollectableDespawned(entity, transform->Position, false);
                 f.Destroy(entity);
                 return;
             }
 
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(entity);
+            if (transform->Position.Y < stage.StageWorldMin.Y && bigStar->UncollectableFrames == 0 && physicsObject->Velocity.Y <= 0) {
+                // Below world
+                if (physicsObject->DisableCollision) {
+                    // Bounce
+                    physicsObject->Velocity.Y = Constants._8_50 + 3;
+                    physicsObject->IsTouchingGround = false;
+                } else {
+                    // Despawn
+                    f.Events.CollectableDespawned(entity, transform->Position, false);
+                    f.Destroy(entity);
+                    return;
+                }
+            }
+
+
             if (physicsObject->IsTouchingGround) {
                 physicsObject->Velocity.Y = bigStar->BounceForce;
                 physicsObject->IsTouchingGround = false;
@@ -101,25 +122,28 @@ namespace Quantum {
                 if (transform->Position.X - shape.Centroid.X - shape.Box.Extents.X <= stage.StageWorldMin.X) {
                     // Hit left wall
                     bigStar->FacingRight = true;
-                    physicsObject->Velocity.X = bigStar->Speed;
                 } else if (transform->Position.X + shape.Centroid.X + shape.Box.Extents.X >= stage.StageWorldMax.X) {
                     // Hit right wall
                     bigStar->FacingRight = false;
-                    physicsObject->Velocity.X = -bigStar->Speed;
                 }
             }
 
             if (physicsObject->IsTouchingLeftWall || physicsObject->IsTouchingRightWall) {
                 bigStar->FacingRight = physicsObject->IsTouchingLeftWall;
-                physicsObject->Velocity.X = bigStar->Speed * (bigStar->FacingRight ? 1 : -1);
             }
 
-            if (physicsObject->DisableCollision && QuantumUtils.Decrement(ref bigStar->UncollectableFrames) && transform->Position.Y < FPMath.Max(stage.StageWorldMin.Y + 7, stage.StageWorldMax.Y)) {
+            if (physicsObject->DisableCollision
+                && QuantumUtils.Decrement(ref bigStar->UncollectableFrames)
+                && transform->Position.Y < FPMath.Max(stage.StageWorldMin.Y + 7, stage.StageWorldMax.Y)) {
+
                 var physicsCollider = f.Unsafe.GetPointer<PhysicsCollider2D>(entity);
-                if (!PhysicsObjectSystem.BoxInGround((FrameThreadSafe) f, transform->Position, physicsCollider->Shape, true, stage)) {
+                if (!PhysicsObjectSystem.BoxInGround(f, transform->Position, physicsCollider->Shape, stage: stage)) {
                     physicsObject->DisableCollision = false;
+                    physicsObject->SlowInLiquids = true;
                 }
             }
+
+            physicsObject->Velocity.X = bigStar->Speed * (bigStar->FacingRight ? 1 : -1);
         }
 
         public void OnBigStarMarioInteraction(Frame f, EntityRef starEntity, EntityRef marioEntity) {
@@ -137,7 +161,7 @@ namespace Quantum {
                 return;
             }
 
-            mario->Stars++;
+            mario->GamemodeData.StarChasers->Stars++;
             var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
 
             if (star->IsStationary) {
@@ -146,7 +170,9 @@ namespace Quantum {
             }
 
             f.Signals.OnMarioPlayerCollectedStar(marioEntity);
-            f.Events.MarioPlayerCollectedStar(marioEntity, *mario, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position);
+            GameLogicSystem.CheckForGameEnd(f);
+
+            f.Events.MarioPlayerCollectedStar(marioEntity, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position, starEntity);
             f.Events.CollectableDespawned(starEntity, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position, true);
             f.Destroy(starEntity);
         }
@@ -154,8 +180,68 @@ namespace Quantum {
         public void OnReturnToRoom(Frame f) {
             f.Global->MainBigStar = EntityRef.None;
             f.Global->BigStarSpawnTimer = 0;
-            f.Global->UsedStarSpawnCount = 0;
             f.Global->UsedStarSpawns.ClearAll();
+        }
+
+        public void OnMarioPlayerDropObjective(Frame f, EntityRef entity, int amount, EntityRef attacker) {
+            if (f.Unsafe.TryGetPointer(entity, out MarioPlayer* mario)) {
+                SpawnStarsFromPlayer(f, entity, mario, amount);
+            }
+        }
+
+        private static void SpawnStarsFromPlayer(Frame f, EntityRef marioEntity, MarioPlayer* mario, int amount) {
+            var starChasersData = mario->GamemodeData.StarChasers;
+
+            var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+            var transform = f.Unsafe.GetPointer<Transform2D>(marioEntity);
+
+            bool fastStars = amount > 2 && starChasersData->Stars > 2;
+            int starDirection = mario->FacingRight ? 1 : 2;
+
+            if (f.Global->Rules.IsLivesEnabled && mario->Lives == 0) {
+                fastStars = true;
+                mario->NoLivesStarDirection = (byte) ((mario->NoLivesStarDirection + 1) % 4);
+                starDirection = mario->NoLivesStarDirection;
+
+                starDirection = starDirection switch {
+                    2 => 1,
+                    1 => 2,
+                    _ => starDirection
+                };
+            }
+
+            int droppedStars = 0;
+            var gamemode = (StarChasersGamemode) f.FindAsset(f.Global->Rules.Gamemode);
+            while (amount > 0) {
+                if (starChasersData->Stars <= 0) {
+                    break;
+                }
+
+                int actualStarDirection = starDirection % 4;
+                if (!fastStars) {
+                    actualStarDirection = starDirection switch {
+                        0 => 2,
+                        3 => 1,
+                        _ => starDirection
+                    };
+                }
+
+                EntityRef newStarEntity = f.Create(gamemode.BigStarPrototype);
+                var newStar = f.Unsafe.GetPointer<BigStar>(newStarEntity);
+                var newStarTransform = f.Unsafe.GetPointer<Transform2D>(newStarEntity);
+                newStarTransform->Position = transform->Position;
+                newStar->InitializeMovingStar(f, stage, newStarEntity, actualStarDirection);
+
+                starChasersData->Stars--;
+                amount--;
+                droppedStars++;
+                starDirection++;
+            }
+
+            if (droppedStars > 0) {
+                f.Events.MarioPlayerDroppedStar(marioEntity);
+                GameLogicSystem.CheckForGameEnd(f);
+            }
         }
     }
 }

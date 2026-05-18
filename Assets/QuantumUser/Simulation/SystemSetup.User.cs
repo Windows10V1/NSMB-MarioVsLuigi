@@ -1,6 +1,5 @@
 ﻿using Quantum.Core;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace Quantum {
     public static partial class DeterministicSystemSetup {
@@ -10,18 +9,16 @@ namespace Quantum {
 
             // Remove the default systems
             systems.Clear();
-
-            systems.Add(new EntityPrototypeSystem());
             systems.Add(new PlayerConnectedSystem());
             systems.Add(new MvLCullingSystem());
             systems.Add(new GameLogicSystem());
-
             systems.Add(
-                new StartDisabledSystemGroup("gameplay",
+                new StartDisabledSystemGroup(
                     new PrePhysicsObjectSystem(),
                     new InteractionPhysicsQuerySystem(),
                     new GenericMoverSystem(),
                     new SpinnerSystem(),
+                    new DonutBlockSystem(),
                     new MovingPlatformPhysicsQuerySystem(),
                     new PhysicsSystem2D(),
                     new MovingPlatformSystem(),
@@ -32,27 +29,42 @@ namespace Quantum {
                     new KoopaSystem(),
                     new BobombSystem(),
                     new PiranhaPlantSystem(),
+                    new BulletBillLauncherSystem(),
                     new BulletBillSystem(),
                     new BooSystem(),
+                    new FireSnakeSystem(),
                     new ProjectileSystem(),
+                    new CoinItemSystem(),
                     new PowerupSystem(),
                     new BlockBumpSystem(),
+                    new BreakableObjectSystem(),
                     new MarioPlayerSystem(),
                     new CoinSystem(),
+                    new GoldBlockSystem(),
                     new WrappingObjectSystem(),
                     new BigStarSystem(),
+                    new ObjectiveCoinSystem(),
                     new HoldableObjectSystem(),
                     new IceBlockSystem(),
                     new CameraSystem(),
-                    new StageSystem(),
                     new LiquidSystem(),
-                    new BreakableObjectSystem(),
                     new MarioBrosPlatformSystem(),
-                    new EnterablePipeSystem()
-
+                    new EnterablePipeSystem(),
+                    new InvisibleBlockSystem()
                     // new BetterPhysicsObjectSystem()
                 )
             );
+            systems.Add(new StageSystem());
+            systems.Add(new EntityPrototypeSystem());
+
+            if (!gameConfig.IsRealGame) {
+                var debugSystem = DebugCommand.CreateSystem();
+                if (debugSystem != null) {
+                    systems.Add(debugSystem);
+                }
+
+                systems.Add(new MvLDebugSystem());
+            }
         }
     }
 }

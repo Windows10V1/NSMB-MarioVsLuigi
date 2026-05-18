@@ -1,7 +1,6 @@
 using Photon.Deterministic;
 
 namespace Quantum {
-
     public unsafe class HoldableObjectSystem : SystemMainThreadEntityFilter<Holdable, HoldableObjectSystem.Filter>, ISignalOnComponentRemoved<Holdable>,
         ISignalOnTryLiquidSplash, ISignalOnEntityFreeze {
         
@@ -48,7 +47,7 @@ namespace Quantum {
             var transform = filter.Transform;
             FPVector2 newPos = holderTransform->Position + mario->GetHeldItemOffset(f, holdable->Holder);
 
-            if (FPMath.Abs(transform->Position.X - newPos.X) > stage.TileDimensions.x / 4) {
+            if (FPMath.Abs(transform->Position.X - newPos.X) > (FP) stage.TileDimensions.X / 4) {
                 transform->Teleport(f, newPos);
             } else {
                 transform->Position = newPos;

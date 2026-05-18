@@ -5,14 +5,14 @@ using System.Linq;
 
 namespace Quantum {
     public unsafe class GameLogicSystem : SystemMainThread, ISignalOnPlayerAdded, ISignalOnPlayerRemoved, ISignalOnMarioPlayerDied,
-        ISignalOnLoadingComplete, ISignalOnMarioPlayerCollectedStar, ISignalOnReturnToRoom, ISignalOnComponentRemoved<MarioPlayer> {
+        ISignalOnLoadingComplete, ISignalOnReturnToRoom, ISignalOnComponentRemoved<MarioPlayer> {
 
         public override void OnInit(Frame f) {
-            var config = f.RuntimeConfig;
-            f.Global->Rules = f.SimulationConfig.DefaultRules;
+            var gamemode = f.Context.GetAllAssets<GamemodeAsset>()[0];
+            gamemode.DefaultRules.Materialize(f, ref f.Global->Rules);
 
             // Support booting in the editor.
-            if (!config.IsRealGame) {
+            if (!f.RuntimeConfig.IsRealGame) {
                 f.Global->GameState = GameState.WaitingForPlayers;
                 f.Global->PlayerLoadFrames = (ushort) (20 * f.UpdateRate);
             } else {
@@ -23,18 +23,29 @@ namespace Quantum {
         public override void Update(Frame f) {
             // Tick RNG
             _ = f.RNG->Next();
-            
+
             // Parse lobby commands
             var playerDataDictionary = f.ResolveDictionary(f.Global->PlayerDatas);
-            for (int i = 0; i < f.PlayerCount; i++) {
-                if (f.GetPlayerCommand(i) is ILobbyCommand lobbyCommand) {
-                    var playerData = QuantumUtils.GetPlayerData(f, i, playerDataDictionary);
-                    if (playerData == null) {
-                        continue;
+            for (PlayerRef player = 0; player < f.MaxPlayerCount; player++) {
+#if QUANTUM_3_1
+                for (int i = 0; i < f.GetPlayerCommandCount(player); i++) {
+                    if (f.GetPlayerCommand(player, i) is ILobbyCommand lobbyCommand) {
+                        var playerData = QuantumUtils.GetPlayerData(f, player, playerDataDictionary);
+                        if (playerData == null) {
+                            break;
+                        }
+                        lobbyCommand.Execute(f, player, playerData);
                     }
-
-                    lobbyCommand.Execute(f, i, playerData);
                 }
+#else
+                if (f.GetPlayerCommand(player) is ILobbyCommand lobbyCommand) {
+                    var playerData = QuantumUtils.GetPlayerData(f, player, playerDataDictionary);
+                    if (playerData == null) {
+                        break;
+                    }
+                    lobbyCommand.Execute(f, player, playerData);
+                }
+#endif
             }
 
             // Gaem state logic
@@ -44,14 +55,43 @@ namespace Quantum {
                     if (QuantumUtils.Decrement(ref f.Global->GameStartFrames)) {
                         // Start the game!
                         if (f.IsVerified) {
-                            f.MapAssetRef = f.Global->Rules.Stage;
+                            AssetRef<Map> nextStage;
+
+                            switch (f.Global->Rules.ChooseMode) {
+                            case StageChooseMode.Choose:
+                                nextStage = f.Global->Rules.Stage;
+                                break;
+                            case StageChooseMode.Random: {
+                                // Pick a random map
+                                var allMaps = f.Context.GetAllAssets<Map>();
+
+                                // Exclude disabled maps.
+                                if (f.TryResolveHashSet(f.Global->Rules.RandomDisabledStages, out var disabledStages)) {
+                                    allMaps.RemoveAll(map => disabledStages.Contains(map));
+                                }
+
+                                // Remove the previous map (if possible)
+                                if (allMaps.Count > 1) {
+                                    allMaps.RemoveAll(map => map == f.Global->PreviousStage);
+                                }
+
+                                nextStage = allMaps[f.RNG->Next(0, allMaps.Count)];
+                                break;
+                            }
+                            default:
+                                throw new ArgumentOutOfRangeException($"Unknown StageChooseMode {f.Global->Rules.ChooseMode}");
+                            }
+
+                            f.MapAssetRef = nextStage;
                         }
+
                         f.Global->PlayerLoadFrames = (ushort) (20 * f.UpdateRate);
                         f.Global->GameState = GameState.WaitingForPlayers;
+                        f.Global->IsStartGameCountdownActive = false;
 
                         f.Events.GameStateChanged(GameState.WaitingForPlayers);
-                    } else if (f.Global->GameStartFrames % 60 == 0) {
-                        f.Events.CountdownTick(f.Global->GameStartFrames / 60);
+                    } else if (f.Global->GameStartFrames > 0 && f.Global->GameStartFrames % f.UpdateRate == 0) {
+                        f.Events.CountdownTick(f.Global->GameStartFrames / f.UpdateRate);
                     }
                 }
                 break;
@@ -59,9 +99,7 @@ namespace Quantum {
                 int validPlayers = 0;
                 int loadedPlayers = 0;
 
-                var playerDataFilter = f.Filter<PlayerData>();
-                playerDataFilter.UseCulling = false;
-                while (playerDataFilter.NextUnsafe(out _, out PlayerData* data)) {
+                foreach ((_, var data) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
                     if (!f.RuntimeConfig.IsRealGame) {
                         data->IsLoaded = true;
                         data->IsSpectator = false;
@@ -85,7 +123,7 @@ namespace Quantum {
                     f.Global->RealPlayers = (byte) loadedPlayers;
                     f.Global->GameState = GameState.Starting;
                     f.Global->GameStartFrames = (ushort) (6 * f.UpdateRate);
-                    f.Global->Timer = f.Global->Rules.TimerSeconds * f.UpdateRate;
+                    f.Global->Timer = f.Global->Rules.TimerMinutes * 60;
 
                     f.Signals.OnLoadingComplete();
                     f.Events.GameStateChanged(GameState.Starting);
@@ -97,36 +135,59 @@ namespace Quantum {
                     f.Global->GameState = GameState.Playing;
                     f.Events.GameStateChanged(GameState.Playing);
 
-                    var playerDatas = f.Filter<PlayerData>();
-                    while (playerDatas.NextUnsafe(out _, out PlayerData* data)) {
+                    foreach ((_, var data) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
                         data->IsLoaded = false;
                         data->IsReady = false;
                     }
 
                 } else if (f.Global->GameStartFrames == 79) {
                     f.Events.RecordingStarted();
-                    
-                } if (f.Global->GameStartFrames == 78) {
+
+                } else if (f.Global->GameStartFrames == 78) {
                     // Respawn all players and enable systems
                     f.Global->StartFrame = f.Number;
                     f.SystemEnable<StartDisabledSystemGroup>();
+
+                    foreach (var otherGamemode in f.Context.GetAllAssets<GamemodeAsset>()) {
+                        otherGamemode.DisableGamemode(f);
+                    }
+
+                    var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+                    gamemode.EnableGamemode(f);
+
                     f.Signals.OnGameStarting();
                     f.Events.GameStarted();
                 }
                 break;
 
             case GameState.Playing:
-                if (f.Global->Rules.TimerSeconds > 0 && f.Global->Timer > 0) {
+                if (f.Global->Rules.TimerMinutes > 0 && f.Global->Timer > 0) {
                     if ((f.Global->Timer -= f.DeltaTime) <= 0) {
                         f.Global->Timer = 0;
                         CheckForGameEnd(f);
-                        f.Events.TimerExpired(f);
+                        f.Events.TimerExpired();
                     }
                 }
 
-                if (f.GetPlayerCommand(f.Global->Host) is CommandHostEndGame) {
+                if (f.Global->AutomaticStageRefreshInterval > 0) {
+                    if (QuantumUtils.Decrement(ref f.Global->AutomaticStageRefreshTimer)) {
+                        VersusStageData stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+                        stage.ResetStage(f, false);
+                        f.Global->AutomaticStageRefreshTimer = f.Global->AutomaticStageRefreshInterval;
+                        f.Events.StageAutoRefresh();
+                    }
+                }
+
+#if QUANTUM_3_1
+                foreach (var _ in f.GetPlayerCommands<CommandHostEndGame>(f.Global->Host)) {
+                    EndGame(f, true, null);
+                    break;
+                }
+#else
+                if (f.GetPlayerCommand(f.Global->Host) is CommandHostEndGame) { 
                     EndGame(f, true, null);
                 }
+#endif
                 break;
 
             case GameState.Ended:
@@ -139,7 +200,7 @@ namespace Quantum {
                     // Move back to lobby.
                     f.Global->TotalGamesPlayed++;
                     if (f.IsVerified) {
-                        //f.MapAssetRef = f.SimulationConfig.LobbyMap;
+                        f.Global->PreviousStage = f.MapAssetRef;
                         f.Map = null;
                     }
                     f.SystemEnable<StartDisabledSystemGroup>();
@@ -147,6 +208,9 @@ namespace Quantum {
                     f.Global->GameState = GameState.PreGameRoom;
                     f.Events.GameStateChanged(GameState.PreGameRoom);
                     f.SystemDisable<StartDisabledSystemGroup>();
+
+                    var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+                    gamemode.DisableGamemode(f);
                 }
                 break;
             }
@@ -158,63 +222,8 @@ namespace Quantum {
         }
 
         public static void CheckForGameEnd(Frame f) {
-            // End Condition: only one team alive
-            var marioFilter = f.Filter<MarioPlayer>();
-            marioFilter.UseCulling = false;
-
-            bool livesGame = f.Global->Rules.IsLivesEnabled;
-            bool oneOrNoTeamAlive = true;
-            int aliveTeam = -1;
-            while (marioFilter.NextUnsafe(out _, out MarioPlayer* mario)) {
-                if ((livesGame && mario->Lives <= 0) || mario->Disconnected) {
-                    continue;
-                }
-
-                if (aliveTeam == -1 && mario->GetTeam(f) is byte team) {
-                    aliveTeam = team;
-                } else {
-                    oneOrNoTeamAlive = false;
-                    break;
-                }
-            }
-
-            if (oneOrNoTeamAlive) {
-                if (aliveTeam == -1) {
-                    // It's a draw
-                    EndGame(f, false, null);
-                    return;
-                } else if (f.Global->RealPlayers > 1) {
-                    // <team> wins, assuming more than 1 player
-                    // so the player doesn't insta-win in a solo game.
-                    EndGame(f, false, aliveTeam);
-                    return;
-                }
-            }
-
-            int? winningTeam = QuantumUtils.GetWinningTeam(f, out int stars);
-
-            // End Condition: team gets to enough stars
-            if (winningTeam != null && stars >= f.Global->Rules.StarsToWin) {
-                // <team> wins
-                EndGame(f, false, winningTeam.Value);
-                return;
-            }
-
-            // End Condition: timer expires
-            if (f.Global->Rules.IsTimerEnabled && f.Global->Timer <= 0) {
-                if (f.Global->Rules.DrawOnTimeUp) {
-                    // It's a draw
-                    EndGame(f, false, null);
-                    return;
-                }
-
-                // Check if one team is winning
-                if (winningTeam != null) {
-                    // <team> wins
-                    EndGame(f, false, winningTeam.Value);
-                    return;
-                }
-            }
+            var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+            gamemode.CheckForGameEnd(f);
         }
 
         public static void EndGame(Frame f, bool endedByHost, int? winningTeam) {
@@ -228,9 +237,7 @@ namespace Quantum {
             f.Signals.OnGameEnding(winningTeam.GetValueOrDefault(), winningTeam.HasValue);
             f.Events.GameEnded(endedByHost, winningTeam.GetValueOrDefault(), winningTeam.HasValue);
 
-            var playerDatas = f.Filter<PlayerData>();
-            playerDatas.UseCulling = false;
-            while (playerDatas.NextUnsafe(out _, out PlayerData* data)) {
+            foreach ((_, var data) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
                 if (winningTeam == data->RealTeam && !data->IsSpectator) {
                     data->Wins++;
                 }
@@ -241,6 +248,9 @@ namespace Quantum {
             f.Events.GameStateChanged(GameState.Ended);
             f.Global->GameStartFrames = (ushort) ((endedByHost ? Constants._3_50 : 21) * f.UpdateRate);
             f.SystemDisable<StartDisabledSystemGroup>();
+
+            var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+            gamemode.DisableGamemode(f);
         }
 
         public void OnMarioPlayerDied(Frame f, EntityRef entity) {
@@ -252,7 +262,7 @@ namespace Quantum {
 
             var bans = f.ResolveList(f.Global->BannedPlayerIds);
             foreach (var ban in bans) {
-                if (ban.UserId == runtimePlayer.UserId) {
+                if (ban.MatchesPlayer(runtimePlayer)) {
                     // banned user- ignore them.
                     return;
                 }
@@ -266,7 +276,7 @@ namespace Quantum {
             newData->RealTeam = 255;
 
             // Get team counts
-            int teams = f.SimulationConfig.Teams.Length;
+            int teams = f.Context.GetAllAssets<TeamAsset>().Count;
             Span<byte> teamCounts = stackalloc byte[teams];
             var playerDatas = f.ResolveDictionary(f.Global->PlayerDatas);
             foreach ((PlayerRef otherPlayer, EntityRef otherEntity) in playerDatas) {
@@ -294,6 +304,8 @@ namespace Quantum {
             if (playerDatas.Count == 0) {
                 // First player is host
                 newData->IsRoomHost = true;
+                newData->IsReady = false;
+                newData->IsTeamLocked = false;
                 f.Global->Host = player;
                 f.Events.HostChanged(player);
             }
@@ -340,6 +352,8 @@ namespace Quantum {
 
                     if (youngestPlayer != null) {
                         youngestPlayer->IsRoomHost = true;
+                        youngestPlayer->IsReady = false;
+                        youngestPlayer->IsTeamLocked = false;
                         f.Global->Host = youngestPlayer->PlayerRef;
                         f.Events.HostChanged(youngestPlayer->PlayerRef);
                     }
@@ -360,6 +374,14 @@ namespace Quantum {
                 }
                 break;
             case GameState.Starting:
+                // Fixes spectators being able to take over old players' objects.
+                foreach ((_, var mario) in f.Unsafe.GetComponentBlockIterator<MarioPlayer>()) {
+                    if (mario->PlayerRef == player) {
+                        mario->Disconnected = true;
+                        mario->PlayerRef = PlayerRef.None;
+                    }
+                }
+                goto case GameState.Playing;
             case GameState.Playing:
                 for (int i = 0; i < f.Global->RealPlayers; i++) {
                     ref PlayerInformation info = ref f.Global->PlayerInfo[i];
@@ -381,9 +403,8 @@ namespace Quantum {
             var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
             int teamCount = 0;
 
-            var playerDatas = f.Filter<PlayerData>();
             int playerCount = 0;
-            while (playerDatas.NextUnsafe(out _, out PlayerData* data)) {
+            foreach ((_, var data) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
                 if (!data->IsLoaded) {
                     // Force spectator, didn't load in time
                     data->IsSpectator = true;
@@ -394,8 +415,9 @@ namespace Quantum {
                     continue;
                 }
 
-                int characterIndex = FPMath.Clamp(data->Character, 0, config.CharacterDatas.Length - 1);
-                CharacterAsset character = f.FindAsset(config.CharacterDatas[characterIndex]);
+                if (!f.TryFindAsset(data->Character, out var character)) {
+                    character = f.Context.GetAllAssets<CharacterAsset>()[0];
+                }
 
                 EntityRef newPlayer = f.Create(character.Prototype);
                 var mario = f.Unsafe.GetPointer<MarioPlayer>(newPlayer);
@@ -412,16 +434,15 @@ namespace Quantum {
                     PlayerRef = data->PlayerRef,
                     Nickname = runtimePlayer.PlayerNickname,
                     NicknameColor = runtimePlayer.NicknameColor,
-                    Character = (byte) characterIndex,
+                    Character = runtimePlayer.Character,
                     Team = data->RealTeam,
                 };
             }
 
             // Assign random spawnpoints
             f.Global->TotalMarios = (byte) f.ComponentCount<MarioPlayer>();
-            List<int> spawnpoints = Enumerable.Range(0, f.ComponentCount<MarioPlayer>()).ToList();
-            var allMarios = f.Filter<MarioPlayer>();
-            while (allMarios.NextUnsafe(out EntityRef entity, out MarioPlayer* mario)) {
+            List<int> spawnpoints = Enumerable.Range(0, f.Global->TotalMarios).ToList();
+            foreach ((var entity, var mario) in f.Unsafe.GetComponentBlockIterator<MarioPlayer>()) {
                 int randomIndex = FPMath.FloorToInt(f.RNG->Next() * spawnpoints.Count);
                 mario->SpawnpointIndex = (byte) spawnpoints[randomIndex];
                 spawnpoints.RemoveAt(randomIndex);
@@ -429,10 +450,6 @@ namespace Quantum {
                 var camera = f.Unsafe.GetPointer<CameraController>(entity);
                 camera->Recenter(stage, stage.GetWorldSpawnpointForPlayer(mario->SpawnpointIndex, f.Global->TotalMarios));
             }
-        }
-
-        public void OnMarioPlayerCollectedStar(Frame f, EntityRef entity) {
-            CheckForGameEnd(f);
         }
 
         public void OnReturnToRoom(Frame f) {
@@ -453,9 +470,9 @@ namespace Quantum {
             for (int i = 0; i < f.Global->PlayerInfo.Length; i++) {
                 f.Global->PlayerInfo[i] = default;
             }
+            f.Global->UsedStarSpawns.ClearAll();
 
-            var playerDatas = f.Filter<PlayerData>();
-            while (playerDatas.NextUnsafe(out _, out PlayerData* data)) {
+            foreach ((_, var data) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
                 data->IsLoaded = false;
                 data->IsReady = false;
                 data->IsSpectator = data->ManualSpectator;

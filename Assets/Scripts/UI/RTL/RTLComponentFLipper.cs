@@ -1,5 +1,5 @@
-using NSMB.Extensions;
-using NSMB.Translation;
+using NSMB.UI.Translation;
+using NSMB.Utilities.Extensions;
 using UnityEngine;
 
 namespace NSMB.UI.RTL {
@@ -18,8 +18,8 @@ namespace NSMB.UI.RTL {
         }
 
         public virtual void OnDisable() {
+            Reset();
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
-            TryApplyDirection();
         }
 
         public void TryApplyDirection() {
@@ -32,6 +32,10 @@ namespace NSMB.UI.RTL {
         }
 
         protected abstract void ApplyDirection(bool rtl);
+
+        protected virtual void Reset() {
+            ApplyDirection(false);
+        }
 
         private void OnLanguageChanged(TranslationManager tm) {
             ApplyDirection(tm.RightToLeft);

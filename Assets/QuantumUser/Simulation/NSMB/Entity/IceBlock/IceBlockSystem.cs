@@ -1,9 +1,8 @@
 using Photon.Deterministic;
 
 namespace Quantum {
-
     public unsafe class IceBlockSystem : SystemMainThreadEntityFilter<IceBlock, IceBlockSystem.Filter>, ISignalOnThrowHoldable, ISignalOnEntityBumped,
-        ISignalOnBeforeInteraction, ISignalOnBobombExplodeEntity, ISignalOnTryLiquidSplash, ISignalOnEntityChangeUnderwaterState {
+        ISignalOnBeforeInteraction, ISignalOnBobombExplodeEntity, ISignalOnTryLiquidSplash, ISignalOnEntityChangeUnderwaterState, ISignalOnMarioPlayerDied {
 
         public struct Filter {
             public EntityRef Entity;
@@ -22,24 +21,25 @@ namespace Quantum {
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
             var entity = filter.Entity;
             var iceBlock = filter.IceBlock;
-            if (!f.Exists(iceBlock->Entity)) {
+
+            if (!f.Unsafe.TryGetPointer(iceBlock->Entity, out Freezable* childFreezable)) {
                 // Child despawned.
-                Destroy(f, entity, IceBlockBreakReason.None);
+                Destroy(f, entity, IceBlockBreakReason.None, EntityRef.None);
             }
 
             var transform = filter.Transform;
-            var childFreezable = f.Unsafe.GetPointer<Freezable>(iceBlock->Entity);
             var physicsObject = filter.PhysicsObject;
 
-            if ((f.Number + entity.Index) % 2 == 0 && PhysicsObjectSystem.BoxInGround((FrameThreadSafe) f, transform->Position, filter.PhysicsCollider->Shape, true, stage, entity)) {
-                Destroy(f, entity, IceBlockBreakReason.HitWall);
+            if (!physicsObject->IsFrozen && childFreezable->IsCarryable && (f.Number + entity.Index) % 2 == 0 
+                && PhysicsObjectSystem.BoxInGround(f, transform->Position, filter.PhysicsCollider->Shape, true, stage, entity)) {
+                Destroy(f, entity, IceBlockBreakReason.HitWall, EntityRef.None);
                 return;
             }
 
             if (childFreezable->IsCarryable) {
                 var childTransform = f.Unsafe.GetPointer<Transform2D>(iceBlock->Entity);
                 FPVector2 newPosition = transform->Position - iceBlock->ChildOffset;
-                if (stage.IsWrappingLevel && FPVector2.Distance(childTransform->Position, newPosition) > stage.TileDimensions.x / (FP) 4) {
+                if (stage.IsWrappingLevel && FPVector2.Distance(childTransform->Position, newPosition) > stage.TileDimensions.X / (FP) 4) {
                     childTransform->Teleport(f, newPosition);
                 } else {
                     childTransform->Position = newPosition;
@@ -51,7 +51,7 @@ namespace Quantum {
                 physicsObject->Velocity.X = iceBlock->SlidingSpeed * (iceBlock->FacingRight ? 1 : -1);
 
                 if (physicsObject->IsTouchingLeftWall || physicsObject->IsTouchingRightWall) {
-                    Destroy(f, entity, IceBlockBreakReason.HitWall);
+                    Destroy(f, entity, IceBlockBreakReason.HitWall, EntityRef.None);
                     return;
                 }
             } else if (iceBlock->IsFlying) {
@@ -81,9 +81,8 @@ namespace Quantum {
                     if (iceBlock->IsFlying && !physicsObject->IsTouchingGround) {
                         physicsObject->IsFrozen = false;
                         iceBlock->AutoBreakFrames = 1;
-
                     } else {
-                        Destroy(f, entity, IceBlockBreakReason.Timer);
+                        Destroy(f, entity, IceBlockBreakReason.Timer, EntityRef.None);
                         return;
                     }
                 }
@@ -102,46 +101,56 @@ namespace Quantum {
             return iceBlockEntity;
         }
 
-        public static void Destroy(Frame f, EntityRef iceBlockEntity, IceBlockBreakReason breakReason) {
-            f.Signals.OnIceBlockBroken(iceBlockEntity, breakReason);
+        public static void Destroy(Frame f, EntityRef iceBlockEntity, IceBlockBreakReason breakReason, EntityRef attacker) {
+            var iceBlock = f.Unsafe.GetPointer<IceBlock>(iceBlockEntity);
+            if (f.Unsafe.TryGetPointer(iceBlock->Entity, out PhysicsObject* childPhysicsObject)) {
+                childPhysicsObject->IsFrozen = false;
+            }
+            f.Signals.OnIceBlockBroken(iceBlockEntity, breakReason, attacker);
             f.Destroy(iceBlockEntity);
         }
 
         #region Interactions
-        public static void OnIceBlockMarioInteraction(Frame f, EntityRef marioEntity, EntityRef iceBlockEntity, PhysicsContact contact) {
+        public static bool OnIceBlockMarioInteraction(Frame f, EntityRef marioEntity, EntityRef iceBlockEntity, PhysicsContact contact) {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
             var iceBlock = f.Unsafe.GetPointer<IceBlock>(iceBlockEntity);
 
             if (mario->IsStarmanInvincible || mario->CurrentPowerupState == PowerupState.MegaMushroom) {
-                Destroy(f, iceBlockEntity, IceBlockBreakReason.Other);
-                return;
+                Destroy(f, iceBlockEntity, IceBlockBreakReason.InvincibleMario, marioEntity);
+                return true;
             }
 
             FP upDot = FPVector2.Dot(contact.Normal, FPVector2.Up);
-            if (upDot >= PhysicsObjectSystem.GroundMaxAngle) {
+            if (upDot >= Constants.PhysicsGroundMaxAngleCos) {
                 // Top
                 if (mario->IsGroundpoundActive) {
-                    Destroy(f, iceBlockEntity, IceBlockBreakReason.Groundpounded);
-                    return;
+                    Destroy(f, iceBlockEntity, IceBlockBreakReason.Groundpounded, marioEntity);
+                    return true;
                 }
-            } else if (upDot <= -PhysicsObjectSystem.GroundMaxAngle) {
+            } else if (upDot <= -Constants.PhysicsGroundMaxAngleCos) {
                 // Bottom
-                Destroy(f, iceBlockEntity, IceBlockBreakReason.BlockBump);
-                return;
+                Destroy(f, iceBlockEntity, IceBlockBreakReason.BlockBump, marioEntity);
+                return false;
             } else {
                 // Side
                 bool rightContact = contact.Normal.X > 0;
-                if ((iceBlock->IsSliding && iceBlock->FacingRight == rightContact) || mario->IsInShell) {
+                if (mario->IsInShell) {
+                    Destroy(f, iceBlockEntity, IceBlockBreakReason.HitWall, marioEntity);
+                    return false;
+                } else if (iceBlock->IsSliding && iceBlock->FacingRight == rightContact) {
                     var holdable = f.Unsafe.GetPointer<Holdable>(iceBlockEntity);
-                    bool dropStars = !f.Unsafe.TryGetPointer(holdable->PreviousHolder, out MarioPlayer* holderMario) || mario->GetTeam(f) != holderMario->GetTeam(f);
-                    bool damaged = mario->DoKnockback(f, marioEntity, contact.Normal.X > 0, dropStars ? 1 : 0, KnockbackStrength.Normal, iceBlockEntity);
-                    if (damaged) {
-                        FPVector2 particlePos = (f.Unsafe.GetPointer<Transform2D>(marioEntity)->Position + f.Unsafe.GetPointer<Transform2D>(iceBlockEntity)->Position) / 2;
-                        f.Events.PlayKnockbackEffect(marioEntity, iceBlockEntity, KnockbackStrength.Normal, particlePos);
+                    bool dropStars = !f.Unsafe.TryGetPointer(holdable->PreviousHolder, out MarioPlayer* holderMario) || mario->GetTeam(f) != holderMario->GetTeam(f) || f.Global->Rules.TeamAttack == TeamAttackOptions.Full;
+
+                    if (!dropStars || f.Global->Rules.TeamAttack != TeamAttackOptions.None) {
+                        bool damaged = mario->DoKnockback(f, marioEntity, contact.Normal.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, iceBlockEntity);
+                        if (damaged) {
+                            FPVector2 particlePos = (f.Unsafe.GetPointer<Transform2D>(marioEntity)->Position + f.Unsafe.GetPointer<Transform2D>(iceBlockEntity)->Position) / 2;
+                            f.Events.PlayKnockbackEffect(marioEntity, iceBlockEntity, KnockbackStrength.FireballBump, particlePos);
+                        }
                     }
 
-                    Destroy(f, iceBlockEntity, IceBlockBreakReason.HitWall);
-                    return;
+                    Destroy(f, iceBlockEntity, IceBlockBreakReason.HitWall, marioEntity);
+                    return false;
                 }
             }
 
@@ -161,6 +170,7 @@ namespace Quantum {
                     iceBlock->AutoBreakFrames = (byte) FPMath.Clamp(iceBlock->AutoBreakFrames + child->AutoBreakGrabAdditionalFrames, 0, byte.MaxValue);
                 }
             }
+            return false;
         }
 
         public static void OnIceBlockCoinInteraction(Frame f, EntityRef coinEntity, EntityRef iceBlockEntity) {
@@ -175,17 +185,13 @@ namespace Quantum {
             CoinSystem.TryCollectCoin(f, coinEntity, holdable->PreviousHolder);
         }
 
-        public static void OnIceBlockProjectileInteraction(Frame f, EntityRef projectileEntity, EntityRef iceBlockEntity, PhysicsContact contact) {
+        public static bool OnIceBlockProjectileInteraction(Frame f, EntityRef projectileEntity, EntityRef iceBlockEntity, PhysicsContact contact) {
             var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
-
-            if (projectileAsset.Effect == ProjectileEffectType.Fire) {
-                // Fireball: destroy
-                Destroy(f, iceBlockEntity, IceBlockBreakReason.Fireball);
-            }
 
             if (projectileAsset.DestroyOnHit) {
                 ProjectileSystem.Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
             }
+            return false;
         }
         #endregion
 
@@ -217,7 +223,7 @@ namespace Quantum {
 
         public void OnEntityBumped(Frame f, EntityRef entity, FPVector2 tileWorldPosition, EntityRef blockBump, QBoolean fromBelow) {
             if (f.Has<IceBlock>(entity)) {
-                Destroy(f, entity, IceBlockBreakReason.BlockBump);
+                Destroy(f, entity, IceBlockBreakReason.BlockBump, blockBump);
             }
         }
 
@@ -227,7 +233,7 @@ namespace Quantum {
 
         public void OnBobombExplodeEntity(Frame f, EntityRef bobomb, EntityRef entity) {
             if (f.Has<IceBlock>(entity)) {
-                Destroy(f, entity, IceBlockBreakReason.None);
+                Destroy(f, entity, IceBlockBreakReason.None, bobomb);
             }
         }
 
@@ -265,10 +271,18 @@ namespace Quantum {
 
             if (iceBlockA->IsSliding) {
                 if (iceBlockB->IsSliding) {
-                    Destroy(f, entity, IceBlockBreakReason.Other);
+                    Destroy(f, entity, IceBlockBreakReason.Other, contact->Entity);
                 }
-                Destroy(f, contact->Entity, IceBlockBreakReason.Other);
+                Destroy(f, contact->Entity, IceBlockBreakReason.Other, entity);
                 *allowCollision = false;
+            }
+        }
+
+        public void OnMarioPlayerDied(Frame f, EntityRef entity) {
+            var freezable = f.Unsafe.GetPointer<Freezable>(entity);
+
+            if (f.Exists(freezable->FrozenCubeEntity)) {
+                Destroy(f, freezable->FrozenCubeEntity, IceBlockBreakReason.Other, EntityRef.None);
             }
         }
         #endregion

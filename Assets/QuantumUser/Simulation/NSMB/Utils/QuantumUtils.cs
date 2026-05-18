@@ -3,23 +3,48 @@ using Quantum;
 using Quantum.Collections;
 using Quantum.Core;
 using System;
-using System.Collections.Generic;
 
 public static unsafe class QuantumUtils {
 
-    private static readonly SoundEffect[] ComboSounds = {
-        SoundEffect.Enemy_Shell_Kick,
-        SoundEffect.Enemy_Shell_Combo1,
-        SoundEffect.Enemy_Shell_Combo2,
-        SoundEffect.Enemy_Shell_Combo3,
-        SoundEffect.Enemy_Shell_Combo4,
-        SoundEffect.Enemy_Shell_Combo5,
-        SoundEffect.Enemy_Shell_Combo6,
-        SoundEffect.Enemy_Shell_Combo7,
-    };
+    public static EntityRef FindClosestAliveMario(Frame f, FPVector2 position, out FPVector2 marioPosition, VersusStageData stage = null) {
+        if (stage == null) {
+            stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+        }
+
+        var filter = f.Filter<Transform2D, MarioPlayer>();
+        filter.UseCulling = false;
+
+        marioPosition = default;
+        EntityRef currentClosestEntity = EntityRef.None;
+        FP currentMinDistance = FP.MaxValue;
+        while (filter.NextUnsafe(out var entity, out var marioTransform, out var mario)) {
+            if (mario->IsDead) {
+                continue;
+            }
+
+            FP distance = WrappedDistanceSquared(stage, position, marioTransform->Position);
+            if (distance < currentMinDistance) {
+                currentClosestEntity = entity;
+                currentMinDistance = distance;
+                marioPosition = marioTransform->Position;
+            }
+        }
+
+        return currentClosestEntity;
+    }
+
+    public static T SetFlag<T>(T value, T flag, bool set) where T : Enum {
+        long longValue = (long) (object) value;
+        long longFlag = (long) (object) flag;
+        if (set) {
+            longValue |= longFlag;
+        } else {
+            longValue &= ~longFlag;
+        }
+        return (T) (object) longValue;
+    }
 
     public static unsafe PlayerData* GetPlayerData(Frame f, PlayerRef player, QDictionary<PlayerRef, EntityRef>? dictionary = default) {
-
         QDictionary<PlayerRef, EntityRef> playerDataDictionary; 
         if (dictionary == null) {
             if (!f.TryResolveDictionary(f.Global->PlayerDatas, out playerDataDictionary)) {
@@ -39,7 +64,6 @@ public static unsafe class QuantumUtils {
     }
 
     public static PlayerData? GetPlayerDataSafe(Frame f, PlayerRef player, QDictionary<PlayerRef, EntityRef>? dictionary = default) {
-
         QDictionary<PlayerRef, EntityRef> playerDataDictionary;
         if (dictionary == null) {
             if (!f.TryResolveDictionary(f.Global->PlayerDatas, out playerDataDictionary)) {
@@ -58,70 +82,84 @@ public static unsafe class QuantumUtils {
         return data;
     }
 
-    public static SoundEffect GetComboSoundEffect(int combo) {
-        return ComboSounds[FPMath.Clamp(combo, 0, ComboSounds.Length - 1)];
-    }
-
-    public static Vector2Int WorldToUnityTile(Frame f, FPVector2 worldPos) {
+    public static IntVector2 WorldToUnityTile(Frame f, FPVector2 worldPos) {
         return WorldToUnityTile(f.FindAsset<VersusStageData>(f.Map.UserAsset), worldPos);
     }
 
-    public static Vector2Int WorldToUnityTile(VersusStageData stage, FPVector2 worldPos) {
+    public static IntVector2 WorldToUnityTile(VersusStageData stage, FPVector2 worldPos) {
         worldPos -= stage.TilemapWorldPosition;
         worldPos *= 2;
-        return new Vector2Int(FPMath.FloorToInt(worldPos.X), FPMath.FloorToInt(worldPos.Y));
+        return new IntVector2(FPMath.FloorToInt(worldPos.X), FPMath.FloorToInt(worldPos.Y));
     }
 
-    public static Vector2Int UntiyTileToRelativeTile(Frame f, Vector2Int unityTile) {
+    public static IntVector2 UntiyTileToRelativeTile(Frame f, IntVector2 unityTile) {
         return UnityTileToRelativeTile(f.FindAsset<VersusStageData>(f.Map.UserAsset), unityTile);
     }
 
-    public static Vector2Int UnityTileToRelativeTile(VersusStageData stage, Vector2Int unityTile, bool extend = true) {
-        int x = unityTile.x - stage.TileOrigin.x;
-        x = (x % stage.TileDimensions.x + stage.TileDimensions.x) % stage.TileDimensions.x; // Wrapping
-        int y = unityTile.y - stage.TileOrigin.y;
-        if (extend && stage.ExtendCeilingHitboxes) {
-            y = Math.Min(y, stage.TileDimensions.y - 1);
+    public static IntVector2 UnityTileToRelativeTile(VersusStageData stage, IntVector2 unityTile, bool extend = true, bool wrap = true) {
+        int x = unityTile.X - stage.TileOrigin.X;
+        if (wrap) {
+            x = Modulo(x, stage.TileDimensions.X); // Wrapping
         }
-        return new Vector2Int(x, y);
+        int y = unityTile.Y - stage.TileOrigin.Y;
+        if (extend && stage.ExtendCeilingHitboxes) {
+            y = Math.Min(y, stage.TileDimensions.Y - 1);
+        }
+        return new IntVector2(x, y);
     }
 
-    public static Vector2Int WorldToRelativeTile(Frame f, FPVector2 worldPos, bool extend = true) {
-        return WorldToRelativeTile(f.FindAsset<VersusStageData>(f.Map.UserAsset), worldPos, extend);
+    public static IntVector2 WorldToRelativeTile(Frame f, FPVector2 worldPos, bool extend = true, bool wrap = true) {
+        return WorldToRelativeTile(f.FindAsset<VersusStageData>(f.Map.UserAsset), worldPos, extend, wrap);
     }
 
-    public static Vector2Int WorldToRelativeTile(VersusStageData stage, FPVector2 worldPos, bool extend = true) {
-        return UnityTileToRelativeTile(stage, WorldToUnityTile(stage, worldPos), extend);
+    public static IntVector2 WorldToRelativeTile(VersusStageData stage, FPVector2 worldPos, bool extend = true, bool wrap = true) {
+        return UnityTileToRelativeTile(stage, WorldToUnityTile(stage, worldPos), extend, wrap);
     }
 
-    public static FPVector2 UnityTileToWorld(Frame f, Vector2Int unityTile) {
+    public static FPVector2 UnityTileToWorld(Frame f, IntVector2 unityTile) {
         return UnityTileToWorld(f.FindAsset<VersusStageData>(f.Map.UserAsset), unityTile);
     }
 
-    public static FPVector2 UnityTileToWorld(VersusStageData stage, Vector2Int unityTile) {
-        return (new FPVector2(unityTile.x, unityTile.y) / 2) + stage.TilemapWorldPosition;
+    public static FPVector2 UnityTileToWorld(VersusStageData stage, IntVector2 unityTile) {
+        return (new FPVector2(unityTile.X, unityTile.Y) / 2) + stage.TilemapWorldPosition;
     }
 
-    public static Vector2Int RelativeTileToUnityTile(Frame f, Vector2Int relativeTile) {
+    public static IntVector2 RelativeTileToUnityTile(Frame f, IntVector2 relativeTile) {
         return RelativeTileToUnityTile(f.FindAsset<VersusStageData>(f.Map.UserAsset), relativeTile);
     }
 
-    public static Vector2Int RelativeTileToUnityTile(VersusStageData stage, Vector2Int relativeTile) {
-        int x = relativeTile.x + stage.TileOrigin.x;
-        int y = relativeTile.y + stage.TileOrigin.y;
-        return new Vector2Int(x, y);
+    public static IntVector2 RelativeTileToUnityTile(VersusStageData stage, IntVector2 relativeTile) {
+        int x = relativeTile.X + stage.TileOrigin.X;
+        int y = relativeTile.Y + stage.TileOrigin.Y;
+        return new IntVector2(x, y);
     }
 
-    public static FPVector2 RelativeTileToWorld(Frame f, Vector2Int relativeTile) {
+    public static FPVector2 RelativeTileToWorld(Frame f, IntVector2 relativeTile) {
         return RelativeTileToWorld(f.FindAsset<VersusStageData>(f.Map.UserAsset), relativeTile);
     }
 
-    public static FPVector2 RelativeTileToWorld(VersusStageData stage, Vector2Int relativeTile) {
+    public static FPVector2 RelativeTileToWorld(VersusStageData stage, IntVector2 relativeTile) {
         return UnityTileToWorld(stage, RelativeTileToUnityTile(stage, relativeTile));
     }
 
-    public static FPVector2 RelativeTileToWorldRounded(VersusStageData stage, Vector2Int relativeTile) {
+    public static FPVector2 RelativeTileToWorldRounded(VersusStageData stage, IntVector2 relativeTile) {
         return RelativeTileToWorld(stage, relativeTile) + FPVector2.One * FP._0_25;
+    }
+
+    public static IntVector2 WrapRelativeTile(VersusStageData stage, IntVector2 relativeTile, out WrapDirection wrapDirection) {
+        if (relativeTile.X < 0) {
+            relativeTile.X += stage.TileDimensions.X;
+            wrapDirection = WrapDirection.Left;
+
+        } else if (relativeTile.X >= stage.TileDimensions.X) {
+            relativeTile.X -= stage.TileDimensions.X;
+            wrapDirection = WrapDirection.Right;
+
+        } else {
+            wrapDirection = WrapDirection.NoWrap;
+        }
+
+        return relativeTile;
     }
 
     public static FPVector2 WrapUnityTile(Frame f, FPVector2 unityTile, out WrapDirection wrapDirection) {
@@ -129,12 +167,12 @@ public static unsafe class QuantumUtils {
     }
 
     public static FPVector2 WrapUnityTile(VersusStageData stage, FPVector2 unityTile, out WrapDirection wrapDirection) {
-        if (unityTile.X < stage.TileOrigin.x) {
-            unityTile.X += stage.TileDimensions.x;
+        if (unityTile.X < stage.TileOrigin.X) {
+            unityTile.X += stage.TileDimensions.X;
             wrapDirection = WrapDirection.Left;
 
-        } else if (unityTile.X >= stage.TileOrigin.x + stage.TileDimensions.x) {
-            unityTile.X -= stage.TileDimensions.x;
+        } else if (unityTile.X >= stage.TileOrigin.X + stage.TileDimensions.X) {
+            unityTile.X -= stage.TileDimensions.X;
             wrapDirection = WrapDirection.Right;
 
         } else {
@@ -150,11 +188,11 @@ public static unsafe class QuantumUtils {
 
     public static FPVector2 WrapWorld(VersusStageData stage, FPVector2 worldPos, out WrapDirection wrapDirection) {
         if (worldPos.X < stage.StageWorldMin.X) {
-            worldPos.X += stage.TileDimensions.x / 2;
+            worldPos.X += stage.TileDimensions.X / 2;
             wrapDirection = WrapDirection.Left;
 
         } else if (worldPos.X >= stage.StageWorldMax.X) {
-            worldPos.X -= stage.TileDimensions.x / 2;
+            worldPos.X -= stage.TileDimensions.X / 2;
             wrapDirection = WrapDirection.Right;
 
         } else {
@@ -176,7 +214,7 @@ public static unsafe class QuantumUtils {
             return;
         }
 
-        FP width = stage.TileDimensions.x * FP._0_50;
+        FP width = stage.TileDimensions.X * FP._0_50;
         if (FPMath.Abs(newA.X - newB.X) > width / 2) {
             newB.X += width * (newB.X > stage.StageWorldMin.X + (width / 2) ? -1 : 1);
         }
@@ -188,39 +226,10 @@ public static unsafe class QuantumUtils {
         Right
     }
 
-    public static int? GetWinningTeam(Frame f, out int winningStars) {
-        winningStars = 0;
-        int? winningTeam = null;
-        bool tie = false;
-
-        Span<short> teamStars = stackalloc short[Constants.MaxPlayers];
-        GetAllTeamsStars(f, teamStars);
-
-        for (int i = 0; i < Constants.MaxPlayers; i++) {
-            short stars = teamStars[i];
-            if (stars < 0) {
-                continue;
-            } else if (winningTeam == null) {
-                winningTeam = i;
-                winningStars = stars;
-                tie = false;
-            } else if (stars > winningStars) {
-                winningTeam = i;
-                winningStars = stars;
-                tie = false;
-            } else if (stars == winningStars) {
-                tie = true;
-            }
-        }
-
-        return tie ? null : winningTeam;
-    }
-
     public static int GetValidTeams(Frame f) {
         int result = 0;
 
-        var allPlayers = f.Filter<PlayerData>();
-        while (allPlayers.NextUnsafe(out _, out PlayerData* data)) {
+        foreach ((_, var data) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
             if (data->IsSpectator) {
                 continue;
             }
@@ -230,143 +239,6 @@ public static unsafe class QuantumUtils {
         }
 
         return result;
-    }
-
-    public static void GetAllTeamsStars(Frame f, Span<short> teamStars) {
-        var allPlayers = f.Filter<MarioPlayer>();
-        allPlayers.UseCulling = false;
-
-        for (int i = 0; i < teamStars.Length; i++) {
-            teamStars[i] = -1;
-        }
-
-        while (allPlayers.NextUnsafe(out _, out MarioPlayer* mario)) {
-            if (mario->Disconnected || (mario->Lives <= 0 && f.Global->Rules.IsLivesEnabled)) {
-                continue;
-            }
-            if (mario->GetTeam(f) is not byte team) {
-                continue;
-            }
-
-            if (teamStars[team] == -1) {
-                teamStars[team] = 0;
-            }
-
-            if (team < teamStars.Length) {
-                teamStars[team] += mario->Stars;
-            }
-        }
-    }
-
-    public static int? GetTeamStars(Frame f, byte? nullableTeam) {
-        if (nullableTeam is not byte team) {
-            return null;
-        }
-        return GetTeamStars(f, team);
-    }
-
-    public static int GetTeamStars(Frame f, byte team) {
-        int sum = 0;
-        var allPlayers = f.Filter<MarioPlayer>();
-        allPlayers.UseCulling = false;
-        while (allPlayers.NextUnsafe(out _, out MarioPlayer* mario)) {
-            if (mario->GetTeam(f) != team
-                || (mario->Lives <= 0 && f.Global->Rules.IsLivesEnabled)) {
-                continue;
-            }
-
-            sum += mario->Stars;
-        }
-
-        return sum;
-    }
-
-    public static short GetFirstPlaceStars(Frame f) {
-        Span<short> teamStars = stackalloc short[Constants.MaxPlayers];
-        GetAllTeamsStars(f, teamStars);
-
-        short max = 0;
-        foreach (short stars in teamStars) {
-            if (stars > max) {
-                max = stars;
-            }
-        }
-
-        return max;
-    }
-
-    // MAX(0,$B15+(IF(stars behind >0,LOG(B$1+1, 2.71828),0)*$C15*(1-(($M$15-$M$14))/$M$15)))
-    public static PowerupAsset GetRandomItem(Frame f, MarioPlayer* mario) {
-        var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
-
-        // "Losing" variable based on ln(x+1), x being the # of stars we're behind
-
-        int ourStars = GetTeamStars(f, mario->GetTeam(f)) ?? 0;
-        int leaderStars = GetFirstPlaceStars(f);
-
-        var rules = f.Global->Rules;
-        int starsToWin = rules.StarsToWin;
-        bool custom = rules.CustomPowerupsEnabled;
-        bool lives = rules.IsLivesEnabled;
-
-        bool big = stage.SpawnBigPowerups;
-        bool vertical = stage.SpawnVerticalPowerups;
-
-        bool canSpawnMega = true;
-        
-        var allPlayers = f.Filter<MarioPlayer>();
-        allPlayers.UseCulling = false;
-        while (allPlayers.NextUnsafe(out _, out MarioPlayer* otherPlayer)) {
-            // Check if another player is actively mega (not growing or shrinking)
-            // If they are growing, we might have desynced. Hopefully, prediction wont be a full 2-3 seconds long...
-            if (otherPlayer->CurrentPowerupState == PowerupState.MegaMushroom
-                && otherPlayer->MegaMushroomStartFrames == 0) {
-                canSpawnMega = false;
-                break;
-            }
-        }
-
-        FP totalChance = 0;
-        foreach (AssetRef<PowerupAsset> powerupAsset in f.SimulationConfig.AllPowerups) {
-            PowerupAsset powerup = f.FindAsset(powerupAsset);
-            if (powerup.State == PowerupState.MegaMushroom && !canSpawnMega) {
-                continue;
-            }
-
-            if ((powerup.BigPowerup && !big)
-                || (powerup.VerticalPowerup && !vertical)
-                || (powerup.CustomPowerup && !custom)
-                || (powerup.LivesOnlyPowerup && !lives)) {
-                continue;
-            }
-
-            totalChance += powerup.GetModifiedChance(starsToWin, leaderStars, ourStars);
-        }
-
-        FP rand = mario->RNG.Next(0, totalChance);
-        foreach (AssetRef<PowerupAsset> powerupAsset in f.SimulationConfig.AllPowerups) {
-            PowerupAsset powerup = f.FindAsset(powerupAsset);
-            if (powerup.State == PowerupState.MegaMushroom && !canSpawnMega) {
-                continue;
-            }
-
-            if ((powerup.BigPowerup && !big)
-                || (powerup.VerticalPowerup && !vertical)
-                || (powerup.CustomPowerup && !custom)
-                || (powerup.LivesOnlyPowerup && !lives)) {
-                continue;
-            }
-
-            FP chance = powerup.GetModifiedChance(starsToWin, leaderStars, ourStars);
-
-            if (rand < chance) {
-                return powerup;
-            }
-
-            rand -= chance;
-        }
-
-        return f.FindAsset(f.SimulationConfig.FallbackPowerup);
     }
 
     public static FP WrappedDistance(Frame f, FPVector2 a, FPVector2 b) {
@@ -382,7 +254,7 @@ public static unsafe class QuantumUtils {
     }
 
     public static FP WrappedDistance(VersusStageData stage, FPVector2 a, FPVector2 b, out FP xDifference) {
-        FP width = stage.TileDimensions.x * FP._0_50;
+        FP width = stage.TileDimensions.X * FP._0_50;
         if (stage.IsWrappingLevel && FPMath.Abs(a.X - b.X) > width * FP._0_50) {
             a.X -= width * FPMath.Sign(a.X - b.X);
         }
@@ -392,7 +264,7 @@ public static unsafe class QuantumUtils {
     }
 
     public static FP WrappedDistanceSquared(VersusStageData stage, FPVector2 a, FPVector2 b) {
-        FP width = stage.TileDimensions.x * FP._0_50;
+        FP width = stage.TileDimensions.X * FP._0_50;
         if (stage.IsWrappingLevel && FPMath.Abs(a.X - b.X) > width * FP._0_50) {
             a.X -= width * FPMath.Sign(a.X - b.X);
         }
@@ -410,6 +282,14 @@ public static unsafe class QuantumUtils {
 
     public static FP EaseOut(FP x) {
         return 1 - (1 - x) * (1 - x);
+    }
+
+    public static int Modulo(int x, int m) {
+        return ((x % m) + m) % m;
+    }
+
+    public static FP Modulo(FP x, FP m) {
+        return ((x % m) + m) % m;
     }
 
     public static FP SmoothDamp(FP current, FP target, ref FP currentVelocity, FP smoothTime, FP maxSpeed, FP deltaTime) {
@@ -508,7 +388,7 @@ public static unsafe class QuantumUtils {
             return a.X > b.X ? 1 : -1;
         }
 
-        return (a.X > b.X ^ FPMath.Abs(a.X - b.X) > stage.TileDimensions.x * FP._0_25) ? 1 : -1;
+        return (a.X > b.X ^ FPMath.Abs(a.X - b.X) > stage.TileDimensions.X * FP._0_25) ? 1 : -1;
     }
 
     public static FPVector2 WrappedLerp(Frame f, FPVector2 a, FPVector2 b, FP alpha) {
@@ -522,9 +402,16 @@ public static unsafe class QuantumUtils {
     }
 
     public static PowerupAsset FindPowerupAsset(Frame f, PowerupState state) {
-        foreach (var powerupAsset in f.SimulationConfig.AllPowerups) {
-            if (f.TryFindAsset(powerupAsset, out PowerupAsset powerup)
+        if (state == PowerupState.NoPowerup) {
+            return null;
+        }
+
+        var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+        foreach (var coinItemAsset in gamemode.AllCoinItems) {
+            if (f.TryFindAsset(coinItemAsset, out CoinItemAsset item)
+                && item is PowerupAsset powerup
                 && powerup.State == state) {
+
                 return powerup;
             }
         }
@@ -537,21 +424,18 @@ public static unsafe class QuantumUtils {
             return true;
         }
 
-        int playerDataCount = f.ComponentCount<PlayerData>();
-        PlayerData** allPlayerDatas = stackalloc PlayerData*[playerDataCount];
-        
-        int index = 0;
-        var playerDataFilter = f.Filter<PlayerData>();
-        playerDataFilter.UseCulling = false;
-
-        while (playerDataFilter.NextUnsafe(out _, out PlayerData* pd)) {
-            allPlayerDatas[index++] = pd;
+        // Check that at least 1 map is enabled
+        if (f.Global->Rules.ChooseMode == StageChooseMode.Random) {
+            if (f.TryResolveHashSet(f.Global->Rules.RandomDisabledStages, out var disabledStages)) {
+                if (f.Context.GetAllAssets<Map>().Count - disabledStages.Count <= 0) {
+                    return false;
+                }
+            }
         }
-
+        
         // Check that at least one non-spectator exists
         bool nonSpectator = false;
-        for (int i = 0; i < playerDataCount; i++) {
-            PlayerData* pd = allPlayerDatas[i];
+        foreach ((_, var pd) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
             if (!pd->IsSpectator && !pd->ManualSpectator) {
                 nonSpectator = true;
                 break;
@@ -562,10 +446,10 @@ public static unsafe class QuantumUtils {
         }
 
         // Check that at least two teams exist
+        int playerDataCount = f.ComponentCount<PlayerData>();
         if (f.Global->Rules.TeamsEnabled && playerDataCount > 1) {
             byte? firstTeam = null;
-            for (int i = 0; i < playerDataCount; i++) {
-                PlayerData* pd = allPlayerDatas[i];
+            foreach ((_, var pd) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
                 if (pd->IsSpectator || pd->ManualSpectator) {
                     continue;
                 }
@@ -573,7 +457,7 @@ public static unsafe class QuantumUtils {
                 byte team = pd->RequestedTeam;
                 if (firstTeam.HasValue) {
                     if (firstTeam != team) {
-                        goto skip;
+                        return true;
                     }
                 } else {
                     firstTeam = team;
@@ -582,35 +466,18 @@ public static unsafe class QuantumUtils {
             return false;
         }
 
-        skip:
         return true;
     }
 
     public static bool Decrement(ref byte timer) {
-        if (timer > 0) {
-            return --timer == 0;
-        }
-
-        return true;
+        return timer <= 0 || --timer == 0;
     }
 
     public static bool Decrement(ref ushort timer) {
-        if (timer > 0) {
-            return --timer == 0;
-        }
-
-        return true;
+        return timer <= 0 || --timer == 0;
     }
 
     public static bool Decrement(ref int timer) {
-        if (timer > 0) {
-            return --timer == 0;
-        }
-
-        return true;
+        return timer <= 0 || --timer == 0;
     }
-}
-
-public static class Extensions {
-    public static IEnumerator<T> GetEnumerator<T>(this IEnumerator<T> enumerator) => enumerator;
 }

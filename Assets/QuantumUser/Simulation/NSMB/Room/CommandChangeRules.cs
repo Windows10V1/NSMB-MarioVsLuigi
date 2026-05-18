@@ -1,4 +1,5 @@
 using Photon.Deterministic;
+using System;
 
 namespace Quantum {
     public class CommandChangeRules : DeterministicCommand, ILobbyCommand {
@@ -6,6 +7,7 @@ namespace Quantum {
         public Rules EnabledChanges;
 
         public AssetRef<Map> Stage;
+        public AssetRef<GamemodeAsset> Gamemode;
         public int StarsToWin;
         public int CoinsForPowerup;
         public int Lives;
@@ -13,13 +15,20 @@ namespace Quantum {
         public bool TeamsEnabled;
         public bool CustomPowerupsEnabled;
         public bool DrawOnTimeUp;
+        public int StarFountain;
+        public int CoinDeathPenalty;
+        public StageChooseMode ChooseMode;
+        public int TeamAttack;
 
         public override void Serialize(BitStream stream) {
-            ushort changes = (ushort) EnabledChanges;
-            stream.Serialize(ref changes);
-            EnabledChanges = (Rules) changes;
+            if (stream.Writing) {
+                stream.WriteUShort((ushort) EnabledChanges);
+            } else {
+                EnabledChanges = (Rules) stream.ReadUShort();
+            }
 
             stream.Serialize(ref Stage);
+            stream.Serialize(ref Gamemode);
             stream.Serialize(ref StarsToWin);
             stream.Serialize(ref CoinsForPowerup);
             stream.Serialize(ref Lives);
@@ -27,6 +36,16 @@ namespace Quantum {
             stream.Serialize(ref TeamsEnabled);
             stream.Serialize(ref CustomPowerupsEnabled);
             stream.Serialize(ref DrawOnTimeUp);
+            stream.Serialize(ref StarFountain);
+            stream.Serialize(ref CoinDeathPenalty);
+
+            if (stream.Writing) {
+                stream.WriteByte((byte) ChooseMode);
+            } else {
+                ChooseMode = (StageChooseMode) stream.ReadByte();
+            }
+
+            stream.Serialize(ref TeamAttack);
         }
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* playerData) {
@@ -37,8 +56,19 @@ namespace Quantum {
 
             Rules rulesChanges = EnabledChanges;
             var rules = f.Global->Rules;
+            bool gamemodeChanged = false;
             bool levelChanged = false;
 
+            if (rulesChanges.HasFlag(Rules.Gamemode)) {
+                gamemodeChanged = rules.Gamemode != Gamemode;
+
+                GameRules newRules = default;
+                f.FindAsset(Gamemode).DefaultRules.Materialize(f, ref newRules);
+                newRules.Stage = rules.Stage;
+                newRules.RandomDisabledStages = rules.RandomDisabledStages;
+
+                rules = newRules;
+            }
             if (rulesChanges.HasFlag(Rules.Stage)) {
                 levelChanged = rules.Stage != Stage;
                 rules.Stage = Stage;
@@ -52,8 +82,8 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.Lives)) {
                 rules.Lives = Lives;
             }
-            if (rulesChanges.HasFlag(Rules.TimerSeconds)) {
-                rules.TimerSeconds = TimerMinutes;
+            if (rulesChanges.HasFlag(Rules.TimerMinutes)) {
+                rules.TimerMinutes = TimerMinutes;
             }
             if (rulesChanges.HasFlag(Rules.TeamsEnabled)) {
                 rules.TeamsEnabled = TeamsEnabled;
@@ -64,25 +94,43 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.DrawOnTimeUp)) {
                 rules.DrawOnTimeUp = DrawOnTimeUp;
             }
+            if (rulesChanges.HasFlag(Rules.StarFountain)) {
+                rules.StarFountain = StarFountain;
+            }
+            if (rulesChanges.HasFlag(Rules.CoinDeathPenalty)) {
+                rules.CoinDeathPenalty = CoinDeathPenalty;
+            }
+            if (rulesChanges.HasFlag(Rules.StageChooseMode)) {
+                rules.ChooseMode = ChooseMode;
+            }
+            if (rulesChanges.HasFlag(Rules.TeamAttack)) {
+                rules.TeamAttack = (TeamAttackOptions) TeamAttack;
+            }
 
             f.Global->Rules = rules;
-            f.Events.RulesChanged(levelChanged);
+            f.Events.RulesChanged(gamemodeChanged, levelChanged);
 
             if (f.Global->GameStartFrames > 0 && !QuantumUtils.IsGameStartable(f)) {
                 GameLogicSystem.StopCountdown(f);
             }
         }
 
+        [Flags]
         public enum Rules : ushort {
             None = 0,
             Stage = 1 << 0,
-            StarsToWin = 1 << 1,
-            CoinsForPowerup = 1 << 2,
-            Lives = 1 << 3,
-            TimerSeconds = 1 << 4,
-            TeamsEnabled = 1 << 5,
-            CustomPowerupsEnabled = 1 << 6,
-            DrawOnTimeUp = 1 << 7,
+            Gamemode = 1 << 1,
+            StarsToWin = 1 << 2,
+            CoinsForPowerup = 1 << 3,
+            Lives = 1 << 4,
+            TimerMinutes = 1 << 5,
+            TeamsEnabled = 1 << 6,
+            CustomPowerupsEnabled = 1 << 7,
+            DrawOnTimeUp = 1 << 8,
+            StarFountain = 1 << 9, // only for Star Chasers
+            CoinDeathPenalty = 1 << 10, // only for Coin Runners
+            StageChooseMode = 1 << 11,
+            TeamAttack = 1 << 12,
         }
     }
 }

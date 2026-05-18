@@ -55,6 +55,7 @@ namespace Quantum.Prototypes.Unity {
     public QBoolean IsEnterable;
     public QBoolean IsCeilingPipe;
     public QBoolean IsMiniOnly;
+    public QBoolean TransitionOnlyPanning;
     partial void ConvertUser(Quantum.QuantumEntityPrototypeConverter converter, ref Quantum.Prototypes.EnterablePipePrototype prototype);
     public override Quantum.Prototypes.EnterablePipePrototype Convert(Quantum.QuantumEntityPrototypeConverter converter) {
       var result = new Quantum.Prototypes.EnterablePipePrototype();
@@ -62,6 +63,7 @@ namespace Quantum.Prototypes.Unity {
       converter.Convert(this.IsEnterable, out result.IsEnterable);
       converter.Convert(this.IsCeilingPipe, out result.IsCeilingPipe);
       converter.Convert(this.IsMiniOnly, out result.IsMiniOnly);
+      converter.Convert(this.TransitionOnlyPanning, out result.TransitionOnlyPanning);
       ConvertUser(converter, ref result);
       return result;
     }
@@ -72,7 +74,7 @@ namespace Quantum.Prototypes.Unity {
     public FPVector2 Normal;
     public FP Distance;
     public Int32 Frame;
-    public Quantum.Prototypes.Vector2IntPrototype Tile;
+    public IntVector2 Tile;
     public Quantum.QuantumEntityPrototype Entity;
     partial void ConvertUser(Quantum.QuantumEntityPrototypeConverter converter, ref Quantum.Prototypes.PhysicsContactPrototype prototype);
     public override Quantum.Prototypes.PhysicsContactPrototype Convert(Quantum.QuantumEntityPrototypeConverter converter) {
@@ -95,7 +97,6 @@ namespace Quantum.Prototypes.Unity {
     public QBoolean DisableCollision;
     public QBoolean SlowInLiquids;
     public QBoolean IsWaterSolid;
-    public QBoolean BreakMegaObjects;
     partial void ConvertUser(Quantum.QuantumEntityPrototypeConverter converter, ref Quantum.Prototypes.PhysicsObjectPrototype prototype);
     public override Quantum.Prototypes.PhysicsObjectPrototype Convert(Quantum.QuantumEntityPrototypeConverter converter) {
       var result = new Quantum.Prototypes.PhysicsObjectPrototype();
@@ -105,7 +106,6 @@ namespace Quantum.Prototypes.Unity {
       converter.Convert(this.DisableCollision, out result.DisableCollision);
       converter.Convert(this.SlowInLiquids, out result.SlowInLiquids);
       converter.Convert(this.IsWaterSolid, out result.IsWaterSolid);
-      converter.Convert(this.BreakMegaObjects, out result.BreakMegaObjects);
       ConvertUser(converter, ref result);
       return result;
     }
@@ -117,6 +117,19 @@ namespace Quantum.Prototypes.Unity {
     public override Quantum.Prototypes.PiranhaPlantPrototype Convert(Quantum.QuantumEntityPrototypeConverter converter) {
       var result = new Quantum.Prototypes.PiranhaPlantPrototype();
       converter.Convert(this.Pipe, out result.Pipe);
+      ConvertUser(converter, ref result);
+      return result;
+    }
+  }
+  [System.SerializableAttribute()]
+  public unsafe partial class StarCoinPrototype : Quantum.QuantumUnityPrototypeAdapter<Quantum.Prototypes.StarCoinPrototype> {
+    public Byte DespawnCounter;
+    public Quantum.QuantumEntityPrototype Collector;
+    partial void ConvertUser(Quantum.QuantumEntityPrototypeConverter converter, ref Quantum.Prototypes.StarCoinPrototype prototype);
+    public override Quantum.Prototypes.StarCoinPrototype Convert(Quantum.QuantumEntityPrototypeConverter converter) {
+      var result = new Quantum.Prototypes.StarCoinPrototype();
+      converter.Convert(this.DespawnCounter, out result.DespawnCounter);
+      converter.Convert(this.Collector, out result.Collector);
       ConvertUser(converter, ref result);
       return result;
     }

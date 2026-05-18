@@ -227,6 +227,8 @@ MonoBehaviour:
           Value: 0
         DisableRespawning:
           Value: 0
+        StayAtHomeWhenOffscreen:
+          Value: 1
     - rid: 777974220477956101
       type: {class: FreezablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -279,8 +281,6 @@ MonoBehaviour:
         SlowInLiquids:
           Value: 1
         IsWaterSolid:
-          Value: 0
-        BreakMegaObjects:
           Value: 0
     - rid: 777974220477956106
       type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -341,10 +341,8 @@ MonoBehaviour:
     - rid: 1889659263039569923
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 1889659263039569924
@@ -436,6 +434,8 @@ MonoBehaviour:
           Value: 0
         DisableRespawning:
           Value: 0
+        StayAtHomeWhenOffscreen:
+          Value: 1
     - rid: 1904270922169188357
       type: {class: FreezablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -488,8 +488,6 @@ MonoBehaviour:
         SlowInLiquids:
           Value: 1
         IsWaterSolid:
-          Value: 0
-        BreakMegaObjects:
           Value: 0
     - rid: 1904270922169188362
       type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -550,10 +548,8 @@ MonoBehaviour:
     - rid: 2967068392109899779
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 2967068392109899780
@@ -626,10 +622,8 @@ MonoBehaviour:
     - rid: 3395932105807495171
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 3395932105807495172
@@ -702,10 +696,8 @@ MonoBehaviour:
     - rid: 4446608830146543619
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 4446608830146543620
@@ -778,10 +770,8 @@ MonoBehaviour:
     - rid: 4573175170545483779
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 4573175170545483780
@@ -873,6 +863,8 @@ MonoBehaviour:
           Value: 0
         DisableRespawning:
           Value: 0
+        StayAtHomeWhenOffscreen:
+          Value: 1
     - rid: 5636341017683689477
       type: {class: FreezablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -925,8 +917,6 @@ MonoBehaviour:
         SlowInLiquids:
           Value: 1
         IsWaterSolid:
-          Value: 0
-        BreakMegaObjects:
           Value: 0
     - rid: 5636341017683689482
       type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -987,10 +977,8 @@ MonoBehaviour:
     - rid: 6570762336053755907
       type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
-        IsFloating:
+        CoinType:
           Value: 1
-        IsDotted:
-          Value: 0
         Lifetime: 0
         UncollectableFrames: 0
     - rid: 6570762336053755908
@@ -1086,6 +1074,8 @@ MonoBehaviour:
           Value: 0
         DisableRespawning:
           Value: 0
+        StayAtHomeWhenOffscreen:
+          Value: 1
     - rid: 7515263985617207302
       type: {class: FreezablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
@@ -1162,8 +1152,6 @@ MonoBehaviour:
         SlowInLiquids:
           Value: 1
         IsWaterSolid:
-          Value: 0
-        BreakMegaObjects:
           Value: 0
     - rid: 7515263985617207308
       type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
@@ -1348,7 +1336,7 @@ MonoBehaviour:
       data:
         BumpTile:
           Id:
-            Value: 342476424856818660
+            Value: 787780346727776477
         Tile:
           Id:
-            Value: 520268055672688161
+            Value: 2276636638621846876

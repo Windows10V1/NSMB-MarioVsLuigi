@@ -1,4 +1,4 @@
-using NSMB.Extensions;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using UnityEngine;
 
@@ -30,6 +30,8 @@ namespace NSMB.UI.Game.Track {
                 image.enabled = true;
             } else {
                 image.enabled = false;
+                upArrow.enabled = false;
+                downArrow.enabled = false;
             }
         }
     }

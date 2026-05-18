@@ -2,7 +2,6 @@ using Photon.Deterministic;
 using Quantum;
 using System;
 using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using UnityEngine;
 
@@ -22,17 +21,17 @@ namespace NSMB.Replay {
         public string FilePath { get; set; }
         public long FileSize { get; private set; }
         public bool FullyLoaded => CompressedRuntimeConfigData != null;
-        public byte[] DecompressedRuntimeConfigData => ByteUtils.GZipDecompressBytes(CompressedRuntimeConfigData);
-        public byte[] DecompressedDeterministicConfigData => ByteUtils.GZipDecompressBytes(CompressedDeterministicConfigData);
-        public byte[] DecompressedInitialFrameData => ByteUtils.GZipDecompressBytes(CompressedInitialFrameData);
-        public byte[] DecompressedInputData => ByteUtils.GZipDecompressBytes(CompressedInputData);
+        public byte[] DecompressedRuntimeConfigData => Compression.DecompressBytes(CompressedRuntimeConfigData);
+        public byte[] DecompressedDeterministicConfigData => Compression.DecompressBytes(CompressedDeterministicConfigData);
+        public byte[] DecompressedInitialFrameData => Compression.DecompressBytes(CompressedInitialFrameData);
+        public byte[] DecompressedInputData => Compression.DecompressBytes(CompressedInputData);
 
         public long WriteToStream(Stream output) {
             if (!FullyLoaded) {
                 throw new InvalidOperationException("Cannot write replay that's not fully loaded!");
             }
 
-            using BinaryWriter writer = new(output, Encoding.ASCII, true);
+            using BinaryWriter writer = new(output, Encoding.UTF8, true);
             Header.WriteToStream(output);
 
             // Write variable-length data lengths
@@ -67,8 +66,7 @@ namespace NSMB.Replay {
         }
 
         private ReplayParseResult LoadFromStream(Stream input, bool includeReplayData) {
-            using BinaryReader reader = new(input, Encoding.ASCII);
-            BinaryFormatter formatter = new();
+            using BinaryReader reader = new(input, Encoding.UTF8);
 
             try {
                 ReplayParseResult headerParseResult = BinaryReplayHeader.TryLoadFromFile(input, out var tempHeader);
@@ -115,12 +113,12 @@ namespace NSMB.Replay {
         public static unsafe BinaryReplayFile FromReplayData(QuantumReplayFile replay, BinaryReplayHeader header) {
             BinaryReplayFile result = new() {
                 Header = header,
-                CompressedDeterministicConfigData = ByteUtils.GZipCompressBytes(DeterministicSessionConfig.ToByteArray(replay.DeterministicConfig)),
+                CompressedDeterministicConfigData = Compression.CompressBytes(DeterministicSessionConfig.ToByteArray(replay.DeterministicConfig)),
                 CompressedRuntimeConfigData = replay.RuntimeConfigData.Decode(),
-                CompressedInitialFrameData = ByteUtils.GZipCompressBytes(replay.InitialFrameData),
-                CompressedInputData = ByteUtils.GZipCompressBytes(replay.InputHistoryDeltaCompressed.Decode()),
+                CompressedInitialFrameData = Compression.CompressBytes(replay.InitialFrameData),
+                CompressedInputData = Compression.CompressBytes(replay.InputHistoryDeltaCompressed.Decode()),
             };
-
+            
             return result;
         }
     }
