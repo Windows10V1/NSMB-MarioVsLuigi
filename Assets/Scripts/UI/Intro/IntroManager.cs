@@ -32,8 +32,6 @@ namespace NSMB.UI.Intro {
                 return;
             }
             
-            StartCoroutine(IntroSequence());
-
             //StartCoroutine(LoadAssetBundles());
             StartCoroutine(IntroSequence());
             
