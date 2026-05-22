@@ -30,6 +30,7 @@ namespace NSMB.Entities.Player {
 
         //---Static Variables
         private static readonly WaitForSeconds BlinkDelay = new(0.1f);
+        private const int CloudSpinDurationFrames = 30;
 
         #region Animator & Shader Hashes
         private static readonly int ParamPowerupState = Shader.PropertyToID("PowerupState");
@@ -103,7 +104,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel, SuperHammer;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel, BuilderModel, HipHammer, HandHammer, AcornModel;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -191,6 +192,7 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerShotProjectile>(this, OnMarioPlayerShotProjectile, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUsedPropeller>(this, OnMarioPlayerUsedPropeller, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerPropellerSpin>(this, OnMarioPlayerPropellerSpin, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventMarioPlayerSummonedCloudBlock>(this, OnMarioPlayerSummonedCloudBlock, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedStar>(this, OnMarioPlayerCollectedStar, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerDied>(this, OnMarioPlayerDied);
             QuantumEvent.Subscribe<EventMarioPlayerPreRespawned>(this, OnMarioPlayerPreRespawned, FilterOutReplayFastForward);
@@ -255,7 +257,8 @@ namespace NSMB.Entities.Player {
             mario->CurrentPowerupState != PowerupState.FrogSuit &&
             mario->CurrentPowerupState != PowerupState.PropellerMushroom &&
             mario->CurrentPowerupState != PowerupState.BoomerangFlower &&
-            mario->CurrentPowerupState != PowerupState.CloudFlower);
+            mario->CurrentPowerupState != PowerupState.CloudFlower &&
+            mario->CurrentPowerupState != PowerupState.SuperAcorn);
         }
 
         public override void OnUpdateView() {
@@ -406,8 +409,9 @@ namespace NSMB.Entities.Player {
 
             float angle = mario->CurrentPowerupState switch {
                     PowerupState.BlueShell => 90f,
+                    PowerupState.BoomerangFlower => 90f,
                     PowerupState.MegaMushroom => 78.75f,
-                    PowerupState.BoomerangFlower => 56.25f,
+                    PowerupState.SuperAcorn => 56.25f,
                     _ => 67.5f,
                 };
             float angleR = 180 - angle;
@@ -456,6 +460,13 @@ namespace NSMB.Entities.Player {
 
             } else if (mario->IsSpinnerFlying || mario->IsPropellerFlying) {
                 modelRotationTarget *= Quaternion.Euler(0, (-1200 - ((mario->PropellerLaunchFrames / 60f) * 1400) - (mario->IsDrilling ? 900 : 0) + (mario->IsPropellerFlying && mario->PropellerSpinFrames == 0 && physicsObject->Velocity.Y < 0 ? 700 : 0)) * delta, 0);
+                modelRotateInstantly = true;
+
+            } else if (mario->CloudSpinFrames > 0) {
+                float baseAngle = mario->FacingRight ? angleR : angleL;
+                float spinProgress = 1f - (mario->CloudSpinFrames / (float) CloudSpinDurationFrames);
+                float spin = 360f * spinProgress * (mario->FacingRight ? -1 : 1);
+                modelRotationTarget = Quaternion.Euler(0, baseAngle + spin, 0);
                 modelRotateInstantly = true;
 
             } else if (mario->IsWallsliding) {
@@ -525,7 +536,7 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamHeadCarry, heldObject != null && heldObject->HoldAboveHead);
             animator.SetBool(ParamCarryStart, heldObject != null && heldObject->HoldAboveHead && (f.Number - mario->HoldStartFrame) < 27);
             animator.SetBool(ParamPipe, f.Exists(mario->CurrentPipe));
-            animator.SetBool(ParamBlueShell, mario->CurrentPowerupState == PowerupState.BlueShell);
+            animator.SetBool(ParamBlueShell, mario->CurrentPowerupState == PowerupState.BlueShell || mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             animator.SetBool(ParamMini, mario->CurrentPowerupState == PowerupState.MiniMushroom);
             animator.SetBool(ParamMega, mario->CurrentPowerupState == PowerupState.MegaMushroom);
             animator.SetBool(ParamInShell, mario->IsInShell || (mario->CurrentPowerupState == PowerupState.BlueShell && (mario->IsCrouching || mario->IsGroundpounding || mario->IsSliding) && mario->GroundpoundStartFrames <= 9));
@@ -596,6 +607,7 @@ namespace NSMB.Entities.Player {
                 PowerupState.FireFlower => 1,
                 PowerupState.PropellerMushroom => 2,
                 PowerupState.HammerSuit => 3,
+                PowerupState.SuperAcorn => 3,
                 PowerupState.BoomerangFlower => 4,
                 PowerupState.CloudFlower => 5,
                 PowerupState.SuperBallFlower => 6,
@@ -662,15 +674,30 @@ namespace NSMB.Entities.Player {
             largeModel.SetActive(large);
             smallModel.SetActive(!large);
             blueShell.SetActive(mario->CurrentPowerupState == PowerupState.BlueShell);
-            penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
+
+            // Propeller Mushroom Models
             propellerHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.PropellerMushroom);
             propellerBody.SetActive(mario->CurrentPowerupState == PowerupState.PropellerMushroom);
+
+            // Hammer Suit Models
             HammerHelm.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.HammerSuit);
             HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
+
+            // Model Swaps
+            penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudModel.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.CloudFlower);
+            bool showCloudBuddies = mario->CurrentPowerupState == PowerupState.CloudFlower;
+            cloudBuddy3.SetActive(showCloudBuddies && mario->CloudCount < 1 && mario->CloudCooldownFrames == 0);
+            cloudBuddy2.SetActive(showCloudBuddies && mario->CloudCount < 2 && mario->CloudCooldownFrames == 0);
+            cloudBuddy1.SetActive(showCloudBuddies && mario->CloudCount < 3 && mario->CloudCooldownFrames == 0);
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
-            SuperHammer.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit);
+            AcornModel.SetActive(mario->CurrentPowerupState == PowerupState.SuperAcorn);
+
+            // Builder Suit Models
+            BuilderModel.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit);
+            HipHammer.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit); // && mario isn't swinging hand hammer (WIP)
+            HandHammer.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit); // && mario is swinging hand hammer (WIP)
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;
             bool changedAvatar = animator.avatar != targetAvatar;
@@ -1053,6 +1080,19 @@ namespace NSMB.Entities.Player {
             }
 
             PlaySound(SoundEffect.Powerup_PropellerMushroom_Start);
+        }
+
+        private void OnMarioPlayerSummonedCloudBlock(EventMarioPlayerSummonedCloudBlock e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            animator.Play("jump", 0, 0);
+            if (PredictedFrame.TryFindAsset(PredictedFrame.SimulationConfig.CloudBlockAsset, out CloudBlockProjectileAsset asset)) {
+                PlaySound(asset.ShootSound, new[] { asset });
+            } else {
+                PlaySound(SoundEffect.Powerup_CloudFlower_Spawn);
+            }
         }
 
         private void OnMarioPlayerShotProjectile(EventMarioPlayerShotProjectile e) {

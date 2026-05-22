@@ -41,7 +41,7 @@ PrefabInstance:
     - target: {fileID: 8509900707630130961, guid: 9bcb5effadc837a45b61571768c543cf,
         type: 3}
       propertyPath: m_Name
-      value: Ice Flower
+      value: Penguin Suit
       objectReference: {fileID: 0}
     - target: {fileID: 8509900707630130967, guid: 9bcb5effadc837a45b61571768c543cf,
         type: 3}
@@ -80,6 +80,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4928671260392873470, guid: 794bc215dd02bf34ab2cfae7702bfdfd,
         type: 3}
+    - target: {fileID: 9121724411283337017, guid: 9bcb5effadc837a45b61571768c543cf,
+        type: 3}
+      propertyPath: childAnimator
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 9163656034225834080, guid: 9bcb5effadc837a45b61571768c543cf,
         type: 3}
       propertyPath: Prototype.Scriptable.Id.Value
@@ -87,6 +92,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5900531122030324632, guid: 9bcb5effadc837a45b61571768c543cf, type: 3}
+    - {fileID: 3726716108760662804, guid: 9bcb5effadc837a45b61571768c543cf, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

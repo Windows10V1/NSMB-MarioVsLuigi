@@ -314,7 +314,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: PenguinSuit
+      name: Penguin
       rect:
         serializedVersion: 2
         x: 48
@@ -358,7 +358,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: HammerSuit
+      name: Hammer
       rect:
         serializedVersion: 2
         x: 64
@@ -512,7 +512,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: FrogSuit
+      name: Frog
       rect:
         serializedVersion: 2
         x: 112
@@ -555,6 +555,50 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: AcornMushroom
+      rect:
+        serializedVersion: 2
+        x: 128
+        y: 0
+        width: 16
+        height: 17
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 02808d54bcc8bc149a605aac8e263577
+      internalID: 2063908454
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: SuperHammer
+      rect:
+        serializedVersion: 2
+        x: 144
+        y: 1
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 31fea2a8cb3082945828c34822644294
+      internalID: -810156064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -570,24 +614,26 @@ TextureImporter:
       entries: []
     nameFileIdTable:
       1-Up: -7415331047110381915
+      AcornMushroom: 2063908454
       BoomerangFlower: -1320901436
       CatSuit: -1629917848
       CloudFlower: -386398983
       FireFlower: -6090384608550177697
-      FrogSuit: 632673322
+      Frog: 632673322
       GoldFlower: 51403895
-      HammerSuit: -1109677166
+      Hammer: -1109677166
       JumpSuit: 1662652401
       MiniMushroom: 621560852509794982
       Mushroom: 3410918491446568398
       POW_0: -1303093240
       POW_1: 1512579996
       POW_2: -280334765
-      PenguinSuit: 4928671260392873470
+      Penguin: 4928671260392873470
       PoisonMushroom: -784459595
       Shell: 2834573260081099437
       Star: -4108787663010400821
       Star_2: -1073110140
+      SuperHammer: -810156064
       powerups_10: 3366297153455892705
       powerups_4: 4536303970436761004
       powerups_5: -499814844998443567

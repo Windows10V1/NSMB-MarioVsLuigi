@@ -1348,11 +1348,14 @@ namespace Quantum {
                 f.Unsafe.GetPointer<ComboKeeper>(filter.Entity)->Combo = 0;
             }
             QuantumUtils.Decrement(ref mario->PropellerSpinFrames);
+            QuantumUtils.Decrement(ref mario->CloudSpinFrames);
             QuantumUtils.Decrement(ref mario->ProjectileDelayFrames);
             QuantumUtils.Decrement(ref mario->ProjectileCooldownFrames);
             if (QuantumUtils.Decrement(ref mario->ProjectileVolleyFrames)) {
                 mario->CurrentVolley = 0;
             }
+            HandleCloudFlowerCooldown(f, mario);
+
             if (mario->CurrentPowerupState == PowerupState.MegaMushroom && (filter.Inputs.Left || filter.Inputs.Right) && !mario->IsInKnockback && physicsObject->IsTouchingGround) {
                 if (QuantumUtils.Decrement(ref mario->MegaMushroomFootstepFrames)) {
                     mario->MegaMushroomFootstepFrames = physics.MegaMushroomStepInterval;
@@ -1415,7 +1418,10 @@ namespace Quantum {
             }
 
             switch (mario->CurrentPowerupState) {
-            case PowerupState.CloudFlower:
+            case PowerupState.CloudFlower: {
+                TrySummonCloudBlock(f, ref filter);
+                break;
+            }
             case PowerupState.PenguinSuit:
             case PowerupState.FireFlower:
             case PowerupState.HammerSuit:
@@ -1536,6 +1542,87 @@ namespace Quantum {
                 break;
             }
             }
+        }
+
+        private void HandleCloudFlowerCooldown(Frame f, MarioPlayer* mario) {
+            if (!mario->CloudSetMaxReached || mario->CurrentProjectiles > 0) {
+                return;
+            }
+
+            if (mario->CloudCooldownFrames == 0) {
+                if (!f.TryFindAsset(f.SimulationConfig.CloudBlockAsset, out CloudBlockProjectileAsset asset)) {
+                    return;
+                }
+
+                mario->CloudCooldownFrames = (ushort) asset.CooldownFrames;
+                if (mario->CloudCooldownFrames > 0) {
+                    return;
+                }
+            } else if (!QuantumUtils.Decrement(ref mario->CloudCooldownFrames)) {
+                return;
+            }
+
+            mario->CloudCount = 0;
+            mario->CloudCooldownFrames = 0;
+            mario->CloudFirstSummonY = default;
+            mario->CloudHeightLocked = false;
+            mario->CloudSetMaxReached = false;
+            mario->CurrentVolley = 0;
+            mario->ProjectileVolleyFrames = 0;
+        }
+
+        private void TrySummonCloudBlock(Frame f, ref Filter filter) {
+            var mario = filter.MarioPlayer;
+            var physicsObject = filter.PhysicsObject;
+
+            if (mario->ProjectileDelayFrames > 0
+                || mario->CloudCooldownFrames > 0
+                || mario->CloudSetMaxReached
+                || mario->IsWallsliding
+                || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
+                || mario->IsSpinnerFlying
+                || mario->IsDrilling
+                || mario->IsSkidding
+                || mario->IsTurnaround
+                || !f.SimulationConfig.CloudBlockPrototype.IsValid
+                || !f.TryFindAsset(f.SimulationConfig.CloudBlockAsset, out CloudBlockProjectileAsset asset)) {
+                return;
+            }
+
+            byte maxProjectiles = asset.MaxProjectileCount > 0 ? asset.MaxProjectileCount : (byte) 3;
+            byte maxInstantProjectiles = asset.MaxInstantProjectiles > 0 ? asset.MaxInstantProjectiles : (byte) 1;
+            if (mario->CloudCount >= maxProjectiles || mario->CurrentProjectiles >= maxProjectiles) {
+                return;
+            }
+
+            if (mario->CloudCount >= maxInstantProjectiles && mario->ProjectileVolleyFrames > 0) {
+                return;
+            }
+
+            FPVector2 spawnOffset = new(asset.SpawnOffset.X * (mario->FacingRight ? 1 : -1), asset.SpawnOffset.Y);
+            FPVector2 spawnPos = filter.Transform->Position + spawnOffset;
+            if (mario->CloudHeightLocked) {
+                spawnPos.Y = mario->CloudFirstSummonY;
+            } else {
+                mario->CloudFirstSummonY = spawnPos.Y;
+                mario->CloudHeightLocked = true;
+            }
+
+            EntityRef newEntity = f.Create(f.SimulationConfig.CloudBlockPrototype);
+            f.Unsafe.GetPointer<Transform2D>(newEntity)->Position = spawnPos;
+
+            CloudBlock cloudBlock = default;
+            cloudBlock.Initialize(f, filter.Entity, asset);
+            f.Set(newEntity, cloudBlock);
+
+            mario->CurrentProjectiles++;
+            mario->CloudCount++;
+            mario->CloudSpinFrames = 30;
+            mario->ProjectileVolleyFrames = asset.VolleyFrames;
+            mario->CloudSetMaxReached = mario->CloudCount >= maxProjectiles;
+
+            f.Events.MarioPlayerSummonedCloudBlock(filter.Entity);
+            mario->WalljumpFrames = 0;
         }
 
         private Projectile* ShootBoomerangProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
