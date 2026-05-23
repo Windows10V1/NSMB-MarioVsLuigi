@@ -1,3 +1,4 @@
+using NSMB.UI.Translation;
 using NSMB.Utilities;
 using NSMB.Utilities.Extensions;
 using Quantum;
@@ -27,6 +28,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
 
         //---Serialized Variables
         [SerializeField] private Image stagePreview;
+        [SerializeField] private string randomChooseModeTranslationKey;
         [SerializeField] private Sprite unknownMapSprite;
 
         protected override void IncreaseValueInternal() {
@@ -72,21 +74,27 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             }
         }
 
-        protected override void UpdateLabel() {
-            string stageName;
-            Sprite sprite;
-            if (value is AssetRef<Map> mapAsset
-                && QuantumUnityDB.TryGetGlobalAsset(mapAsset, out Map map)
-                && QuantumUnityDB.TryGetGlobalAsset(map.UserAsset, out VersusStageData stage)) {
-
-                stageName = GlobalController.Instance.translationManager.GetTranslation(stage.TranslationKey);
-                sprite = stage.Icon;
+        protected override unsafe void UpdateLabel() {
+            TranslationManager tm = GlobalController.Instance.translationManager;
+            if (QuantumRunner.DefaultGame.Frames.Predicted.Global->Rules.ChooseMode == StageChooseMode.Random) {
+                label.text = labelPrefix + tm.GetTranslation(randomChooseModeTranslationKey);
+                stagePreview.sprite = unknownMapSprite;
             } else {
-                stageName = "???";
-                sprite = unknownMapSprite;
+                string stageName;
+                Sprite sprite;
+                if (value is AssetRef<Map> mapAsset
+                    && QuantumUnityDB.TryGetGlobalAsset(mapAsset, out Map map)
+                    && QuantumUnityDB.TryGetGlobalAsset(map.UserAsset, out VersusStageData stage)) {
+
+                    stageName = tm.GetTranslation(stage.TranslationKey);
+                    sprite = stage.Icon;
+                } else {
+                    stageName = "???";
+                    sprite = unknownMapSprite;
+                }
+                label.text = labelPrefix + stageName;
+                stagePreview.sprite = sprite;
             }
-            label.text = labelPrefix + stageName;
-            stagePreview.sprite = sprite;
         }
     }
 }

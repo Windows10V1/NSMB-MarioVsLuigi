@@ -1181,9 +1181,9 @@ MonoBehaviour:
     type: 3}
   starCollectParticle: {fileID: 817659606265668166, guid: 0d07cd0662b5f394fa4d95667c1d1814,
     type: 3}
-  normalShader: {fileID: -6465566751694194690, guid: cc5645667770c9c44af52a452d76a115,
+  normalShader: {fileID: -6465566751694194690, guid: 914d964962549de41a603aa0bd374229,
     type: 3}
-  rainbowShader: {fileID: -6465566751694194690, guid: 51265e2a22315b048823fd06a96365a5,
+  rainbowShader: {fileID: -6465566751694194690, guid: 5d1d727bf3f780a489dbd612a9b28c77,
     type: 3}
   sfx: {fileID: 5377451828833222271}
   coinSfx: {fileID: 3452636116809643534}
@@ -1214,23 +1214,119 @@ MonoBehaviour:
     - {fileID: 2749634281061596644}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: fdd84ef6d4e291441a0a2c86601bba65, type: 3}
+      OverallsMaskTexture: {fileID: 2800000, guid: bf5f4ebd679e6474399c9aa14e6bdbb7,
+        type: 3}
+      ShirtMaskTexture: {fileID: 2800000, guid: 027c0cc20477d9449a771cca38f723da,
+        type: 3}
+      CapMaskTexture: {fileID: 2800000, guid: d5a82e89d71842c4c9ac25792b1b167b, type: 3}
+    - Material: {fileID: 2100000, guid: 1f0daed7f9836b44ca751b260709c999, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 4e9995b475b3f6946b5201a471a91255, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 2800000, guid: ba1beaff1a0d78a468190ca3d1b515df, type: 3}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   powerupVisuals:
-  - State: 1
-    AdditionalGameObjects: []
-    BaseModel: {fileID: 7762643025404982223}
-    ModelScale: {x: 0.5, y: 0.5, z: 0.5}
-    AnimationAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
-    AnimatorOverrides: {fileID: 22100000, guid: 347b7f77a47c4db4b85584fbfdecf63b,
-      type: 2}
   - State: 0
-    AdditionalGameObjects: []
+    AdditionalGameObjects:
+    - {fileID: 271055882594606603}
     BaseModel: {fileID: 7762643025404982223}
     ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 0.5
+    TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 347b7f77a47c4db4b85584fbfdecf63b,
       type: 2}
+  - State: 1
+    AdditionalGameObjects:
+    - {fileID: 271055882594606603}
+    BaseModel: {fileID: 7762643025404982223}
+    ModelScale: {x: 0.5, y: 0.5, z: 0.5}
+    ModelHeightInBlocks: 0.5
+    TextureReplacements: []
+    AnimationAvatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 347b7f77a47c4db4b85584fbfdecf63b,
+      type: 2}
+  - State: 2
+    AdditionalGameObjects:
+    - {fileID: 2749634281061596644}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements: []
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
+  - State: 3
+    AdditionalGameObjects:
+    - {fileID: 2749634281061596644}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 7d91199e08b62ae46bbd7275a310c08b, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 2800000, guid: bf5f4ebd679e6474399c9aa14e6bdbb7,
+        type: 3}
+      CapMaskTexture: {fileID: 0}
+    - Material: {fileID: 2100000, guid: 1f0daed7f9836b44ca751b260709c999, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: bd948f90d53655347890d90cb63dd9ae, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 0}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
+  - State: 4
+    AdditionalGameObjects:
+    - {fileID: 2749634281061596644}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 1e41f0a14781093438efc57d9d831ed8, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 2800000, guid: bf5f4ebd679e6474399c9aa14e6bdbb7,
+        type: 3}
+      CapMaskTexture: {fileID: 0}
+    - Material: {fileID: 2100000, guid: 1f0daed7f9836b44ca751b260709c999, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: a2c99e8568fc2664ebb1eb55c520ee10, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 0}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
+  - State: 5
+    AdditionalGameObjects:
+    - {fileID: 4639874887084447154}
+    - {fileID: 8712194458326895251}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 9cdd12fd70cf4b646b336f4d60f6ef38, type: 3}
+      OverallsMaskTexture: {fileID: 2800000, guid: faea6a302b599ce44844f23fb3123702,
+        type: 3}
+      ShirtMaskTexture: {fileID: 2800000, guid: 6d071aa89f1a3be4ba8a642f2fe5c323,
+        type: 3}
+      CapMaskTexture: {fileID: 0}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
+  - State: 6
+    AdditionalGameObjects:
+    - {fileID: 2749634281061596644}
+    - {fileID: 3629787967981286811}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements: []
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   - State: 7
     AdditionalGameObjects:
     - {fileID: 4056376664574429795}
@@ -1239,28 +1335,23 @@ MonoBehaviour:
     - {fileID: 3468715832993014555}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
-    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
-    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
-  - State: 6
-    AdditionalGameObjects:
-    - {fileID: 3629787967981286811}
-    - {fileID: 2749634281061596644}
-    BaseModel: {fileID: 2209300530651413591}
-    ModelScale: {x: 1, y: 1, z: 1}
-    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
-    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
-  - State: 5
-    AdditionalGameObjects:
-    - {fileID: 8712194458326895251}
-    - {fileID: 4639874887084447154}
-    BaseModel: {fileID: 2209300530651413591}
-    ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 3c2958cf90b1bd64295f8ae254f80d0a, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 65c8e7e89b4937441816d21e8a156e69, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 2800000, guid: bf5f4ebd679e6474399c9aa14e6bdbb7,
+        type: 3}
+      CapMaskTexture: {fileID: 0}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   - State: 8
-    AdditionalGameObjects: []
+    AdditionalGameObjects:
+    - {fileID: 2749634281061596644}
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 3.6, y: 3.6, z: 3.6}
+    ModelHeightInBlocks: 1
+    TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
 --- !u!114 &8832712012989740833
@@ -1303,8 +1394,8 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4824223341387914446}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: e0d3ef6bcff32414dbd34fc6ac031292, type: 3}
-  m_Controller: {fileID: 22100000, guid: 347b7f77a47c4db4b85584fbfdecf63b, type: 2}
+  m_Avatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+  m_Controller: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -6920,6 +7011,100 @@ Transform:
   - {fileID: 1933478114614969444}
   m_Father: {fileID: 4179535912005182115}
   m_LocalEulerAnglesHint: {x: -104.589, y: 0, z: 0}
+--- !u!1001 &169359194882895959
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 4865570266982932041}
+    m_Modifications:
+    - target: {fileID: 3094612392314655968, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3094612392314655968, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: moveWithTransform
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3094612392314655968, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: EmissionModule.rateOverTime.scalar
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895065583142849143, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_Name
+      value: InvincibleSparkles (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 4895065583142849143, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: m_Layer
+      value: 17
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d758aa65baab42b43ba031de88063bb7, type: 3}
+--- !u!4 &4273854514351752547 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+    type: 3}
+  m_PrefabInstance: {fileID: 169359194882895959}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &500651139988642812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7138,6 +7323,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 07936316a63132e4588a62a5167a505a, type: 3}
+--- !u!1 &271055882594606603 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 07936316a63132e4588a62a5167a505a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1081869080964227930}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &615070442530833585 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 07936316a63132e4588a62a5167a505a,
@@ -7487,6 +7678,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: -5430573481974842246, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: -5356195424620648968, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Enabled
@@ -7502,6 +7698,11 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[1]'
       value: 
       objectReference: {fileID: 2100000, guid: 79d64c3704b5a04478d2e62d27983ae2, type: 2}
+    - target: {fileID: -4819223349682164798, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: -4538532988964370611, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_LocalScale.z
@@ -7632,6 +7833,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: -1755918832597639538, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
     - target: {fileID: -1633328486884891652, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Layer
@@ -7730,7 +7936,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1085477864501492945, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
@@ -8527,6 +8733,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: cap_in_hand
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 07936316a63132e4588a62a5167a505a,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 07936316a63132e4588a62a5167a505a,
         type: 3}
@@ -9451,7 +9662,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 938075993848153346, guid: e0d3ef6bcff32414dbd34fc6ac031292,
         type: 3}
@@ -10239,7 +10450,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 4273854514351752547}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d758aa65baab42b43ba031de88063bb7, type: 3}
 --- !u!4 &4865570266982932041 stripped

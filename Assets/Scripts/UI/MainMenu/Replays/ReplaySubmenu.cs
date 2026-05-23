@@ -25,9 +25,9 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         public override void Show(bool first) {
             base.Show(first);
-            
+
             if (first) {
-                replayList.Show();
+                _ = replayList.LoadReplays();
             }
         }
 

@@ -1,4 +1,5 @@
 using NSMB.UI.Translation;
+using NSMB.Utilities;
 using System.Linq;
 
 namespace NSMB.UI.Options.Loaders {

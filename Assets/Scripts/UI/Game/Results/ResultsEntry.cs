@@ -1,4 +1,5 @@
 using NSMB.Utilities;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using TMPro;
 using UnityEngine;
@@ -62,6 +63,8 @@ namespace NSMB.UI.Game.Results {
                         _ => unrankedColor
                     };
                 }
+
+                Debug.Log($"index {playerInfoIndex} playerref {player} slot {Utils.GetPlayerSlotInfo(index)}");
 
                 leftHalf.color = Utils.GetPlayerColor(f, player, s: 0.7f, considerDisqualifications: false);
                 

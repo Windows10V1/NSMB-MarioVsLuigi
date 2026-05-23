@@ -4,30 +4,6 @@ namespace Quantum {
     public unsafe partial struct Enemy {
         public readonly bool IsAlive => !IsDead && IsActive;
 
-        public readonly EntityRef FindClosestPlayerToSpawnpoint(Frame f, EntityRef entity, VersusStageData stage = null) {
-            var allPlayers = f.Filter<MarioPlayer, Transform2D>();
-            allPlayers.UseCulling = false;
-
-            if (stage == null) {
-                stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
-            }
-            FP closestDistance = FP.MaxValue;
-            EntityRef closestPlayer = EntityRef.None;
-            while (allPlayers.NextUnsafe(out EntityRef marioEntity, out MarioPlayer* mario, out Transform2D* marioTransform)) {
-                if (mario->IsDead) {
-                    continue;
-                }
-
-                FP newDistance = QuantumUtils.WrappedDistance(stage, Spawnpoint, marioTransform->Position);
-
-                if (newDistance <= closestDistance) {
-                    closestPlayer = marioEntity;
-                    closestDistance = newDistance;
-                }
-            }
-            return closestPlayer;
-        }
-
         /**
          * <summary>
          * Sets the respawn data for the enemy
@@ -57,7 +33,7 @@ namespace Quantum {
 
             // face left by default
             var shouldFaceRight = false;
-            var closestMario = FindClosestPlayerToSpawnpoint(f, entity);
+            var closestMario = QuantumUtils.FindClosestAliveMario(f, Spawnpoint, out _);
 
             // use closest player and face them
             if (f.Unsafe.TryGetPointer(closestMario, out Transform2D* marioTransform)) {

@@ -78,6 +78,9 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
                 // Allow submit to confirm, but only when not using gamepad
                 ConfirmClicked();
                 idInputField.ActivateInputField();
+
+                // Select nothing to not re-run submit on other objects...
+                Canvas.EventSystem.SetSelectedGameObject(null);
             }
         }
     }

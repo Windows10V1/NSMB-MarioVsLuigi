@@ -135,21 +135,27 @@ namespace NSMB.Replay {
             // Write binary replay
             string now = DateTimeOffset.Now.ToUnixTimeSeconds().ToString();
             string finalFilePath = Path.Combine(replayFolder, $"Replay-{now}.mvlreplay");
-            int attempts = 0;
 
-            FileStream outputStream = null;
+            Stream outputStream = null;
             long writtenBytes;
             try {
-                do {
-                    try {
-                        outputStream = new FileStream(finalFilePath, FileMode.Create);
-                    } catch {
-                        // Failed to create file; maybe they have two copies of the game open?
-                        finalFilePath = Path.Combine(replayFolder, $"Replay-{now}-{++attempts}.mvlreplay");
-                    }
-                } while (outputStream == null && attempts < 5);
-
                 ref GameRules rules = ref f.Global->Rules;
+                var gamemodeSpecific = f.FindAsset(rules.Gamemode);
+
+                DictionaryEntry_AssetRefCoinItemAsset_FP[] customSpawnWeights;
+                if (f.TryResolveDictionary(rules.CoinItemCustomSpawnWeights, out var customWeights)) {
+                    customSpawnWeights = new DictionaryEntry_AssetRefCoinItemAsset_FP[customWeights.Count];
+                    int count = 0;
+                    foreach ((var key, var value) in customWeights) {
+                        customSpawnWeights[count++] = new DictionaryEntry_AssetRefCoinItemAsset_FP {
+                            Key = key,
+                            Value = value
+                        };
+                    }
+                } else {
+                    customSpawnWeights = null;
+                }
+
                 BinaryReplayHeader header = new() {
                     Version = GameVersion.Current,
                     UnixTimestamp = DateTimeOffset.Now.ToUnixTimeSeconds(),
@@ -157,7 +163,7 @@ namespace NSMB.Replay {
                     ReplayLengthInFrames = jsonReplay.LastTick - jsonReplay.InitialTick,
 
                     Rules = new GameRulesPrototype {
-                        Stage = rules.Stage,
+                        Stage = f.MapAssetRef,
                         Gamemode = rules.Gamemode,
                         StarsToWin = rules.StarsToWin,
                         CoinsForPowerup = rules.CoinsForPowerup,
@@ -165,6 +171,10 @@ namespace NSMB.Replay {
                         TimerMinutes = rules.TimerMinutes,
                         CustomPowerupsEnabled = rules.CustomPowerupsEnabled,
                         TeamsEnabled = rules.TeamsEnabled,
+                        StarFountain = rules.StarFountain,
+                        CoinDeathPenalty = rules.CoinDeathPenalty,
+                        TeamAttack = rules.TeamAttack,
+                        CoinItemCustomSpawnWeights = customSpawnWeights,
                     },
                     PlayerInformation = playerInformation,
                     WinningTeam = winner,
@@ -174,9 +184,31 @@ namespace NSMB.Replay {
                 };
 
                 BinaryReplayFile binaryReplay = BinaryReplayFile.FromReplayData(jsonReplay, header);
+
+#if !UNITY_WEBGL
+                // Write to file
+                int attempts = 0;
+                do {
+                    try {
+                        outputStream = new FileStream(finalFilePath, FileMode.Create);
+                    } catch {
+                        // Failed to create file; maybe they have two copies of the game open?
+                        finalFilePath = Path.Combine(replayFolder, $"Replay-{now}-{++attempts}.mvlreplay");
+                    }
+                } while (outputStream == null && attempts < 5);
+
                 writtenBytes = binaryReplay.WriteToStream(outputStream);
+#else
+                outputStream = new DummyStream();
+                writtenBytes = binaryReplay.WriteToStream(outputStream);
+#endif
+
+                // Register replay file immediately, because WebGL can't load replays from the filesystem.
+                if (ReplayListManager.Instance) {
+                    ReplayListManager.Instance.AddReplay(binaryReplay);
+                }
             } finally {
-                outputStream.Dispose();
+                outputStream?.Dispose();
             }
 
             SavedRecordingPath = finalFilePath;

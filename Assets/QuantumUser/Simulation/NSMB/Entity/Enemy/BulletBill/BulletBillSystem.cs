@@ -94,7 +94,7 @@ namespace Quantum
 
                 mario->IsDrilling = false;
 
-            } else if (!mario->IsCrouchedInShell && mario->IsDamageable) {
+            } else if (!mario->IsCrouchedInShell && mario->IsDamageable && !mario->GetCurrentPowerTransition(f, out _)) {
                 mario->Powerdown(f, marioEntity, false, bulletBillEntity);
             }
         }

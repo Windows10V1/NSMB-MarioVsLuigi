@@ -55,14 +55,43 @@ namespace Quantum {
                     if (QuantumUtils.Decrement(ref f.Global->GameStartFrames)) {
                         // Start the game!
                         if (f.IsVerified) {
-                            f.MapAssetRef = f.Global->Rules.Stage;
+                            AssetRef<Map> nextStage;
+
+                            switch (f.Global->Rules.ChooseMode) {
+                            case StageChooseMode.Choose:
+                                nextStage = f.Global->Rules.Stage;
+                                break;
+                            case StageChooseMode.Random: {
+                                // Pick a random map
+                                var allMaps = f.Context.GetAllAssets<Map>();
+
+                                // Exclude disabled maps.
+                                if (f.TryResolveHashSet(f.Global->Rules.RandomDisabledStages, out var disabledStages)) {
+                                    allMaps.RemoveAll(map => disabledStages.Contains(map));
+                                }
+
+                                // Remove the previous map (if possible)
+                                if (allMaps.Count > 1) {
+                                    allMaps.RemoveAll(map => map == f.Global->PreviousStage);
+                                }
+
+                                nextStage = allMaps[f.RNG->Next(0, allMaps.Count)];
+                                break;
+                            }
+                            default:
+                                throw new ArgumentOutOfRangeException($"Unknown StageChooseMode {f.Global->Rules.ChooseMode}");
+                            }
+
+                            f.MapAssetRef = nextStage;
                         }
+
                         f.Global->PlayerLoadFrames = (ushort) (20 * f.UpdateRate);
                         f.Global->GameState = GameState.WaitingForPlayers;
+                        f.Global->IsStartGameCountdownActive = false;
 
                         f.Events.GameStateChanged(GameState.WaitingForPlayers);
-                    } else if (f.Global->GameStartFrames % 60 == 0) {
-                        f.Events.CountdownTick(f.Global->GameStartFrames / 60);
+                    } else if (f.Global->GameStartFrames > 0 && f.Global->GameStartFrames % f.UpdateRate == 0) {
+                        f.Events.CountdownTick(f.Global->GameStartFrames / f.UpdateRate);
                     }
                 }
                 break;
@@ -171,7 +200,7 @@ namespace Quantum {
                     // Move back to lobby.
                     f.Global->TotalGamesPlayed++;
                     if (f.IsVerified) {
-                        //f.MapAssetRef = f.SimulationConfig.LobbyMap;
+                        f.Global->PreviousStage = f.MapAssetRef;
                         f.Map = null;
                     }
                     f.SystemEnable<StartDisabledSystemGroup>();

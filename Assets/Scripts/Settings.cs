@@ -15,6 +15,7 @@ namespace NSMB {
         public static Controls Controls => _controls;
         public static event Action OnColorblindModeChanged, OnNametagVisibilityChanged, OnDisableChatChanged, OnNdsResolutionSettingChanged, OnDiscordIntegrationChanged, OnCondensedScoreboardChanged;
         public static event Action<bool> OnInputDisplayActiveChanged, OnReplaysEnabledChanged;
+        public static event Action<float> OnHudScaleChanged;
 
         //---Properties
 
@@ -174,6 +175,15 @@ namespace NSMB {
             set => GlobalController.Instance.outlineFeature.SetActive(value);
         }
 
+        private float _graphicsHudScale;
+        public float GraphicsHudScale {
+            get => _graphicsHudScale;
+            set {
+                _graphicsHudScale = value;
+                OnHudScaleChanged?.Invoke(value);
+            }
+        }
+
         private bool _graphicsPlayerNametags;
         public bool GraphicsPlayerNametags {
             get => _graphicsPlayerNametags;
@@ -243,9 +253,14 @@ namespace NSMB {
             Set(this);
             VersionUpdaters = new Action[] { LoadFromVersion0, LoadFromVersion1, LoadFromVersion2 };
             LoadSettings();
+            _controls.Enable();
 
             // Potential duplicate bindings not activating fix?
             InputSystem.settings.SetInternalFeatureFlag("DISABLE_SHORTCUT_SUPPORT", true);
+        }
+
+        public void OnDestroy() {
+            _controls.Disable();
         }
 
         public void SaveSettings() {
@@ -271,6 +286,7 @@ namespace NSMB {
             PlayerPrefs.SetInt("Graphics_NDS_PixelPerfect", GraphicsNdsPixelPerfect ? 1 : 0);
             PlayerPrefs.SetInt("Graphics_VSync", GraphicsVsync ? 1 : 0);
             PlayerPrefs.SetInt("Graphics_MaxFPS", GraphicsMaxFps);
+            PlayerPrefs.SetFloat("Graphics_HudScale", GraphicsHudScale);
             PlayerPrefs.SetInt("Graphics_PlayerOutlines", GraphicsPlayerOutlines ? 1 : 0);
             PlayerPrefs.SetInt("Graphics_PlayerNametags", GraphicsPlayerNametags ? 1 : 0);
             PlayerPrefs.SetInt("Graphics_Colorblind", GraphicsColorblind ? 1 : 0);
@@ -353,6 +369,7 @@ namespace NSMB {
             GraphicsNdsPixelPerfect = false;
             GraphicsVsync = PlayerPrefs.GetInt("VSync", 1) != 0;
             GraphicsMaxFps = 0;
+            GraphicsHudScale = 8;
             GraphicsPlayerOutlines = true;
             GraphicsPlayerNametags = true;
             GraphicsColorblind = false;
@@ -415,6 +432,7 @@ namespace NSMB {
             TryGetSetting<bool>("Graphics_NDS_PixelPerfect", nameof(GraphicsNdsPixelPerfect));
             TryGetSetting<int>("Graphics_MaxFPS", nameof(GraphicsMaxFps));
             TryGetSetting<bool>("Graphics_VSync", nameof(GraphicsVsync));
+            TryGetSetting<float>("Graphics_HudScale", nameof(GraphicsHudScale));
             TryGetSetting<bool>("Graphics_PlayerOutlines", nameof(GraphicsPlayerOutlines));
             TryGetSetting<bool>("Graphics_PlayerNametags", nameof(GraphicsPlayerNametags));
             TryGetSetting<bool>("Graphics_Colorblind", nameof(GraphicsColorblind));

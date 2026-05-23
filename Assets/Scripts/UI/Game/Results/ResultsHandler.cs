@@ -128,8 +128,8 @@ namespace NSMB.UI.Game.Results {
                 infos.Add((i, f.Global->PlayerInfo[i]));
             }
             infos.Sort((x, y) => {
-                (_, var xInfo) = x;
-                (_, var yInfo) = y;
+                var xInfo = x.Item2;
+                var yInfo = y.Item2;
 
                 int objectiveDiff = gamemode.GetObjectiveCount(f, yInfo.PlayerRef) - gamemode.GetObjectiveCount(f, xInfo.PlayerRef);
                 if (objectiveDiff != 0) {

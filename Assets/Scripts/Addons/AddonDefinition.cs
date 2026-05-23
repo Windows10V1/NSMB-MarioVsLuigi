@@ -1,38 +1,61 @@
 using Newtonsoft.Json;
+using NSMB.Utilities;
 using System;
 using UnityEngine;
 
 namespace NSMB.Addons {
+    [CreateAssetMenu(fileName = "New Addon Definition", menuName = "Addon/Addon Definition", order = 0)]
+    public class AddonDefinition : ScriptableObject {
+        public string AddonId;
+        public string DisplayName;
+        public string Author;
+        [TextArea(4, 100)] public string Description;
+        public Texture2D IconTexture;
+
+        [HideInInspector] public string LastVersion;
+
+        public AddonBuildDefinition ToBuildDefinition(Guid guid, GameVersion version) {
+            return new AddonBuildDefinition {
+                ReleaseGuid = guid,
+                GameVersion = version,
+                AddonId = AddonId,
+                DisplayName = DisplayName,
+                Author = Author,
+                ReleaseVersion = LastVersion,
+                Description = Description,
+                IconTexture = IconTexture,
+                iconNeedsDisposal = false,
+            };
+        }
+    }
+
     [Serializable]
-    public class AddonDefinition : IEquatable<AddonDefinition>, IDisposable {
+    public class AddonBuildDefinition : IEquatable<AddonBuildDefinition>, IDisposable {
         public Guid ReleaseGuid { get; set; }
+        public GameVersion GameVersion { get; set; }
+        public string AddonId { get; set; }
         public string DisplayName { get; set; }
         public string Author { get; set; }
-        public string Version { get; set; }
         public string Description { get; set; }
-#if UNITY_EDITOR
-        public string IconAssetPath { get; set; }
-#endif
-        public string[] SupportedPlatforms { get; set; }
-        [JsonIgnore]
-        public Texture2D IconTexture { get; set; }
+        public string ReleaseVersion { get; set; }
+        [JsonIgnore] public Texture2D IconTexture { get; set; }
+        [JsonIgnore] public string FullName => $"{DisplayName} ({ReleaseVersion})";
 
-        [JsonIgnore]
-        public string FullName => $"{DisplayName} ({Version})";
+        [JsonIgnore] internal bool iconNeedsDisposal = true;
 
-        ~AddonDefinition() {
-            if (IconTexture) {
-                Debug.LogError($"Memory Leak! AddonDefinition ({DisplayName}) IconTexture was not disposed!");
+        ~AddonBuildDefinition() {
+            if (IconTexture && iconNeedsDisposal) {
+                Debug.LogError($"Memory Leak! AddonReleaseDefinition ({DisplayName}) IconTexture was not disposed!");
                 Dispose();
             }
         }
 
-        public bool Equals(AddonDefinition other) {
+        public bool Equals(AddonBuildDefinition other) {
             return ReleaseGuid == other.ReleaseGuid;
         }
 
         public void Dispose() {
-            if (IconTexture) {
+            if (IconTexture && iconNeedsDisposal) {
                 UnityEngine.Object.Destroy(IconTexture);
             }
         }

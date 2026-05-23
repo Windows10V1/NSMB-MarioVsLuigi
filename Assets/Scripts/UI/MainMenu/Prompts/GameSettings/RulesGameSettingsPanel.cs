@@ -2,6 +2,7 @@ using Quantum;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Scripting;
 using UnityEngine.UI;
@@ -13,6 +14,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
         //---Serialized Variables
         [SerializeField] private List<RulesGameSettingsPanelTab> tabs;
         [SerializeField] private GameObject advancedRulesButton;
+        [SerializeField] private SelectablePromptLabel advancedRulesLabel;
 
         //---Private Variables
         private RulesGameSettingsPanelTab currentTab;
@@ -117,6 +119,9 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
 
             currentAdvanced = advanced;
             currentTab = newTab;
+
+            advancedRulesLabel.translationKey = advanced ? "ui.inroom.settings.game.advanced.hide" : "ui.inroom.settings.game.advanced.show";
+            advancedRulesLabel.UpdateLabel();
         }
 
         [Preserve]

@@ -8,13 +8,14 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
     public class ProfilePanel : InRoomSubmenuPanel {
 
         //---Properties
-        public override bool IsInSubmenu => teamChooser.content.activeSelf || paletteChooser.content.activeSelf || characterChooser.content.activeSelf;
+        public override bool IsInSubmenu => teamChooser.content.activeSelf || paletteChooser.content.activeSelf || characterChooser.content.activeSelf || teamRandomizer.content.activeSelf;
 
         //---Serialized Variables
         [SerializeField] private Image paletteBackground;
         [SerializeField] private CharacterChooser characterChooser;
         [SerializeField] private PaletteChooser paletteChooser;
         [SerializeField] private TeamChooser teamChooser;
+        [SerializeField] private TeamRandomizer teamRandomizer;
         [SerializeField] private SpriteChangingToggle spectateToggle;
 
         //---Private Variables
@@ -23,6 +24,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         public override void Initialize() {
             paletteChooser.Initialize();
             teamChooser.Initialize();
+            teamRandomizer.Initialize();
 
             QuantumEvent.Subscribe<EventPlayerDataChanged>(this, OnPlayerDataChanged);
         }
@@ -42,6 +44,12 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
 
             if (characterChooser.content.activeSelf) {
                 characterChooser.Close(true);
+                playSound = false;
+                return false;
+            }
+
+            if (teamRandomizer.content.activeSelf) {
+                teamRandomizer.Close(true);
                 playSound = false;
                 return false;
             }

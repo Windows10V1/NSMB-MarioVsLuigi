@@ -37,10 +37,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             }
             characterButtons.Clear();
 
-            var characters = AssetRepository<CharacterAsset>.AllAssets
-                .OrderBy(ca => ca ? ca.SelectionOrder : int.MinValue)
-                .ToList();
-            
+            var characters = AssetRepository<CharacterAsset>.AllAssets;
             int charactersPerRow = Mathf.Max(4, characters.Count / 7);
             template.transform.parent.GetComponent<GridLayoutGroup>().constraintCount = charactersPerRow;
 

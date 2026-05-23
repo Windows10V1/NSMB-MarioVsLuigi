@@ -4,15 +4,14 @@ using Quantum.Task;
 
 namespace Quantum {
 #if MULTITHREADED
-        public unsafe class GenericMoverSystem : SystemThreadedFilter<GenericMoverSystem.Filter> {
+    public unsafe class GenericMoverSystem : SystemThreadedFilter<GenericMoverSystem.Filter> {
 #else
-        public unsafe class GenericMoverSystem : SystemMainThreadEntityFilter<GenericMover, GenericMoverSystem.Filter> {
+    public unsafe class GenericMoverSystem : SystemMainThreadEntityFilter<GenericMover, GenericMoverSystem.Filter> {
 #endif
         public struct Filter {
             public EntityRef Entity;
             public Transform2D* Transform;
             public GenericMover* GenericMover;
-            public MovingPlatform* Platform;
         }
 
 #if MULTITHREADED
@@ -26,7 +25,6 @@ namespace Quantum {
                 return;
             }
 
-            var platform = filter.Platform;
             var genericMover = filter.GenericMover;
             var transform = filter.Transform;
             var asset = f.FindAsset(genericMover->MoverAsset);
@@ -44,7 +42,11 @@ namespace Quantum {
                 velocity = FPVector2.Zero;
             }
 
-            platform->Velocity = velocity * f.UpdateRate;
+            if (f.Unsafe.TryGetPointer(filter.Entity, out MovingPlatform* platform)) {
+                platform->Velocity = velocity * f.UpdateRate;
+            } else {
+                transform->Position += velocity;
+            }
         }
 
         private static FPVector2 SamplePosition(GenericMoverAsset.PathNode[] positions, FP sample, GenericMoverAsset.LoopingMode loopMode) {
@@ -85,6 +87,5 @@ namespace Quantum {
 
             return default;
         }
-
     }
 }

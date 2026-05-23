@@ -197,7 +197,9 @@ namespace NSMB.UI.Game {
         }
 
         private void OnColorblindModeChanged() {
-            UpdateText(QuantumRunner.DefaultGame.Frames.Predicted);
+            if (QuantumRunner.DefaultGame != null) {
+                UpdateText(QuantumRunner.DefaultGame.Frames.Predicted);
+            }
         }
     }
 }

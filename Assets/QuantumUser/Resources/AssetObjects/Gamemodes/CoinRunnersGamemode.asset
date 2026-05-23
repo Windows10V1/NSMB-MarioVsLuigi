@@ -53,6 +53,9 @@ MonoBehaviour:
     Stage:
       Id:
         Value: 438935048561577377
+    ChooseMode:
+      Value: 0
+    RandomDisabledStages: []
     Gamemode:
       Id:
         Value: 394255533064620237
@@ -66,6 +69,10 @@ MonoBehaviour:
       Value: 1
     DrawOnTimeUp:
       Value: 0
+    TeamAttack:
+      Value: 1
+    StarFountain: 0
+    CoinDeathPenalty: 30
   ObjectiveCoinPrototype:
     Id:
       Value: 1441489962698596482

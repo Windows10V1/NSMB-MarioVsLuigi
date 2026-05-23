@@ -21,10 +21,6 @@ public class CharacterAsset : AssetObject, ISoundOverrideProvider, IOrderedAsset
 
     public Sprite SelectionSprite;
     public Color SelectionColor = Color.white;
-    public int SelectionOrder;
-
-    public RuntimeAnimatorController SmallOverrides;
-    public RuntimeAnimatorController LargeOverrides;
 #endif
 
     public int Order;

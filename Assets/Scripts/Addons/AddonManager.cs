@@ -1,6 +1,8 @@
 using Newtonsoft.Json;
 using NSMB.Networking;
 using NSMB.Sound;
+using NSMB.UI.Translation;
+using NSMB.Utilities;
 using Photon.Client;
 using Photon.Realtime;
 using Quantum;
@@ -44,7 +46,7 @@ namespace NSMB.Addons {
         public List<LoadedAddon> LoadedAddons { get; private set; } = new();
 
         //---Private Variables
-        private Dictionary<AssetGuid, LoadedAddon> registeredAssets = new();
+        private Dictionary<AssetGuid, LoadedAddon> allRegisteredAssets = new();
         private List<AddonFile> availableAddons = new();
         private bool waitingForAddons;
 #if UNITY_STANDALONE
@@ -218,16 +220,22 @@ namespace NSMB.Addons {
         public async Awaitable<AddonLoadResult> LoadAddonStream(Stream stream) {
             await Awaitable.BackgroundThreadAsync();
             using ZipArchive zipFile = new(stream, ZipArchiveMode.Read);
-            var addonDef = await GetAddonDefinition(zipFile, false);
+            var addonDef = await GetAddonBuildDefinition(zipFile, false);
+
+            if (!addonDef.GameVersion.EqualsIgnoreHotfix(GameVersion.Current)) {
+                return new AddonLoadResult {
+                    Result = AddonLoadResultEnum.IncompatibleGameVersion
+                };
+            }
 
             Debug.Log($"[Addon] Loading addon {addonDef.FullName} ({addonDef.ReleaseGuid})");
 
             List<AssetBundle> loadedBundles = new();
             List<(string, MemoryStream)> decompressedBundles = new();
-            List<UnityEngine.Object> registeredAssets = new();
+            List<UnityEngine.Object> newlyRegisteredAssets = new();
 
             void UnloadAndCleanup() {
-                foreach (var asset in registeredAssets) {
+                foreach (var asset in newlyRegisteredAssets) {
                     UnloadAsset(asset);
                 }
                 foreach (var bundle in loadedBundles) {
@@ -273,10 +281,9 @@ namespace NSMB.Addons {
                 var newAddon = new LoadedAddon {
                     Definition = addonDef,
                     LoadedAssetBundles = loadedBundles,
-                    RegisteredAssets = registeredAssets,
+                    RegisteredAssets = newlyRegisteredAssets,
                 };
 
-                // Register to Quantum DB
                 foreach (var assetBundle in loadedBundles) {
                     if (assetBundle.isStreamedSceneAssetBundle) {
                         continue;
@@ -286,16 +293,17 @@ namespace NSMB.Addons {
                     await loadTask;
 
                     foreach (ScriptableObject so in loadTask.allAssets.Cast<ScriptableObject>()) {
+                        // Register to Quantum DB
                         if (so is AssetObject assetObject) {
                             try {
                                 QuantumUnityDB.Global.AddAsset(assetObject);
-                                registeredAssets.Add(assetObject);
-                                this.registeredAssets.Add(assetObject.Guid, newAddon);
+                                newlyRegisteredAssets.Add(assetObject);
+                                allRegisteredAssets.Add(assetObject.Guid, newAddon);
                             } catch (Exception e) {
                                 Debug.Log($"[Addon] Failed to load addon {addonDef.FullName} ({addonDef.ReleaseGuid}): registering AssetObject {so.name} ({assetObject.Guid}) failed");
                                 Debug.LogError(e);
                                 UnloadAndCleanup();
-                                if (this.registeredAssets.TryGetValue(assetObject.Guid, out var incompatibleAddon)) {
+                                if (allRegisteredAssets.TryGetValue(assetObject.Guid, out var incompatibleAddon)) {
                                     return new AddonLoadResult {
                                         Result = AddonLoadResultEnum.IncompatibleWithOtherAddon,
                                         IncompatibleWith = incompatibleAddon,
@@ -308,13 +316,16 @@ namespace NSMB.Addons {
                             }
                         } else if (so is GlobalSoundEffectOverrides sfxOverride) {
                             SoundEffectResolver.Instance.GlobalProviders.Add(sfxOverride);
-                            registeredAssets.Add(sfxOverride);
+                            newlyRegisteredAssets.Add(sfxOverride);
+                        } else if (so is ScriptableTranslationSource translationSource) {
+                            GlobalController.Instance.translationManager.RegisterTranslationSource(translationSource.LocaleCode, translationSource);
+                            newlyRegisteredAssets.Add(translationSource);
                         }
                     }
                 }
 
-                if (registeredAssets.Count > 0) {
-                    Debug.Log($"[Addon] Registered {registeredAssets.Count} assets");
+                if (newlyRegisteredAssets.Count > 0) {
+                    Debug.Log($"[Addon] Registered {newlyRegisteredAssets.Count} assets");
                 }
 
                 LoadedAddons.Add(newAddon);
@@ -366,9 +377,11 @@ namespace NSMB.Addons {
             if (obj is AssetObject assetObject) {
                 QuantumUnityDB.Global.DisposeAsset(assetObject.Guid, true);
                 QuantumUnityDB.Global.RemoveSource(assetObject.Guid);
-                registeredAssets.Remove(assetObject.Guid);
+                allRegisteredAssets.Remove(assetObject.Guid);
             } else if (obj is GlobalSoundEffectOverrides sfxOverride) {
                 SoundEffectResolver.Instance.GlobalProviders.Remove(sfxOverride);
+            } else if (obj is ScriptableTranslationSource translationSource) {
+                GlobalController.Instance.translationManager.UnregisterTranslationSource(translationSource.LocaleCode, translationSource);
             }
         }
 
@@ -382,11 +395,16 @@ namespace NSMB.Addons {
             try {
                 fullPath = new FileInfo(fullPath).FullName; // Clean up file paths.
                 using var zipFile = ZipFile.OpenRead(fullPath);
-                var addonDef = await GetAddonDefinition(zipFile, false);
+                var addonDef = await GetAddonBuildDefinition(zipFile, false);
                 if (addonDef == null) {
                     return null;
                 }
-                
+
+                if (!zipFile.Entries.Any(en => en.FullName.StartsWith($"{PlatformFolder}/"))) {
+                    Debug.Log($"[Addon] Incompatible addon found \"{addonDef.FullName}\" ({addonDef.ReleaseGuid}) at \"{fullPath}\"");
+                    return null;
+                }
+
                 if (availableAddons.Any(af => af.Definition.ReleaseGuid == addonDef.ReleaseGuid)
                     || (results != null && results.Any(af => af.Definition.ReleaseGuid == addonDef.ReleaseGuid))) {
                     Debug.Log($"[Addon] Duplicate addon found \"{addonDef.FullName}\" ({addonDef.ReleaseGuid}) at \"{fullPath}\"");
@@ -429,7 +447,7 @@ namespace NSMB.Addons {
             }
         }
 
-        public static async Awaitable<AddonDefinition> GetAddonDefinition(ZipArchive zipFile, bool loadIcon) {
+        public static async Awaitable<AddonBuildDefinition> GetAddonBuildDefinition(ZipArchive zipFile, bool loadIcon) {
             await Awaitable.BackgroundThreadAsync();
             try {
                 var entry = zipFile.GetEntry("addon.json");
@@ -438,7 +456,7 @@ namespace NSMB.Addons {
                 }
                 using StreamReader reader = new(entry.Open());
                 var addonDefJson = await reader.ReadToEndAsync();
-                var addonDef = JsonConvert.DeserializeObject<AddonDefinition>(addonDefJson);
+                var addonDef = JsonConvert.DeserializeObject<AddonBuildDefinition>(addonDefJson);
 
                 if (loadIcon) {
                     var iconEntry = zipFile.GetEntry("icon.png");
@@ -574,13 +592,13 @@ namespace NSMB.Addons {
 
 
     public class LoadedAddon {
-        public AddonDefinition Definition;
+        public AddonBuildDefinition Definition;
         public List<AssetBundle> LoadedAssetBundles;
         public List<UnityEngine.Object> RegisteredAssets;
     }
 
     public class AddonFile {
-        public AddonDefinition Definition;
+        public AddonBuildDefinition Definition;
         public string FilePath;
     }
 

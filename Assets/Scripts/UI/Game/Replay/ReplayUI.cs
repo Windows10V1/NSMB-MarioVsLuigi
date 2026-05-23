@@ -4,7 +4,9 @@ using NSMB.Sound;
 using NSMB.UI.Pause;
 using NSMB.Utilities;
 using NSMB.Utilities.Extensions;
+using Photon.Deterministic;
 using Quantum;
+using System;
 using System.Collections;
 using System.Reflection;
 using System.Text;
@@ -49,12 +51,16 @@ namespace NSMB.UI.Game.Replay {
         private bool gameEnded;
         private Frame resetFrame;
 
+        private FieldInfo sessionSimulationField;
+        private MethodInfo simulationAdjustTimeMethod;
+
         public void OnValidate() {
             this.SetIfNull(ref playerElements, UnityExtensions.GetComponentType.Parent);
         }
 
         public void Start() {
             QuantumCallback.Subscribe<CallbackGameResynced>(this, OnGameResynced);
+            QuantumCallback.Subscribe<CallbackGameDestroyed>(this, OnGameDestroyed);
             QuantumEvent.Subscribe<EventGameEnded>(this, OnGameEnded);
         }
 
@@ -93,6 +99,9 @@ namespace NSMB.UI.Game.Replay {
                 }
 
                 runner.Session.Update(update);
+
+                // Fix accumulated time applying
+                ResetAdjustedTime(runner.Session);
 
                 if (done) {
                     FinishFastForward();
@@ -144,8 +153,8 @@ namespace NSMB.UI.Game.Replay {
             float bufferPercentage = (float) ActiveReplayManager.Instance.ReplayFrameCache.Count * f.UpdateRate * 5 / ActiveReplayManager.Instance.ReplayLength;
             trackBufferMask.rectTransform.SetAnchorMaxX(Mathf.Clamp01(bufferPercentage));
             
-            if (draggingArrow && !replayCanvasGroup.interactable) {
-                StopArrowDrag();
+            if (draggingArrow && (playerElements.PauseMenu.IsPaused || !replayCanvasGroup.interactable)) {
+                CancelArrowDrag();
             }
 
             float percentage;
@@ -203,18 +212,10 @@ namespace NSMB.UI.Game.Replay {
             ActiveReplayManager.Instance.IsReplayFastForwarding = true;
             resetFrame.Deserialize(ActiveReplayManager.Instance.ReplayFrameCache[newIndex]);
             session.ResetReplay(resetFrame);
-            /*
-            // It's a private method. Because of course it is.
-            var resetMethod = session.GetType().GetMethod("Reset", BindingFlags.NonPublic | BindingFlags.Instance, null, new System.Type[] { typeof(byte[]), typeof(int), typeof(bool) }, null);
-            resetMethod.Invoke(session, new object[] { NetworkHandler.ReplayFrameCache[newIndex], newFrame, true });
-            */
 
             // Fix accumulated time applying
-            if (session.AccumulatedTime > 0) {
-                var simulator = session.GetType().GetField("_simulator", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(session);
-                var adjustTimeMethod = simulator.GetType().GetMethod("AdjustClock", BindingFlags.Instance | BindingFlags.Public, null, new System.Type[] { typeof(double) }, null);
-                adjustTimeMethod.Invoke(simulator, new object[] { -session.AccumulatedTime });
-            }
+            ResetAdjustedTime(session);
+
             ActiveReplayManager.Instance.IsReplayFastForwarding = false;
         }
 
@@ -234,18 +235,10 @@ namespace NSMB.UI.Game.Replay {
                 ActiveReplayManager.Instance.IsReplayFastForwarding = true;
                 resetFrame.Deserialize(ActiveReplayManager.Instance.ReplayFrameCache[newIndex]);
                 session.ResetReplay(resetFrame);
-                /*
-                // It's a private method. Because of course it is.
-                var resetMethod = session.GetType().GetMethod("Reset", BindingFlags.NonPublic | BindingFlags.Instance, null, new System.Type[] { typeof(byte[]), typeof(int), typeof(bool) }, null);
-                resetMethod.Invoke(session, new object[] { NetworkHandler.ReplayFrameCache[newIndex], newFrame, false });
-                */
 
                 // Fix accumulated time applying
-                if (session.AccumulatedTime > 0) {
-                    var simulator = session.GetType().GetField("_simulator", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(session);
-                    var adjustTimeMethod = simulator.GetType().GetMethod("AdjustClock", BindingFlags.Instance | BindingFlags.Public, null, new System.Type[] { typeof(double) }, null);
-                    adjustTimeMethod.Invoke(simulator, new object[] { -session.AccumulatedTime });
-                }
+                ResetAdjustedTime(session);
+
                 ActiveReplayManager.Instance.IsReplayFastForwarding = false;
             } else {
                 // We have to simulate up to this frame
@@ -306,13 +299,14 @@ namespace NSMB.UI.Game.Replay {
             }
         }
 
+        public void CancelArrowDrag() {
+            draggingArrow = false;
+            trackArrowText.gameObject.SetActive(false);
+        }
+
         public void StopArrowDrag() {
             draggingArrow = false;
             trackArrowText.gameObject.SetActive(false);
-
-            if (!replayCanvasGroup.interactable) {
-                return;
-            }
 
             QuantumRunner runner = QuantumRunner.Default;
             Frame f = runner.Game.Frames.Predicted;
@@ -332,18 +326,10 @@ namespace NSMB.UI.Game.Replay {
                 ActiveReplayManager.Instance.IsReplayFastForwarding = true;
                 resetFrame.Deserialize(ActiveReplayManager.Instance.ReplayFrameCache[newFrameCacheIndex]);
                 session.ResetReplay(resetFrame);
-                /*
-                // It's a private method. Because of course it is.
-                var resetMethod = session.GetType().GetMethod("Reset", BindingFlags.NonPublic | BindingFlags.Instance, null, new System.Type[] { typeof(byte[]), typeof(int), typeof(bool) }, null);
-                resetMethod.Invoke(session, new object[] { NetworkHandler.ReplayFrameCache[newFrameCacheIndex], cachedFrame, false });
-                */
 
                 // Fix accumulated time applying
-                if (session.AccumulatedTime > 0) {
-                    var simulator = session.GetType().GetField("_simulator", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(session);
-                    var adjustTimeMethod = simulator.GetType().GetMethod("AdjustClock", BindingFlags.Instance | BindingFlags.Public, null, new System.Type[] { typeof(double) }, null);
-                    adjustTimeMethod.Invoke(simulator, new object[] { -session.AccumulatedTime });
-                }
+                ResetAdjustedTime(session);
+
                 ActiveReplayManager.Instance.IsReplayFastForwarding = false;
             }
 
@@ -357,6 +343,10 @@ namespace NSMB.UI.Game.Replay {
                 Time.timeScale = 8;
                 simulationTargetTrackArrow.position = trackArrow.position;
                 simulationTargetTrackArrow.gameObject.SetActive(true);
+            } else {
+                QuantumRunner.Default.IsSessionUpdateDisabled = false;
+                Time.captureDeltaTime = 0;
+                Time.timeScale = 1;
             }
         }
 
@@ -368,22 +358,25 @@ namespace NSMB.UI.Game.Replay {
             resetFrame.Deserialize(ActiveReplayManager.Instance.ReplayFrameCache[0]);
             session.ResetReplay(resetFrame);
 
-            /*
-            // It's a private method. Because of course it is.
-            var resetMethod = session.GetType().GetMethod("Reset", BindingFlags.NonPublic | BindingFlags.Instance, null, new System.Type[] { typeof(byte[]), typeof(int), typeof(bool) }, null);
-            resetMethod.Invoke(session, new object[] { NetworkHandler.ReplayFrameCache[0], NetworkHandler.ReplayStart, false });
-            */
-
             // Fix accumulated time applying
-            if (session.AccumulatedTime > 0) {
-                var simulator = session.GetType().GetField("_simulator", BindingFlags.Instance | BindingFlags.NonPublic).GetValue(session);
-                var adjustTimeMethod = simulator.GetType().GetMethod("AdjustClock", BindingFlags.Instance | BindingFlags.Public, null, new System.Type[] { typeof(double) }, null);
-                adjustTimeMethod.Invoke(simulator, new object[] { -session.AccumulatedTime });
-            }
+            ResetAdjustedTime(session);
 
             ActiveReplayManager.Instance.IsReplayFastForwarding = false;
             replayPaused = false;
             Time.timeScale = replaySpeed;
+        }
+
+        private void ResetAdjustedTime(DeterministicSession session) {
+            sessionSimulationField ??= typeof(DeterministicSession).GetField("_simulator", BindingFlags.Instance | BindingFlags.NonPublic);
+            simulationAdjustTimeMethod ??= sessionSimulationField.FieldType.GetMethod("AdjustClock", BindingFlags.Instance | BindingFlags.Public, null, new Type[] { typeof(double) }, null);
+
+            var simulation = sessionSimulationField.GetValue(session);
+            simulationAdjustTimeMethod.Invoke(simulation, new object[] { -session.AccumulatedTime });
+        }
+
+        private void OnGameDestroyed(CallbackGameDestroyed e) {
+            Time.timeScale = 1;
+            Time.captureDeltaTime = 0;
         }
 
         private unsafe void OnGameResynced(CallbackGameResynced e) {

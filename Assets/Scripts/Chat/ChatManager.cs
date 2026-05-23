@@ -1,5 +1,6 @@
 using NSMB.UI.Translation;
 using NSMB.Utilities;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace NSMB.Chat {
         //---Private Variables
         private AssetRef<Map> currentMap;
         private AssetRef<GamemodeAsset> currentGamemode;
-        private ChatMessageData changeMapMessage, changeGamemodeMessage;
+        private ChatMessageData changeMapMessage, changeGamemodeMessage, randomizeTeamMessage;
 
         public void Awake() {
             Instance = this;
@@ -49,6 +50,7 @@ namespace NSMB.Chat {
             QuantumEvent.Subscribe<EventPlayerKickedFromRoom>(this, OnPlayerKickedFromRoom, FilterOutReplay);
             QuantumEvent.Subscribe<EventPlayerUnbanned>(this, OnPlayerUnbanned, FilterOutReplay);
             QuantumEvent.Subscribe<EventPlayerTeamChangedByHost>(this, OnPlayerTeamChangedByHost, FilterOutReplay);
+            QuantumEvent.Subscribe<EventPlayerTeamRandomized>(this, OnPlayerTeamRandomized, FilterOutReplay);
         }
 
         private void OnUpdateView(CallbackUpdateView e) {
@@ -205,6 +207,15 @@ namespace NSMB.Chat {
                 } else {
                     AddSystemMessage("ui.inroom.chat.player.changeteam.unlocked", Blue);
                 }
+            }
+        }
+
+        private void OnPlayerTeamRandomized(EventPlayerTeamRandomized e) {
+            if (e.Game.PlayerIsLocal(e.Player)) {
+                RemoveChatMessage(randomizeTeamMessage);
+                Frame f = e.Game.Frames.Predicted;
+                var teams = f.Context.GetAllAssets<TeamAsset>();
+                randomizeTeamMessage = AddSystemMessage("ui.inroom.chat.player.randomizeteam", Blue, "team", teams[e.Team].nameTranslationKey);
             }
         }
     }

@@ -46,10 +46,14 @@ MonoBehaviour:
   LooseCoinPrototype:
     Id:
       Value: 1464681621458001613
+  Order: 0
   DefaultRules:
     Stage:
       Id:
         Value: 438935048561577377
+    ChooseMode:
+      Value: 0
+    RandomDisabledStages: []
     Gamemode:
       Id:
         Value: 326486899682662279
@@ -63,6 +67,10 @@ MonoBehaviour:
       Value: 1
     DrawOnTimeUp:
       Value: 0
+    TeamAttack:
+      Value: 1
+    StarFountain: 100
+    CoinDeathPenalty: 0
   BigStarPrototype:
     Id:
       Value: 1295981493910502871
