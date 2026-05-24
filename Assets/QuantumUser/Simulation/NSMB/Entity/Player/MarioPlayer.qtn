@@ -107,6 +107,12 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte ProjectileVolleyFrames;
 	[ExcludeFromPrototype] byte CurrentProjectiles;
 	[ExcludeFromPrototype] byte CurrentVolley;
+	[ExcludeFromPrototype] byte CloudBlocksUsed;
+	[ExcludeFromPrototype] byte ActiveCloudBlocks;
+	[ExcludeFromPrototype] ushort CloudBlockCooldownFrames;
+	[ExcludeFromPrototype] FP CloudBlockBaseHeight;
+	[ExcludeFromPrototype] bool CloudBlockBaseHeightSet;
+	[ExcludeFromPrototype] byte CloudBlockSummonCounter;
 
 	[ExcludeFromPrototype] byte ShellSpeedStage;
     [ExcludeFromPrototype] byte ShellSlowdownFrames;

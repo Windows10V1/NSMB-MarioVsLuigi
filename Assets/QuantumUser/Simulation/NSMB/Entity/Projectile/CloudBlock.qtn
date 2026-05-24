@@ -1,0 +1,25 @@
+import enum SoundEffect(byte);
+
+enum CloudBlockAnimation : Byte {
+	Idle,
+	Summon,
+	SoftSquish,
+	HardSquish,
+	Destroy,
+}
+
+component CloudBlock {
+	AssetRef<CloudBlockProjectileAsset> Asset;
+
+	[ExcludeFromPrototype] EntityRef Owner;
+	[ExcludeFromPrototype] ushort Lifetime;
+	[ExcludeFromPrototype] byte ActionLockFrames;
+	[ExcludeFromPrototype] byte DestroyFrames;
+	[ExcludeFromPrototype] bool Destroying;
+	[ExcludeFromPrototype] CloudBlockAnimation Animation;
+	[ExcludeFromPrototype] ushort AnimationCounter;
+	[ExcludeFromPrototype] SoundEffect QueuedSound;
+	[ExcludeFromPrototype] ushort SoundCounter;
+	[ExcludeFromPrototype, AllocateOnComponentAdded, FreeOnComponentRemoved] hash_set<EntityRef> CurrentContacts;
+	[ExcludeFromPrototype, AllocateOnComponentAdded, FreeOnComponentRemoved] hash_set<EntityRef> PreviousContacts;
+}

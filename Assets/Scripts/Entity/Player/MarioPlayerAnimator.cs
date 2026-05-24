@@ -30,6 +30,7 @@ namespace NSMB.Entities.Player {
 
         //---Static Variables
         private static readonly WaitForSeconds BlinkDelay = new(0.1f);
+        private const float CloudSummonSpinDuration = 0.2f;
 
         #region Animator & Shader Hashes
         private static readonly int ParamPowerupState = Shader.PropertyToID("PowerupState");
@@ -45,6 +46,7 @@ namespace NSMB.Entities.Player {
         private static readonly int StateMegaIdle = Animator.StringToHash("mega-idle");
         private static readonly int StateMegaScale = Animator.StringToHash("mega-scale");
         private static readonly int StateMegaCancel = Animator.StringToHash("mega-cancel");
+        private static readonly int StateJump = Animator.StringToHash("jump");
         private static readonly int StateJumplanding = Animator.StringToHash("jumplanding");
 
         private static readonly int StateJumplandingEdge = Animator.StringToHash("jumplanding-edge");
@@ -152,6 +154,9 @@ namespace NSMB.Entities.Player {
         private bool forceUpdate;
         private GameObject activeRespawnParticle;
         private PowerupState previousPowerupState;
+        private float cloudSummonSpinTimer;
+        private bool cloudSummonSpinFacingRight;
+        private byte previousCloudBlockSummonCounter;
 
         public void OnValidate() {
             this.SetIfNull(ref animator);
@@ -215,6 +220,7 @@ namespace NSMB.Entities.Player {
 
         public override void OnActivate(Frame f) {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
+            previousCloudBlockSummonCounter = mario->CloudBlockSummonCounter;
 
             var playerData = QuantumUtils.GetPlayerData(f, mario->PlayerRef);
             if (playerData != null && f.TryFindAsset(playerData->Palette, out var palette)) {
@@ -288,6 +294,7 @@ namespace NSMB.Entities.Player {
 
             HandleMiscStates(f, mario, physicsObject, freezable);
             HandleAnimations(f, mario, physicsObject, freezable);
+            HandleCloudBlockSummonAnimation(mario);
 
             Input inputs = default;
             if (mario->PlayerRef.IsValid) {
@@ -460,6 +467,13 @@ namespace NSMB.Entities.Player {
                 modelRotationTarget *= Quaternion.Euler(0, (-1200 - ((mario->PropellerLaunchFrames / 60f) * 1400) - (mario->IsDrilling ? 900 : 0) + (mario->IsPropellerFlying && mario->PropellerSpinFrames == 0 && physicsObject->Velocity.Y < 0 ? 700 : 0)) * delta, 0);
                 modelRotateInstantly = true;
 
+            } else if (cloudSummonSpinTimer > 0) {
+                float spinProgress = Mathf.Clamp01((CloudSummonSpinDuration - cloudSummonSpinTimer) / CloudSummonSpinDuration);
+                float spinAngle = spinProgress * 360f * (cloudSummonSpinFacingRight ? -1 : 1);
+                modelRotationTarget = Quaternion.Euler(0, (cloudSummonSpinFacingRight ? angleR : angleL) + spinAngle, 0);
+                modelRotateInstantly = true;
+                cloudSummonSpinTimer = Mathf.Max(0, cloudSummonSpinTimer - delta);
+
             } else if (mario->IsWallsliding) {
                 modelRotationTarget = Quaternion.Euler(0, mario->WallslideRight ? angleR : angleL, 0);
             } else {
@@ -482,6 +496,17 @@ namespace NSMB.Entities.Player {
             if (mario->CurrentPowerupState == PowerupState.PropellerMushroom && !frozen) {
                 propeller.transform.Rotate(Vector3.forward, propellerVelocity * Time.deltaTime);
             }
+        }
+
+        private void HandleCloudBlockSummonAnimation(MarioPlayer* mario) {
+            if (mario->CloudBlockSummonCounter == previousCloudBlockSummonCounter) {
+                return;
+            }
+
+            previousCloudBlockSummonCounter = mario->CloudBlockSummonCounter;
+            cloudSummonSpinTimer = CloudSummonSpinDuration;
+            cloudSummonSpinFacingRight = mario->FacingRight;
+            animator.Play(StateJump, 0, 0f);
         }
 
         private void SetParticleEmission(ParticleSystem particle, bool value) {
@@ -677,10 +702,11 @@ namespace NSMB.Entities.Player {
             // Model Swaps
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
-            cloudModel.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.CloudFlower);
-            cloudBuddy3.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower); // %% cloudblock count < 1
-            cloudBuddy2.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower); // %% Cloudblock count < 2
-            cloudBuddy1.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower); // %% Cloudblock count < 3
+            bool isCloudFlower = mario->CurrentPowerupState == PowerupState.CloudFlower;
+            cloudModel.SetActive(!DisableHeadwear && isCloudFlower);
+            cloudBuddy3.SetActive(isCloudFlower && mario->CloudBlocksUsed < 1);
+            cloudBuddy2.SetActive(isCloudFlower && mario->CloudBlocksUsed < 2);
+            cloudBuddy1.SetActive(isCloudFlower && mario->CloudBlocksUsed < 3);
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
             AcornModel.SetActive(mario->CurrentPowerupState == PowerupState.SuperAcorn);
 

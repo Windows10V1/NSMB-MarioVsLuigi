@@ -1350,6 +1350,7 @@ namespace Quantum {
             if (QuantumUtils.Decrement(ref mario->ProjectileVolleyFrames)) {
                 mario->CurrentVolley = 0;
             }
+            HandleCloudBlockRestoration(f, mario);
 
             if (mario->CurrentPowerupState == PowerupState.MegaMushroom && (filter.Inputs.Left || filter.Inputs.Right) && !mario->IsInKnockback && physicsObject->IsTouchingGround) {
                 if (QuantumUtils.Decrement(ref mario->MegaMushroomFootstepFrames)) {
@@ -1532,8 +1533,91 @@ namespace Quantum {
                 f.Events.MarioPlayerUsedPropeller(filter.Entity);
                 break;
             }
+            case PowerupState.CloudFlower: {
+                TrySummonCloudBlock(f, ref filter);
+                break;
+            }
         }
     }
+
+        private void HandleCloudBlockRestoration(Frame f, MarioPlayer* mario) {
+            if (!f.TryFindAsset(f.SimulationConfig.CloudBlockAsset, out CloudBlockProjectileAsset asset)) {
+                return;
+            }
+
+            if (mario->CloudBlockCooldownFrames > 0 && QuantumUtils.Decrement(ref mario->CloudBlockCooldownFrames)) {
+                CloudBlockSystem.ResetCloudBlockCharges(mario);
+                return;
+            }
+
+            if (mario->CurrentPowerupState != PowerupState.CloudFlower && mario->ActiveCloudBlocks == 0) {
+                CloudBlockSystem.ResetCloudBlockCharges(mario);
+                return;
+            }
+
+            CloudBlockSystem.TryStartRestoreCooldown(mario, asset);
+        }
+
+        private bool TrySummonCloudBlock(Frame f, ref Filter filter) {
+            var mario = filter.MarioPlayer;
+            var physicsObject = filter.PhysicsObject;
+
+            if (!f.TryFindAsset(f.SimulationConfig.CloudBlockAsset, out CloudBlockProjectileAsset asset)
+                || !f.SimulationConfig.CloudBlockPrototype.IsValid) {
+                return false;
+            }
+
+            if (mario->CloudBlockCooldownFrames > 0 || mario->CloudBlocksUsed >= CloudBlockSystem.GetMaxCloudBlocks(asset)) {
+                return false;
+            }
+
+            if (mario->CloudBlocksUsed >= CloudBlockSystem.GetMaxInstantCloudBlocks(asset) && mario->ProjectileDelayFrames > 0) {
+                return false;
+            }
+
+            if (mario->IsWallsliding
+                || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
+                || mario->IsSpinnerFlying
+                || mario->IsDrilling
+                || mario->IsSkidding
+                || mario->IsTurnaround) {
+                return false;
+            }
+
+            FPVector2 spawnPos = filter.Transform->Position + asset.SpawnOffset;
+            if (!mario->CloudBlockBaseHeightSet) {
+                mario->CloudBlockBaseHeight = spawnPos.Y;
+                mario->CloudBlockBaseHeightSet = true;
+            } else if (spawnPos.Y >= mario->CloudBlockBaseHeight) {
+                spawnPos.Y = mario->CloudBlockBaseHeight;
+            }
+
+            EntityRef newEntity = f.Create(f.SimulationConfig.CloudBlockPrototype);
+            CloudBlock* cloudBlock = f.Unsafe.GetPointer<CloudBlock>(newEntity);
+            cloudBlock->Initialize(f, newEntity, filter.Entity, f.SimulationConfig.CloudBlockAsset, asset, spawnPos);
+
+            mario->CloudBlocksUsed++;
+            mario->ActiveCloudBlocks++;
+            mario->CloudBlockSummonCounter++;
+            mario->ProjectileDelayFrames = asset.SummonDelayFrames;
+
+            physicsObject->Velocity.X = 0;
+            physicsObject->Velocity.Y = asset.SummonBounceVelocity;
+            physicsObject->IsTouchingGround = false;
+            physicsObject->WasTouchingGround = false;
+            physicsObject->HoverFrames = 0;
+
+            mario->WalljumpFrames = 0;
+            mario->IsGroundpounding = false;
+            mario->IsGroundpoundActive = false;
+            mario->GroundpoundStartFrames = 0;
+            mario->IsDrilling = false;
+            mario->IsSpinnerFlying = false;
+            mario->IsPropellerFlying = false;
+            mario->JumpState = JumpState.None;
+
+            return true;
+        }
 
         private Projectile* ShootBoomerangProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
             var mario = filter.MarioPlayer;
