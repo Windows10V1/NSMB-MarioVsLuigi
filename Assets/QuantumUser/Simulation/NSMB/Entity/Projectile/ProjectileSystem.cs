@@ -424,8 +424,9 @@ namespace Quantum {
             var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
             var projectileAsset = f.FindAsset(projectile->Asset);
 
+            f.Events.ProjectileHitPlayer(hitEntity, projectileAsset.Effect);
+
             if (projectileAsset.DestroyOnHit) {
-                // Trigger Goldball effect before destroying if it's a Goldball
                 if (projectileAsset.IsGoldball) {
                     var transform = f.Unsafe.GetPointer<Transform2D>(projectileEntity);
                     GoldballSystem.TriggerGoldballEffect(f, projectileEntity, transform->Position, projectileAsset);
@@ -440,7 +441,6 @@ namespace Quantum {
 
                 f.Events.EnemyKicked(hitEntity, false);
                 if (projectile->Speed < 1) {
-                    // Trigger Goldball effect before destroying if it's a Goldball
                     if (projectileAsset.IsGoldball) {
                         var transform = f.Unsafe.GetPointer<Transform2D>(projectileEntity);
                         GoldballSystem.TriggerGoldballEffect(f, projectileEntity, transform->Position, projectileAsset);

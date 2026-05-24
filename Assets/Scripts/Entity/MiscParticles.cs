@@ -18,6 +18,7 @@ namespace NSMB.Particles {
             QuantumEvent.Subscribe<EventProjectileDestroyed>(this, OnProjectileDestroyed, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventCollectableDespawned>(this, OnCollectableDespawned, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventProjectileHitPlayer>(this, OnProjectileHitPlayer, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyDespawnedOffscreen>(this, OnEnemyDespawnedOffscreen, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerBlueShellStomped>(this, OnMarioPlayerBlueShellStomped, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedPowerup>(this, OnMarioPlayerCollectedPowerup, FilterOutReplayFastForward);
@@ -56,6 +57,16 @@ namespace NSMB.Particles {
                 Instantiate(
                     Enums.PrefabParticle.Enemy_HardKick.GetGameObject(),
                     view.transform.position + (Vector3.back * 5) + (Vector3.up * 0.1f),
+                    Quaternion.identity);
+            }
+        }
+
+        private void OnProjectileHitPlayer(EventProjectileHitPlayer e) {
+            QuantumEntityView view = Updater.GetView(e.Entity);
+            if (view) {
+                Instantiate(
+                    Enums.PrefabParticle.Enemy_KillPoof.GetGameObject(),
+                    view.transform.position + (Vector3.back * 4) + (Vector3.up * 0.1f),
                     Quaternion.identity);
             }
         }

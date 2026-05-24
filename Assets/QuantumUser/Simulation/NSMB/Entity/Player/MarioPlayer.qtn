@@ -121,14 +121,6 @@ component MarioPlayer {
 
 	[ExcludeFromPrototype] ushort ProjectileCooldownFrames;
 
-	// Cloud Flower
-	[ExcludeFromPrototype] byte CloudCount;
-	[ExcludeFromPrototype] ushort CloudCooldownFrames;
-	[ExcludeFromPrototype] FP CloudFirstSummonY;
-	[ExcludeFromPrototype] bool CloudHeightLocked;
-	[ExcludeFromPrototype] bool CloudSetMaxReached;
-	[ExcludeFromPrototype] byte CloudSpinFrames;
-
     [ExcludeFromPrototype] EntityRef HeldEntity;
 	[ExcludeFromPrototype] int HoldStartFrame;
 
@@ -283,12 +275,8 @@ event MarioPlayerUsedSpinner {
 	EntityRef Spinner;
 }
 
-event MarioPlayerSummonedCloudBlock {
-	EntityRef Entity;
-}
-
 event ProjectileHitPlayer {
-	EntityRef Player;
+	EntityRef Entity;
 	ProjectileEffectType Effect;
 }
 

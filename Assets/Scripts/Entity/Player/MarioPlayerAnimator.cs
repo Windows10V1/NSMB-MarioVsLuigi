@@ -30,7 +30,6 @@ namespace NSMB.Entities.Player {
 
         //---Static Variables
         private static readonly WaitForSeconds BlinkDelay = new(0.1f);
-        private const int CloudSpinDurationFrames = 30;
 
         #region Animator & Shader Hashes
         private static readonly int ParamPowerupState = Shader.PropertyToID("PowerupState");
@@ -192,7 +191,6 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerShotProjectile>(this, OnMarioPlayerShotProjectile, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUsedPropeller>(this, OnMarioPlayerUsedPropeller, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerPropellerSpin>(this, OnMarioPlayerPropellerSpin, FilterOutReplayFastForward);
-            QuantumEvent.Subscribe<EventMarioPlayerSummonedCloudBlock>(this, OnMarioPlayerSummonedCloudBlock, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedStar>(this, OnMarioPlayerCollectedStar, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerDied>(this, OnMarioPlayerDied);
             QuantumEvent.Subscribe<EventMarioPlayerPreRespawned>(this, OnMarioPlayerPreRespawned, FilterOutReplayFastForward);
@@ -462,13 +460,6 @@ namespace NSMB.Entities.Player {
                 modelRotationTarget *= Quaternion.Euler(0, (-1200 - ((mario->PropellerLaunchFrames / 60f) * 1400) - (mario->IsDrilling ? 900 : 0) + (mario->IsPropellerFlying && mario->PropellerSpinFrames == 0 && physicsObject->Velocity.Y < 0 ? 700 : 0)) * delta, 0);
                 modelRotateInstantly = true;
 
-            } else if (mario->CloudSpinFrames > 0) {
-                float baseAngle = mario->FacingRight ? angleR : angleL;
-                float spinProgress = 1f - (mario->CloudSpinFrames / (float) CloudSpinDurationFrames);
-                float spin = 360f * spinProgress * (mario->FacingRight ? -1 : 1);
-                modelRotationTarget = Quaternion.Euler(0, baseAngle + spin, 0);
-                modelRotateInstantly = true;
-
             } else if (mario->IsWallsliding) {
                 modelRotationTarget = Quaternion.Euler(0, mario->WallslideRight ? angleR : angleL, 0);
             } else {
@@ -687,10 +678,9 @@ namespace NSMB.Entities.Player {
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudModel.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.CloudFlower);
-            bool showCloudBuddies = mario->CurrentPowerupState == PowerupState.CloudFlower;
-            cloudBuddy3.SetActive(showCloudBuddies && mario->CloudCount < 1 && mario->CloudCooldownFrames == 0);
-            cloudBuddy2.SetActive(showCloudBuddies && mario->CloudCount < 2 && mario->CloudCooldownFrames == 0);
-            cloudBuddy1.SetActive(showCloudBuddies && mario->CloudCount < 3 && mario->CloudCooldownFrames == 0);
+            cloudBuddy3.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower); // %% cloudblock count < 1
+            cloudBuddy2.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower); // %% Cloudblock count < 2
+            cloudBuddy1.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower); // %% Cloudblock count < 3
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
             AcornModel.SetActive(mario->CurrentPowerupState == PowerupState.SuperAcorn);
 
@@ -1082,19 +1072,6 @@ namespace NSMB.Entities.Player {
             PlaySound(SoundEffect.Powerup_PropellerMushroom_Start);
         }
 
-        private void OnMarioPlayerSummonedCloudBlock(EventMarioPlayerSummonedCloudBlock e) {
-            if (e.Entity != EntityRef) {
-                return;
-            }
-
-            animator.Play("jump", 0, 0);
-            if (PredictedFrame.TryFindAsset(PredictedFrame.SimulationConfig.CloudBlockAsset, out CloudBlockProjectileAsset asset)) {
-                PlaySound(asset.ShootSound, new[] { asset });
-            } else {
-                PlaySound(SoundEffect.Powerup_CloudFlower_Spawn);
-            }
-        }
-
         private void OnMarioPlayerShotProjectile(EventMarioPlayerShotProjectile e) {
             if (e.Entity != EntityRef) {
                 return;
@@ -1386,14 +1363,12 @@ namespace NSMB.Entities.Player {
         }
 
         private void OnProjectileHitPlayer(EventProjectileHitPlayer e) {
-            if (e.Player != EntityRef) {
+            if (e.Entity != EntityRef) {
                 return;
             }
 
             if (e.Effect == ProjectileEffectType.Boomerang) {
-                PlaySound(SoundEffect.Powerup_BoomerangFlower_Pierce);
-            } else {
-                PlaySound(SoundEffect.Powerup_HammerSuit_Bounce);
+                sfx.PlayOneShot(SoundEffect.Powerup_BoomerangFlower_Pierce);
             }
         }
     }
