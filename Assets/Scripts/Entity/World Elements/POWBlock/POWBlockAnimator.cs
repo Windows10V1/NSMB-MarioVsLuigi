@@ -35,13 +35,18 @@ namespace NSMB.Entities.World {
                 return;
             }
 
-            SoundEffectResolver.Instance.PlayOneShotGlobally(SoundEffect.Powerup_MegaMushroom_Groundpound);
             Instantiate(
                 Enums.PrefabParticle.Player_MegaGroundpoundDust.GetGameObject(),
-                e.Position.ToUnityVector3() + (Vector3.back * 5),
+                transform.position + (Vector3.back * 5),
                 Quaternion.identity
             );
-            CameraAnimator.TriggerScreenshake(0.15f);
+            Instantiate(
+                Enums.PrefabParticle.Player_MegaGroundpoundImpact.GetGameObject(),
+                transform.position + (Vector3.back * 5),
+                Quaternion.identity
+            );
+
+            CameraAnimator.TriggerScreenshake(0.35f);
         }
 
         private void UpdateSprite(Frame f) {

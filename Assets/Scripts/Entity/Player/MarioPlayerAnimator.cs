@@ -105,7 +105,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel, BuilderModel, HipHammer, HandHammer, AcornModel;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -261,8 +261,7 @@ namespace NSMB.Entities.Player {
             mario->CurrentPowerupState != PowerupState.FrogSuit &&
             mario->CurrentPowerupState != PowerupState.PropellerMushroom &&
             mario->CurrentPowerupState != PowerupState.BoomerangFlower &&
-            mario->CurrentPowerupState != PowerupState.CloudFlower &&
-            mario->CurrentPowerupState != PowerupState.SuperAcorn);
+            mario->CurrentPowerupState != PowerupState.CloudFlower);
         }
 
         public override void OnUpdateView() {
@@ -708,12 +707,6 @@ namespace NSMB.Entities.Player {
             cloudBuddy2.SetActive(isCloudFlower && mario->CloudBlocksUsed < 2);
             cloudBuddy1.SetActive(isCloudFlower && mario->CloudBlocksUsed < 3);
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
-            AcornModel.SetActive(mario->CurrentPowerupState == PowerupState.SuperAcorn);
-
-            // Builder Suit Models
-            BuilderModel.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit);
-            HipHammer.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit); // && mario isn't swinging hand hammer (WIP)
-            HandHammer.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit); // && mario is swinging hand hammer (WIP)
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;
             bool changedAvatar = animator.avatar != targetAvatar;
