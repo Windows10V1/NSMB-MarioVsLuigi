@@ -1288,7 +1288,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Show smaller scoreboard
+  m_text: Use condensed version of the in-game scoreboard
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 38e8769007229044bb229d69f8cbae74, type: 2}
   m_sharedMaterial: {fileID: 3023213983796840565, guid: 38e8769007229044bb229d69f8cbae74,
@@ -10241,7 +10241,7 @@ MonoBehaviour:
   manager: {fileID: 6650708626366051462}
   label: {fileID: 5576406981070032078}
   loader: {fileID: 7945364684210455038}
-  translationKey: ui.options.graphics.condensedscoreboard
+  translationKey: ui.options.general.condensedscoreboard
   hideOnWebGL: 0
   requireReconnect: 0
   toggle: {fileID: 834390231657693059}
@@ -20342,7 +20342,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   translationManager: {fileID: 6974483067213173336}
-  discordController: {fileID: 6841901076153067735}
   rumbleManager: {fileID: 4506347848550621655}
   fader: {fileID: 2520054109870061160}
   addonManager: {fileID: 7662282222624482137}
@@ -20350,7 +20349,6 @@ MonoBehaviour:
   audioMixerManager: {fileID: 6114239374411719935}
   outlineFeature: {fileID: 8738572190042607270, guid: 5f58d6b1c480f4b4f9c77b6264ddfa5b,
     type: 2}
-  graphy: {fileID: 3294752702581592890}
   connecting: {fileID: 8037377025181158649}
   loadingCanvas: {fileID: 8956540992486063079}
   fullscreenFadeImage: {fileID: 8865099243651785905}
