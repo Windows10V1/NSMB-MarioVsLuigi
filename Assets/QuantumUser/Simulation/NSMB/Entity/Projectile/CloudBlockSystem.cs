@@ -106,33 +106,37 @@ namespace Quantum {
             CloudBlock* cloudBlock = f.Unsafe.GetPointer<CloudBlock>(cloudBlockEntity);
             CloudBlockProjectileAsset asset = f.FindAsset(cloudBlock->Asset);
 
-            if (!cloudBlock->CanRunActions || !IsTopContact(contact)) {
+            if (!IsTopContact(contact)) {
                 return true;
             }
 
             MarioPlayer* mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
             PhysicsObject* physicsObject = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
 
-            if (mario->IsGroundpoundActive || mario->IsDrilling) {
-                cloudBlock->PlayAnimation(CloudBlockAnimation.HardSquish);
+            if (cloudBlock->CanRunActions) {
+                if (mario->IsGroundpoundActive || mario->IsDrilling) {
+                    cloudBlock->PlayAnimation(CloudBlockAnimation.HardSquish);
 
-                if (mario->CurrentPowerupState == PowerupState.MegaMushroom) {
-                    StartDestroy(f, cloudBlockEntity, cloudBlock, asset, true);
+                    if (mario->CurrentPowerupState == PowerupState.MegaMushroom) {
+                        StartDestroy(f, cloudBlockEntity, cloudBlock, asset, true);
+                        return false;
+                    }
+
+                    if (CanUseCloudBlockLaunch(f, marioEntity, cloudBlock->Owner)) {
+                        LaunchMarioFromCloudBlock(mario, physicsObject, asset);
+                        cloudBlock->QueueSound(asset.GroundpoundBounceSound);
+                    }
                     return false;
                 }
 
-                if (CanUseCloudBlockLaunch(f, marioEntity, cloudBlock->Owner)) {
-                    LaunchMarioFromCloudBlock(mario, physicsObject, asset);
-                    cloudBlock->QueueSound(asset.GroundpoundBounceSound);
+                bool landed = !physicsObject->WasTouchingGround && physicsObject->PreviousFrameVelocity.Y <= 0;
+                if (landed && RegisterContact(f, cloudBlock, marioEntity)) {
+                    cloudBlock->PlayAnimation(mario->CurrentPowerupState == PowerupState.MegaMushroom
+                        ? CloudBlockAnimation.HardSquish
+                        : CloudBlockAnimation.SoftSquish);
                 }
-                return false;
-            }
-
-            bool landed = !physicsObject->WasTouchingGround && physicsObject->PreviousFrameVelocity.Y <= 0;
-            if (landed && RegisterContact(f, cloudBlock, marioEntity)) {
-                cloudBlock->PlayAnimation(mario->CurrentPowerupState == PowerupState.MegaMushroom
-                    ? CloudBlockAnimation.HardSquish
-                    : CloudBlockAnimation.SoftSquish);
+            } else {
+                RegisterContact(f, cloudBlock, marioEntity);
             }
 
             return true;
@@ -182,7 +186,7 @@ namespace Quantum {
                 return;
             }
 
-            keepContacts &= cloudBlock->CanRunActions && IsTopContact(contact);
+            keepContacts &= IsTopContact(contact);
         }
 
         private static bool IsTopContact(PhysicsContact contact) {
