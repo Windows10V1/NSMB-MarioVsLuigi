@@ -81,6 +81,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         private readonly StringBuilder stringBuilder = new();
 
+        private bool initialFindStarted;
         private bool ready;
         private CancellationTokenSource currentCancellationSource;
         private readonly object lockObject = new();
@@ -180,6 +181,11 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         }
 
         public async Awaitable LoadReplays() {
+            if (initialFindStarted) {
+                return;
+            }
+
+            initialFindStarted = true;
             ready = false;
             noReplaysText.text = "";
             await FindReplays(default);
@@ -366,7 +372,6 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             }
 
             try {
-
                 await Awaitable.MainThreadAsync();
 
                 int page = Mathf.Clamp(pageNullable ?? CurrentPage, 0, PageCount - 1);
@@ -498,7 +503,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 string[] foundReplayFiles = Directory.GetFiles(ReplayDirectory, $"*.{ReplayFileExtension}", SearchOption.AllDirectories);
                 findFilesTotal = foundReplayFiles.Length;
 
-                HashSet<string> newLoadedFilepaths = new();
+                HashSet<string> newLoadedFilepaths = new(loadedFilepaths);
                 HashSet<BinaryReplayFile> newFoundReplays = new();
                 foreach (var filepath in foundReplayFiles) {
                     findFilesProcessed++;
@@ -508,8 +513,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                         return;
                     }
 
-                    // Should never *be* locked, but just in case. (user spams or something)
-                    if (loadedFilepaths.Contains(filepath)) {
+                    if (newLoadedFilepaths.Contains(filepath)) {
                         // Already loaded
                         continue;
                     }
@@ -532,9 +536,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 await Awaitable.MainThreadAsync();
 
                 lock (lockObject) {
-                    foreach (var path in newLoadedFilepaths) {
-                        loadedFilepaths.Add(path);
-                    }
+                    loadedFilepaths = newLoadedFilepaths;
                     allReplays.AddRange(newFoundReplays);
                 }
             } catch {
@@ -744,15 +746,13 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 }
 
                 AddReplay(parsedReplay);
-                Debug.Log(parsedReplay.Header.GetDisplayName());
 
                 await StartNewTaskSequence(async (cancellationToken) => {
                     await SortReplays(cancellationToken);
                     await FilterReplays(cancellationToken);
                     await CreateReplayListEntries(cancellationToken, parsedReplay);
                 });
-            } catch (Exception e) {
-                Debug.Log(e);
+            } catch {
                 throw;
             }
         }
