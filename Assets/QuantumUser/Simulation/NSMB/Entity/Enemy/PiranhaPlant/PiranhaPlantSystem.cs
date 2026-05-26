@@ -96,10 +96,17 @@ namespace Quantum {
         public void OnPiranhaPlantMarioInteraction(Frame f, EntityRef piranhaPlantEntity, EntityRef marioEntity) {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
             var marioPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
+            var piranhaTransform = f.Unsafe.GetPointer<Transform2D>(piranhaPlantEntity);
+            var marioTransform = f.Unsafe.GetPointer<Transform2D>(marioEntity);
 
             if (mario->InstakillsEnemies(marioPhysicsObject, false)) {
                 var piranhaPlant = f.Unsafe.GetPointer<PiranhaPlant>(piranhaPlantEntity);
                 piranhaPlant->Kill(f, piranhaPlantEntity, marioEntity, EnemyKillReason.Special);
+
+            } else if (mario->IsPenguinSliding) {
+                mario->IsPenguinSliding = false;
+                bool fromRight = piranhaTransform->Position.X < marioTransform->Position.X;
+                mario->DoKnockback(f, marioEntity, fromRight, 0, KnockbackStrength.Normal, piranhaPlantEntity, true);
 
             } else if (!mario->IsCrouchedInShell) {
                 mario->Powerdown(f, marioEntity, false, piranhaPlantEntity);

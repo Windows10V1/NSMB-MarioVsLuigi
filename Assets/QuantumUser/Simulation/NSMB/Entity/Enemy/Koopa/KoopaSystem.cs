@@ -289,6 +289,11 @@ namespace Quantum {
                         }
                     }
 
+                } else if (mario->IsPenguinSliding) {
+                    mario->IsPenguinSliding = false;
+                    bool fromRight = ourPos.X < theirPos.X;
+                    mario->DoKnockback(f, marioEntity, fromRight, 0, KnockbackStrength.Normal, koopaEntity, true);
+
                 } else if (mario->IsDamageable && (koopaEnemy->IntangibilityFrames == 0 || koopa->IsInShell)) {
                     mario->Powerdown(f, marioEntity, false, koopaEntity);
                     if (!koopa->IsInShell) {

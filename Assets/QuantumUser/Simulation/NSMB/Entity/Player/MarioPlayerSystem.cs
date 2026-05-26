@@ -1749,25 +1749,51 @@ namespace Quantum {
 
             // Handle Penguin Slide (exclusive to PenguinSuit)
             if (penguinSuit && !mario->IsInKnockback && !f.Exists(mario->HeldEntity) && !physicsObject->IsUnderwater) {
-                FP maxRunSpeed = physics.WalkMaxVelocity[physics.RunSpeedStage];
-                bool atMaxSpeed = FPMath.Abs(physicsObject->Velocity.X) >= maxRunSpeed;
-                
-                // Activation: max running speed + down input
-                if (atMaxSpeed && inputs.Down.IsDown && physicsObject->IsTouchingGround && !mario->IsPenguinSliding) {
-                    mario->IsPenguinSliding = true;
-                    mario->IsCrouching = false;
+                // Track movement frames for 30-frame activation delay (prevents slide spam from standstill)
+                if (!mario->IsPenguinSliding) {
+                    FP velX = physicsObject->Velocity.X;
+                    bool movingRight = velX > FP._0_01;
+                    bool movingLeft = velX < -FP._0_01;
+
+                    if (movingRight || movingLeft) {
+                        bool sameDirection = (movingRight && mario->FacingRight) || (movingLeft && !mario->FacingRight);
+                        if (sameDirection && mario->ShellSlowdownFrames < 255) {
+                            mario->ShellSlowdownFrames++;
+                        } else {
+                            mario->ShellSlowdownFrames = 0;
+                        }
+                    } else if (physicsObject->IsTouchingGround) {
+                        mario->ShellSlowdownFrames = 0;
+                    }
+                }
+
+                FP walkSpeed = physics.WalkMaxVelocity[0];
+                FP runSpeed = physics.WalkMaxVelocity[physics.RunSpeedStage];
+                bool atWalkSpeed = FPMath.Abs(physicsObject->Velocity.X) >= walkSpeed;
+                bool atRunSpeed = FPMath.Abs(physicsObject->Velocity.X) >= runSpeed;
+
+                // Activation: walking speed + down input, requires 30-frame movement or above running speed
+                if (atWalkSpeed && inputs.Down.IsDown && physicsObject->IsTouchingGround && !mario->IsPenguinSliding) {
+                    bool canSlide = atRunSpeed || mario->ShellSlowdownFrames >= 30;
+                    if (canSlide) {
+                        mario->IsPenguinSliding = true;
+                        mario->IsCrouching = false;
+                        mario->ShellSlowdownFrames = 0;
+                    }
                 }
                 
                 // Maintenance: persists while sprint is held
                 if (mario->IsPenguinSliding) {
-                    // Restrict left/right input - maintain slide direction by ignoring turn inputs
+                    // Cannot turn around in mid-air unless sprint is released
                     bool tryingToTurn = (inputs.Left.IsDown && mario->FacingRight) || (inputs.Right.IsDown && !mario->FacingRight);
                     
                     if (!inputs.Sprint.IsDown) {
                         // Transition back to run/idle based on velocity
                         mario->IsPenguinSliding = false;
-                    } else if (inputs.Up.IsDown || tryingToTurn || (mario->FacingRight && physicsObject->IsTouchingRightWall) || (!mario->FacingRight && physicsObject->IsTouchingLeftWall)) {
-                        // Cancel slide on up input, trying to turn, or wall collision
+                    } else if (inputs.Up.IsDown
+                        || (physicsObject->IsTouchingGround && tryingToTurn)
+                        || (mario->FacingRight && physicsObject->IsTouchingRightWall) || (!mario->FacingRight && physicsObject->IsTouchingLeftWall)) {
+                        // Cancel slide on up input, trying to turn while grounded, or wall collision
                         mario->IsPenguinSliding = false;
                     }
                 }
@@ -2426,6 +2452,79 @@ namespace Quantum {
 
 
             if (!eitherDamageInvincible) {
+                // Penguin Slide interactions
+                bool marioAPenguinSlide = marioA->IsPenguinSliding;
+                bool marioBPenguinSlide = marioB->IsPenguinSliding;
+
+                if ((marioAPenguinSlide || marioBPenguinSlide) && !marioAAbove && !marioBAbove) {
+                    bool marioARunningShell = marioA->IsInShell;
+                    bool marioBRunningShell = marioB->IsInShell;
+                    bool marioACrouchedShell = marioA->IsCrouchedInShell;
+                    bool marioBCrouchedShell = marioB->IsCrouchedInShell;
+
+                    if (marioAPenguinSlide && marioBPenguinSlide) {
+                        bool knockbacked = false;
+                        knockbacked |= marioA->DoKnockback(f, marioAEntity, fromRight, 0, KnockbackStrength.Groundpound, marioBEntity);
+                        knockbacked |= marioB->DoKnockback(f, marioBEntity, !fromRight, 0, KnockbackStrength.Groundpound, marioAEntity);
+                        if (knockbacked) {
+                            f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.Groundpound, avgPosition);
+                        }
+                        return;
+                    }
+
+                    if (marioAPenguinSlide && marioBRunningShell && !marioBAbove) {
+                        marioA->IsPenguinSliding = false;
+                        marioA->DoKnockback(f, marioAEntity, fromRight, 0, KnockbackStrength.Normal, marioBEntity, true, wasBlueShell: true);
+                        marioB->FacingRight = !marioB->FacingRight;
+                        marioB->ShellSpeedStage = marioBPhysicsInfo.ShellNormalStage;
+                        f.Events.PlayBumpSound(marioBEntity);
+                        return;
+                    }
+                    if (marioBPenguinSlide && marioARunningShell && !marioAAbove) {
+                        marioB->IsPenguinSliding = false;
+                        marioB->DoKnockback(f, marioBEntity, !fromRight, 0, KnockbackStrength.Normal, marioAEntity, true, wasBlueShell: true);
+                        marioA->FacingRight = !marioA->FacingRight;
+                        marioA->ShellSpeedStage = marioAPhysicsInfo.ShellNormalStage;
+                        f.Events.PlayBumpSound(marioAEntity);
+                        return;
+                    }
+
+                    if (marioAPenguinSlide && marioBCrouchedShell) {
+                        bool knockbacked = false;
+                        knockbacked |= marioA->DoKnockback(f, marioAEntity, fromRight, 0, KnockbackStrength.CollisionBump, marioBEntity, true);
+                        knockbacked |= marioB->DoKnockback(f, marioBEntity, !fromRight, 0, KnockbackStrength.CollisionBump, marioAEntity, true);
+                        if (knockbacked) {
+                            f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.CollisionBump, avgPosition);
+                        }
+                        return;
+                    }
+                    if (marioBPenguinSlide && marioACrouchedShell) {
+                        bool knockbacked = false;
+                        knockbacked |= marioB->DoKnockback(f, marioBEntity, !fromRight, 0, KnockbackStrength.CollisionBump, marioAEntity, true);
+                        knockbacked |= marioA->DoKnockback(f, marioAEntity, fromRight, 0, KnockbackStrength.CollisionBump, marioBEntity, true);
+                        if (knockbacked) {
+                            f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.CollisionBump, avgPosition);
+                        }
+                        return;
+                    }
+
+                    // Penguin slide vs any other state
+                    if (marioAPenguinSlide) {
+                        marioA->IsPenguinSliding = false;
+                        marioAPhysics->Velocity.X = 0;
+                        marioB->DoKnockback(f, marioBEntity, !fromRight, 0, KnockbackStrength.Normal, marioAEntity, true);
+                        f.Events.PlayKnockbackEffect(marioBEntity, marioAEntity, KnockbackStrength.Normal, avgPosition);
+                        return;
+                    }
+                    if (marioBPenguinSlide) {
+                        marioB->IsPenguinSliding = false;
+                        marioBPhysics->Velocity.X = 0;
+                        marioA->DoKnockback(f, marioAEntity, fromRight, 0, KnockbackStrength.Normal, marioBEntity, true);
+                        f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.Normal, avgPosition);
+                        return;
+                    }
+                }
+
                 bool marioAShell = marioA->IsInShell;
                 bool marioBShell = marioB->IsInShell;
                 bool marioACrouchedInShell = marioA->IsCrouchedInShell;
