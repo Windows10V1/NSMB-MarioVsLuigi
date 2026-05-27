@@ -446,76 +446,10 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: POW_0
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 1
-        width: 16
-        height: 16
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 251426ca29ec3e14bac57981fd78ee7c
-      internalID: -1303093240
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: POW_1
-      rect:
-        serializedVersion: 2
-        x: 96
-        y: 17
-        width: 16
-        height: 16
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 7a7ad136b4b39e5458320ba3ded68f31
-      internalID: 1512579996
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: POW_2
-      rect:
-        serializedVersion: 2
-        x: 112
-        y: 1
-        width: 16
-        height: 16
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: bcd739540bd51c2479cef72c7479ae96
-      internalID: -280334765
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: Frog
       rect:
         serializedVersion: 2
-        x: 112
+        x: 96
         y: 17
         width: 16
         height: 16
@@ -537,7 +471,7 @@ TextureImporter:
       name: PoisonMushroom
       rect:
         serializedVersion: 2
-        x: 128
+        x: 112
         y: 17
         width: 16
         height: 16
@@ -559,7 +493,7 @@ TextureImporter:
       name: AcornMushroom
       rect:
         serializedVersion: 2
-        x: 128
+        x: 96
         y: 0
         width: 16
         height: 17
@@ -573,28 +507,6 @@ TextureImporter:
       bones: []
       spriteID: 02808d54bcc8bc149a605aac8e263577
       internalID: 2063908454
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: SuperHammer
-      rect:
-        serializedVersion: 2
-        x: 144
-        y: 1
-        width: 16
-        height: 16
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 31fea2a8cb3082945828c34822644294
-      internalID: -810156064
       vertices: []
       indices: 
       edges: []

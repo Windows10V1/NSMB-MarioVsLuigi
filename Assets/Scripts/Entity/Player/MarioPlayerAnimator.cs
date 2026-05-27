@@ -115,6 +115,7 @@ namespace NSMB.Entities.Player {
         [SerializeField] private Shader normalShader;
         [SerializeField] private Shader rainbowShader;
         [SerializeField] private Shader goldShader;
+        [SerializeField] private Shader superBallShader;
 
         [Header("Sound")]
         [SerializeField] private AudioSource sfx;
@@ -138,8 +139,6 @@ namespace NSMB.Entities.Player {
         
         //---Private Variables
         private Enums.PlayerEyeState eyeState;
-        private float happyEyeStateTimer;
-        private float pissedEyeStateTimer;
         private float propellerVelocity;
         private Quaternion modelRotationTarget;
         private bool modelRotateInstantly;
@@ -619,44 +618,22 @@ namespace NSMB.Entities.Player {
             int ps = mario->CurrentPowerupState switch {
                 PowerupState.PenguinSuit => 0,
                 PowerupState.GoldFlower => 0,
+                PowerupState.SuperBallFlower => 0,
                 PowerupState.FireFlower => 1,
                 PowerupState.PropellerMushroom => 2,
                 PowerupState.HammerSuit => 3,
                 PowerupState.SuperAcorn => 3,
                 PowerupState.BoomerangFlower => 4,
                 PowerupState.CloudFlower => 5,
-                PowerupState.SuperBallFlower => 6,
-                PowerupState.FrogSuit => 7,
-                PowerupState.BuilderSuit => 8,
+                PowerupState.FrogSuit => 6,
+                PowerupState.BuilderSuit => 7,
                 _ => 0
             };
             materialBlock.SetFloat(ParamPowerupState, ps);
-            // Update eye state timers
-            happyEyeStateTimer -= Time.deltaTime;
-            if (happyEyeStateTimer < 0) happyEyeStateTimer = 0;
-            pissedEyeStateTimer -= Time.deltaTime;
-            if (pissedEyeStateTimer < 0) pissedEyeStateTimer = 0;
-
-            // Trigger happy state on doublejump and triplejump
-            if ((mario->JumpState == JumpState.DoubleJump || mario->JumpState == JumpState.TripleJump) && !physicsObject->IsTouchingGround && happyEyeStateTimer == 0) {
-                happyEyeStateTimer = 0.3f;
-            }
-
-            // Trigger pissed state when frozen
-            if (freezable->IsFrozen(f) && pissedEyeStateTimer == 0) {
-                pissedEyeStateTimer = 0.5f;
-            }
-
-            // Determine eye state
+            // Determine eye state: Death for knockbacks and death, blink loop otherwise
             Enums.PlayerEyeState currentEyeState = eyeState;
-            if (mario->IsDead) {
+            if (mario->IsDead || mario->IsInKnockback || mario->IsInWeakKnockback) {
                 currentEyeState = Enums.PlayerEyeState.Death;
-            } else if (happyEyeStateTimer > 0) {
-                currentEyeState = Enums.PlayerEyeState.Happy;
-            } else if (pissedEyeStateTimer > 0 || mario->IsInWeakKnockback) {
-                currentEyeState = Enums.PlayerEyeState.Pissed;
-            } else if (mario->IsInKnockback) {
-                currentEyeState = Enums.PlayerEyeState.Pain;
             }
             materialBlock.SetFloat(ParamEyeState, (int) currentEyeState);
             materialBlock.SetFloat(ParamModelScale, models.transform.lossyScale.x * (mario->CurrentPowerupState >= PowerupState.Mushroom ? 1f : 0.5f));
@@ -673,7 +650,7 @@ namespace NSMB.Entities.Player {
             foreach (Renderer r in renderers) {
                 r.SetPropertyBlock(materialBlock);
                 foreach (var m in materials[r]) {
-                    var newShader = mario->IsStarmanInvincible ? rainbowShader : (mario->CurrentPowerupState == PowerupState.GoldFlower ? goldShader : normalShader);
+                    var newShader = mario->IsStarmanInvincible ? rainbowShader : (mario->CurrentPowerupState == PowerupState.GoldFlower ? goldShader : (mario->CurrentPowerupState == PowerupState.SuperBallFlower ? superBallShader : normalShader));
                     if (m.shader != newShader) {
                         m.shader = newShader;
                     }
@@ -949,7 +926,6 @@ namespace NSMB.Entities.Player {
                 big = holdable->HoldAboveHead;
             }
             PlaySound(big ? SoundEffect.Player_Voice_Throw_Large : SoundEffect.Player_Voice_Throw_Small);
-            happyEyeStateTimer = 0.3f;
             animator.SetTrigger(ParamThrow);
         }
 
@@ -1004,7 +980,6 @@ namespace NSMB.Entities.Player {
             }
 
             PlaySound(SoundEffect.World_Block_Bump);
-            pissedEyeStateTimer = 0.5f;
             lastBumpSound = Time.time;
         }
 

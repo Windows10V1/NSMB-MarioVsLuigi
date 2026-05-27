@@ -1,4 +1,4 @@
-﻿using Quantum.Core;
+using Quantum.Core;
 using System.Collections.Generic;
 
 namespace Quantum {
@@ -32,7 +32,6 @@ namespace Quantum {
                     new BobombSystem(),
                     new PiranhaPlantSystem(),
                     new BulletBillLauncherSystem(),
-                    new BanzaiBillLauncherSystem(),
                     new BulletBillSystem(),
                     new BooSystem(),
                     new ProjectileSystem(),

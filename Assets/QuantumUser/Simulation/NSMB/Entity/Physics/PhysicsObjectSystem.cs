@@ -418,8 +418,8 @@ namespace Quantum {
                                 continue;
                             }
                             if (f.Unsafe.TryGetPointer(hit.Entity, out Liquid* liquid)) {
-                                if (liquid->LiquidType != LiquidType.Water || !physicsObject->IsWaterSolid || FPVector2.Dot(hit.Normal, FPVector2.Up) < Constants.PhysicsGroundMaxAngleCos) {
-                                    // Colliding with water and we cant interact
+                                if (!physicsObject->IsWaterSolid || FPVector2.Dot(hit.Normal, FPVector2.Up) < Constants.PhysicsGroundMaxAngleCos) {
+                                    // Colliding with liquid and we cant interact
                                     continue;
                                 }
                             }
@@ -655,8 +655,8 @@ namespace Quantum {
                                 continue;
                             }
                             if (f.Unsafe.TryGetPointer(hit.Entity, out Liquid* liquid)) {
-                                if (liquid->LiquidType != LiquidType.Water || !physicsObject->IsWaterSolid || FPVector2.Dot(hit.Normal, FPVector2.Up) < Constants.PhysicsGroundMaxAngleCos) {
-                                    // Colliding with water and we cant interact
+                                if (!physicsObject->IsWaterSolid || FPVector2.Dot(hit.Normal, FPVector2.Up) < Constants.PhysicsGroundMaxAngleCos) {
+                                    // Colliding with liquid and we cant interact
                                     continue;
                                 }
                             }
@@ -1331,7 +1331,7 @@ namespace Quantum {
             return code;
         }
 
-        // Cohen–Sutherland clipping algorithm clips a line from
+        // Cohenï¿½Sutherland clipping algorithm clips a line from
         // P0 = (x0, y0) to P1 = (x1, y1) against a rectangle with 
         // diagonal from (xmin, ymin) to (xmax, ymax).
         private static bool LineIntersectsBox(FPVector2 a, FPVector2 b, FPVector2 boxMin, FPVector2 boxMax) {
