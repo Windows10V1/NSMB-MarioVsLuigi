@@ -112,7 +112,7 @@ namespace Quantum {
             }
 
             physicsObject->Velocity.X = 0;
-            physicsObject->Velocity.Y = Constants._2_50;
+            physicsObject->Velocity.Y = Constants._5_50;
             physicsObject->IsTouchingGround = false;
             physicsObject->WasTouchingGround = false;
             physicsObject->HoverFrames = 0;
@@ -260,7 +260,7 @@ namespace Quantum {
 
             powBlock->WasThrown = false;
             powBlock->CanGroundActivate = false;
-            physicsObject->Velocity.Y = Constants._2_50;
+            physicsObject->Velocity.Y = Constants._5_50;
             physicsObject->IsTouchingGround = false;
         }
 
