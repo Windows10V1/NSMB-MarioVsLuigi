@@ -120,6 +120,8 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte FrogHyperspeedStage;
     [ExcludeFromPrototype] byte FrogHyperspeedSlowdownFrames;
 
+	[ExcludeFromPrototype] byte POWBounceFrames;
+
 	[ExcludeFromPrototype] byte PropellerLaunchFrames;
 	[ExcludeFromPrototype] byte PropellerSpinFrames;
 	[ExcludeFromPrototype] byte PropellerDrillCooldown;

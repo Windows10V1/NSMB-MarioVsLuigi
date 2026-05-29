@@ -1329,10 +1329,6 @@ MonoBehaviour:
   cloudBuddy2: {fileID: 4035192847967333460}
   cloudBuddy3: {fileID: 503547319817391776}
   frogModel: {fileID: 7348328450458580768}
-  BuilderModel: {fileID: 0}
-  HipHammer: {fileID: 0}
-  HandHammer: {fileID: 0}
-  AcornModel: {fileID: 5178183439651385125}
   coinNumberParticle: {fileID: 4677531960176377302, guid: 818e60315a414df48a229c8d1186ce98,
     type: 3}
   coinFromBlockParticle: {fileID: 4355208377719065490, guid: e55364fb26d178a4fbb31ba42edc3c9a,
@@ -1346,6 +1342,8 @@ MonoBehaviour:
   rainbowShader: {fileID: -6465566751694194690, guid: 51265e2a22315b048823fd06a96365a5,
     type: 3}
   goldShader: {fileID: -6465566751694194690, guid: 7f3385f9e4920a04dbb34d8f53d35439,
+    type: 3}
+  superBallShader: {fileID: -6465566751694194690, guid: 67ae5cd66ed970f40ad3961c887524fc,
     type: 3}
   sfx: {fileID: 5377451828833222271}
   coinSfx: {fileID: 71726465320980351}

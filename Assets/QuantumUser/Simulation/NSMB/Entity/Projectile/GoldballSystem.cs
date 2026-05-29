@@ -45,7 +45,7 @@ namespace Quantum {
                     }
 
                     // Check if this tile is a breakable brick that allows Goldball conversion
-                    if (TryConvertBrickToCoin(f, stage, tilePos)) {
+                    if (TryConvertBrickToCoin(f, stage, tilePos, projectileEntity)) {
                         bricksConverted++;
                     }
                 }
@@ -59,7 +59,7 @@ namespace Quantum {
         /// Attempts to convert a single brick at the given tile position to a stage coin.
         /// Returns true if conversion was successful.
         /// </summary>
-        private static bool TryConvertBrickToCoin(Frame f, VersusStageData stage, IntVector2 tilePos) {
+        private static bool TryConvertBrickToCoin(Frame f, VersusStageData stage, IntVector2 tilePos, EntityRef projectileEntity) {
             StageTileInstance tileInstance = stage.GetTileRelative(f, tilePos);
             if (!tileInstance.Tile.IsValid) {
                 return false;
@@ -74,6 +74,9 @@ namespace Quantum {
             if (!breakableBrick.BreakingRules.HasFlag(BreakableBrickTile.BreakableBy.Goldballs)) {
                 return false;
             }
+
+            // Fire TileBroken event to trigger brick break particles and sound
+            f.Events.TileBroken(projectileEntity, tilePos, tileInstance, false, InteractionDirection.Up);
 
             // Create stage coin at brick position
             FPVector2 coinPos = QuantumUtils.RelativeTileToWorldRounded(stage, tilePos);

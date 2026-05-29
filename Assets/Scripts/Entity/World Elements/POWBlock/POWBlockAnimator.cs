@@ -10,9 +10,11 @@ namespace NSMB.Entities.World {
 
         [SerializeField] private SpriteRenderer sRenderer;
         [SerializeField] private Sprite[] useSprites;
+        [SerializeField] private AudioSource sfx;
 
         public void OnValidate() {
             this.SetIfNull(ref sRenderer, UnityExtensions.GetComponentType.Children);
+            this.SetIfNull(ref sfx);
         }
 
         public void Start() {
@@ -41,10 +43,16 @@ namespace NSMB.Entities.World {
                 Quaternion.identity
             );
             Instantiate(
-                Enums.PrefabParticle.Player_MegaGroundpoundImpact.GetGameObject(),
+                Enums.PrefabParticle.Item_POWBlockImpact.GetGameObject(),
                 transform.position + (Vector3.back * 5),
                 Quaternion.identity
             );
+
+            if (SoundEffectResolver.Instance) {
+                SoundEffectResolver.Instance.PlayOneShotGlobally(SoundEffect.Powerup_MegaMushroom_Groundpound);
+            } else if (sfx) {
+                sfx.PlayOneShot(SoundEffect.Powerup_MegaMushroom_Groundpound);
+            }
 
             CameraAnimator.TriggerScreenshake(0.35f);
         }

@@ -9,14 +9,19 @@ namespace Quantum {
 
         public override void EnableGamemode(Frame f) {
             f.SystemEnable<BigStarSystem>();
-            f.SystemEnable<StarCoinSystem>();
             f.Global->AutomaticStageRefreshTimer = f.Global->AutomaticStageRefreshInterval = 0;
-            f.Global->StarCoinSpawnTimer = (ushort) ((624 - (f.Global->RealPlayers * 12)) * 2);
+
+            if (f.Global->Rules.StarcoinsEnabled) {
+                f.SystemEnable<StarCoinSystem>();
+                f.Global->StarCoinSpawnTimer = (ushort) ((624 - (f.Global->RealPlayers * 12)) * 2);
+            }
         }
 
         public override void DisableGamemode(Frame f) {
             f.SystemDisable<BigStarSystem>();
-            f.SystemDisable<StarCoinSystem>();
+            if (f.Global->Rules.StarcoinsEnabled) {
+                f.SystemDisable<StarCoinSystem>();
+            }
         }
 
         public override void CheckForGameEnd(Frame f) {

@@ -37,6 +37,7 @@ namespace Quantum {
                     new ProjectileSystem(),
                     new CloudBlockSystem(),
                     new CoinItemSystem(),
+                    new FrogSuitSystem(),
                     new PowerupSystem(),
                     new BlockBumpSystem(),
                     new BreakableObjectSystem(),

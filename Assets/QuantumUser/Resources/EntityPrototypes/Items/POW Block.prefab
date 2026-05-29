@@ -91,10 +91,25 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1145319354374527610, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
+      propertyPath: m_Size.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1145319354374527610, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: m_Size.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1145319354374527610, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -1303093240, guid: 794bc215dd02bf34ab2cfae7702bfdfd,
+      objectReference: {fileID: -672553771044141288, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c,
         type: 3}
+    - target: {fileID: 1145319354374527610, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1145319354374527610, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
@@ -281,9 +296,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NSMB.Entities.World.POWBlockAnimator
   sRenderer: {fileID: 8637938864149294636}
   useSprites:
-  - {fileID: -1303093240, guid: 794bc215dd02bf34ab2cfae7702bfdfd, type: 3}
-  - {fileID: 1512579996, guid: 794bc215dd02bf34ab2cfae7702bfdfd, type: 3}
-  - {fileID: -280334765, guid: 794bc215dd02bf34ab2cfae7702bfdfd, type: 3}
+  - {fileID: -672553771044141288, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c, type: 3}
+  - {fileID: 356224525, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c, type: 3}
+  - {fileID: -1851480750, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c, type: 3}
 --- !u!114 &3857087544421184485
 MonoBehaviour:
   m_ObjectHideFlags: 0

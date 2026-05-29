@@ -79,8 +79,14 @@ namespace Quantum {
             }
             HandleKnockback(f, ref filter);
 
-            if (mario->IsInKnockback) {
-                // No inputs allowed in knockback.
+            if (mario->POWBounceFrames > 0) {
+                if (filter.PhysicsObject->IsTouchingGround || mario->IsInKnockback) {
+                    mario->POWBounceFrames = 0;
+                }
+            }
+
+            if (mario->IsInKnockback || mario->POWBounceFrames > 0) {
+                // No inputs allowed in knockback or POW bounce.
                 filter.Inputs = default;
             }
 
@@ -1950,11 +1956,6 @@ namespace Quantum {
                 newHeight = physics.SmallHitboxHeight;
             } else {
                 newHeight = physics.LargeHitboxHeight;
-            }
-
-            // FrogSuit: halved hitbox by default
-            if (mario->CurrentPowerupState == PowerupState.FrogSuit) {
-                newHeight /= 2;
             }
 
             if (crouchHitbox) {

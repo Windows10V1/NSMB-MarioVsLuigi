@@ -4,6 +4,9 @@ namespace Quantum {
     public unsafe class POWBlockSystem : SystemMainThreadEntityFilter<POWBlock, POWBlockSystem.Filter>, ISignalOnThrowHoldable, ISignalOnEntityBumped, ISignalOnEntityCrushed {
 
         private const byte DefaultMaxUses = 3;
+        private static readonly FP ActivatorBounceVelocity = FP.FromFloat_UNSAFE(6);
+        private static readonly FP ReExplosionLaunchVelocity = FP.FromFloat_UNSAFE(10);
+        private const int KnockbackExtensionFrames = 15;
 
         public struct Filter {
             public EntityRef Entity;
@@ -30,6 +33,15 @@ namespace Quantum {
             if (f.Exists(filter.Holdable->Holder)
                 || coinItem->SpawnAnimationFrames > 0) {
                 return;
+            }
+
+            if (filter.PhysicsObject->DisableCollision) {
+                filter.PhysicsObject->DisableCollision = false;
+
+                if (PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape, entity: filter.Entity)) {
+                    Activate(f, filter.Entity, powBlock->Activator);
+                    return;
+                }
             }
 
             var physicsObject = filter.PhysicsObject;
@@ -96,13 +108,14 @@ namespace Quantum {
 
             ReleaseFromHolder(f, holdable);
 
+            bool wasThrown = powBlock->WasThrown;
             powBlock->Activator = activator;
             powBlock->WasThrown = false;
             powBlock->CanGroundActivate = false;
             powBlock->Uses++;
 
             f.Events.POWBlockActivated(powBlockEntity, activator, transform->Position, powBlock->Uses);
-            ApplyExplosion(f, powBlockEntity, activator, transform->Position);
+            ApplyExplosion(f, powBlockEntity, activator, transform->Position, wasThrown);
 
             byte maxUses = powBlock->MaxUses == 0 ? DefaultMaxUses : powBlock->MaxUses;
             if (powBlock->Uses >= maxUses) {
@@ -118,10 +131,33 @@ namespace Quantum {
             physicsObject->HoverFrames = 0;
         }
 
-        private static void ApplyExplosion(Frame f, EntityRef powBlockEntity, EntityRef activator, FPVector2 position) {
+        private static void ApplyExplosion(Frame f, EntityRef powBlockEntity, EntityRef activator, FPVector2 position, bool thrown) {
+            if (activator.IsValid && thrown) {
+                ApplyGroundBounceForTeam(f, activator);
+            }
+
             var players = f.Filter<MarioPlayer, PhysicsObject, Transform2D>();
             while (players.NextUnsafe(out EntityRef marioEntity, out MarioPlayer* mario, out PhysicsObject* physicsObject, out _)) {
                 if (marioEntity == activator) {
+                    continue;
+                }
+
+                bool wasHardDamaged = mario->CurrentKnockback == KnockbackStrength.Groundpound && mario->LastAttacker == powBlockEntity;
+                if (wasHardDamaged) {
+                    mario->IsGroundpounding = false;
+
+                    physicsObject->Velocity.X = 0;
+                    physicsObject->Velocity.Y = ReExplosionLaunchVelocity;
+                    physicsObject->IsTouchingGround = false;
+                    physicsObject->WasTouchingGround = false;
+                    physicsObject->HoverFrames = 0;
+
+                    mario->KnockbackTick -= KnockbackExtensionFrames;
+
+                    if (activator.IsValid) {
+                        f.Signals.OnMarioPlayerDropObjective(marioEntity, 1, activator);
+                    }
+                    f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Normal, position);
                     continue;
                 }
 
@@ -129,11 +165,45 @@ namespace Quantum {
                 int starsToDrop = activator.IsValid && SameTeam(f, activator, marioEntity) ? 0 : 1;
                 EntityRef attacker = activator.IsValid ? activator : powBlockEntity;
 
-                bool damaged = mario->DoKnockback(f, marioEntity, fromRight, starsToDrop, KnockbackStrength.Normal, attacker);
+                if (mario->IsInKnockback) {
+                    mario->CurrentKnockback = KnockbackStrength.None;
+                    mario->IsInWeakKnockback = false;
+                }
+
+                bool damaged = mario->DoKnockback(f, marioEntity, fromRight, starsToDrop, KnockbackStrength.Normal, attacker, bypassDamageInvincibility: true);
                 if (damaged) {
                     f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Normal, position);
                 }
             }
+        }
+
+        private static void ApplyGroundBounceForTeam(Frame f, EntityRef activator) {
+            if (!f.Unsafe.TryGetPointer(activator, out MarioPlayer* activatorMario)
+                || !f.Unsafe.TryGetPointer(activator, out PhysicsObject* activatorPhysics)) {
+                return;
+            }
+
+            var teamPlayers = f.Filter<MarioPlayer, PhysicsObject, Transform2D>();
+            while (teamPlayers.NextUnsafe(out EntityRef playerEntity, out MarioPlayer* playerMario, out PhysicsObject* playerPhysics, out _)) {
+                if (playerEntity == activator) {
+                    if (activatorPhysics->IsTouchingGround) {
+                        ApplyGroundBounce(activatorMario, activatorPhysics);
+                    }
+                } else if (SameTeam(f, activator, playerEntity) && playerPhysics->IsTouchingGround) {
+                    ApplyGroundBounce(playerMario, playerPhysics);
+                }
+            }
+        }
+
+        private static void ApplyGroundBounce(MarioPlayer* mario, PhysicsObject* physicsObject) {
+            mario->POWBounceFrames = 1;
+            mario->IsGroundpounding = false;
+            mario->IsCrouching = false;
+            physicsObject->Velocity.X = 0;
+            physicsObject->Velocity.Y = ActivatorBounceVelocity;
+            physicsObject->IsTouchingGround = false;
+            physicsObject->WasTouchingGround = false;
+            physicsObject->HoverFrames = 0;
         }
 
         private static bool ApplyHardDamage(Frame f, EntityRef marioEntity, MarioPlayer* mario, Transform2D* marioTransform, EntityRef powBlockEntity, Transform2D* powTransform, PhysicsObject* powPhysics) {
@@ -217,6 +287,12 @@ namespace Quantum {
                 return;
             }
 
+            if (!dropped) {
+                powBlock->WasThrown = true;
+                powBlock->CanGroundActivate = true;
+                powBlock->Activator = marioEntity;
+            }
+
             if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape, entity: entity)) {
                 Activate(f, entity, marioEntity);
                 return;
@@ -234,14 +310,8 @@ namespace Quantum {
                 powBlock->Activator = EntityRef.None;
             } else if (crouching) {
                 physicsObject->Velocity.X = mario->FacingRight ? 1 : -1;
-                powBlock->WasThrown = true;
-                powBlock->CanGroundActivate = true;
-                powBlock->Activator = marioEntity;
             } else {
                 physicsObject->Velocity.X = (Constants._4_50 + FPMath.Abs(marioPhysics->Velocity.X / 3)) * (mario->FacingRight ? 1 : -1);
-                powBlock->WasThrown = true;
-                powBlock->CanGroundActivate = true;
-                powBlock->Activator = marioEntity;
                 f.Events.MarioPlayerThrewObject(marioEntity, entity);
             }
 

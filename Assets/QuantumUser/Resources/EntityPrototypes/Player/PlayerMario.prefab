@@ -1003,7 +1003,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1726977926663227855}
-  - component: {fileID: 5631054820661950746}
   m_Layer: 18
   m_Name: 2
   m_TagString: Untagged
@@ -1027,28 +1026,6 @@ Transform:
   - {fileID: 178883682033553935}
   m_Father: {fileID: 2523218504517723573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &5631054820661950746
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3353983060082623299}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 6ae290a07f0ebae4eb703b0500865220, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &3457774922253917380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1335,7 +1312,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4502650682390675335}
-  - component: {fileID: 8302757631557888167}
   m_Layer: 18
   m_Name: 1
   m_TagString: Untagged
@@ -1359,28 +1335,6 @@ Transform:
   - {fileID: 6559964114509831132}
   m_Father: {fileID: 2523218504517723573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &8302757631557888167
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4240649801308780659}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 5e7edd5e73b6f5b4c8d28fa0deb0b95b, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &4253378187487782150
 GameObject:
   m_ObjectHideFlags: 0
@@ -1804,10 +1758,6 @@ MonoBehaviour:
   cloudBuddy2: {fileID: 3353983060082623299}
   cloudBuddy3: {fileID: 8412559247377774841}
   frogModel: {fileID: 2769712382874227905}
-  BuilderModel: {fileID: 3214848946871980297}
-  HipHammer: {fileID: 6873782148876525430}
-  HandHammer: {fileID: 868307615748730238}
-  AcornModel: {fileID: 3184497636238162053}
   coinNumberParticle: {fileID: 4677531960176377302, guid: 818e60315a414df48a229c8d1186ce98,
     type: 3}
   coinFromBlockParticle: {fileID: 4355208377719065490, guid: e55364fb26d178a4fbb31ba42edc3c9a,
@@ -1821,6 +1771,8 @@ MonoBehaviour:
   rainbowShader: {fileID: -6465566751694194690, guid: 51265e2a22315b048823fd06a96365a5,
     type: 3}
   goldShader: {fileID: -6465566751694194690, guid: 7f3385f9e4920a04dbb34d8f53d35439,
+    type: 3}
+  superBallShader: {fileID: -6465566751694194690, guid: 67ae5cd66ed970f40ad3961c887524fc,
     type: 3}
   sfx: {fileID: 5377451828833222271}
   coinSfx: {fileID: 5377451828833222271}
@@ -7612,7 +7564,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3824283091120139300}
-  - component: {fileID: 1251923772725231147}
   m_Layer: 18
   m_Name: 3
   m_TagString: Untagged
@@ -7636,28 +7587,6 @@ Transform:
   - {fileID: 6110160663290952538}
   m_Father: {fileID: 2523218504517723573}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &1251923772725231147
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8412559247377774841}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 960d7fe3e6ce2684fa3477a718f6410e, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8422425992379838812
 GameObject:
   m_ObjectHideFlags: 0

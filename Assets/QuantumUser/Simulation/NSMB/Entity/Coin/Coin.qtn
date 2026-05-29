@@ -12,7 +12,6 @@ component Coin {
 enum CoinType : Byte {
 	BakedInStage = 1,
 	Dotted = 2,
-	Objective = 4,
 }
 
 signal OnMarioPlayerCollectedCoin(EntityRef marioEntity, EntityRef coinEntity, FPVector2 worldLocation, bool fromBlock, bool downwards);
@@ -25,10 +24,6 @@ synced event MarioPlayerCollectedCoin {
 	FPVector2 CoinLocation;
 	bool CoinFromBlock;
 	bool Downwards;
-}
-
-synced event MarioPlayerCollectedObjectiveCoin {
-	EntityRef Entity;
 }
 
 event CoinChangedType {

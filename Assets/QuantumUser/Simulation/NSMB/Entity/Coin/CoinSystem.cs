@@ -61,7 +61,7 @@ namespace Quantum {
                     if (invertY) {
                         physicsObject->Velocity.Y = physicsObject->PreviousFrameVelocity.Y * -BounceStrength;
                     }
-                    if (/*!coin->CoinType.HasFlag(CoinType.Objective) &&*/ (invertX || invertY)) {
+                    if ((invertX || invertY)) {
                         f.Events.CoinBounced(entity, *coin);
                     }
                     if (applyFriction) {
@@ -80,7 +80,14 @@ namespace Quantum {
         public void OnStageReset(Frame f, QBoolean full) {
             var allCoins = f.Filter<Coin, Interactable>();
             while (allCoins.NextUnsafe(out EntityRef entity, out Coin* coin, out Interactable* interactable)) {
-                if (!full && (!coin->IsCollected || !coin->CoinType.HasFlag(CoinType.BakedInStage))) {
+                if (!coin->CoinType.HasFlag(CoinType.BakedInStage)) {
+                    var transform = f.Unsafe.GetPointer<Transform2D>(entity);
+                    f.Events.CollectableDespawned(entity, transform->Position, false);
+                    f.Destroy(entity);
+                    continue;
+                }
+
+                if (!full && !coin->IsCollected) {
                     continue;
                 }
 
@@ -110,14 +117,6 @@ namespace Quantum {
                 return;
             }
 
-            if (f.Unsafe.TryGetPointer(coinEntity, out ObjectiveCoin* objectiveCoin)) {
-                var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
-                bool sameTeam = ((mario->GetTeam(f) + 1) ?? int.MinValue) == objectiveCoin->UncollectableByTeam;
-                if (mario->IsDead || (sameTeam && (!mario->CanCollectOwnTeamsObjectiveCoins || objectiveCoin->SpawnedViaSelfDamage))) {
-                    return;
-                }
-            }
-
             var coinTransform = f.Unsafe.GetPointer<Transform2D>(coinEntity);
             var coinCollider = f.Unsafe.GetPointer<PhysicsCollider2D>(coinEntity);
             var coinInteractable = f.Unsafe.GetPointer<Interactable>(coinEntity);
@@ -134,11 +133,6 @@ namespace Quantum {
         }
 
         public void OnMarioPlayerCollectedCoin(Frame f, EntityRef marioEntity, EntityRef coinEntity, FPVector2 worldLocation, QBoolean fromBlock, QBoolean downwards) {
-            if (f.Unsafe.TryGetPointer(coinEntity, out Coin* coin) && coin->CoinType.HasFlag(CoinType.Objective)) {
-                // Objective coin. Let the ObjectiveCoin system handle this.
-                return;
-            }
-
             // Normal, powerup coin.
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
             EntityRef spawnedItem = EntityRef.None;
@@ -169,13 +163,6 @@ namespace Quantum {
                 }
                 return;
             } else if (!coin->IsCollected && f.Unsafe.TryGetPointer(bumpOwner, out MarioPlayer* mario)) {
-                if (f.Unsafe.TryGetPointer(coinEntity, out ObjectiveCoin* objectiveCoin)) {
-                    bool sameTeam = ((mario->GetTeam(f) + 1) ?? int.MinValue) == objectiveCoin->UncollectableByTeam;
-                    if (mario->IsDead || (sameTeam && (!mario->CanCollectOwnTeamsObjectiveCoins || objectiveCoin->SpawnedViaSelfDamage))) {
-                        return;
-                    }
-                }
-
                 f.Signals.OnMarioPlayerCollectedCoin(bumpOwner, coinEntity, transform->Position, false, false);
 
                 if (coin->CoinType.HasFlag(CoinType.BakedInStage)) {

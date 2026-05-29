@@ -36,6 +36,9 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             case CommandChangeRules.Rules.TeamsEnabled:
                 cmd.TeamsEnabled = (bool) value;
                 break;
+            case CommandChangeRules.Rules.StarcoinsEnabled:
+                cmd.StarcoinsEnabled = (bool) value;
+                break;
             }
 
             QuantumGame game = QuantumRunner.DefaultGame;

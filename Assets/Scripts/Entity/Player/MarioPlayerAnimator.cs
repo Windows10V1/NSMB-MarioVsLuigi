@@ -156,6 +156,7 @@ namespace NSMB.Entities.Player {
         private float cloudSummonSpinTimer;
         private bool cloudSummonSpinFacingRight;
         private byte previousCloudBlockSummonCounter;
+        private byte previousPOWBounceFrames;
 
         public void OnValidate() {
             this.SetIfNull(ref animator);
@@ -190,7 +191,6 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerCollectedPowerup>(this, OnMarioPlayerCollectedPowerup, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUsedReserveItem>(this, OnMarioPlayerUsedReserveItem, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedCoin>(this, OnMarioPlayerCollectedCoin, FilterOutReplayFastForward);
-            QuantumEvent.Subscribe<EventMarioPlayerCollectedObjectiveCoin>(this, OnMarioPlayerCollectedObjectiveCoin, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerWalljumped>(this, OnMarioPlayerWalljumped, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerShotProjectile>(this, OnMarioPlayerShotProjectile, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUsedPropeller>(this, OnMarioPlayerUsedPropeller, FilterOutReplayFastForward);
@@ -293,6 +293,7 @@ namespace NSMB.Entities.Player {
             HandleMiscStates(f, mario, physicsObject, freezable);
             HandleAnimations(f, mario, physicsObject, freezable);
             HandleCloudBlockSummonAnimation(mario);
+            HandlePOWBounceAnimation(mario);
 
             Input inputs = default;
             if (mario->PlayerRef.IsValid) {
@@ -505,6 +506,16 @@ namespace NSMB.Entities.Player {
             cloudSummonSpinTimer = CloudSummonSpinDuration;
             cloudSummonSpinFacingRight = mario->FacingRight;
             animator.Play(StateJump, 0, 0f);
+        }
+
+        private void HandlePOWBounceAnimation(MarioPlayer* mario) {
+            if (mario->POWBounceFrames == 0 || previousPOWBounceFrames > 0) {
+                previousPOWBounceFrames = mario->POWBounceFrames;
+                return;
+            }
+
+            previousPOWBounceFrames = mario->POWBounceFrames;
+            animator.Play(StateFalling, 0, 0f);
         }
 
         private void SetParticleEmission(ParticleSystem particle, bool value) {
@@ -1120,15 +1131,6 @@ namespace NSMB.Entities.Player {
                 coin.GetComponentInChildren<Animator>().SetBool("down", e.Downwards);
                 Destroy(coin, 1);
             }
-        }
-
-        private void OnMarioPlayerCollectedObjectiveCoin(EventMarioPlayerCollectedObjectiveCoin e) {
-            if (e.Entity != EntityRef) {
-                return;
-            }
-
-            coinSfx.pitch = UnityEngine.Random.Range(1.35f, 1.45f);
-            coinSfx.Play();
         }
 
         private void OnMarioPlayerUsedReserveItem(EventMarioPlayerUsedReserveItem e) {

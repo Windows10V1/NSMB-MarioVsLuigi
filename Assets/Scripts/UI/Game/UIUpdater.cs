@@ -26,7 +26,7 @@ namespace NSMB.UI.Game {
         //---Serialized Variables
         [SerializeField] private PlayerElements playerElements;
         [SerializeField] private CanvasGroup toggler;
-        [SerializeField] private TrackIcon playerTrackTemplate, starTrackTemplate, starCoinTrackTemplate, objectiveCoinTrackTemplate;
+        [SerializeField] private TrackIcon playerTrackTemplate, starTrackTemplate, starCoinTrackTemplate;
         [SerializeField] private Sprite storedItemNull;
         [SerializeField] private TMP_Text uiTeamObjective, uiMainObjective, uiCoins, uiDebug, uiLives, uiCountdown;
         [SerializeField] private Image itemReserve, itemColor;
@@ -61,8 +61,6 @@ namespace NSMB.UI.Game {
             BigStarAnimator.BigStarDestroyed += OnBigStarDestroyed;
             StarCoinAnimator.StarCoinInitialized += OnStarCoinInitialized;
             StarCoinAnimator.StarCoinDestroyed += OnStarCoinDestroyed;
-            CoinAnimator.ObjectiveCoinInitialized += OnObjectiveCoinInitialized;
-            CoinAnimator.ObjectiveCoinDestroyed += OnObjectiveCoinDestroyed;
             TranslationManager.OnLanguageChanged += OnLanguageChanged;
             Settings.Controls.Debug.ToggleHUD.performed += OnToggleHUD;
             OnLanguageChanged(GlobalController.Instance.translationManager);
@@ -76,8 +74,6 @@ namespace NSMB.UI.Game {
             BigStarAnimator.BigStarDestroyed -= OnBigStarDestroyed;
             StarCoinAnimator.StarCoinInitialized -= OnStarCoinInitialized;
             StarCoinAnimator.StarCoinDestroyed -= OnStarCoinDestroyed;
-            CoinAnimator.ObjectiveCoinInitialized -= OnObjectiveCoinInitialized;
-            CoinAnimator.ObjectiveCoinDestroyed -= OnObjectiveCoinDestroyed;
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
             Settings.Controls.Debug.ToggleHUD.performed -= OnToggleHUD;
         }
@@ -173,14 +169,6 @@ namespace NSMB.UI.Game {
 
         private void OnStarCoinDestroyed(Frame f, StarCoinAnimator starCoin) {
             DestroyTrackIcon(starCoin);
-        }
-
-        private void OnObjectiveCoinInitialized(Frame f, CoinAnimator objectiveCoin) {
-            entityTrackIcons[objectiveCoin] = CreateTrackIcon(Updater, f, objectiveCoin.EntityRef, objectiveCoin.transform);
-        }
-
-        private void OnObjectiveCoinDestroyed(CoinAnimator objectiveCoin) {
-            DestroyTrackIcon(objectiveCoin);
         }
 
         private void UpdateStoredItemUI(MarioPlayer* mario, bool playAnimation) {
@@ -333,13 +321,6 @@ namespace NSMB.UI.Game {
                 icon = Instantiate(starTrackTemplate, starTrackTemplate.transform.parent);
             } else if (f.Has<StarCoin>(entity)) {
                 icon = Instantiate(starCoinTrackTemplate, starCoinTrackTemplate.transform.parent);
-            } else if (f.Has<ObjectiveCoin>(entity)) {
-                if (availablePooledTrackIcons.TryGetValue(typeof(CoinAnimator), out var pool) && pool.Count > 0) {
-                    icon = pool[0];
-                    pool.RemoveAt(0);
-                } else {
-                    icon = Instantiate(objectiveCoinTrackTemplate, objectiveCoinTrackTemplate.transform.parent);
-                }
             } else if (f.Has<MarioPlayer>(entity)) {
                 icon = Instantiate(playerTrackTemplate, playerTrackTemplate.transform.parent);
             } else {
@@ -354,18 +335,8 @@ namespace NSMB.UI.Game {
 
         public void DestroyTrackIcon(MonoBehaviour animator) {
             if (entityTrackIcons.TryGetValue(animator, out TrackIcon icon)) {
-                if (animator is CoinAnimator) {
-                    // Pool.
-                    icon.gameObject.SetActive(false);
-                    if (!availablePooledTrackIcons.TryGetValue(animator.GetType(), out List<TrackIcon> pool)) {
-                        availablePooledTrackIcons[animator.GetType()] = (pool = new());
-                    }
-                    pool.Add(icon);
-                } else {
-                    // Don't pool
-                    Destroy(icon.gameObject);
-                    entityTrackIcons.Remove(animator);
-                }
+                Destroy(icon.gameObject);
+                entityTrackIcons.Remove(animator);
             }
         }
 

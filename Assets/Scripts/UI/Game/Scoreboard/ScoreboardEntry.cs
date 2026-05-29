@@ -27,7 +27,6 @@ namespace NSMB.UI.Game.Scoreboard {
             QuantumCallback.Subscribe<CallbackGameResynced>(this, OnGameResynced);
             QuantumEvent.Subscribe<EventMarioPlayerDied>(this, OnMarioPlayerDied);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedStar>(this, OnMarioPlayerCollectedStar);
-            QuantumEvent.Subscribe<EventMarioPlayerObjectiveCoinsChanged>(this, OnMarioPlayerObjectiveCoinsChanged);
             QuantumEvent.Subscribe<EventMarioPlayerDroppedStar>(this, OnMarioPlayerDroppedStar);
             QuantumEvent.Subscribe<EventMarioPlayerPreRespawned>(this, OnMarioPlayerPreRespawned);
             QuantumEvent.Subscribe<EventMarioPlayerDestroyed>(this, OnMarioPlayerDestroyed);
@@ -146,15 +145,6 @@ namespace NSMB.UI.Game.Scoreboard {
 
             UpdateEntry(e.Game.Frames.Predicted);
         }
-
-        private void OnMarioPlayerObjectiveCoinsChanged(EventMarioPlayerObjectiveCoinsChanged e) {
-            if (e.Entity != Target) {
-                return;
-            }
-
-            UpdateEntry(e.Game.Frames.Predicted);
-        }
-
         private void OnPlayerDataChanged(EventPlayerDataChanged e) {
             Frame f = e.Game.Frames.Predicted;
             if (e.Player != f.Global->PlayerInfo[Index].PlayerRef) {

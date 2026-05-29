@@ -30,6 +30,9 @@ public static class Enums {
 
         [PrefabParticleData("Particle/BulletBillLauncher")] BulletBillLauncher_Break,
 
+        [PrefabParticleData("Particle/POWBlockImpact")] Item_POWBlockImpact,
+        [PrefabParticleData("Particle/FrogSuitBounceDust")] Item_FrogSuitBounce,
+
         [PrefabParticleData("Particle/Puff")] Enemy_Puff,
         [PrefabParticleData("Particle/EnemyHardKick")] Enemy_HardKick,
         [PrefabParticleData("Particle/KillPoof")] Enemy_KillPoof,

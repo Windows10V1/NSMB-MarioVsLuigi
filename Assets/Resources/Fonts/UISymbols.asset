@@ -595,12 +595,7 @@ MonoBehaviour:
     m_Unicode: 65534
     m_GlyphIndex: 101
     m_Scale: 1
-    m_Name: hud_wario
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 102
-    m_Scale: 1
-    m_Name: hud_waluigi
+    m_Name: room_starcoins
   m_GlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -2225,32 +2220,16 @@ MonoBehaviour:
     sprite: {fileID: -1402656431, guid: 70672da71d9d71a4daaf5f3fc58531e6, type: 3}
   - m_Index: 101
     m_Metrics:
-      m_Width: 20
-      m_Height: 20
+      m_Width: 13
+      m_Height: 13
       m_HorizontalBearingX: -2
-      m_HorizontalBearingY: 20
-      m_HorizontalAdvance: 28
+      m_HorizontalBearingY: 13
+      m_HorizontalAdvance: 17
     m_GlyphRect:
-      m_X: 55
-      m_Y: 137
-      m_Width: 20
-      m_Height: 20
-    m_Scale: 1
-    m_AtlasIndex: 0
-    m_ClassDefinitionType: 0
-    sprite: {fileID: -1402656431, guid: 70672da71d9d71a4daaf5f3fc58531e6, type: 3}
-  - m_Index: 102
-    m_Metrics:
-      m_Width: 20
-      m_Height: 20
-      m_HorizontalBearingX: -2
-      m_HorizontalBearingY: 20
-      m_HorizontalAdvance: 28
-    m_GlyphRect:
-      m_X: 76
-      m_Y: 137
-      m_Width: 20
-      m_Height: 20
+      m_X: 230
+      m_Y: 229
+      m_Width: 13
+      m_Height: 13
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0

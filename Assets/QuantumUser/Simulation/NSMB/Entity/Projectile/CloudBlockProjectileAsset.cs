@@ -18,7 +18,7 @@ public class CloudBlockProjectileAsset : AssetObject, ISoundOverrideProvider {
     public byte DestroyInactiveFrames = 0;
     public byte DestroyAnimationFrames = 0;
 
-    public SoundEffect SpawnSound = SoundEffect.Powerup_CloudFlower_Spawn;
+    public SoundEffect SpawnSound = SoundEffect.Player_Sound_PowerupReserveStore;
     public SoundEffect GroundpoundBounceSound = SoundEffect.Powerup_CloudFlower_Bounce;
 
     public SoundEffectOverride[] SfxOverrides;
