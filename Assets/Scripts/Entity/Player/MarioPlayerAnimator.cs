@@ -105,7 +105,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propellerBody, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -258,7 +258,6 @@ namespace NSMB.Entities.Player {
             largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") &&
             mario->CurrentPowerupState != PowerupState.PenguinSuit &&
             mario->CurrentPowerupState != PowerupState.FrogSuit &&
-            mario->CurrentPowerupState != PowerupState.PropellerMushroom &&
             mario->CurrentPowerupState != PowerupState.BoomerangFlower &&
             mario->CurrentPowerupState != PowerupState.CloudFlower);
         }
@@ -677,20 +676,17 @@ namespace NSMB.Entities.Player {
             largeModel.SetActive(large);
             smallModel.SetActive(!large);
             blueShell.SetActive(mario->CurrentPowerupState == PowerupState.BlueShell);
-
-            // Propeller Mushroom Models
-            propellerHelmet.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.PropellerMushroom);
-            propellerBody.SetActive(mario->CurrentPowerupState == PowerupState.PropellerMushroom);
+            propellerHelmet.SetActive(mario->CurrentPowerupState == PowerupState.PropellerMushroom);
 
             // Hammer Suit Models
-            HammerHelm.SetActive(!DisableHeadwear && mario->CurrentPowerupState == PowerupState.HammerSuit);
+            HammerHelm.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
             HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit);
 
             // Model Swaps
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             bool isCloudFlower = mario->CurrentPowerupState == PowerupState.CloudFlower;
-            cloudModel.SetActive(!DisableHeadwear && isCloudFlower);
+            cloudModel.SetActive(isCloudFlower);
             cloudBuddy3.SetActive(isCloudFlower && mario->CloudBlocksUsed < 1);
             cloudBuddy2.SetActive(isCloudFlower && mario->CloudBlocksUsed < 2);
             cloudBuddy1.SetActive(isCloudFlower && mario->CloudBlocksUsed < 3);
