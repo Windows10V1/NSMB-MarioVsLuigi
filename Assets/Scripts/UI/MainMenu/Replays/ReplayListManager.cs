@@ -147,7 +147,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             CancelExistingTask();
             //_ = ClearReplayListEntries(default);
 
-            TranslationManager.OnLanguageChanged -= OnLanguageChanged;
+            Settings.Controls.UI.Next.performed -= OnNext;
             Settings.Controls.UI.Previous.performed -= OnPrevious;
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
         }
