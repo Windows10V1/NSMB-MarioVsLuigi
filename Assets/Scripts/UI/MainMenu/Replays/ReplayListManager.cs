@@ -145,7 +145,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 #endif
 
             CancelExistingTask();
-            _ = ClearReplayListEntries(default);
+            //_ = ClearReplayListEntries(default);
 
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
             Settings.Controls.UI.Previous.performed -= OnPrevious;
@@ -779,10 +779,12 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         }
 
         private void CancelExistingTask() {
-            if (currentCancellationSource != null) {
-                currentCancellationSource.Cancel();
-                currentCancellationSource.Dispose();
+            if (currentCancellationSource == null) {
+                return;
             }
+            
+            currentCancellationSource.Cancel();
+            currentCancellationSource.Dispose();
             currentCancellationSource = null;
         }
 
