@@ -156,6 +156,8 @@ namespace NSMB.Entities.Player {
         private Vector3 previousPosition;
         private bool forceUpdate;
         private GameObject activeRespawnParticle;
+
+        private bool previousStarmanEnabled;
         private PowerupVisuals previousPowerupVisuals;
 
         public void OnValidate() {
@@ -287,7 +289,7 @@ namespace NSMB.Entities.Player {
             var freezable = f.Unsafe.GetPointer<Freezable>(EntityRef);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(EntityRef);
 
-            UpdatePowerupVisuals(mario, f);
+            UpdatePowerupVisuals(f, mario);
 
             HandleMiscStates(f, mario, physicsObject, freezable);
             HandleAnimations(f, mario, physicsObject, freezable);
@@ -482,7 +484,7 @@ namespace NSMB.Entities.Player {
 
         public PowerupState DisplayPowerupState(MarioPlayer* mario, Frame f) {
             // check if Mario is in a powerUP transition
-            if (mario->GetCurrentPowerTransition(f, out var currAnim)) {
+            if (mario->TryGetCurrentPowerTransition(f, out var currAnim)) {
                 // now check its timer
                 bool displaySecond = currAnim->Timer / Constants.PowerupTransitionOscillation % 2 == 1;
                 if (displaySecond) {
@@ -625,13 +627,14 @@ namespace NSMB.Entities.Player {
             transform.position = new(transform.position.x, transform.position.y, newZ);
         }
 
-        private void UpdatePowerupVisuals(MarioPlayer* mario, Frame f) {
+        private void UpdatePowerupVisuals(Frame f, MarioPlayer* mario) {
             PowerupVisuals currentPowerupVisuals;
             PowerupVisuals displayPowerupVisuals = FindPowerupVisuals(DisplayPowerupState(mario, f));
 
             // in transition, apply visuals based on the current transition we're doing!
             bool sizeMismatch = false;
-            if (mario->GetCurrentPowerTransition(f, out var currAnim)) {
+            bool isInPowerupTransition = mario->TryGetCurrentPowerTransition(f, out var currAnim);
+            if (isInPowerupTransition) {
                 currentPowerupVisuals = FindPowerupVisuals(currAnim->EndingState);
 
                 var startingVisuals = FindPowerupVisuals(currAnim->StartingState);
@@ -649,13 +652,14 @@ namespace NSMB.Entities.Player {
                 HandleSizeMismatch(ref modelScale, currAnim);
             }
 
-            if (previousPowerupVisuals != currentPowerupVisuals || mario->GetCurrentPowerTransition(f, out _)) {
+            bool starman = mario->IsStarmanInvincible;
+            if (previousPowerupVisuals != currentPowerupVisuals || previousStarmanEnabled != starman || isInPowerupTransition) {
                 foreach (var powerupVisual in powerupVisuals) {
                     powerupVisual.DisableProps();
                     powerupVisual.DisableModel();
                 }
 
-                fallbackPowerupVisuals.ApplyTextureReplacements();
+                fallbackPowerupVisuals.ApplyTextureReplacements(starman);
 
                 // swap the model and animations for the next powerUP
                 currentPowerupVisuals?.EnableModel();
@@ -663,9 +667,10 @@ namespace NSMB.Entities.Player {
 
                 // meanwhile enable the props for the displaying powerUP
                 displayPowerupVisuals?.EnableProps();
-                displayPowerupVisuals?.ApplyTextureReplacements();
+                displayPowerupVisuals?.ApplyTextureReplacements(starman);
 
                 previousPowerupVisuals = displayPowerupVisuals;
+                previousStarmanEnabled = starman;
             }
 
             // Scale

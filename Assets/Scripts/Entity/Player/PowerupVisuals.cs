@@ -39,11 +39,12 @@ namespace NSMB.Entities.Player {
             }
         }
 
-        public void ApplyTextureReplacements() {
+        public void ApplyTextureReplacements(bool starman) {
             foreach (var replacement in TextureReplacements) {
                 Material material = replacement.Material;
-                material.SetTexture(MainTex, replacement.AlbedoTexture);
+                material.SetTexture(MainTex, (starman && replacement.StarmanAlbedoTexture) ? replacement.StarmanAlbedoTexture : replacement.AlbedoTexture);
                 material.SetTexture(OverallsMask, replacement.OverallsMaskTexture);
+                Debug.Log($"{material.name} OverallsMask set to {replacement.OverallsMaskTexture}");
                 material.SetTexture(ShirtMask, replacement.ShirtMaskTexture);
                 material.SetTexture(CapMask, replacement.CapMaskTexture);
             }
@@ -95,6 +96,7 @@ namespace NSMB.Entities.Player {
         public class MaterialTextureReplacement {
             public Material Material;
             public Texture AlbedoTexture, OverallsMaskTexture, ShirtMaskTexture, CapMaskTexture;
+            public Texture StarmanAlbedoTexture;
         }
     }
 }
