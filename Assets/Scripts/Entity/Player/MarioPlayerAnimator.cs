@@ -256,6 +256,10 @@ namespace NSMB.Entities.Player {
 
         public void OnDestroy() {
             RenderPipelineManager.beginCameraRendering -= URPOnPreRender;
+
+            foreach ((_, var material) in clonedMaterials) {
+                Destroy(material);
+            }
         }
 
         public void LateUpdate() {
@@ -507,8 +511,8 @@ namespace NSMB.Entities.Player {
             //float transitionTimerNorm = (float) currAnim->Timer / Constants.PowerupAnimLength;
 
             // for choppyness
-            var currStage = currAnim->Timer / Constants.PowerupTransitionOscillation;
-            float[] sizes = {0f, .25f, .15f, .5f, .4f, .85f, .75f};
+            int currStage = currAnim->Timer / Constants.PowerupTransitionOscillation;
+            float[] sizes = {0f, 0.25f, 0.15f, 0.5f, 0.4f, 0.85f, 0.75f};
 
             modelScale = Vector3.Lerp(modelScale, modelScale + sizeDiff, sizes[currStage]);
         }
@@ -596,13 +600,13 @@ namespace NSMB.Entities.Player {
             materialBlock.SetVector(ParamMultiplyColor, giantMultiply);
 
             foreach (Renderer r in renderers) {
-                r.SetPropertyBlock(materialBlock);
+                // r.SetPropertyBlock(materialBlock);
             }
 
-            foreach (Material m in clonedMaterials.Values) {
-                var newShader = mario->IsStarmanInvincible ? rainbowShader : normalShader;
-                if (m.shader != newShader) {
-                    m.shader = newShader;
+            var newShader = mario->IsStarmanInvincible ? rainbowShader : normalShader;
+            foreach ((_, var material) in clonedMaterials) {
+                if (material.shader != newShader) {
+                    material.shader = newShader;
                 }
             }
 
@@ -633,8 +637,7 @@ namespace NSMB.Entities.Player {
 
             // in transition, apply visuals based on the current transition we're doing!
             bool sizeMismatch = false;
-            bool isInPowerupTransition = mario->TryGetCurrentPowerTransition(f, out var currAnim);
-            if (isInPowerupTransition) {
+            if (mario->TryGetCurrentPowerTransition(f, out var currAnim)) {
                 currentPowerupVisuals = FindPowerupVisuals(currAnim->EndingState);
 
                 var startingVisuals = FindPowerupVisuals(currAnim->StartingState);
@@ -653,7 +656,7 @@ namespace NSMB.Entities.Player {
             }
 
             bool starman = mario->IsStarmanInvincible;
-            if (previousPowerupVisuals != currentPowerupVisuals || previousStarmanEnabled != starman || isInPowerupTransition) {
+            if (previousPowerupVisuals != currentPowerupVisuals || previousPowerupVisuals != displayPowerupVisuals || previousStarmanEnabled != starman) {
                 foreach (var powerupVisual in powerupVisuals) {
                     powerupVisual.DisableProps();
                     powerupVisual.DisableModel();
@@ -709,11 +712,15 @@ namespace NSMB.Entities.Player {
         }
 
         private unsafe void URPOnPreRender(ScriptableRenderContext context, Camera camera) {
-            if (materialBlock == null) {
-                return;
+            try {
+                if (materialBlock == null) {
+                    return;
+                }
+                bool teams = PredictedFrame.Global->Rules.TeamsEnabled;
+                materialBlock.SetColor(ParamGlowColor, teams || !IsCameraFocus(camera) ? GlowColor : Color.clear);
+            } catch { 
+                // Catches spurious warnings when changing back to the in-room submenu
             }
-            bool teams = PredictedFrame.Global->Rules.TeamsEnabled;
-            materialBlock.SetColor(ParamGlowColor, teams || !IsCameraFocus(camera) ? GlowColor : Color.clear);
         }
 
         private bool IsCameraFocus(Camera camera) {

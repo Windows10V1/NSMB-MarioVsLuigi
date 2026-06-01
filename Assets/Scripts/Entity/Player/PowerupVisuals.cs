@@ -52,22 +52,24 @@ namespace NSMB.Entities.Player {
 
         public void SwapAnimations(MarioPlayerAnimator marioAnimator) {
             if (AnimationAvatar != marioAnimator.Animator.avatar) {
-                // Preserve Animations
-                int[] layers = { 0, 1, 3 };
-                AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[marioAnimator.Animator.layerCount];
-                foreach (int i in layers) {
-                    layerInfo[i] = marioAnimator.Animator.GetCurrentAnimatorStateInfo(i);
-                }
+                return;
+            }
 
-                marioAnimator.Animator.avatar = AnimationAvatar;
-                marioAnimator.Animator.runtimeAnimatorController = AnimatorOverrides;
+            // Preserve Animations
+            int[] layers = { 0, 1, 3 };
+            AnimatorStateInfo[] layerInfo = new AnimatorStateInfo[marioAnimator.Animator.layerCount];
+            foreach (int i in layers) {
+                layerInfo[i] = marioAnimator.Animator.GetCurrentAnimatorStateInfo(i);
+            }
 
-                // Push back state 
-                marioAnimator.Animator.Rebind();
+            marioAnimator.Animator.avatar = AnimationAvatar;
+            marioAnimator.Animator.runtimeAnimatorController = AnimatorOverrides;
 
-                foreach (int i in layers) {
-                    marioAnimator.Animator.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
-                }
+            // Push back state 
+            marioAnimator.Animator.Rebind();
+
+            foreach (int i in layers) {
+                marioAnimator.Animator.Play(layerInfo[i].fullPathHash, i, layerInfo[i].normalizedTime);
             }
         }
 
