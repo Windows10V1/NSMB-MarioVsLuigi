@@ -138,6 +138,7 @@ namespace Quantum {
 
             if (start && mario->TauntFrames == 0) {
                 mario->TauntFrames = 125;
+                mario->JumpBufferFrames = 0;
                 physicsObject->Velocity.X = 0;
                 f.Events.MarioPlayerTaunted(filter.Entity);
             }

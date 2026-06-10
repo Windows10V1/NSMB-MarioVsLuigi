@@ -192,7 +192,7 @@ namespace NSMB.Chat {
         }
 
         private void OnHostChanged(EventHostChanged e) {
-            if (!e.Game.PlayerIsLocal(e.NewHost)) {
+            if (e.Game.PlayerIsLocal(e.NewHost)) {
                 AddSystemMessage("ui.inroom.chat.hostreminder", Red);
             }
         }
