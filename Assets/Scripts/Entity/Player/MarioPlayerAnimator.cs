@@ -141,6 +141,7 @@ namespace NSMB.Entities.Player {
         public GameObject PropellerBlades => propeller;
         public Animator Animator => animator;
         public GameObject ModelRoot => modelRoot;
+        public bool IsBelowDeathplane => transform.position.y <= ViewContext.Stage.StageWorldMin.Y.AsFloat;
         
         //---Private Variables
         private Enums.PlayerEyeState eyeState;
@@ -279,7 +280,7 @@ namespace NSMB.Entities.Player {
 
             if (VerifiedFrame.Global->GameState >= GameState.Ended && !forceUpdate) {
                 animator.speed = 0;
-                modelRoot.SetActive(!mario->IsRespawning);
+                modelRoot.SetActive((mario->IsDead && IsBelowDeathplane) || !mario->IsRespawning);
                 SetParticleEmission(drillParticle, false);
                 SetParticleEmission(sparkles, false);
                 SetParticleEmission(iceSkiddingParticle, false);
@@ -1305,6 +1306,8 @@ namespace NSMB.Entities.Player {
                     animator.Play(StateMegaCancel, 0, 1f - (mario->MegaMushroomEndFrames / 90f));
                 }
             }
+
+            previousPowerupVisuals = null;
         }
 
         private void OnMarioPlayerLandedWithAnimation(EventMarioPlayerLandedWithAnimation e) {

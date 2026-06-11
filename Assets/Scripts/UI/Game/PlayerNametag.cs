@@ -81,7 +81,7 @@ namespace NSMB.UI.Game {
                 return;
             }
 
-            nametag.SetActive(elements.Entity != Entity && !(mario->IsDead && (mario->IsRespawning || transform.position.y <= stage.StageWorldMin.Y.AsFloat + 0.1f)) && f.Global->GameState >= GameState.Playing);
+            nametag.SetActive(elements.Entity != Entity && !(mario->IsDead && (mario->IsRespawning || parent.IsBelowDeathplane)) && f.Global->GameState >= GameState.Playing);
             if (!nametag.activeInHierarchy) {
                 return;
             }
