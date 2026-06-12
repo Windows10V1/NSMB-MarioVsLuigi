@@ -280,7 +280,7 @@ namespace NSMB.Entities.Player {
 
             if (VerifiedFrame.Global->GameState >= GameState.Ended && !forceUpdate) {
                 animator.speed = 0;
-                modelRoot.SetActive((mario->IsDead && IsBelowDeathplane) || !mario->IsRespawning);
+                modelRoot.SetActive(!mario->IsRespawning && !(mario->IsDead && IsBelowDeathplane));
                 SetParticleEmission(drillParticle, false);
                 SetParticleEmission(sparkles, false);
                 SetParticleEmission(iceSkiddingParticle, false);
@@ -618,8 +618,19 @@ namespace NSMB.Entities.Player {
 
             // Hit flash
             float remainingDamageInvincibility = mario->DamageInvincibilityFrames / 60f;
-            modelRoot.SetActive(f.Global->GameState >= GameState.Playing && (mario->KnockbackGetupFrames > 0 || mario->MegaMushroomStartFrames > 0 || (!mario->IsRespawning && (mario->IsDead || !(remainingDamageInvincibility > 0 && (f.Number * f.DeltaTime.AsFloat) * (remainingDamageInvincibility <= 0.75f ? 5 : 2) % 0.2f < 0.1f)))));
 
+            bool modelShouldBeInvisible = f.Global->GameState < GameState.Playing
+                || mario->IsRespawning
+                || (mario->IsDead && IsBelowDeathplane)
+                || (remainingDamageInvincibility > 0 && (f.Number * f.DeltaTime.AsFloat) * (remainingDamageInvincibility <= 0.75f ? 5 : 2) % 0.2f < 0.1f);
+
+            // Exclusions- knockback getup and mega mushroom start (special animations)
+            modelShouldBeInvisible &= mario->KnockbackGetupFrames == 0 && mario->MegaMushroomStartFrames == 0;
+
+            if (modelShouldBeInvisible == modelRoot.activeSelf) {
+                modelRoot.SetActive(!modelShouldBeInvisible);
+            } 
+            
             // Z-positioning
             float newZ = -4;
             if (mario->IsDead) {

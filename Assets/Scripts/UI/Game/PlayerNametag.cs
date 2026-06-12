@@ -81,9 +81,16 @@ namespace NSMB.UI.Game {
                 return;
             }
 
-            nametag.SetActive(elements.Entity != Entity && !(mario->IsDead && (mario->IsRespawning || parent.IsBelowDeathplane)) && f.Global->GameState >= GameState.Playing);
-            if (!nametag.activeInHierarchy) {
+            bool shouldBeInactive = f.Global->GameState < GameState.Playing
+                || elements.Entity == Entity
+                || mario->IsRespawning
+                || (mario->IsDead && parent.IsBelowDeathplane);
+
+            if (shouldBeInactive && nametag.activeSelf) {
+                nametag.SetActive(false);
                 return;
+            } else if (!shouldBeInactive && !nametag.activeSelf) {
+                nametag.SetActive(true);
             }
 
             var shape = f.Unsafe.GetPointer<PhysicsCollider2D>(Entity)->Shape;
