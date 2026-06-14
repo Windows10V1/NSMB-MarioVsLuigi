@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 831bacc1797a49c4aa1e0efec6e04be5
+guid: b9da467efb59b014091fc82f9d7e0b7d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -209790364483406958
-    second: hammersuit_tx_shell_albedo_0
+      213: 7106644046390607164
+    second: luigi_tx_propeller_mask_cap_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,56 +96,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hammersuit_tx_shell_albedo_0
+      name: luigi_tx_propeller_mask_cap_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 32
-        height: 32
+        x: 96
+        y: 74
+        width: 63
+        height: 37
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 293baa766cca61df0800000000000000
-      internalID: -209790364483406958
+      spriteID: c3db14a8b1fdf9260800000000000000
+      internalID: 7106644046390607164
       vertices: []
       indices: 
       edges: []
@@ -174,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      hammersuit_tx_shell_albedo_0: -209790364483406958
+      luigi_tx_propeller_mask_cap_0: 7106644046390607164
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
