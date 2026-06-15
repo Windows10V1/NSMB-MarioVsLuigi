@@ -624,8 +624,8 @@ namespace NSMB.Entities.Player {
                 || (mario->IsDead && IsBelowDeathplane)
                 || (remainingDamageInvincibility > 0 && (f.Number * f.DeltaTime.AsFloat) * (remainingDamageInvincibility <= 0.75f ? 5 : 2) % 0.2f < 0.1f);
 
-            // Exclusions- knockback getup and mega mushroom start (special animations)
-            modelShouldBeInvisible &= mario->KnockbackGetupFrames == 0 && mario->MegaMushroomStartFrames == 0;
+            // Exclusions- death, knockback getup, and mega mushroom start (special animations)
+            modelShouldBeInvisible &= !((mario->IsDead && !IsBelowDeathplane) || mario->KnockbackGetupFrames > 0 || mario->MegaMushroomStartFrames > 0);
 
             if (modelShouldBeInvisible == modelRoot.activeSelf) {
                 modelRoot.SetActive(!modelShouldBeInvisible);
