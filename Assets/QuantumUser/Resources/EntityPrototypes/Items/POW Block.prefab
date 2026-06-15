@@ -16,7 +16,7 @@ PrefabInstance:
     - target: {fileID: 517697212848946230, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
       propertyPath: Prototype.Lifetime
-      value: 1200
+      value: 3600
       objectReference: {fileID: 0}
     - target: {fileID: 517697212848946230, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
@@ -153,47 +153,22 @@ PrefabInstance:
     - target: {fileID: 6673749068647908742, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
       propertyPath: PhysicsCollider.Layer
-      value: 9
+      value: 14
       objectReference: {fileID: 0}
-    - target: {fileID: 6989136294608042370, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+    - target: {fileID: 6673749068647908742, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
-      propertyPath: Prototype.Gravity.Y.RawValue
-      value: -1409024
+      propertyPath: PhysicsCollider.Shape2D.BoxExtents.X.RawValue
+      value: 16384
       objectReference: {fileID: 0}
-    - target: {fileID: 6989136294608042370, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+    - target: {fileID: 6673749068647908742, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
-      propertyPath: Prototype.SlowInLiquids.Value
-      value: 0
+      propertyPath: PhysicsCollider.Shape2D.BoxExtents.Y.RawValue
+      value: 16384
       objectReference: {fileID: 0}
-    - target: {fileID: 6989136294608042370, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+    - target: {fileID: 6673749068647908742, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
-      propertyPath: Prototype.TerminalVelocity.RawValue
-      value: -786432
-      objectReference: {fileID: 0}
-    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
-        type: 3}
-      propertyPath: ErrorPositionBlendEnd
-      value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
-        type: 3}
-      propertyPath: ErrorCorrectionRateMax
-      value: 30
-      objectReference: {fileID: 0}
-    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
-        type: 3}
-      propertyPath: ErrorCorrectionRateMin
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
-        type: 3}
-      propertyPath: ErrorPositionBlendStart
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
-        type: 3}
-      propertyPath: ErrorPositionTeleportDistance
-      value: 1
+      propertyPath: PhysicsCollider.Shape2D.PositionOffset.Y.RawValue
+      value: 16384
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5712151088451427927, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19, type: 3}
@@ -225,6 +200,12 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 3857087544421184485}
   m_SourcePrefab: {fileID: 100100000, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19, type: 3}
+--- !u!82 &4783212223788967905 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4207910641862185911, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+    type: 3}
+  m_PrefabInstance: {fileID: 8648285965656749142}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &8509900707630130961 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1017215213198693191, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
@@ -299,6 +280,7 @@ MonoBehaviour:
   - {fileID: -672553771044141288, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c, type: 3}
   - {fileID: 356224525, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c, type: 3}
   - {fileID: -1851480750, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c, type: 3}
+  sfx: {fileID: 4783212223788967905}
 --- !u!114 &3857087544421184485
 MonoBehaviour:
   m_ObjectHideFlags: 0

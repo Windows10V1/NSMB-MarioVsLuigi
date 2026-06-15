@@ -346,9 +346,12 @@ namespace Quantum {
 
             if (mario->IsPenguinSliding && physicsObject->IsTouchingGround) {
                 FP maxRunSpeed = physics.WalkMaxVelocity[physics.RunSpeedStage];
-                FP penguinSlideSpeed = maxRunSpeed * physics.PenguinSlideSpeedMultiplier;
                 FP direction = mario->FacingRight ? 1 : -1;
-                physicsObject->Velocity.X = FPMath.MoveTowards(physicsObject->Velocity.X, penguinSlideSpeed * direction, physics.WalkAcceleration[0] * f.DeltaTime);
+                FP targetSpeed = maxRunSpeed;
+                if (physicsObject->IsOnSlipperyGround) {
+                    targetSpeed = maxRunSpeed * physics.PenguinSlideSpeedMultiplier;
+                }
+                physicsObject->Velocity.X = FPMath.MoveTowards(physicsObject->Velocity.X, targetSpeed * direction, physics.WalkAcceleration[0] * f.DeltaTime);
             }
         }
 
@@ -747,7 +750,8 @@ namespace Quantum {
 
             if (f.Exists(mario->CurrentPipe) || mario->IsInShell || mario->IsCrouchedInShell || mario->WalljumpFrames > 0
                 || (mario->IsGroundpounding && !physicsObject->IsTouchingGround)
-                || (mario->IsCrouching && physicsObject->IsTouchingGround && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05)) {
+                || (mario->IsCrouching && physicsObject->IsTouchingGround && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05)
+                || mario->IsPenguinSliding) {
                 return;
             }
 
@@ -1771,56 +1775,20 @@ namespace Quantum {
 
             // Handle Penguin Slide (exclusive to PenguinSuit)
             if (penguinSuit && !mario->IsInKnockback && !f.Exists(mario->HeldEntity) && !physicsObject->IsUnderwater) {
-                // Track movement frames for 30-frame activation delay (prevents slide spam from standstill)
                 if (!mario->IsPenguinSliding) {
-                    FP velX = physicsObject->Velocity.X;
-                    bool movingRight = velX > FP._0_01;
-                    bool movingLeft = velX < -FP._0_01;
-
-                    if (movingRight || movingLeft) {
-                        bool sameDirection = (movingRight && mario->FacingRight) || (movingLeft && !mario->FacingRight);
-                        if (sameDirection && mario->ShellSlowdownFrames < 255) {
-                            mario->ShellSlowdownFrames++;
-                        } else {
-                            mario->ShellSlowdownFrames = 0;
-                        }
-                    } else if (physicsObject->IsTouchingGround) {
-                        mario->ShellSlowdownFrames = 0;
-                    }
-                }
-
-                FP walkSpeed = physics.WalkMaxVelocity[0];
-                FP runSpeed = physics.WalkMaxVelocity[physics.RunSpeedStage];
-                bool atWalkSpeed = FPMath.Abs(physicsObject->Velocity.X) >= walkSpeed;
-                bool atRunSpeed = FPMath.Abs(physicsObject->Velocity.X) >= runSpeed;
-
-                // Activation: walking speed + down input, requires 30-frame movement or above running speed
-                if (atWalkSpeed && inputs.Down.IsDown && physicsObject->IsTouchingGround && !mario->IsPenguinSliding) {
-                    bool canSlide = atRunSpeed || mario->ShellSlowdownFrames >= 30;
-                    if (canSlide) {
+                    FP maxRunSpeed = physics.WalkMaxVelocity[physics.RunSpeedStage];
+                    if (inputs.Down.IsDown
+                        && physicsObject->IsTouchingGround
+                        && FPMath.Abs(physicsObject->Velocity.X) >= maxRunSpeed) {
                         mario->IsPenguinSliding = true;
                         mario->IsCrouching = false;
-                        mario->ShellSlowdownFrames = 0;
                     }
-                }
-                
-                // Maintenance: persists while sprint is held
-                if (mario->IsPenguinSliding) {
-                    // Cannot turn around in mid-air unless sprint is released
-                    bool tryingToTurn = (inputs.Left.IsDown && mario->FacingRight) || (inputs.Right.IsDown && !mario->FacingRight);
-                    
-                    if (!inputs.Sprint.IsDown) {
-                        // Transition back to run/idle based on velocity
-                        mario->IsPenguinSliding = false;
-                    } else if (inputs.Up.IsDown
-                        || (physicsObject->IsTouchingGround && tryingToTurn)
-                        || (mario->FacingRight && physicsObject->IsTouchingRightWall) || (!mario->FacingRight && physicsObject->IsTouchingLeftWall)) {
-                        // Cancel slide on up input, trying to turn while grounded, or wall collision
-                        mario->IsPenguinSliding = false;
-                    }
+                } else if (!inputs.Sprint.IsDown
+                    || (mario->FacingRight && physicsObject->IsTouchingRightWall)
+                    || (!mario->FacingRight && physicsObject->IsTouchingLeftWall)) {
+                    mario->IsPenguinSliding = false;
                 }
             } else if (mario->IsPenguinSliding) {
-                // Cancel penguin slide if conditions are no longer met
                 mario->IsPenguinSliding = false;
             }
 

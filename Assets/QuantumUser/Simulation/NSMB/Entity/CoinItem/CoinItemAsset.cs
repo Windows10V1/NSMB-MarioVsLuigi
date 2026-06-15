@@ -85,7 +85,7 @@ public unsafe class CoinItemAsset : AssetObject {
             coinItem->InitializeBlockSpawn(f, entity, 60,
                 origin,
                 origin + (blockBump->IsDownwards ? new FPVector2(0, -FP._0_50) : new FPVector2(0, FP._0_50)));
-            coinItem->IgnorePlayerFrames = 5;
+            coinItem->IgnorePlayerFrames = (byte)(f.Unsafe.TryGetPointer(entity, out POWBlock* _) ? 0 : 5);
         }
     }
 

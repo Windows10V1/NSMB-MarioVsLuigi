@@ -20,7 +20,6 @@ GameObject:
   - component: {fileID: 3093743753026942761}
   - component: {fileID: 3901402401622306172}
   - component: {fileID: 517697212848946230}
-  - component: {fileID: 5423072449843684121}
   m_Layer: 19
   m_Name: SuperAcorn
   m_TagString: Powerup
@@ -59,7 +58,7 @@ MonoBehaviour:
   graphicsRoot: {fileID: 2479772350441087688}
   moveBehindBlocksRoot: {fileID: 0}
   renderer: {fileID: 1145319354374527610}
-  childAnimator: {fileID: 5423072449843684121}
+  childAnimator: {fileID: 0}
   childAnimation: {fileID: 0}
   blinkingRate: 4
   scaleRate: 0.1333
@@ -97,7 +96,7 @@ MonoBehaviour:
       CapsuleDirection2D: 0
       CapsuleDirection3D: 0
     Shape2D:
-      ShapeType: 1
+      ShapeType: 4
       PolygonCollider:
         Id:
           Value: 0
@@ -554,28 +553,6 @@ MonoBehaviour:
       Id:
         Value: 475241754008101487
     Lifetime: 600
---- !u!95 &5423072449843684121
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1017215213198693191}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 2f725f8de1da38942a94de16e862cf7a, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &8453737792750304721
 GameObject:
   m_ObjectHideFlags: 0

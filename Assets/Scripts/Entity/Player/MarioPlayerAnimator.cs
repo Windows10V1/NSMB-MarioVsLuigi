@@ -105,7 +105,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy1, cloudBuddy2, cloudBuddy3, frogModel;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy, frogModel;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -292,8 +292,6 @@ namespace NSMB.Entities.Player {
             HandleMiscStates(f, mario, physicsObject, freezable);
             HandleAnimations(f, mario, physicsObject, freezable);
             HandleCloudBlockSummonAnimation(mario);
-            HandlePOWBounceAnimation(mario);
-
             Input inputs = default;
             if (mario->PlayerRef.IsValid) {
                 Input* inputPointer = f.GetPlayerInput(mario->PlayerRef);
@@ -305,6 +303,7 @@ namespace NSMB.Entities.Player {
             SetFacingDirection(f, mario, physicsObject);
             InterpolateFacingDirection(mario, freezable->IsFrozen(f));
             UpdateAnimatorVariables(f, mario, physicsObject, freezable, ref inputs);
+            HandlePOWBounceAnimation(mario);
             
             previousPosition = transform.position;
             forceUpdate = false;
@@ -508,8 +507,8 @@ namespace NSMB.Entities.Player {
         }
 
         private void HandlePOWBounceAnimation(MarioPlayer* mario) {
-            if (mario->POWBounceFrames == 0 || previousPOWBounceFrames > 0) {
-                previousPOWBounceFrames = mario->POWBounceFrames;
+            if (mario->POWBounceFrames == 0) {
+                previousPOWBounceFrames = 0;
                 return;
             }
 
@@ -685,11 +684,8 @@ namespace NSMB.Entities.Player {
             // Model Swaps
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
-            bool isCloudFlower = mario->CurrentPowerupState == PowerupState.CloudFlower;
-            cloudModel.SetActive(isCloudFlower);
-            cloudBuddy3.SetActive(isCloudFlower && mario->CloudBlocksUsed < 1);
-            cloudBuddy2.SetActive(isCloudFlower && mario->CloudBlocksUsed < 2);
-            cloudBuddy1.SetActive(isCloudFlower && mario->CloudBlocksUsed < 3);
+            cloudModel.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
+            cloudBuddy.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower && mario->CloudBlocksUsed < 1);
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;

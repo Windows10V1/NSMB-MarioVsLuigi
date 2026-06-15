@@ -30,22 +30,23 @@ namespace Quantum {
                 powBlock->SpawnOwner = coinItem->ParentMarioPlayer;
             }
 
-            if (f.Exists(filter.Holdable->Holder)
-                || coinItem->SpawnAnimationFrames > 0) {
+            if (coinItem->SpawnAnimationFrames > 0) {
                 return;
             }
 
             if (filter.PhysicsObject->DisableCollision) {
                 filter.PhysicsObject->DisableCollision = false;
-
-                if (PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape, entity: filter.Entity)) {
-                    Activate(f, filter.Entity, powBlock->Activator);
-                    return;
-                }
             }
 
-            var physicsObject = filter.PhysicsObject;
-            if (powBlock->CanGroundActivate && physicsObject->IsTouchingGround && !physicsObject->WasTouchingGround) {
+            if (f.Exists(filter.Holdable->Holder)) {
+                if (PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape, stage: stage, entity: filter.Entity)) {
+                    Activate(f, filter.Entity, EntityRef.None);
+                }
+                PhysicsObjectSystem.TryEject(f, filter.Entity, stage);
+                return;
+            }
+
+            if (powBlock->CanGroundActivate && filter.PhysicsObject->IsTouchingGround && !filter.PhysicsObject->WasTouchingGround) {
                 Activate(f, filter.Entity, powBlock->Activator);
             }
         }
@@ -55,12 +56,16 @@ namespace Quantum {
                 return false;
             }
 
+            var powHoldable = f.Unsafe.GetPointer<Holdable>(powBlockEntity);
+            if (powHoldable->PreviousHolder == marioEntity && powHoldable->IgnoreOwnerFrames > 0) {
+                return false;
+            }
+
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
             var marioTransform = f.Unsafe.GetPointer<Transform2D>(marioEntity);
             var powBlock = f.Unsafe.GetPointer<POWBlock>(powBlockEntity);
             var powTransform = f.Unsafe.GetPointer<Transform2D>(powBlockEntity);
             var powPhysics = f.Unsafe.GetPointer<PhysicsObject>(powBlockEntity);
-            var powHoldable = f.Unsafe.GetPointer<Holdable>(powBlockEntity);
             var coinItem = f.Unsafe.GetPointer<CoinItem>(powBlockEntity);
 
             FP upDot = FPVector2.Dot(contact.Normal, FPVector2.Up);
@@ -73,11 +78,32 @@ namespace Quantum {
                 return false;
             }
 
+            if (active && !held && FPMath.Abs(upDot) < Constants.PhysicsGroundMaxAngleCos && powBlock->WasThrown) {
+                if (mario->IsInShell) {
+                    mario->FacingRight = contact.Normal.X < 0;
+                    Activate(f, powBlockEntity, marioEntity);
+                    return false;
+                }
+
+                if (mario->IsPenguinSliding) {
+                    mario->IsPenguinSliding = false;
+                    if (f.Unsafe.TryGetPointer(marioEntity, out PhysicsObject* marioPhysics)) {
+                        marioPhysics->Velocity.X = 0;
+                    }
+                    Activate(f, powBlockEntity, marioEntity);
+                    return false;
+                }
+            }
+
             if (active && !held && ShouldHardDamageMario(f, marioEntity, powBlock, powBlockEntity)) {
                 bool fallingOntoMario = upDot <= -Constants.PhysicsGroundMaxAngleCos && powPhysics->Velocity.Y < -FP._0_10;
-                bool thrownSideHit = FPMath.Abs(upDot) < Constants.PhysicsGroundMaxAngleCos && powBlock->WasThrown && powBlock->CanGroundActivate;
+                bool thrownSideHit = FPMath.Abs(upDot) < Constants.PhysicsGroundMaxAngleCos && powBlock->WasThrown && powBlock->CanGroundActivate && !mario->IsInShell && !mario->IsPenguinSliding;
 
-                if ((fallingOntoMario || thrownSideHit) && ApplyHardDamage(f, marioEntity, mario, marioTransform, powBlockEntity, powTransform, powPhysics)) {
+                if (fallingOntoMario && ApplyHardDamage(f, marioEntity, mario, marioTransform, powBlockEntity, powTransform, powPhysics)) {
+                    return false;
+                }
+
+                if (thrownSideHit && ApplyThrownSideDamage(f, marioEntity, mario, marioTransform, powBlockEntity, powTransform, powPhysics)) {
                     return false;
                 }
             }
@@ -106,6 +132,10 @@ namespace Quantum {
                 activator = powBlock->Activator;
             }
 
+            if (activator.IsValid && !f.Unsafe.TryGetPointer(activator, out MarioPlayer* _)) {
+                return;
+            }
+
             ReleaseFromHolder(f, holdable);
 
             bool wasThrown = powBlock->WasThrown;
@@ -116,6 +146,13 @@ namespace Quantum {
 
             f.Events.POWBlockActivated(powBlockEntity, activator, transform->Position, powBlock->Uses);
             ApplyExplosion(f, powBlockEntity, activator, transform->Position, wasThrown);
+
+            if (f.Unsafe.TryGetPointer(powBlockEntity, out PhysicsCollider2D* collider)) {
+                FPVector2 extents = collider->Shape.Box.Extents;
+                extents.Y /= 2;
+                collider->Shape.Box.Extents = extents;
+                collider->Shape.Centroid.Y = extents.Y;
+            }
 
             byte maxUses = powBlock->MaxUses == 0 ? DefaultMaxUses : powBlock->MaxUses;
             if (powBlock->Uses >= maxUses) {
@@ -137,16 +174,15 @@ namespace Quantum {
             }
 
             var players = f.Filter<MarioPlayer, PhysicsObject, Transform2D>();
-            while (players.NextUnsafe(out EntityRef marioEntity, out MarioPlayer* mario, out PhysicsObject* physicsObject, out _)) {
+            while (players.NextUnsafe(out EntityRef marioEntity, out MarioPlayer* mario, out PhysicsObject* physicsObject, out Transform2D* marioTransform)) {
                 if (marioEntity == activator) {
                     continue;
                 }
 
-                bool wasHardDamaged = mario->CurrentKnockback == KnockbackStrength.Groundpound && mario->LastAttacker == powBlockEntity;
+                bool wasHardDamaged = mario->CurrentKnockback != KnockbackStrength.None && mario->LastAttacker == powBlockEntity;
                 if (wasHardDamaged) {
                     mario->IsGroundpounding = false;
 
-                    physicsObject->Velocity.X = 0;
                     physicsObject->Velocity.Y = ReExplosionLaunchVelocity;
                     physicsObject->IsTouchingGround = false;
                     physicsObject->WasTouchingGround = false;
@@ -162,7 +198,6 @@ namespace Quantum {
                 }
 
                 bool fromRight = GetExplosionKnockbackFromRight(mario, physicsObject);
-                int starsToDrop = activator.IsValid && SameTeam(f, activator, marioEntity) ? 0 : 1;
                 EntityRef attacker = activator.IsValid ? activator : powBlockEntity;
 
                 if (mario->IsInKnockback) {
@@ -170,9 +205,21 @@ namespace Quantum {
                     mario->IsInWeakKnockback = false;
                 }
 
-                bool damaged = mario->DoKnockback(f, marioEntity, fromRight, starsToDrop, KnockbackStrength.Normal, attacker, bypassDamageInvincibility: true);
-                if (damaged) {
-                    f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Normal, position);
+                bool belowPOW = marioTransform->Position.Y < position.Y;
+
+                bool damaged;
+                if (belowPOW) {
+                    int starsToDrop = activator.IsValid && SameTeam(f, activator, marioEntity) ? 0 : 1;
+                    damaged = mario->DoKnockback(f, marioEntity, fromRight, starsToDrop, KnockbackStrength.Groundpound, attacker, bypassDamageInvincibility: true);
+                    if (damaged) {
+                        f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Groundpound, position);
+                    }
+                } else {
+                    int starsToDrop = activator.IsValid && SameTeam(f, activator, marioEntity) ? 0 : 1;
+                    damaged = mario->DoKnockback(f, marioEntity, fromRight, starsToDrop, KnockbackStrength.Normal, attacker, bypassDamageInvincibility: true);
+                    if (damaged) {
+                        f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Normal, position);
+                    }
                 }
             }
         }
@@ -208,16 +255,24 @@ namespace Quantum {
 
         private static bool ApplyHardDamage(Frame f, EntityRef marioEntity, MarioPlayer* mario, Transform2D* marioTransform, EntityRef powBlockEntity, Transform2D* powTransform, PhysicsObject* powPhysics) {
             bool fromRight = GetImpactKnockbackFromRight(f, marioTransform, powTransform, powPhysics, mario);
-            bool damaged = mario->DoKnockback(f, marioEntity, fromRight, 3, KnockbackStrength.Groundpound, powBlockEntity);
+            bool damaged = mario->DoKnockback(f, marioEntity, fromRight, 1, KnockbackStrength.Groundpound, powBlockEntity);
             if (damaged) {
                 f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Groundpound, (marioTransform->Position + powTransform->Position) / 2);
             }
             return damaged;
         }
 
+        private static bool ApplyThrownSideDamage(Frame f, EntityRef marioEntity, MarioPlayer* mario, Transform2D* marioTransform, EntityRef powBlockEntity, Transform2D* powTransform, PhysicsObject* powPhysics) {
+            bool fromRight = GetImpactKnockbackFromRight(f, marioTransform, powTransform, powPhysics, mario);
+            bool damaged = mario->DoKnockback(f, marioEntity, fromRight, 1, KnockbackStrength.Normal, powBlockEntity);
+            if (damaged) {
+                f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Normal, (marioTransform->Position + powTransform->Position) / 2);
+            }
+            return damaged;
+        }
+
         private static bool ShouldHardDamageMario(Frame f, EntityRef marioEntity, POWBlock* powBlock, EntityRef powBlockEntity) {
-            EntityRef owner = powBlock->Activator.IsValid ? powBlock->Activator : powBlock->SpawnOwner;
-            if (owner.IsValid && owner == marioEntity) {
+            if (powBlock->Activator.IsValid && powBlock->Activator == marioEntity) {
                 return false;
             }
 
@@ -291,11 +346,19 @@ namespace Quantum {
                 powBlock->WasThrown = true;
                 powBlock->CanGroundActivate = true;
                 powBlock->Activator = marioEntity;
-            }
 
-            if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape, entity: entity)) {
-                Activate(f, entity, marioEntity);
-                return;
+                if (holdable->HoldAboveHead) {
+                    var marioTransform = f.Unsafe.GetPointer<Transform2D>(marioEntity);
+                    var marioShape = f.Unsafe.GetPointer<PhysicsCollider2D>(marioEntity)->Shape;
+                    FP holdableYOffset = collider->Shape.Box.Extents.Y - collider->Shape.Centroid.Y;
+                    FP pickupFrames = 27;
+                    FP time = FPMath.Clamp01((f.Number - mario->HoldStartFrame) / pickupFrames);
+                    FP alpha = 1 - QuantumUtils.EaseOut(1 - time);
+                    transform->Position = marioTransform->Position + new FPVector2(
+                        0,
+                        (marioShape.Box.Extents.Y * (2 - FP._0_05) * alpha) + holdableYOffset
+                    );
+                }
             }
 
             if (!powBlock->SpawnOwner.IsValid) {
@@ -315,7 +378,7 @@ namespace Quantum {
                 f.Events.MarioPlayerThrewObject(marioEntity, entity);
             }
 
-            holdable->IgnoreOwnerFrames = 15;
+            holdable->IgnoreOwnerFrames = 30;
         }
 
         public void OnEntityBumped(Frame f, EntityRef entity, FPVector2 tileWorldPosition, EntityRef blockBump, QBoolean fromBelow) {
