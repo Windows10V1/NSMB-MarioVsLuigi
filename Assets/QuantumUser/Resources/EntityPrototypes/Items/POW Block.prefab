@@ -170,6 +170,46 @@ PrefabInstance:
       propertyPath: PhysicsCollider.Shape2D.PositionOffset.Y.RawValue
       value: 16384
       objectReference: {fileID: 0}
+    - target: {fileID: 6989136294608042370, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: Prototype.Gravity.Y.RawValue
+      value: -1409024
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989136294608042370, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: Prototype.SlowInLiquids.Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989136294608042370, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: Prototype.TerminalVelocity.RawValue
+      value: -786432
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: ErrorPositionBlendEnd
+      value: 0.7
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: ErrorCorrectionRateMax
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: ErrorCorrectionRateMin
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: ErrorPositionBlendStart
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
+        type: 3}
+      propertyPath: ErrorPositionTeleportDistance
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5712151088451427927, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19, type: 3}
     - {fileID: 3019108884791320526, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19, type: 3}

@@ -133,6 +133,7 @@ namespace Quantum {
             }
 
             ReleaseFromHolder(f, holdable);
+            holdable->PreviousHolder = EntityRef.None;
 
             bool wasThrown = powBlock->WasThrown;
             powBlock->Activator = activator;
@@ -322,21 +323,21 @@ namespace Quantum {
             if (!f.Unsafe.TryGetPointer(entity, out POWBlock* powBlock)
                 || !f.Unsafe.TryGetPointer(entity, out Holdable* holdable)
                 || !f.Unsafe.TryGetPointer(entity, out PhysicsObject* physicsObject)
-                || !f.Unsafe.TryGetPointer(entity, out PhysicsCollider2D* collider)
                 || !f.Unsafe.TryGetPointer(entity, out Transform2D* transform)
                 || !f.Unsafe.TryGetPointer(marioEntity, out MarioPlayer* mario)
                 || !f.Unsafe.TryGetPointer(marioEntity, out PhysicsObject* marioPhysics)) {
                 return;
             }
 
-            if (!dropped) {
-                powBlock->WasThrown = true;
-                powBlock->CanGroundActivate = true;
-                powBlock->Activator = marioEntity;
+            powBlock->WasThrown = !dropped;
+            powBlock->CanGroundActivate = !dropped;
+            powBlock->Activator = !dropped ? marioEntity : EntityRef.None;
 
+            if (!dropped) {
                 if (holdable->HoldAboveHead) {
                     var marioTransform = f.Unsafe.GetPointer<Transform2D>(marioEntity);
                     var marioShape = f.Unsafe.GetPointer<PhysicsCollider2D>(marioEntity)->Shape;
+                    var collider = f.Unsafe.GetPointer<PhysicsCollider2D>(entity);
                     FP holdableYOffset = collider->Shape.Box.Extents.Y - collider->Shape.Centroid.Y;
                     FP pickupFrames = 27;
                     FP time = FPMath.Clamp01((f.Number - mario->HoldStartFrame) / pickupFrames);
@@ -346,26 +347,19 @@ namespace Quantum {
                         (marioShape.Box.Extents.Y * (2 - FP._0_05) * alpha) + holdableYOffset
                     );
                 }
-            }
 
-            if (!powBlock->SpawnOwner.IsValid) {
-                powBlock->SpawnOwner = marioEntity;
+                FP bonusSpeed = FPMath.Abs(marioPhysics->Velocity.X / 3);
+                if (FPMath.Sign(marioPhysics->Velocity.X) != (mario->FacingRight ? 1 : -1)) {
+                    bonusSpeed *= -1;
+                }
+                physicsObject->Velocity.X = (Constants._4_50 + bonusSpeed) * (mario->FacingRight ? 1 : -1);
+                f.Events.MarioPlayerThrewObject(marioEntity, entity);
+            } else {
+                physicsObject->Velocity.X = 0;
             }
 
             physicsObject->Velocity.Y = 0;
-            if (dropped) {
-                physicsObject->Velocity.X = 0;
-                powBlock->WasThrown = false;
-                powBlock->CanGroundActivate = false;
-                powBlock->Activator = EntityRef.None;
-            } else if (crouching) {
-                physicsObject->Velocity.X = mario->FacingRight ? 1 : -1;
-            } else {
-                physicsObject->Velocity.X = (Constants._4_50 + FPMath.Abs(marioPhysics->Velocity.X / 3)) * (mario->FacingRight ? 1 : -1);
-                f.Events.MarioPlayerThrewObject(marioEntity, entity);
-            }
-
-            holdable->IgnoreOwnerFrames = 30;
+            holdable->IgnoreOwnerFrames = byte.MaxValue;
         }
 
         public void OnEntityBumped(Frame f, EntityRef entity, FPVector2 tileWorldPosition, EntityRef blockBump, QBoolean fromBelow) {
