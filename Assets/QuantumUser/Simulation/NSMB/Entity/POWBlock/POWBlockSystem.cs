@@ -219,6 +219,20 @@ namespace Quantum {
                     }
                 }
             }
+
+            var enemies = f.Filter<Enemy, PhysicsObject, Transform2D>();
+            while (enemies.NextUnsafe(out EntityRef enemyEntity, out Enemy* enemy, out PhysicsObject* enemyPhysics, out _)) {
+                if (!enemy->IsAlive
+                    || enemyPhysics->IsFrozen
+                    || enemyPhysics->DisableCollision
+                    || !enemyPhysics->IsTouchingGround) {
+                    continue;
+                }
+
+                enemyPhysics->Velocity.Y = ReExplosionLaunchVelocity;
+                enemyPhysics->IsTouchingGround = false;
+                enemyPhysics->WasTouchingGround = false;
+            }
         }
 
         private static void ApplyGroundBounceForTeam(Frame f, EntityRef activator) {
@@ -339,12 +353,9 @@ namespace Quantum {
                     var marioShape = f.Unsafe.GetPointer<PhysicsCollider2D>(marioEntity)->Shape;
                     var collider = f.Unsafe.GetPointer<PhysicsCollider2D>(entity);
                     FP holdableYOffset = collider->Shape.Box.Extents.Y - collider->Shape.Centroid.Y;
-                    FP pickupFrames = 27;
-                    FP time = FPMath.Clamp01((f.Number - mario->HoldStartFrame) / pickupFrames);
-                    FP alpha = 1 - QuantumUtils.EaseOut(1 - time);
                     transform->Position = marioTransform->Position + new FPVector2(
                         0,
-                        (marioShape.Box.Extents.Y * (2 - FP._0_05) * alpha) + holdableYOffset
+                        (marioShape.Box.Extents.Y * (2 - FP._0_05)) + holdableYOffset
                     );
                 }
 
@@ -360,6 +371,10 @@ namespace Quantum {
 
             physicsObject->Velocity.Y = 0;
             holdable->IgnoreOwnerFrames = byte.MaxValue;
+
+            if (!dropped) {
+                physicsObject->DisableCollision = true;
+            }
         }
 
         public void OnEntityBumped(Frame f, EntityRef entity, FPVector2 tileWorldPosition, EntityRef blockBump, QBoolean fromBelow) {
