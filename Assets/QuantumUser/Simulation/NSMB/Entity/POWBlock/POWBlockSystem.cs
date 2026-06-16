@@ -97,13 +97,9 @@ namespace Quantum {
 
             if (active && !held && ShouldHardDamageMario(f, marioEntity, powBlock, powBlockEntity)) {
                 bool fallingOntoMario = upDot <= -Constants.PhysicsGroundMaxAngleCos && powPhysics->Velocity.Y < -FP._0_10;
-                bool thrownSideHit = FPMath.Abs(upDot) < Constants.PhysicsGroundMaxAngleCos && powBlock->WasThrown && powBlock->CanGroundActivate && !mario->IsInShell && !mario->IsPenguinSliding;
+                bool thrownSideHit = FPMath.Abs(upDot) < Constants.PhysicsGroundMaxAngleCos && powBlock->WasThrown && powBlock->CanGroundActivate;
 
-                if (fallingOntoMario && ApplyHardDamage(f, marioEntity, mario, marioTransform, powBlockEntity, powTransform, powPhysics)) {
-                    return false;
-                }
-
-                if (thrownSideHit && ApplyThrownSideDamage(f, marioEntity, mario, marioTransform, powBlockEntity, powTransform, powPhysics)) {
+                if ((fallingOntoMario || thrownSideHit) && ApplyHardDamage(f, marioEntity, mario, marioTransform, powBlockEntity, powTransform, powPhysics)) {
                     return false;
                 }
             }
@@ -258,15 +254,6 @@ namespace Quantum {
             bool damaged = mario->DoKnockback(f, marioEntity, fromRight, 1, KnockbackStrength.Groundpound, powBlockEntity);
             if (damaged) {
                 f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Groundpound, (marioTransform->Position + powTransform->Position) / 2);
-            }
-            return damaged;
-        }
-
-        private static bool ApplyThrownSideDamage(Frame f, EntityRef marioEntity, MarioPlayer* mario, Transform2D* marioTransform, EntityRef powBlockEntity, Transform2D* powTransform, PhysicsObject* powPhysics) {
-            bool fromRight = GetImpactKnockbackFromRight(f, marioTransform, powTransform, powPhysics, mario);
-            bool damaged = mario->DoKnockback(f, marioEntity, fromRight, 1, KnockbackStrength.Normal, powBlockEntity);
-            if (damaged) {
-                f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Normal, (marioTransform->Position + powTransform->Position) / 2);
             }
             return damaged;
         }
