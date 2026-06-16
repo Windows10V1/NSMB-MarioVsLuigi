@@ -42,6 +42,24 @@ MonoBehaviour:
   - RawValue: 58982
   WalkButtonReleaseDeceleration:
     RawValue: 259200
+  WalkFrogAccelerationMultiplier:
+    RawValue: 163840
+  SkiddingFrogDecelerationMultiplier:
+    RawValue: 163840
+  JumpFrogVelocity:
+    RawValue: 477312
+  JumpFrogSpeedBonusVelocity:
+    RawValue: 33792
+  WalkFrogHyperspeedMultiplier:
+  - RawValue: 72089
+  - RawValue: 78643
+  - RawValue: 85196
+  FrogSwimJumpMultiplier:
+    RawValue: 69632
+  FrogSwimSprintMultiplier:
+    RawValue: 98304
+  FrogSwimDecelerationMultiplier:
+    RawValue: 32768
   SlowTurnaroundAcceleration:
   - RawValue: 259200
   - RawValue: 576000
@@ -88,6 +106,8 @@ MonoBehaviour:
     RawValue: 24248
   LargeHitboxHeight:
     RawValue: 53739
+  BlueShellHitboxHeight:
+    RawValue: 27525
   JumpBufferFrames: 12
   CoyoteTimeFrames: 5
   JumpVelocity:
@@ -187,6 +207,11 @@ MonoBehaviour:
   SwimShellAcceleration:
   - RawValue: 403200
   - RawValue: 403200
+  SwimFrogMaxVelocity:
+  - RawValue: 207360
+  SwimFrogAcceleration:
+  - RawValue: 403200
+  - RawValue: 403200
   SwimWalkMaxVelocity:
   - RawValue: 69120
   - RawValue: 69120
@@ -197,6 +222,12 @@ MonoBehaviour:
   - RawValue: 103680
   - RawValue: 103680
   SwimWalkShellAcceleration:
+  - RawValue: 403200
+  - RawValue: 403200
+  SwimWalkFrogMaxVelocity:
+  - RawValue: 103680
+  - RawValue: 103680
+  SwimWalkFrogAcceleration:
   - RawValue: 403200
   - RawValue: 403200
   SwimGroundpoundDeceleration:
@@ -231,7 +262,7 @@ MonoBehaviour:
   SlideMinimumAngle:
     RawValue: 819200
   PenguinSlideSpeedMultiplier:
-    RawValue: 70451
+    RawValue: 69632
   GroundpoundStartVelocity:
     X:
       RawValue: 0
