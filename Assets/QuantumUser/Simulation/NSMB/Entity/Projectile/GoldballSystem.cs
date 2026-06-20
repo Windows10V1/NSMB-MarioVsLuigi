@@ -20,7 +20,7 @@ namespace Quantum {
             }
 
             var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
-            FP radius = FP._2;
+            FP radius = FP._3;
             FP radiusSquared = radius * radius;
 
             // Scan tiles within the radius
