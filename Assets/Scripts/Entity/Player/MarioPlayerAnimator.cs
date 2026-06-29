@@ -93,6 +93,7 @@ namespace NSMB.Entities.Player {
         private static readonly int ParamThrow = Animator.StringToHash("throw");
         private static readonly int ParamHeadPickup = Animator.StringToHash("head-pickup");
         private static readonly int ParamFireball = Animator.StringToHash("fireball");
+        private static readonly int ParamSuperHammer = Animator.StringToHash("super-hammer");
         #endregion
 
         //---Public Variables
@@ -105,7 +106,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy, frogModel;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy, frogModel, builderModel, builderBelt, builderHipHammer, builderSuperHammer;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -257,6 +258,7 @@ namespace NSMB.Entities.Player {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
             largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") &&
             mario->CurrentPowerupState != PowerupState.PenguinSuit &&
+            mario->CurrentPowerupState != PowerupState.BuilderSuit &&
             mario->CurrentPowerupState != PowerupState.FrogSuit &&
             mario->CurrentPowerupState != PowerupState.BoomerangFlower &&
             mario->CurrentPowerupState != PowerupState.CloudFlower);
@@ -416,6 +418,9 @@ namespace NSMB.Entities.Player {
                     PowerupState.SuperAcorn => 56.25f,
                     _ => 67.5f,
                 };
+            if (animator.GetCurrentAnimatorStateInfo(0).shortNameHash == ParamSuperHammer && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f) {
+                angle = 90f;
+            }
             float angleR = 180 - angle;
             float angleL = 180 + angle;
 
@@ -683,11 +688,19 @@ namespace NSMB.Entities.Player {
 
             // Model Swaps
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
+            builderModel.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudModel.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
             cloudBuddy.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower && mario->CloudBlocksUsed < 1);
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
-            
+
+            // Builder Suit Models
+            bool isBuilderSuit = mario->CurrentPowerupState == PowerupState.BuilderSuit;
+            bool inSuperHammerState = animator.GetCurrentAnimatorStateInfo(0).shortNameHash == ParamSuperHammer && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f;
+            builderBelt.SetActive(isBuilderSuit);
+            builderHipHammer.SetActive(isBuilderSuit && !inSuperHammerState);
+            builderSuperHammer.SetActive(isBuilderSuit && inSuperHammerState);
+
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;
             bool changedAvatar = animator.avatar != targetAvatar;
 
@@ -1074,7 +1087,12 @@ namespace NSMB.Entities.Player {
                 return;
             }
 
-            animator.SetTrigger("fireball");
+            var mario = PredictedFrame.Unsafe.GetPointer<MarioPlayer>(e.Entity);
+            if (mario->CurrentPowerupState == PowerupState.BuilderSuit) {
+                animator.SetTrigger("superHammer");
+            } else {
+                animator.SetTrigger("fireball");
+            }
             var projectile = PredictedFrame.FindAsset(e.Projectile.Asset);
             PlaySound(projectile.ShootSound, new[] { projectile });
         }

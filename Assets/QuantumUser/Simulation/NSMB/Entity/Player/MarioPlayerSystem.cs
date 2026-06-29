@@ -1421,7 +1421,7 @@ namespace Quantum {
 
             if (!(inputs.PowerupAction.WasPressed
                 || (state == PowerupState.PropellerMushroom && inputs.PropellerPowerupAction.WasPressed && !physicsObject->IsTouchingGround && !mario->IsWallsliding)
-                || ((state == PowerupState.FireFlower || state == PowerupState.PenguinSuit || state == PowerupState.HammerSuit || state == PowerupState.BoomerangFlower || state == PowerupState.SuperBallFlower || state == PowerupState.GoldFlower) && inputs.FireballPowerupAction.WasPressed))) {
+                || ((state == PowerupState.FireFlower || state == PowerupState.PenguinSuit || state == PowerupState.HammerSuit || state == PowerupState.BuilderSuit || state == PowerupState.BoomerangFlower || state == PowerupState.SuperBallFlower || state == PowerupState.GoldFlower) && inputs.FireballPowerupAction.WasPressed))) {
                 return;
             }
 
@@ -1431,6 +1431,7 @@ namespace Quantum {
             }
 
             switch (mario->CurrentPowerupState) {
+            case PowerupState.BuilderSuit:
             case PowerupState.PenguinSuit:
             case PowerupState.FireFlower:
             case PowerupState.HammerSuit:
@@ -1471,6 +1472,8 @@ namespace Quantum {
                     ? f.SimulationConfig.SuperballPrototype
                     : mario->CurrentPowerupState == PowerupState.PenguinSuit
                     ? f.SimulationConfig.IceballPrototype
+                    : mario->CurrentPowerupState == PowerupState.BuilderSuit
+                    ? f.SimulationConfig.SuperHammerPrototype
                     : f.SimulationConfig.FireballPrototype;
                 
                 EntityRef tempEntity = f.Create(projectilePrototype);
@@ -1671,6 +1674,8 @@ namespace Quantum {
                 ? f.SimulationConfig.GoldballPrototype
                 : mario->CurrentPowerupState == PowerupState.SuperBallFlower
                 ? f.SimulationConfig.SuperballPrototype
+                : mario->CurrentPowerupState == PowerupState.BuilderSuit
+                ? f.SimulationConfig.SuperHammerPrototype
                 : mario->CurrentPowerupState == PowerupState.PenguinSuit
                 ? f.SimulationConfig.IceballPrototype
                 : f.SimulationConfig.FireballPrototype);
