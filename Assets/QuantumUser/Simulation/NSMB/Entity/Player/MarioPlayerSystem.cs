@@ -1361,7 +1361,6 @@ namespace Quantum {
                 f.Unsafe.GetPointer<ComboKeeper>(filter.Entity)->Combo = 0;
             }
             QuantumUtils.Decrement(ref mario->PropellerSpinFrames);
-            QuantumUtils.Decrement(ref mario->ProjectileDelayFrames);
             QuantumUtils.Decrement(ref mario->ProjectileCooldownFrames);
             if (QuantumUtils.Decrement(ref mario->ProjectileVolleyFrames)) {
                 mario->CurrentVolley = 0;
@@ -1446,6 +1445,12 @@ namespace Quantum {
 
                 if (mario->ProjectileCooldownFrames > 0) {
                     return;
+                }
+
+                if (mario->CurrentPowerupState == PowerupState.BuilderSuit) {
+                    if (!physicsObject->IsTouchingGround) {
+                        return;
+                    }
                 }
 
                 byte activeProjectiles = mario->CurrentProjectiles;
