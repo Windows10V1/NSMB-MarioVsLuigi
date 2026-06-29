@@ -96,14 +96,6 @@ namespace Quantum {
             set => SetValue(ref Flags, 22, value);
         }
 
-        public readonly bool IsAcornFlying => AcornState == 1;
-        public readonly bool IsAcornAscending => AcornState == 2;
-        public readonly bool IsAcornDescending => AcornState == 3;
-        public bool AcornCanAscend {
-            readonly get => AcornAscendUsed == 0;
-            set => AcornAscendUsed = (byte)(value ? 0 : 1);
-        }
-
         public readonly bool IsStarmanInvincible => InvincibilityFrames > 0;
         public readonly bool IsWallsliding => WallslideLeft || WallslideRight;
         public readonly bool IsCrouchedInShell => CurrentPowerupState == PowerupState.BlueShell && (IsCrouching || IsGroundpounding && GroundpoundStartFrames <= 11) && !IsInShell;
@@ -173,7 +165,7 @@ namespace Quantum {
 
             return (input.Sprint.IsDown || forceHold || (f.Exists(HeldEntity) && !f.IsPlayerVerifiedOrLocal(PlayerRef)))
                 && !freezable->IsFrozen(f) && CurrentPowerupState is not PowerupState.MiniMushroom or PowerupState.MegaMushroom && !IsSkidding 
-                && !IsInKnockback && KnockbackGetupFrames == 0 && !IsTurnaround && !IsPropellerFlying && !IsAcornAscending && !IsSpinnerFlying && !IsCrouching && !IsDead
+                && !IsInKnockback && KnockbackGetupFrames == 0 && !IsTurnaround && !IsPropellerFlying && !IsSpinnerFlying && !IsCrouching && !IsDead
                 && !IsInShell && !WallslideLeft && !WallslideRight && (f.Exists(item) || physicsObject->IsTouchingGround || JumpState < JumpState.DoubleJump)
                 && !IsGroundpounding && !(!f.Exists(item) && physicsObject->IsUnderwater && input.Jump.IsDown)
                 && !(aboveHead && physicsObject->IsUnderwater);
@@ -199,7 +191,7 @@ namespace Quantum {
                 } else {
                     arr = physicsInfo.SwimMaxVelocity;
                 }
-            } else if ((IsSpinnerFlying || IsPropellerFlying || IsAcornFlying) && CurrentPowerupState != PowerupState.MegaMushroom) {
+            } else if ((IsSpinnerFlying || IsPropellerFlying) && CurrentPowerupState != PowerupState.MegaMushroom) {
                 arr = physicsInfo.FlyingMaxVelocity;
             } else {
                 arr = physicsInfo.WalkMaxVelocity;
@@ -278,9 +270,6 @@ namespace Quantum {
             IsPropellerFlying = false;
             PropellerLaunchFrames = 0;
             PropellerSpinFrames = 0;
-            AcornState = 0;
-            AcornAscendUsed = 0;
-            AcornWallClingFrames = 0;
             IsSpinnerFlying = false;
             IsDrilling = false;
             IsSliding = false;
@@ -342,7 +331,6 @@ namespace Quantum {
                 CurrentPowerupState = PowerupState.FireFlower;
                 f.Signals.OnMarioPlayerDropObjective(entity, 1, attacker);
                 break;
-            case PowerupState.SuperAcorn:
             case PowerupState.SuperBallFlower:
             case PowerupState.CloudFlower:
             case PowerupState.BoomerangFlower:
@@ -366,9 +354,6 @@ namespace Quantum {
             PropellerLaunchFrames = 0;
             PropellerSpinFrames = 0;
             UsedPropellerThisJump = false;
-            AcornState = 0;
-            AcornAscendUsed = 0;
-            AcornWallClingFrames = 0;
 
             if (!IsDead) {
                 DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
@@ -406,9 +391,6 @@ namespace Quantum {
             IsSpinnerFlying = false;
             PropellerLaunchFrames = 0;
             PropellerSpinFrames = 0;
-            AcornState = 0;
-            AcornAscendUsed = 0;
-            AcornWallClingFrames = 0;
             JumpState = JumpState.None;
             PreviousPowerupState = CurrentPowerupState = PowerupState.NoPowerup;
             DamageInvincibilityFrames = 0;
@@ -540,8 +522,6 @@ namespace Quantum {
             IsFrogHyperspeed = false;
             FrogHyperspeedStage = 0;
             WallslideLeft = WallslideRight = false;
-            AcornState = 0;
-            AcornWallClingFrames = 0;
 
             if (f.Unsafe.TryGetPointer(attacker, out Projectile* projectile)) {
                 attacker = projectile->Owner;
@@ -609,9 +589,6 @@ namespace Quantum {
             UsedPropellerThisJump = false;
             PropellerLaunchFrames = 0;
             PropellerSpinFrames = 0;
-            AcornState = 0;
-            AcornAscendUsed = 0;
-            AcornWallClingFrames = 0;
             IsSpinnerFlying = false;
             IsInShell = false;
             PipeEntering = true;

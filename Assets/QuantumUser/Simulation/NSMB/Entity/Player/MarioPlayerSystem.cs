@@ -92,7 +92,6 @@ namespace Quantum {
 
             bool wasGroundpoundActive = mario->IsGroundpounding;
             HandlePowerups(f, ref filter, physics, stage);
-            HandleAcornFlying(f, ref filter, physics);
             HandleBreakingBlocks(f, ref filter, physics, stage);
             HandleCrouching(f, ref filter, physics);
             HandleGroundpound(f, ref filter, physics, stage);
@@ -146,7 +145,7 @@ namespace Quantum {
 
             ref var inputs = ref filter.Inputs;
             bool mega = mario->CurrentPowerupState == PowerupState.MegaMushroom;
-            bool run = (inputs.Sprint.IsDown || mega || mario->IsPropellerFlying || mario->IsAcornFlying) && (mega || !mario->IsSpinnerFlying);
+            bool run = (inputs.Sprint.IsDown || mega || mario->IsPropellerFlying) && (mega || !mario->IsSpinnerFlying);
             int maxStage;
             if (swimming) {
                 if (mario->CurrentPowerupState == PowerupState.BlueShell || mario->CurrentPowerupState == PowerupState.FrogSuit) {
@@ -538,17 +537,8 @@ namespace Quantum {
             FP gravity;
 
             bool swimming = physicsObject->IsUnderwater;
-            bool acornClinging = mario->CurrentPowerupState == PowerupState.SuperAcorn && mario->IsWallsliding && mario->AcornWallClingFrames > 0;
-            if (acornClinging) {
-                physicsObject->Gravity = FPVector2.Up * FP._0_01;
-                return;
-            }
             if (swimming && (f.Exists(mario->HeldEntity) || mario->CurrentPowerupState == PowerupState.FrogSuit)) {
                 gravity = 0;
-            } else if (!swimming && mario->IsAcornFlying && !acornClinging) {
-                gravity = physics.GravityAcceleration[^1] * physics.AcornGlideGravityMultiplier;
-            } else if (!swimming && mario->IsAcornDescending) {
-                gravity = physics.GravityAcceleration[^1] * physics.AcornDescendGravityMultiplier;
             } else if (!swimming && (mario->IsSpinnerFlying || mario->IsPropellerFlying)) {
                 gravity = mario->IsDrilling ? physics.GravityAcceleration[^1] : physics.GravityFlyingAcceleration;
             } else if ((mario->IsGroundpounding && !swimming) || physicsObject->IsTouchingGround || mario->CoyoteTimeFrames > 0) {
@@ -600,12 +590,6 @@ namespace Quantum {
             } else if (physicsObject->IsUnderwater && !(mario->IsGroundpounding || mario->IsDrilling)) {
                 terminalVelocity = inputs.Jump.IsDown ? physics.SwimTerminalVelocityButtonHeld : physics.SwimTerminalVelocity;
                 physicsObject->Velocity.Y = FPMath.Min(physicsObject->Velocity.Y, physics.SwimMaxVerticalVelocity);
-            } else if (mario->IsAcornFlying) {
-                terminalVelocity = physics.AcornGlideTerminalVelocity;
-                FP glideMaxSpeed = physics.WalkMaxVelocity[physics.RunSpeedStage] * physics.AcornGlideHorizontalSpeedMultiplier;
-                physicsObject->Velocity.X = FPMath.Clamp(physicsObject->Velocity.X, -glideMaxSpeed, glideMaxSpeed);
-            } else if (mario->IsAcornDescending) {
-                terminalVelocity = physics.AcornDescendTerminalVelocity;
             } else if (mario->IsSpinnerFlying) {
                 terminalVelocity = mario->IsDrilling ? physics.TerminalVelocityDrilling : physics.TerminalVelocityFlying;
             } else if (mario->IsPropellerFlying) {
@@ -624,10 +608,8 @@ namespace Quantum {
                         physicsObject->WasTouchingGround = false;
                     }
                 }
-            } else if (mario->IsWallsliding && mario->AcornWallClingFrames == 0) {
+            } else if (mario->IsWallsliding) {
                 terminalVelocity = physics.TerminalVelocityWallslide;
-            } else if (mario->IsWallsliding && mario->AcornWallClingFrames > 0) {
-                terminalVelocity = -Constants.OnePixelPerFrame * FP._0_50;
             } else if (mario->IsGroundpounding) {
                 terminalVelocity = physics.TerminalVelocityGroundpound;
                 physicsObject->Velocity.X = 0;
@@ -699,7 +681,7 @@ namespace Quantum {
                     mario->JumpBufferFrames = 0;
                 }
             } else if (physicsObject->IsTouchingLeftWall || physicsObject->IsTouchingRightWall) {
-                bool canWallslide = !mario->IsInShell && physicsObject->Velocity.Y < -FP._0_10 && !mario->IsGroundpounding && !physicsObject->IsTouchingGround && !mario->HeldEntity.IsValid && mario->CurrentPowerupState != PowerupState.MegaMushroom && !mario->IsSpinnerFlying && !mario->IsDrilling && !mario->IsCrouching && !mario->IsSliding && !mario->IsInKnockback && mario->PropellerLaunchFrames == 0 && !mario->IsPropellerFlying;
+                bool canWallslide = !mario->IsInShell && physicsObject->Velocity.Y < -FP._0_10 && !mario->IsGroundpounding && !physicsObject->IsTouchingGround && !mario->HeldEntity.IsValid && mario->CurrentPowerupState != PowerupState.MegaMushroom && !mario->IsSpinnerFlying && !mario->IsDrilling && !mario->IsCrouching && !mario->IsSliding && !mario->IsInKnockback && mario->PropellerLaunchFrames == 0;
                 if (!canWallslide) {
                     return;
                 }
@@ -718,22 +700,6 @@ namespace Quantum {
 
                 if (!((currentWallDirection == FPVector2.Right && mario->FacingRight) || (currentWallDirection == FPVector2.Left && !mario->FacingRight))) {
                     return;
-                }
-
-                // Acorn wall cling: don't immediately wallslide, cling for ~2 seconds
-                // Acorn wall cling: cling for ~2 seconds before sliding
-                if (mario->CurrentPowerupState == PowerupState.SuperAcorn && !mario->IsAcornAscending) {
-                    if (mario->AcornWallClingFrames == 0 && !mario->IsWallsliding) {
-                        mario->AcornWallClingFrames = physics.AcornWallClingFrames;
-                    }
-
-                    if (mario->AcornWallClingFrames > 0) {
-                        mario->WallslideRight = currentWallDirection == FPVector2.Right && physicsObject->IsTouchingRightWall;
-                        mario->WallslideLeft = currentWallDirection == FPVector2.Left && physicsObject->IsTouchingLeftWall;
-                        mario->WallslideEndFrames = 0;
-                        mario->FacingRight = mario->WallslideLeft;
-                        return;
-                    }
                 }
 
                 mario->WallslideRight = currentWallDirection == FPVector2.Right && physicsObject->IsTouchingRightWall;
@@ -818,7 +784,7 @@ namespace Quantum {
                 physicsObject->HoverFrames = 0;
             }
 
-            if ((mario->IsSliding && mario->CurrentPowerupState != PowerupState.BlueShell) || mario->IsPropellerFlying || mario->IsSpinnerFlying || mario->IsAcornFlying || mario->IsInKnockback || mario->CurrentPowerupState == PowerupState.MegaMushroom
+            if ((mario->IsSliding && mario->CurrentPowerupState != PowerupState.BlueShell) || mario->IsPropellerFlying || mario->IsSpinnerFlying || mario->IsInKnockback || mario->CurrentPowerupState == PowerupState.MegaMushroom
                 || mario->IsWallsliding) {
                 mario->IsCrouching = false;
                 return;
@@ -923,7 +889,7 @@ namespace Quantum {
                 }
             }
 
-            if (!mario->IsPropellerFlying && !mario->IsSpinnerFlying && !mario->IsAcornFlying && !inputs.AllowGroundpoundWithLeftRight && (inputs.Left.IsDown || inputs.Right.IsDown)) {
+            if (!mario->IsPropellerFlying && !mario->IsSpinnerFlying && !inputs.AllowGroundpoundWithLeftRight && (inputs.Left.IsDown || inputs.Right.IsDown)) {
                 return;
             }
 
@@ -1455,7 +1421,7 @@ namespace Quantum {
 
             if (!(inputs.PowerupAction.WasPressed
                 || (state == PowerupState.PropellerMushroom && inputs.PropellerPowerupAction.WasPressed && !physicsObject->IsTouchingGround && !mario->IsWallsliding)
-                || ((state == PowerupState.FireFlower || state == PowerupState.PenguinSuit || state == PowerupState.BuilderSuit || state == PowerupState.HammerSuit || state == PowerupState.BoomerangFlower || state == PowerupState.SuperBallFlower || state == PowerupState.GoldFlower) && inputs.FireballPowerupAction.WasPressed))) {
+                || ((state == PowerupState.FireFlower || state == PowerupState.PenguinSuit || state == PowerupState.HammerSuit || state == PowerupState.BoomerangFlower || state == PowerupState.SuperBallFlower || state == PowerupState.GoldFlower) && inputs.FireballPowerupAction.WasPressed))) {
                 return;
             }
 
@@ -1464,36 +1430,9 @@ namespace Quantum {
                 return;
             }
 
-            if (mario->CurrentPowerupState == PowerupState.SuperAcorn && inputs.PowerupAction.WasPressed) {
-                if (!physicsObject->IsTouchingGround && !mario->IsWallsliding
-                    && !f.Exists(mario->HeldEntity) && mario->AcornCanAscend
-                    && !mario->IsPropellerFlying) {
-
-                    mario->AcornState = 2;
-                    mario->AcornCanAscend = false;
-                    physicsObject->Velocity.Y = physics.AcornAscendVelocity;
-                    physicsObject->Velocity.X *= physics.AcornAscendHorizontalMultiplier;
-                    physicsObject->IsTouchingGround = false;
-                    physicsObject->WasTouchingGround = false;
-                    physicsObject->HoverFrames = 0;
-                    mario->JumpState = JumpState.None;
-                    mario->IsGroundpounding = false;
-                    mario->IsGroundpoundActive = false;
-                    mario->WallslideLeft = false;
-                    mario->WallslideRight = false;
-                    mario->WallslideEndFrames = 0;
-                    mario->WalljumpFrames = 0;
-                    mario->WallslideEndFrames = 0;
-
-                    f.Events.MarioPlayerAcornAscend(filter.Entity);
-                }
-                return;
-            }
-
             switch (mario->CurrentPowerupState) {
             case PowerupState.PenguinSuit:
             case PowerupState.FireFlower:
-            case PowerupState.BuilderSuit:
             case PowerupState.HammerSuit:
             case PowerupState.BoomerangFlower:
             case PowerupState.SuperBallFlower:
@@ -1532,8 +1471,6 @@ namespace Quantum {
                     ? f.SimulationConfig.SuperballPrototype
                     : mario->CurrentPowerupState == PowerupState.PenguinSuit
                     ? f.SimulationConfig.IceballPrototype
-                    : mario->CurrentPowerupState == PowerupState.BuilderSuit
-                    ? f.SimulationConfig.SuperHammerHitboxPrototype
                     : f.SimulationConfig.FireballPrototype;
                 
                 EntityRef tempEntity = f.Create(projectilePrototype);
@@ -1636,60 +1573,6 @@ namespace Quantum {
             }
 
             CloudBlockSystem.TryStartRestoreCooldown(mario, asset);
-        }
-
-        private void HandleAcornFlying(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
-            using var profilerScope = HostProfiler.Start("MarioPlayerSystem.HandleAcornFlying");
-            var mario = filter.MarioPlayer;
-            var physicsObject = filter.PhysicsObject;
-            ref var inputs = ref filter.Inputs;
-
-            if (mario->CurrentPowerupState != PowerupState.SuperAcorn) {
-                mario->AcornState = 0;
-                mario->AcornWallClingFrames = 0;
-                return;
-            }
-
-            if (physicsObject->IsTouchingGround || mario->IsStuckInBlock) {
-                mario->AcornState = 0;
-                mario->AcornCanAscend = true;
-            }
-
-            if (physicsObject->IsUnderwater) {
-                mario->AcornCanAscend = true;
-                mario->AcornState = 0;
-            }
-
-            if (mario->DoEntityBounce) {
-                mario->AcornCanAscend = true;
-            }
-
-            if (mario->IsAcornAscending) {
-                if (physicsObject->Velocity.Y <= 0) {
-                    mario->AcornState = 3;
-                }
-                return;
-            }
-
-            bool wantGlide = inputs.Sprint.IsDown && !physicsObject->IsTouchingGround
-                && !mario->IsWallsliding && !mario->IsGroundpounding
-                && !mario->IsInKnockback && !physicsObject->IsUnderwater
-                && !mario->IsAcornDescending
-                && physicsObject->Velocity.Y < 0;
-
-            if (mario->IsAcornDescending) {
-                if (mario->IsGroundpounding) {
-                    mario->AcornState = 0;
-                }
-            } else if (wantGlide && !mario->IsPropellerFlying) {
-                mario->AcornState = 1;
-            } else if (!wantGlide) {
-                mario->AcornState = 0;
-            }
-
-            if (mario->AcornWallClingFrames > 0) {
-                QuantumUtils.Decrement(ref mario->AcornWallClingFrames);
-            }
         }
 
         private bool TrySummonCloudBlock(Frame f, ref Filter filter) {
@@ -2672,28 +2555,6 @@ namespace Quantum {
                     }
                 }
 
-                // Acorn bottom hit: if acorn flyer is above, attacker below gets normal knockback
-                bool marioAAcorn = marioA->IsAcornFlying;
-                bool marioBAcorn = marioB->IsAcornFlying;
-                if (marioAAbove && marioAAcorn && !marioA->IsGroundpounding && !marioA->IsDrilling
-                    && marioA->LastAttacker != marioBEntity && (marioAPhysics->Velocity.Y <= 0 || marioBPhysics->Velocity.Y > 0)) {
-                    marioA->AcornState = 0;
-                    bool dealtKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioAEntity);
-                    if (dealtKnockback) {
-                        f.Events.PlayKnockbackEffect(marioBEntity, marioAEntity, KnockbackStrength.Normal, avgPosition);
-                    }
-                    return;
-                }
-                if (marioBAbove && marioBAcorn && !marioB->IsGroundpounding && !marioB->IsDrilling
-                    && marioB->LastAttacker != marioAEntity && (marioBPhysics->Velocity.Y <= 0 || marioAPhysics->Velocity.Y > 0)) {
-                    marioB->AcornState = 0;
-                    bool dealtKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioBEntity);
-                    if (dealtKnockback) {
-                        f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.Normal, avgPosition);
-                    }
-                    return;
-                }
-
                 if (marioA->IsCrouchedInShell && marioBAbove && !marioB->IsGroundpoundActive && !marioB->IsDrilling) {
                     MarioMarioBlueShellStomp(f, stage, marioBEntity, marioAEntity, fromRight);
                     return;
@@ -2702,14 +2563,12 @@ namespace Quantum {
                     return;
                 }
 
-                if (!marioAAcorn && !marioBAcorn) {
-                    if (marioAAbove && marioA->LastAttacker != marioBEntity && (marioAPhysics->Velocity.Y <= 0 || marioBPhysics->Velocity.Y > 0)) {
-                        MarioMarioStomp(f, marioAEntity, marioBEntity, fromRight, dropStars, avgPosition);
-                        return;
-                    } else if (marioBAbove && marioB->LastAttacker != marioAEntity && (marioBPhysics->Velocity.Y <= 0 || marioAPhysics->Velocity.Y > 0)) {
-                        MarioMarioStomp(f, marioBEntity, marioAEntity, !fromRight, dropStars, avgPosition);
-                        return;
-                    }
+                if (marioAAbove && marioA->LastAttacker != marioBEntity && (marioAPhysics->Velocity.Y <= 0 || marioBPhysics->Velocity.Y > 0)) {
+                    MarioMarioStomp(f, marioAEntity, marioBEntity, fromRight, dropStars, avgPosition);
+                    return;
+                } else if (marioBAbove && marioB->LastAttacker != marioAEntity && (marioBPhysics->Velocity.Y <= 0 || marioAPhysics->Velocity.Y > 0)) {
+                    MarioMarioStomp(f, marioBEntity, marioAEntity, !fromRight, dropStars, avgPosition);
+                    return;
                 }
 
                 // crouched in shell interactions
@@ -2756,56 +2615,6 @@ namespace Quantum {
                         }
                     }
                 } else {
-                    // Acorn flying interactions
-                    if ((marioAAcorn || marioBAcorn) && !marioAAbove && !marioBAbove
-                        && !marioA->IsPenguinSliding && !marioB->IsPenguinSliding
-                        && !marioA->IsInShell && !marioB->IsInShell
-                        && !marioA->IsCrouchedInShell && !marioB->IsCrouchedInShell
-                        && !marioA->IsInKnockback && !marioB->IsInKnockback) {
-
-                        if (marioAAcorn && marioBAcorn) {
-                            // Both acorn flying - both take normal knockback, drop stars
-                            bool dealtKnockback = false;
-                            dealtKnockback |= marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioBEntity);
-                            dealtKnockback |= marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioAEntity);
-                            if (dealtKnockback) {
-                                f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.Normal, avgPosition);
-                            }
-                            return;
-                        }
-
-                        // Non-acorn player hits acorn flyer from side
-                        if (marioAAcorn) {
-                            marioA->AcornState = 0;
-                            bool dealtKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 2 : 0, KnockbackStrength.Groundpound, marioAEntity);
-                            if (dealtKnockback) {
-                                f.Events.PlayKnockbackEffect(marioBEntity, marioAEntity, KnockbackStrength.Groundpound, avgPosition);
-                            }
-                            return;
-                        }
-                        if (marioBAcorn) {
-                            marioB->AcornState = 0;
-                            bool dealtKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 2 : 0, KnockbackStrength.Groundpound, marioBEntity);
-                            if (dealtKnockback) {
-                                f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.Groundpound, avgPosition);
-                            }
-                            return;
-                        }
-                    }
-
-                    // Penguin slider vs acorn flyer
-                    if ((marioAAcorn && marioBPenguinSlide) || (marioBAcorn && marioAPenguinSlide)) {
-                        if (marioAAcorn) marioA->AcornState = 0;
-                        if (marioBAcorn) marioB->AcornState = 0;
-                        bool dealtKnockback = false;
-                        dealtKnockback |= marioA->DoKnockback(f, marioAEntity, fromRight, 0, KnockbackStrength.Normal, marioBEntity);
-                        dealtKnockback |= marioB->DoKnockback(f, marioBEntity, !fromRight, 0, KnockbackStrength.Normal, marioAEntity);
-                        if (dealtKnockback) {
-                            f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.Normal, avgPosition);
-                        }
-                        return;
-                    }
-
                     // Collided with them
                     bool marioAMini = marioA->CurrentPowerupState == PowerupState.MiniMushroom;
                     bool marioBMini = marioB->CurrentPowerupState == PowerupState.MiniMushroom;

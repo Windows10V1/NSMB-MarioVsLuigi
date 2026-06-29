@@ -93,9 +93,6 @@ namespace NSMB.Entities.Player {
         private static readonly int ParamThrow = Animator.StringToHash("throw");
         private static readonly int ParamHeadPickup = Animator.StringToHash("head-pickup");
         private static readonly int ParamFireball = Animator.StringToHash("fireball");
-        private static readonly int ParamAcornFlying = Animator.StringToHash("acornFlying");
-        private static readonly int ParamAcornAscend = Animator.StringToHash("acornAscend");
-        private static readonly int ParamAcornDescending = Animator.StringToHash("acornDescending");
         #endregion
 
         //---Public Variables
@@ -108,7 +105,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, acornModel, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy, frogModel, builderModel, builderBelt, builderHipHammer, builderSuperHammer;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy, frogModel;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -198,7 +195,6 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerShotProjectile>(this, OnMarioPlayerShotProjectile, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUsedPropeller>(this, OnMarioPlayerUsedPropeller, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerPropellerSpin>(this, OnMarioPlayerPropellerSpin, FilterOutReplayFastForward);
-            QuantumEvent.Subscribe<EventMarioPlayerAcornAscend>(this, OnMarioPlayerAcornAscend, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedStar>(this, OnMarioPlayerCollectedStar, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerDied>(this, OnMarioPlayerDied);
             QuantumEvent.Subscribe<EventMarioPlayerPreRespawned>(this, OnMarioPlayerPreRespawned, FilterOutReplayFastForward);
@@ -261,8 +257,6 @@ namespace NSMB.Entities.Player {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
             largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") &&
             mario->CurrentPowerupState != PowerupState.PenguinSuit &&
-            mario->CurrentPowerupState != PowerupState.BuilderSuit &&
-            mario->CurrentPowerupState != PowerupState.SuperAcorn &&
             mario->CurrentPowerupState != PowerupState.FrogSuit &&
             mario->CurrentPowerupState != PowerupState.BoomerangFlower &&
             mario->CurrentPowerupState != PowerupState.CloudFlower);
@@ -577,14 +571,10 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamPushing, mario->LastPushingFrame + 5 >= f.Number);
             animator.SetBool(ParamFrozen, freezable->IsFrozen(f));
             animator.SetBool(ParamKnockforwards, mario->KnockForwards);
-            animator.SetBool(ParamAcornFlying, mario->IsAcornFlying);
-            animator.SetBool(ParamAcornDescending, mario->IsAcornDescending);
 
             float animatedVelocity = Mathf.Abs(physicsObject->Velocity.X.AsFloat);
             if (mario->IsStuckInBlock) {
                 animatedVelocity = 0;
-            } else if (mario->IsAcornFlying) {
-                animatedVelocity = 2f;
             } else if (mario->IsPropellerFlying) {
                 animatedVelocity = 2f;
             } else if (mario->CurrentPowerupState == PowerupState.MegaMushroom && (left || right)) {
@@ -693,17 +683,10 @@ namespace NSMB.Entities.Player {
 
             // Model Swaps
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
-            builderModel.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit);
-            acornModel.SetActive(mario->CurrentPowerupState == PowerupState.SuperAcorn);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudModel.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
             cloudBuddy.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower && mario->CloudBlocksUsed < 1);
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
-
-            // Builder Suit Models
-            builderBelt.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit);
-            builderHipHammer.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit); // && Isn't in "super-hammer" state
-            builderSuperHammer.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit); // && Is in "super-hammer" state
             
             Avatar targetAvatar = large ? largeAvatar : smallAvatar;
             bool changedAvatar = animator.avatar != targetAvatar;
@@ -826,10 +809,6 @@ namespace NSMB.Entities.Player {
                 return;
             }
             if (mario->IsPropellerFlying) {
-                PlaySound(SoundEffect.Powerup_PropellerMushroom_Kick);
-                return;
-            }
-            if (mario->IsAcornDescending) {
                 PlaySound(SoundEffect.Powerup_PropellerMushroom_Kick);
                 return;
             }
@@ -1088,14 +1067,6 @@ namespace NSMB.Entities.Player {
             }
 
             PlaySound(SoundEffect.Powerup_PropellerMushroom_Start);
-        }
-
-        private void OnMarioPlayerAcornAscend(EventMarioPlayerAcornAscend e) {
-            if (e.Entity != EntityRef) {
-                return;
-            }
-
-            animator.SetTrigger(ParamAcornAscend);
         }
 
         private void OnMarioPlayerShotProjectile(EventMarioPlayerShotProjectile e) {

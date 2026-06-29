@@ -260,7 +260,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &7077210562053612169
 Transform:
   m_ObjectHideFlags: 0
@@ -570,7 +570,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8187681438972575912
 Transform:
   m_ObjectHideFlags: 0
@@ -900,7 +900,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3550391791615484565
 Transform:
   m_ObjectHideFlags: 0
@@ -1606,17 +1606,12 @@ MonoBehaviour:
   penguinModel: {fileID: 7903518613503139544}
   propellerHelmet: {fileID: 8712194458326895251}
   propeller: {fileID: 8626919663303982960}
-  acornModel: {fileID: 3184497636238162053}
   HammerHelm: {fileID: 4056376664574429795}
   HammerShell: {fileID: 880582643022226802}
   boomerangModel: {fileID: 482845181512572356}
   cloudModel: {fileID: 1081372513896309860}
   cloudBuddy: {fileID: 4240649801308780659}
   frogModel: {fileID: 2769712382874227905}
-  builderModel: {fileID: 3214848946871980297}
-  builderBelt: {fileID: 1453721534564027745}
-  builderHipHammer: {fileID: 6873782148876525430}
-  builderSuperHammer: {fileID: 868307615748730238}
   coinNumberParticle: {fileID: 4677531960176377302, guid: 818e60315a414df48a229c8d1186ce98,
     type: 3}
   coinFromBlockParticle: {fileID: 4355208377719065490, guid: e55364fb26d178a4fbb31ba42edc3c9a,
@@ -7211,7 +7206,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4808673507558315601
 Transform:
   m_ObjectHideFlags: 0
@@ -8382,7 +8377,7 @@ PrefabInstance:
     - target: {fileID: 2605695682307442155, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3126473955037510232, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}

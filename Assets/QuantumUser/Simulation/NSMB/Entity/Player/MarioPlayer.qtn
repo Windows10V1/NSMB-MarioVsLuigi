@@ -127,10 +127,6 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte PropellerDrillCooldown;
 	[ExcludeFromPrototype] byte PropellerDrillHoldFrames;
 
-	[ExcludeFromPrototype] byte AcornState;
-	[ExcludeFromPrototype] byte AcornAscendUsed;
-	[ExcludeFromPrototype] byte AcornWallClingFrames;
-
 	[ExcludeFromPrototype] ushort ProjectileCooldownFrames;
 
     [ExcludeFromPrototype] EntityRef HeldEntity;
@@ -218,10 +214,6 @@ event MarioPlayerUsedPropeller {
 }
 
 event MarioPlayerPropellerSpin {
-	EntityRef Entity;
-}
-
-event MarioPlayerAcornAscend {
 	EntityRef Entity;
 }
 
