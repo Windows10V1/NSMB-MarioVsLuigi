@@ -2654,13 +2654,13 @@ namespace Quantum {
     [FieldOffset(76)]
     [ExcludeFromPrototype()]
     public PlayerRef PlayerRef;
-    [FieldOffset(40)]
+    [FieldOffset(43)]
     [ExcludeFromPrototype()]
     public Byte SpawnpointIndex;
-    [FieldOffset(47)]
+    [FieldOffset(50)]
     [ExcludeFromPrototype()]
     public PowerupState CurrentPowerupState;
-    [FieldOffset(48)]
+    [FieldOffset(51)]
     [ExcludeFromPrototype()]
     public PowerupState PreviousPowerupState;
     [FieldOffset(120)]
@@ -2672,10 +2672,10 @@ namespace Quantum {
     [FieldOffset(176)]
     [ExcludeFromPrototype()]
     public GamemodeSpecificData GamemodeData;
-    [FieldOffset(4)]
+    [FieldOffset(7)]
     [ExcludeFromPrototype()]
     public Byte Coins;
-    [FieldOffset(21)]
+    [FieldOffset(24)]
     [ExcludeFromPrototype()]
     public Byte Lives;
     [FieldOffset(84)]
@@ -2690,124 +2690,124 @@ namespace Quantum {
     [FieldOffset(96)]
     [ExcludeFromPrototype()]
     public QBoolean IsRespawning;
-    [FieldOffset(10)]
+    [FieldOffset(13)]
     [ExcludeFromPrototype()]
     public Byte DeathAnimationFrames;
-    [FieldOffset(29)]
+    [FieldOffset(32)]
     [ExcludeFromPrototype()]
     public Byte PreRespawnFrames;
-    [FieldOffset(36)]
+    [FieldOffset(39)]
     [ExcludeFromPrototype()]
     public Byte RespawnFrames;
-    [FieldOffset(25)]
+    [FieldOffset(28)]
     [ExcludeFromPrototype()]
     public Byte NoLivesStarDirection;
     [FieldOffset(128)]
     [ExcludeFromPrototype()]
     public BitSet23 Flags;
-    [FieldOffset(11)]
+    [FieldOffset(14)]
     [ExcludeFromPrototype()]
     public Byte FastTurnaroundFrames;
-    [FieldOffset(39)]
+    [FieldOffset(42)]
     [ExcludeFromPrototype()]
     public Byte SlowTurnaroundFrames;
     [FieldOffset(72)]
     [ExcludeFromPrototype()]
     public Int32 LastPushingFrame;
-    [FieldOffset(41)]
-    [ExcludeFromPrototype()]
-    public Byte StationaryFrames;
     [FieldOffset(44)]
     [ExcludeFromPrototype()]
+    public Byte StationaryFrames;
+    [FieldOffset(47)]
+    [ExcludeFromPrototype()]
     public JumpState JumpState;
-    [FieldOffset(45)]
+    [FieldOffset(48)]
     [ExcludeFromPrototype()]
     public JumpState PreviousJumpState;
-    [FieldOffset(19)]
+    [FieldOffset(22)]
     [ExcludeFromPrototype()]
     public Byte JumpLandingFrames;
-    [FieldOffset(18)]
+    [FieldOffset(21)]
     [ExcludeFromPrototype()]
     public Byte JumpBufferFrames;
-    [FieldOffset(5)]
+    [FieldOffset(8)]
     [ExcludeFromPrototype()]
     public Byte CoyoteTimeFrames;
     [FieldOffset(68)]
     [ExcludeFromPrototype()]
     public Int32 LandedFrame;
-    [FieldOffset(12)]
-    [ExcludeFromPrototype()]
-    public Byte ForceJumpTimer;
-    [FieldOffset(1)]
-    [ExcludeFromPrototype()]
-    public Byte CantJumpTimer;
-    [FieldOffset(43)]
-    [ExcludeFromPrototype()]
-    public Byte WallslideEndFrames;
-    [FieldOffset(42)]
-    [ExcludeFromPrototype()]
-    public Byte WalljumpFrames;
-    [FieldOffset(17)]
-    [ExcludeFromPrototype()]
-    public Byte GroundpoundStartFrames;
     [FieldOffset(15)]
     [ExcludeFromPrototype()]
+    public Byte ForceJumpTimer;
+    [FieldOffset(4)]
+    [ExcludeFromPrototype()]
+    public Byte CantJumpTimer;
+    [FieldOffset(46)]
+    [ExcludeFromPrototype()]
+    public Byte WallslideEndFrames;
+    [FieldOffset(45)]
+    [ExcludeFromPrototype()]
+    public Byte WalljumpFrames;
+    [FieldOffset(20)]
+    [ExcludeFromPrototype()]
+    public Byte GroundpoundStartFrames;
+    [FieldOffset(18)]
+    [ExcludeFromPrototype()]
     public Byte GroundpoundCooldownFrames;
-    [FieldOffset(16)]
+    [FieldOffset(19)]
     [ExcludeFromPrototype()]
     public Byte GroundpoundStandFrames;
-    [FieldOffset(46)]
+    [FieldOffset(49)]
     [ExcludeFromPrototype()]
     public KnockbackStrength CurrentKnockback;
     [FieldOffset(64)]
     [ExcludeFromPrototype()]
     public Int32 KnockbackTick;
-    [FieldOffset(9)]
+    [FieldOffset(12)]
     [ExcludeFromPrototype()]
     public Byte DamageInvincibilityFrames;
-    [FieldOffset(20)]
+    [FieldOffset(23)]
     [ExcludeFromPrototype()]
     public Byte KnockbackGetupFrames;
-    [FieldOffset(6)]
+    [FieldOffset(9)]
     [ExcludeFromPrototype()]
     public Byte CrushDamageInvincibilityFrames;
     [FieldOffset(160)]
     [ExcludeFromPrototype()]
     public EntityRef LastAttacker;
-    [FieldOffset(52)]
-    [ExcludeFromPrototype()]
-    public UInt16 InvincibilityFrames;
-    [FieldOffset(24)]
-    [ExcludeFromPrototype()]
-    public Byte MegaMushroomStartFrames;
     [FieldOffset(54)]
     [ExcludeFromPrototype()]
+    public UInt16 InvincibilityFrames;
+    [FieldOffset(27)]
+    [ExcludeFromPrototype()]
+    public Byte MegaMushroomStartFrames;
+    [FieldOffset(56)]
+    [ExcludeFromPrototype()]
     public UInt16 MegaMushroomFrames;
-    [FieldOffset(22)]
+    [FieldOffset(25)]
     [ExcludeFromPrototype()]
     public Byte MegaMushroomEndFrames;
-    [FieldOffset(23)]
+    [FieldOffset(26)]
     [ExcludeFromPrototype()]
     public Byte MegaMushroomFootstepFrames;
-    [FieldOffset(30)]
+    [FieldOffset(33)]
     [ExcludeFromPrototype()]
     public Byte ProjectileDelayFrames;
-    [FieldOffset(31)]
+    [FieldOffset(34)]
     [ExcludeFromPrototype()]
     public Byte ProjectileVolleyFrames;
-    [FieldOffset(7)]
+    [FieldOffset(10)]
     [ExcludeFromPrototype()]
     public Byte CurrentProjectiles;
-    [FieldOffset(8)]
+    [FieldOffset(11)]
     [ExcludeFromPrototype()]
     public Byte CurrentVolley;
-    [FieldOffset(3)]
+    [FieldOffset(6)]
     [ExcludeFromPrototype()]
     public Byte CloudBlocksUsed;
-    [FieldOffset(0)]
+    [FieldOffset(3)]
     [ExcludeFromPrototype()]
     public Byte ActiveCloudBlocks;
-    [FieldOffset(50)]
+    [FieldOffset(52)]
     [ExcludeFromPrototype()]
     public UInt16 CloudBlockCooldownFrames;
     [FieldOffset(168)]
@@ -2816,37 +2816,46 @@ namespace Quantum {
     [FieldOffset(80)]
     [ExcludeFromPrototype()]
     public QBoolean CloudBlockBaseHeightSet;
-    [FieldOffset(2)]
+    [FieldOffset(5)]
     [ExcludeFromPrototype()]
     public Byte CloudBlockSummonCounter;
-    [FieldOffset(38)]
+    [FieldOffset(41)]
     [ExcludeFromPrototype()]
     public Byte ShellSpeedStage;
-    [FieldOffset(37)]
+    [FieldOffset(40)]
     [ExcludeFromPrototype()]
     public Byte ShellSlowdownFrames;
-    [FieldOffset(14)]
+    [FieldOffset(17)]
     [ExcludeFromPrototype()]
     public Byte FrogHyperspeedStage;
-    [FieldOffset(13)]
+    [FieldOffset(16)]
     [ExcludeFromPrototype()]
     public Byte FrogHyperspeedSlowdownFrames;
-    [FieldOffset(26)]
+    [FieldOffset(29)]
     [ExcludeFromPrototype()]
     public Byte POWBounceFrames;
-    [FieldOffset(34)]
+    [FieldOffset(37)]
     [ExcludeFromPrototype()]
     public Byte PropellerLaunchFrames;
-    [FieldOffset(35)]
+    [FieldOffset(38)]
     [ExcludeFromPrototype()]
     public Byte PropellerSpinFrames;
-    [FieldOffset(32)]
+    [FieldOffset(35)]
     [ExcludeFromPrototype()]
     public Byte PropellerDrillCooldown;
-    [FieldOffset(33)]
+    [FieldOffset(36)]
     [ExcludeFromPrototype()]
     public Byte PropellerDrillHoldFrames;
-    [FieldOffset(56)]
+    [FieldOffset(1)]
+    [ExcludeFromPrototype()]
+    public Byte AcornState;
+    [FieldOffset(0)]
+    [ExcludeFromPrototype()]
+    public Byte AcornAscendUsed;
+    [FieldOffset(2)]
+    [ExcludeFromPrototype()]
+    public Byte AcornWallClingFrames;
+    [FieldOffset(58)]
     [ExcludeFromPrototype()]
     public UInt16 ProjectileCooldownFrames;
     [FieldOffset(152)]
@@ -2861,10 +2870,10 @@ namespace Quantum {
     [FieldOffset(184)]
     [ExcludeFromPrototype()]
     public FPVector2 PipeDirection;
-    [FieldOffset(28)]
+    [FieldOffset(31)]
     [ExcludeFromPrototype()]
     public Byte PipeFrames;
-    [FieldOffset(27)]
+    [FieldOffset(30)]
     [ExcludeFromPrototype()]
     public Byte PipeCooldownFrames;
     [FieldOffset(144)]
@@ -2940,6 +2949,9 @@ namespace Quantum {
         hash = hash * 31 + PropellerSpinFrames.GetHashCode();
         hash = hash * 31 + PropellerDrillCooldown.GetHashCode();
         hash = hash * 31 + PropellerDrillHoldFrames.GetHashCode();
+        hash = hash * 31 + AcornState.GetHashCode();
+        hash = hash * 31 + AcornAscendUsed.GetHashCode();
+        hash = hash * 31 + AcornWallClingFrames.GetHashCode();
         hash = hash * 31 + ProjectileCooldownFrames.GetHashCode();
         hash = hash * 31 + HeldEntity.GetHashCode();
         hash = hash * 31 + HoldStartFrame.GetHashCode();
@@ -2953,6 +2965,9 @@ namespace Quantum {
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (MarioPlayer*)ptr;
+        serializer.Stream.Serialize(&p->AcornAscendUsed);
+        serializer.Stream.Serialize(&p->AcornState);
+        serializer.Stream.Serialize(&p->AcornWallClingFrames);
         serializer.Stream.Serialize(&p->ActiveCloudBlocks);
         serializer.Stream.Serialize(&p->CantJumpTimer);
         serializer.Stream.Serialize(&p->CloudBlockSummonCounter);

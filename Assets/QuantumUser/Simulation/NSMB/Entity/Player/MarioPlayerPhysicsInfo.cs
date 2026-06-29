@@ -150,6 +150,16 @@ public class MarioPlayerPhysicsInfo : AssetObject {
     public FP PropellerLaunchVelocity = 6;
     public byte PropellerLaunchFrames = 60;
 
+    // Acorn
+    public FP AcornAscendVelocity = FF(6.62109375f);
+    public FP AcornAscendHorizontalMultiplier = FF(0.5f);
+    public FP AcornGlideGravityMultiplier = FF(0.01f);
+    public FP AcornGlideTerminalVelocity = FF(-0.1f);
+    public FP AcornDescendGravityMultiplier = FF(0.08f);
+    public FP AcornDescendTerminalVelocity = FF(-1.5f);
+    public byte AcornWallClingFrames = 120;
+    public FP AcornGlideHorizontalSpeedMultiplier = FF(3.5f);
+
     public FPVector2 IceBlockSmallSize = new FPVector2(FP.FromString("0.65"), FP.FromString("0.65"));
     public FPVector2 IceBlockBigSize = new FPVector2(FP.FromString("0.65"), FP.FromString("1.3"));
     public FPVector2 IceBlockSmallOffset = FPVector2.Zero;
