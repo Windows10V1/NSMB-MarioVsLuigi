@@ -18,13 +18,13 @@ MonoBehaviour:
       Value: 475241754008101487
   Prefab:
     Id:
-      Value: 1268531089014898302
+      Value: 1487668268372172996
   SpawnChance:
-    RawValue: 98304
-  AboveAverageBonus:
     RawValue: 65536
-  BelowAverageBonus:
+  AboveAverageBonus:
     RawValue: -65536
+  BelowAverageBonus:
+    RawValue: 65536
   BlockSpawnSoundEffect: 69
   Flags: 19
   MaxNumberOfItems: 0
@@ -38,11 +38,10 @@ MonoBehaviour:
   State: 12
   SoundPlaysEverywhere: 0
   SoundEffect: 16
-  ReserveSprite: {fileID: 5709720548119103520, guid: a87d3b028baa82640b06b88398a8c4f0,
-    type: 3}
+  ReserveSprite: {fileID: 778538147, guid: a87d3b028baa82640b06b88398a8c4f0, type: 3}
   AvoidPlayers: 0
   Speed:
-    RawValue: 163840
+    RawValue: 0
   BounceStrength:
     RawValue: 0
   TerminalVelocity:

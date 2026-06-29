@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 3901402401622306172}
   - component: {fileID: 517697212848946230}
   m_Layer: 19
-  m_Name: SuperAcorn
+  m_Name: Super Acorn
   m_TagString: Powerup
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101,7 +101,7 @@ MonoBehaviour:
         Id:
           Value: 0
       CircleRadius:
-        RawValue: 13107
+        RawValue: 0
       CapsuleSize:
         X:
           RawValue: 0
@@ -118,7 +118,7 @@ MonoBehaviour:
         X:
           RawValue: 0
         Y:
-          RawValue: 0
+          RawValue: 15155
       RotationOffset:
         RawValue: 0
       UserTag: 0
@@ -518,7 +518,7 @@ MonoBehaviour:
       X:
         RawValue: 0
       Y:
-        RawValue: 0
+        RawValue: 16384
     BroadRadius:
       RawValue: 32768
 --- !u!114 &3901402401622306172
@@ -563,6 +563,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2479772350441087688}
   - component: {fileID: 1145319354374527610}
+  - component: {fileID: 4473616532155397182}
   m_Layer: 19
   m_Name: Graphics
   m_TagString: Untagged
@@ -611,7 +612,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5a26cde1892218c4fbbe8b84c92e1a24, type: 2}
+  - {fileID: 2100000, guid: c98d5beda5657c94db6bc6bc116ea089, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -644,3 +645,15 @@ SpriteRenderer:
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
+--- !u!114 &4473616532155397182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8453737792750304721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88eb6ee564c020f48a3b1cf851277386, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
