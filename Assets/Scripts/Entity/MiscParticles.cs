@@ -77,7 +77,7 @@ namespace NSMB.Particles {
             QuantumEntityView view = Updater.GetView(e.Entity);
             if (view) {
                 Instantiate(
-                    Enums.PrefabParticle.Enemy_KillPoof.GetGameObject(),
+                    Enums.PrefabParticle.Enemy_HardKick.GetGameObject(),
                     view.transform.position + (Vector3.back * 4) + (Vector3.up * 0.1f),
                     Quaternion.identity);
             }
