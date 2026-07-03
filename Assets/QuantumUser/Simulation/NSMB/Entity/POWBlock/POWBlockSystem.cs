@@ -78,9 +78,11 @@ namespace Quantum {
                 return false;
             }
 
-            if (active && !held && FPMath.Abs(upDot) < Constants.PhysicsGroundMaxAngleCos && powBlock->WasThrown) {
+            if (active && !held && FPMath.Abs(upDot) < Constants.PhysicsGroundMaxAngleCos) {
                 if (mario->IsInShell) {
-                    mario->FacingRight = contact.Normal.X < 0;
+                    if (powBlock->WasThrown) {
+                        mario->FacingRight = contact.Normal.X < 0;
+                    }
                     Activate(f, powBlockEntity, marioEntity);
                     return false;
                 }
@@ -93,13 +95,19 @@ namespace Quantum {
                     Activate(f, powBlockEntity, marioEntity);
                     return false;
                 }
+
+                if (powBlock->WasThrown) {
+                    // Thrown POW hits a standing Mario from the side → activate
+                    EntityRef activator = powBlock->Activator.IsValid ? powBlock->Activator : marioEntity;
+                    Activate(f, powBlockEntity, activator);
+                    return false;
+                }
             }
 
             if (active && !held && ShouldHardDamageMario(f, marioEntity, powBlock, powBlockEntity)) {
                 bool fallingOntoMario = upDot <= -Constants.PhysicsGroundMaxAngleCos && powPhysics->Velocity.Y < -FP._0_10;
-                bool thrownSideHit = FPMath.Abs(upDot) < Constants.PhysicsGroundMaxAngleCos && powBlock->WasThrown && powBlock->CanGroundActivate;
 
-                if ((fallingOntoMario || thrownSideHit) && ApplyHardDamage(f, marioEntity, mario, marioTransform, powBlockEntity, powTransform, powPhysics)) {
+                if (fallingOntoMario && ApplyHardDamage(f, marioEntity, mario, marioTransform, powBlockEntity, powTransform, powPhysics)) {
                     return false;
                 }
             }
@@ -206,7 +214,7 @@ namespace Quantum {
 
                 bool damaged;
                 if (belowPOW) {
-                    int starsToDrop = activator.IsValid && SameTeam(f, activator, marioEntity) ? 0 : 1;
+                    int starsToDrop = activator.IsValid && SameTeam(f, activator, marioEntity) ? 0 : 2;
                     damaged = mario->DoKnockback(f, marioEntity, fromRight, starsToDrop, KnockbackStrength.Groundpound, attacker, bypassDamageInvincibility: true);
                     if (damaged) {
                         f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.Groundpound, position);

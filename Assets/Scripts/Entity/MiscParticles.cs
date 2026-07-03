@@ -75,9 +75,9 @@ namespace NSMB.Particles {
 
         private void OnProjectileHitPlayer(EventProjectileHitPlayer e) {
             QuantumEntityView view = Updater.GetView(e.Entity);
-            if (view) {
+            if (view && e.Effect == ProjectileEffectType.Boomerang) {
                 Instantiate(
-                    Enums.PrefabParticle.Enemy_HardKick.GetGameObject(),
+                    Enums.PrefabParticle.Enemy_KillPoof.GetGameObject(),
                     view.transform.position + (Vector3.back * 4) + (Vector3.up * 0.1f),
                     Quaternion.identity);
             }

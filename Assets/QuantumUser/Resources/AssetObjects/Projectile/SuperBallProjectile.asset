@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/SuperBallProjectile
     Guid:
       Value: 408052301521581379
-  Effect: 1
+  Effect: 6
   Bounce: 1
   Speed:
     RawValue: 367002
@@ -37,17 +37,9 @@ MonoBehaviour:
   DestroyParticleEffect: 8
   ShootSound: 121
   IsBoomerang: 0
-  BoomerangReturnDelay:
-    RawValue: 32768
-  BoomerangReturnAcceleration:
-    RawValue: 32768
   IsSuperBall: 1
   IsGoldball: 0
   CooldownFrames: 0
   MaxInstantProjectiles: 3
   MaxProjectileCount: 3
-  ProjectileSpawnHorizontalOffset:
-    RawValue: 0
-  ProjectileSpawnVerticalOffset:
-    RawValue: 0
   SfxOverrides: []
