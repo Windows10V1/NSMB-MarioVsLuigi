@@ -115,6 +115,7 @@ namespace Quantum {
         }
 
         public static void OnGoombaProjectileInteraction(Frame f, EntityRef goombaEntity, EntityRef projectileEntity) {
+            var goomba = f.Unsafe.GetPointer<Goomba>(goombaEntity);
             var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
 
             switch (projectileAsset.Effect) {
@@ -123,11 +124,15 @@ namespace Quantum {
             case ProjectileEffectType.Boomerang:
             case ProjectileEffectType.Fire:
             case ProjectileEffectType.SuperBall: {
-                f.Unsafe.GetPointer<Goomba>(goombaEntity)->Kill(f, goombaEntity, projectileEntity, EnemyKillReason.Special);
+                goomba->Kill(f, goombaEntity, projectileEntity, EnemyKillReason.Special);
                 break;
             }
             case ProjectileEffectType.Freeze: {
                 IceBlockSystem.Freeze(f, goombaEntity);
+                break;
+            }
+            case ProjectileEffectType.SuperHammer: {
+                goomba->Kill(f, goombaEntity, projectileEntity, EnemyKillReason.Groundpounded);
                 break;
             }
             }

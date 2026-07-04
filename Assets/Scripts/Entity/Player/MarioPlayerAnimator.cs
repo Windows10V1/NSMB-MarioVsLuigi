@@ -106,7 +106,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, acornModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy, frogModel, builderModel, builderBelt, builderHipHammer, builderSuperHammer;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, acornModel, propellerHelmet, propeller, HammerHelm, HammerShell, boomerangModel, cloudModel, cloudBuddy, frogModel, builderHelmet, builderHipHammer, builderSuperHammer, builderBelt; // builderPocket1, builderPocket2, builderPocket3;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -214,7 +214,6 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerStompedByTeammate>(this, OnMarioPlayerStompedByTeammate, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventPhysicsObjectLanded>(this, OnPhysicsObjectLanded, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerLandedWithAnimation>(this, OnMarioPlayerLandedWithAnimation, FilterOutReplayFastForward);
-            QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventProjectileHitPlayer>(this, OnProjectileHitPlayer, FilterOutReplayFastForward);
         }
 
@@ -689,7 +688,6 @@ namespace NSMB.Entities.Player {
             // Model Swaps
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             acornModel.SetActive(mario->CurrentPowerupState == PowerupState.SuperAcorn);
-            builderModel.SetActive(mario->CurrentPowerupState == PowerupState.BuilderSuit);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             cloudModel.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
             cloudBuddy.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower && mario->CloudBlocksUsed < 1);
@@ -699,6 +697,10 @@ namespace NSMB.Entities.Player {
             bool isBuilderSuit = mario->CurrentPowerupState == PowerupState.BuilderSuit;
             bool inSuperHammerState = animator.GetCurrentAnimatorStateInfo(0).shortNameHash == ParamSuperHammer && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f;
             builderBelt.SetActive(isBuilderSuit);
+            // builderPocket1.SetActive(isBuilderSuit && BuilderBoxCount < 1);
+            // builderPocket2.SetActive(isBuilderSuit && BuilderBoxCount < 2);
+            // builderPocket3.SetActive(isBuilderSuit && BuilderBoxCount < 3);
+            builderHelmet.SetActive(isBuilderSuit);
             builderHipHammer.SetActive(isBuilderSuit && !inSuperHammerState);
             builderSuperHammer.SetActive(isBuilderSuit && inSuperHammerState);
 
@@ -901,6 +903,7 @@ namespace NSMB.Entities.Player {
 
             if (IsMarioLocal(e.Entity)) {
                 float rumbleStrength = strength switch {
+                    KnockbackStrength.SuperHammerBump => 1.4f,
                     KnockbackStrength.Groundpound => 0.9f,
                     KnockbackStrength.Normal => 0.5f,
                     KnockbackStrength.FireballBump => 0.25f,
@@ -1361,14 +1364,6 @@ namespace NSMB.Entities.Player {
             }
         }
 
-        private void OnEnemyKicked(EventEnemyKicked e) {
-            if (e.Entity != EntityRef) {
-                return;
-            }
-
-            sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
-        }
-
         private void OnProjectileHitPlayer(EventProjectileHitPlayer e) {
             if (e.Entity != EntityRef) {
                 return;
@@ -1376,6 +1371,10 @@ namespace NSMB.Entities.Player {
 
             if (e.Effect == ProjectileEffectType.Boomerang) {
                 sfx.PlayOneShot(SoundEffect.Powerup_BoomerangFlower_Pierce);
+            } else if (e.Effect == ProjectileEffectType.Hammer) {
+                sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
+            } else if (e.Effect == ProjectileEffectType.SuperHammer) {
+                sfx.PlayOneShot(SoundEffect.Powerup_BuilderSuit_Hammer);
             }
         }
     }

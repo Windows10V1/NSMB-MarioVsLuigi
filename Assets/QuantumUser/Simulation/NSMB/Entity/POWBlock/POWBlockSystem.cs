@@ -38,16 +38,36 @@ namespace Quantum {
                 filter.PhysicsObject->DisableCollision = false;
             }
 
+            if (!powBlock->HasSpawnLanded && filter.PhysicsObject->IsTouchingGround && !filter.PhysicsObject->WasTouchingGround) {
+                powBlock->HasSpawnLanded = true;
+                f.Events.POWBlockSpawnLanded(filter.Entity, filter.Transform->Position);
+
+                FP landRadius = FP._3;
+                FP landRadiusSquared = landRadius * landRadius;
+                var players = f.Filter<MarioPlayer, PhysicsObject, Transform2D>();
+                while (players.NextUnsafe(out EntityRef playerEntity, out MarioPlayer* player, out PhysicsObject* playerPhysics, out Transform2D* playerTransform)) {
+                    if (player->LastAttacker == filter.Entity) {
+                        continue;
+                    }
+                    if (playerPhysics->IsTouchingGround) {
+                        FPVector2 delta = playerTransform->Position - filter.Transform->Position;
+                        if (delta.SqrMagnitude < landRadiusSquared) {
+                            playerPhysics->Velocity.X = 0;
+                        }
+                    }
+                }
+            }
+
             if (f.Exists(filter.Holdable->Holder)) {
                 if (PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape, stage: stage, entity: filter.Entity)) {
-                    Activate(f, filter.Entity, EntityRef.None);
+                    Activate(f, filter.Entity, EntityRef.None, fromGroundpound: false);
                 }
                 PhysicsObjectSystem.TryEject(f, filter.Entity, stage);
                 return;
             }
 
             if (powBlock->CanGroundActivate && filter.PhysicsObject->IsTouchingGround && !filter.PhysicsObject->WasTouchingGround) {
-                Activate(f, filter.Entity, powBlock->Activator);
+                Activate(f, filter.Entity, powBlock->Activator, fromGroundpound: false);
             }
         }
 
@@ -74,7 +94,7 @@ namespace Quantum {
 
             if (active && upDot >= Constants.PhysicsGroundMaxAngleCos && mario->IsGroundpoundActive) {
                 EntityRef activator = powBlock->WasThrown && powBlock->Activator.IsValid ? powBlock->Activator : marioEntity;
-                Activate(f, powBlockEntity, activator);
+                Activate(f, powBlockEntity, activator, fromGroundpound: true);
                 return false;
             }
 
@@ -83,7 +103,7 @@ namespace Quantum {
                     if (powBlock->WasThrown) {
                         mario->FacingRight = contact.Normal.X < 0;
                     }
-                    Activate(f, powBlockEntity, marioEntity);
+                    Activate(f, powBlockEntity, marioEntity, fromGroundpound: false);
                     return false;
                 }
 
@@ -92,14 +112,14 @@ namespace Quantum {
                     if (f.Unsafe.TryGetPointer(marioEntity, out PhysicsObject* marioPhysics)) {
                         marioPhysics->Velocity.X = 0;
                     }
-                    Activate(f, powBlockEntity, marioEntity);
+                    Activate(f, powBlockEntity, marioEntity, fromGroundpound: false);
                     return false;
                 }
 
                 if (powBlock->WasThrown) {
                     // Thrown POW hits a standing Mario from the side → activate
                     EntityRef activator = powBlock->Activator.IsValid ? powBlock->Activator : marioEntity;
-                    Activate(f, powBlockEntity, activator);
+                    Activate(f, powBlockEntity, activator, fromGroundpound: false);
                     return false;
                 }
             }
@@ -122,7 +142,7 @@ namespace Quantum {
             return false;
         }
 
-        private static void Activate(Frame f, EntityRef powBlockEntity, EntityRef activator) {
+        private static void Activate(Frame f, EntityRef powBlockEntity, EntityRef activator, bool fromGroundpound = false) {
             if (!f.Exists(powBlockEntity) || f.DestroyPending(powBlockEntity)) {
                 return;
             }
@@ -152,6 +172,20 @@ namespace Quantum {
             f.Events.POWBlockActivated(powBlockEntity, activator, transform->Position, powBlock->Uses);
             ApplyExplosion(f, powBlockEntity, activator, transform->Position, wasThrown);
 
+            if (fromGroundpound && activator.IsValid
+                && f.Unsafe.TryGetPointer(activator, out MarioPlayer* gpMario)
+                && f.Unsafe.TryGetPointer(activator, out PhysicsObject* gpPhysics)) {
+                holdable->PreviousHolder = activator;
+                holdable->IgnoreOwnerFrames = 30;
+                gpMario->CantJumpTimer = 15;
+                gpMario->IsCrouching = false;
+                gpPhysics->Velocity.X = (gpMario->FacingRight ? 1 : -1) * FP._2;
+                gpPhysics->Velocity.Y = FP.FromFloat_UNSAFE(15);
+                gpPhysics->IsTouchingGround = false;
+                gpPhysics->WasTouchingGround = false;
+                gpPhysics->HoverFrames = 0;
+            }
+
             if (f.Unsafe.TryGetPointer(powBlockEntity, out PhysicsCollider2D* collider)) {
                 FPVector2 extents = collider->Shape.Box.Extents;
                 extents.Y /= 2;
@@ -166,6 +200,7 @@ namespace Quantum {
                 return;
             }
 
+            powBlock->HasSpawnLanded = false;
             physicsObject->Velocity.X = 0;
             physicsObject->Velocity.Y = Constants._5_50;
             physicsObject->IsTouchingGround = false;

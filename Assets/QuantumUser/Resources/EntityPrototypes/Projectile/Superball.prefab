@@ -333,8 +333,6 @@ MonoBehaviour:
       Value: 0
     IsWaterSolid:
       Value: 0
-    BreakMegaObjects:
-      Value: 0
 --- !u!114 &3977285621181604314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -418,7 +416,7 @@ MonoBehaviour:
   sRenderer: {fileID: 5329144335610595165}
   animator: {fileID: 0}
   legacySpriteAnimator: {fileID: 0}
-  sameTeamColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+  sameTeamColor: {r: 0.49803922, g: 0.49803922, b: 0.49803922, a: 1}
   differentTeamColor: {r: 1, g: 1, b: 1, a: 1}
 --- !u!114 &-8971064262029751978
 MonoBehaviour:

@@ -19,6 +19,7 @@ namespace NSMB.Entities.World {
 
         public void Start() {
             QuantumEvent.Subscribe<EventPOWBlockActivated>(this, OnPOWBlockActivated, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventPOWBlockSpawnLanded>(this, OnPOWBlockSpawnLanded, FilterOutReplayFastForward);
         }
 
         public override void OnActivate(Frame f) {
@@ -55,6 +56,18 @@ namespace NSMB.Entities.World {
             }
 
             CameraAnimator.TriggerScreenshake(0.35f);
+        }
+
+        private void OnPOWBlockSpawnLanded(EventPOWBlockSpawnLanded e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            if (sfx) {
+                sfx.PlayOneShot(SoundEffect.Powerup_MegaMushroom_Walk);
+            }
+
+            CameraAnimator.TriggerScreenshake(0.15f);
         }
 
         private void UpdateSprite(Frame f) {

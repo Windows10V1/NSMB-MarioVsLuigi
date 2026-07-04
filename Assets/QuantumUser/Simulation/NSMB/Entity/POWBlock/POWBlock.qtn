@@ -6,6 +6,7 @@ component POWBlock {
 	[ExcludeFromPrototype] EntityRef Activator;
 	[ExcludeFromPrototype] bool WasThrown;
 	[ExcludeFromPrototype] bool CanGroundActivate;
+	[ExcludeFromPrototype] bool HasSpawnLanded;
 }
 
 event POWBlockActivated {
@@ -13,4 +14,9 @@ event POWBlockActivated {
 	EntityRef Activator;
 	FPVector2 Position;
 	byte Uses;
+}
+
+event POWBlockSpawnLanded {
+	EntityRef Entity;
+	FPVector2 Position;
 }

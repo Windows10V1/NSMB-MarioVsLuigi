@@ -154,6 +154,7 @@ enum KnockbackStrength : Byte {
 	CollisionBump,
 	Normal,
 	Groundpound,
+	SuperHammerBump,
 }
 
 signal OnMarioPlayerDied(EntityRef entity);

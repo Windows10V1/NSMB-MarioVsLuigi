@@ -413,6 +413,7 @@ namespace Quantum {
         }
 
         public static void OnKoopaProjectileInteraction(Frame f, EntityRef koopaEntity, EntityRef projectileEntity) {
+            var koopa = f.Unsafe.GetPointer<Koopa>(koopaEntity);
             var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
 
             switch (projectileAsset.Effect) {
@@ -421,11 +422,15 @@ namespace Quantum {
             case ProjectileEffectType.Boomerang:
             case ProjectileEffectType.Fire:
             case ProjectileEffectType.SuperBall: {
-                f.Unsafe.GetPointer<Koopa>(koopaEntity)->Kill(f, koopaEntity, projectileEntity, EnemyKillReason.Special);
+                koopa->Kill(f, koopaEntity, projectileEntity, EnemyKillReason.Special);
                 break;
             }
             case ProjectileEffectType.Freeze: {
                 IceBlockSystem.Freeze(f, koopaEntity);
+                break;
+            }
+            case ProjectileEffectType.SuperHammer: {
+                koopa->Kill(f, koopaEntity, projectileEntity, EnemyKillReason.Groundpounded);
                 break;
             }
             }

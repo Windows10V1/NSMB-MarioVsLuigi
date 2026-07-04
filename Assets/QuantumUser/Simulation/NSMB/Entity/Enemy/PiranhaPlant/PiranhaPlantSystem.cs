@@ -88,6 +88,10 @@ namespace Quantum {
                 newIceBlockTransform->Position.Y += (1 - piranhaPlant->PopupAnimationTime) * FP._0_75;
                 break;
             }
+            case ProjectileEffectType.SuperHammer: {
+                piranhaPlant->Kill(f, piranhaPlantEntity, projectileEntity, EnemyKillReason.Groundpounded);
+                break;
+            }
             }
 
             f.Signals.OnProjectileHitEntity(projectileEntity, piranhaPlantEntity);

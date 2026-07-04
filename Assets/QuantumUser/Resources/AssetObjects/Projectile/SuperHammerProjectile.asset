@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/SuperHammerProjectile
     Guid:
       Value: 474920868841933120
-  Effect: 1
+  Effect: 4
   Bounce: 0
   Speed:
     RawValue: 0
@@ -28,7 +28,7 @@ MonoBehaviour:
     Y:
       RawValue: 0
   DestroyOnSecondBounce: 0
-  DestroyOnHit: 1
+  DestroyOnHit: 0
   LockTo45Degrees: 0
   InheritShooterVelocity: 0
   HasCollision: 0
@@ -39,7 +39,12 @@ MonoBehaviour:
   IsBoomerang: 0
   IsSuperBall: 0
   IsGoldball: 0
+  SpawnOffset:
+    X:
+      RawValue: 111411
+    Y:
+      RawValue: 21299
   CooldownFrames: 0
-  MaxInstantProjectiles: 1
-  MaxProjectileCount: 1
+  MaxInstantProjectiles: 0
+  MaxProjectileCount: 0
   SfxOverrides: []

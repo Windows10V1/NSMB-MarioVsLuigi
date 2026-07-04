@@ -1648,11 +1648,11 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50);
-
             EntityRef newEntity = f.Create(f.SimulationConfig.BoomerangPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
+            FPVector2 spawnPos = filter.Transform->Position + asset.SpawnOffset;
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }
@@ -1661,19 +1661,18 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40);
             EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
+            var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
+            FPVector2 spawnPos = filter.Transform->Position + asset.SpawnOffset;
+            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown);
             return projectile;
         }
 
         private Projectile* ShootNormalProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
-
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35);
 
             EntityRef newEntity = f.Create(mario->CurrentPowerupState == PowerupState.GoldFlower
                 ? f.SimulationConfig.GoldballPrototype
@@ -1686,6 +1685,8 @@ namespace Quantum {
                 : f.SimulationConfig.FireballPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
+            FPVector2 spawnPos = filter.Transform->Position + asset.SpawnOffset;
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }
@@ -2255,7 +2256,8 @@ namespace Quantum {
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && mario->IsDamageable
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
-                && !(mario->CurrentPowerupState == PowerupState.GoldFlower && projectileAsset.Effect == ProjectileEffectType.GoldBall);
+                && !(mario->CurrentPowerupState == PowerupState.GoldFlower && projectileAsset.Effect == ProjectileEffectType.GoldBall)
+                && !(mario->CurrentPowerupState == PowerupState.HammerSuit && marioPhysics->IsTouchingGround && projectileAsset.Effect != ProjectileEffectType.Freeze);
 
             if (damageable) {
                 bool didKnockback = false;
@@ -2308,8 +2310,16 @@ namespace Quantum {
                         damaged = true;
                     }
                     break;
+                case ProjectileEffectType.SuperHammer:
+                    if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
+                        damaged = mario->Powerdown(f, marioEntity, false, projectileEntity);
+                    }
+                    if (!damaged) {
+                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 4 : 0, KnockbackStrength.SuperHammerBump, projectileEntity);
+                        damaged = true;
+                    }
+                    break;
                 }
-
                 if (didKnockback) {
                     FPVector2 particlePos = (f.Unsafe.GetPointer<Transform2D>(marioEntity)->Position + f.Unsafe.GetPointer<Transform2D>(projectileEntity)->Position) / 2;
                     f.Events.PlayKnockbackEffect(marioEntity, projectileEntity, KnockbackStrength.FireballBump, particlePos);

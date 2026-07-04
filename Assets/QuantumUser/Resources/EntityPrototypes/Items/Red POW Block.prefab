@@ -16,7 +16,7 @@ PrefabInstance:
     - target: {fileID: 517697212848946230, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
       propertyPath: Prototype.Lifetime
-      value: 3600
+      value: 1800
       objectReference: {fileID: 0}
     - target: {fileID: 517697212848946230, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
@@ -62,7 +62,7 @@ PrefabInstance:
     - target: {fileID: 1017215213198693191, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
       propertyPath: m_Name
-      value: POW Block
+      value: POW Block 1
       objectReference: {fileID: 0}
     - target: {fileID: 1017215213198693191, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
@@ -103,7 +103,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -672553771044141288, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c,
+      objectReference: {fileID: -672553771044141288, guid: 1d448048a8173fc41ae68b079d86006f,
         type: 3}
     - target: {fileID: 1145319354374527610, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
@@ -173,7 +173,7 @@ PrefabInstance:
     - target: {fileID: 6989136294608042370, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
       propertyPath: Prototype.Gravity.Y.RawValue
-      value: -1422131
+      value: -1966080
       objectReference: {fileID: 0}
     - target: {fileID: 6989136294608042370, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
@@ -183,7 +183,7 @@ PrefabInstance:
     - target: {fileID: 6989136294608042370, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
       propertyPath: Prototype.TerminalVelocity.RawValue
-      value: -1048576
+      value: -1638400
       objectReference: {fileID: 0}
     - target: {fileID: 9150257369006672343, guid: 6dbe32ab0e6d5bc4c8fe9722f4c86d19,
         type: 3}
@@ -317,9 +317,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NSMB.Entities.World.POWBlockAnimator
   sRenderer: {fileID: 8637938864149294636}
   useSprites:
-  - {fileID: -672553771044141288, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c, type: 3}
-  - {fileID: 356224525, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c, type: 3}
-  - {fileID: -1851480750, guid: 2ccf238e9c8dd1e41a34c1ec89d9f32c, type: 3}
+  - {fileID: -672553771044141288, guid: 1d448048a8173fc41ae68b079d86006f, type: 3}
   sfx: {fileID: 4783212223788967905}
 --- !u!114 &3857087544421184485
 MonoBehaviour:

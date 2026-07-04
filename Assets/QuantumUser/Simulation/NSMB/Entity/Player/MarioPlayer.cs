@@ -470,6 +470,7 @@ namespace Quantum {
             */
 
             FPVector2 knockbackVelocity = strength switch {
+                KnockbackStrength.SuperHammerBump => new(Constants._14_75 / 2, Constants._3_50),
                 KnockbackStrength.Groundpound => new(Constants._8_25 / 2, Constants._3_50),
                 KnockbackStrength.FireballBump => new(Constants._3_75 / 2, 0),
                 KnockbackStrength.CollisionBump => new(Constants._2_50, Constants._3_50),
@@ -537,6 +538,8 @@ namespace Quantum {
             return currentStrength == newStrength
                 || (currentStrength == KnockbackStrength.Groundpound && newStrength == KnockbackStrength.Normal)
                 || (currentStrength == KnockbackStrength.Normal && newStrength == KnockbackStrength.Groundpound)
+                || (currentStrength == KnockbackStrength.SuperHammerBump && newStrength == KnockbackStrength.Normal)
+                || (currentStrength == KnockbackStrength.Normal && newStrength == KnockbackStrength.SuperHammerBump)
                 || (currentStrength == KnockbackStrength.FireballBump && newStrength == KnockbackStrength.CollisionBump);
         }
 

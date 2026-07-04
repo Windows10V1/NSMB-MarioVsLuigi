@@ -94,6 +94,7 @@ namespace Quantum {
     CollisionBump,
     Normal,
     Groundpound,
+    SuperHammerBump,
   }
   public enum PowerupReserveResult : byte {
     KeepOldReserveNew,
@@ -3092,12 +3093,15 @@ namespace Quantum {
     [FieldOffset(16)]
     [ExcludeFromPrototype()]
     public EntityRef Activator;
-    [FieldOffset(8)]
+    [FieldOffset(12)]
     [ExcludeFromPrototype()]
     public QBoolean WasThrown;
     [FieldOffset(4)]
     [ExcludeFromPrototype()]
     public QBoolean CanGroundActivate;
+    [FieldOffset(8)]
+    [ExcludeFromPrototype()]
+    public QBoolean HasSpawnLanded;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 3373;
@@ -3107,6 +3111,7 @@ namespace Quantum {
         hash = hash * 31 + Activator.GetHashCode();
         hash = hash * 31 + WasThrown.GetHashCode();
         hash = hash * 31 + CanGroundActivate.GetHashCode();
+        hash = hash * 31 + HasSpawnLanded.GetHashCode();
         return hash;
       }
     }
@@ -3115,6 +3120,7 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->MaxUses);
         serializer.Stream.Serialize(&p->Uses);
         QBoolean.Serialize(&p->CanGroundActivate, serializer);
+        QBoolean.Serialize(&p->HasSpawnLanded, serializer);
         QBoolean.Serialize(&p->WasThrown, serializer);
         EntityRef.Serialize(&p->Activator, serializer);
         EntityRef.Serialize(&p->SpawnOwner, serializer);
