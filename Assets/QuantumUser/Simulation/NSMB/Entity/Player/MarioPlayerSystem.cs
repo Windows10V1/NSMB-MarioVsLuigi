@@ -1652,7 +1652,7 @@ namespace Quantum {
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
-            FPVector2 spawnPos = filter.Transform->Position + asset.SpawnOffset;
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50) + asset.SpawnOffset;
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }
@@ -1665,7 +1665,7 @@ namespace Quantum {
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
-            FPVector2 spawnPos = filter.Transform->Position + asset.SpawnOffset;
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40) + asset.SpawnOffset;
             projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown);
             return projectile;
         }
@@ -1686,7 +1686,7 @@ namespace Quantum {
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
-            FPVector2 spawnPos = filter.Transform->Position + asset.SpawnOffset;
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35) + asset.SpawnOffset;
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }

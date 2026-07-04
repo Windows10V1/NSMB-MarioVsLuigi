@@ -94,7 +94,11 @@ namespace Quantum {
 
             if (active && upDot >= Constants.PhysicsGroundMaxAngleCos && mario->IsGroundpoundActive) {
                 EntityRef activator = powBlock->WasThrown && powBlock->Activator.IsValid ? powBlock->Activator : marioEntity;
-                Activate(f, powBlockEntity, activator, fromGroundpound: true);
+                if (mario->CurrentPowerupState == PowerupState.MegaMushroom) {
+                    ActivateMegaGroundpound(f, powBlockEntity, activator);
+                } else {
+                    Activate(f, powBlockEntity, activator, fromGroundpound: true);
+                }
                 return false;
             }
 
@@ -133,6 +137,9 @@ namespace Quantum {
             }
 
             if (active && !held && mario->CanPickupItem(f, marioEntity, powBlockEntity)) {
+                if (mario->CurrentPowerupState == PowerupState.MegaMushroom || mario->CurrentPowerupState == PowerupState.MiniMushroom) {
+                    return false;
+                }
                 powHoldable->Pickup(f, powBlockEntity, marioEntity);
                 powBlock->WasThrown = false;
                 powBlock->CanGroundActivate = false;
@@ -206,6 +213,78 @@ namespace Quantum {
             physicsObject->IsTouchingGround = false;
             physicsObject->WasTouchingGround = false;
             physicsObject->HoverFrames = 0;
+        }
+
+        private static void ActivateMegaGroundpound(Frame f, EntityRef powBlockEntity, EntityRef activator) {
+            if (!f.Exists(powBlockEntity) || f.DestroyPending(powBlockEntity)) {
+                return;
+            }
+
+            var powBlock = f.Unsafe.GetPointer<POWBlock>(powBlockEntity);
+            var transform = f.Unsafe.GetPointer<Transform2D>(powBlockEntity);
+            var holdable = f.Unsafe.GetPointer<Holdable>(powBlockEntity);
+
+            if (!activator.IsValid && powBlock->Activator.IsValid) {
+                activator = powBlock->Activator;
+            }
+
+            if (activator.IsValid && !f.Unsafe.TryGetPointer(activator, out MarioPlayer* _)) {
+                return;
+            }
+
+            ReleaseFromHolder(f, holdable);
+            holdable->PreviousHolder = EntityRef.None;
+
+            powBlock->Activator = activator;
+            powBlock->WasThrown = false;
+            powBlock->CanGroundActivate = false;
+
+            f.Events.POWBlockActivated(powBlockEntity, activator, transform->Position, powBlock->Uses);
+            ApplyMegaExplosion(f, powBlockEntity, activator, transform->Position);
+
+            f.Events.CollectableDespawned(powBlockEntity, transform->Position, false);
+            f.Destroy(powBlockEntity);
+        }
+
+        private static void ApplyMegaExplosion(Frame f, EntityRef powBlockEntity, EntityRef activator, FPVector2 position) {
+            if (activator.IsValid) {
+                ApplyGroundBounceForTeam(f, activator);
+            }
+
+            var players = f.Filter<MarioPlayer, PhysicsObject, Transform2D>();
+            while (players.NextUnsafe(out EntityRef marioEntity, out MarioPlayer* mario, out PhysicsObject* physicsObject, out Transform2D* marioTransform)) {
+                if (marioEntity == activator) {
+                    continue;
+                }
+
+                bool fromRight = GetExplosionKnockbackFromRight(mario, physicsObject);
+                EntityRef attacker = activator.IsValid ? activator : powBlockEntity;
+
+                if (mario->IsInKnockback) {
+                    mario->CurrentKnockback = KnockbackStrength.None;
+                    mario->IsInWeakKnockback = false;
+                }
+
+                int starsToDrop = 2;
+                bool damaged = mario->DoKnockback(f, marioEntity, fromRight, starsToDrop, KnockbackStrength.SuperHammerBump, attacker, bypassDamageInvincibility: true);
+                if (damaged) {
+                    f.Events.PlayKnockbackEffect(marioEntity, powBlockEntity, KnockbackStrength.SuperHammerBump, position);
+                }
+            }
+
+            var enemies = f.Filter<Enemy, PhysicsObject, Transform2D>();
+            while (enemies.NextUnsafe(out EntityRef enemyEntity, out Enemy* enemy, out PhysicsObject* enemyPhysics, out _)) {
+                if (!enemy->IsAlive
+                    || enemyPhysics->IsFrozen
+                    || enemyPhysics->DisableCollision
+                    || !enemyPhysics->IsTouchingGround) {
+                    continue;
+                }
+
+                enemyPhysics->Velocity.Y = ReExplosionLaunchVelocity;
+                enemyPhysics->IsTouchingGround = false;
+                enemyPhysics->WasTouchingGround = false;
+            }
         }
 
         private static void ApplyExplosion(Frame f, EntityRef powBlockEntity, EntityRef activator, FPVector2 position, bool thrown) {
