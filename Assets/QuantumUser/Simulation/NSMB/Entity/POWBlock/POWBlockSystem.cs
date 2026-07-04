@@ -35,7 +35,9 @@ namespace Quantum {
             }
 
             if (filter.PhysicsObject->DisableCollision) {
-                filter.PhysicsObject->DisableCollision = false;
+                if (!PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape, stage: stage, entity: filter.Entity)) {
+                    filter.PhysicsObject->DisableCollision = false;
+                }
             }
 
             if (!powBlock->HasSpawnLanded && filter.PhysicsObject->IsTouchingGround && !filter.PhysicsObject->WasTouchingGround) {
