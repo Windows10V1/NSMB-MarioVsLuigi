@@ -1082,7 +1082,7 @@ Transform:
   m_GameObject: {fileID: 4808215346903798662}
   serializedVersion: 2
   m_LocalRotation: {x: -0.5694314, y: 0.41922295, z: 0.59463096, w: -0.38264084}
-  m_LocalPosition: {x: 0.001000002, y: 0.043, z: -0.001000004}
+  m_LocalPosition: {x: 0.001000002, y: 0.04310004, z: -0.001000004}
   m_LocalScale: {x: -1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1455,12 +1455,16 @@ MonoBehaviour:
   propeller: {fileID: 8626919663303982960}
   HammerHelm: {fileID: 4056376664574429795}
   HammerShell: {fileID: 880582643022226802}
-  HammerTuckShell: {fileID: 0}
+  HammerTuckShell: {fileID: 4808215346903798662}
   boomerangModel: {fileID: 1353643460271881695}
   cloudModel: {fileID: 1900610960074996790}
   cloudBuddy: {fileID: 2789658498376930543}
   frogModel: {fileID: 7348328450458580768}
-  builderHelmet: {fileID: 4808215346903798662}
+  tanookiModel: {fileID: 1675450835645418025}
+  tanookiTail: {fileID: 1675450835645418025}
+  tanookiHandsA: {fileID: 1675450835645418025}
+  tanookiHandsB: {fileID: 1675450835645418025}
+  builderHelmet: {fileID: 1675450835645418025}
   builderHipHammer: {fileID: 1675450835645418025}
   builderSuperHammer: {fileID: 1675450835645418025}
   builderBelt: {fileID: 1675450835645418025}

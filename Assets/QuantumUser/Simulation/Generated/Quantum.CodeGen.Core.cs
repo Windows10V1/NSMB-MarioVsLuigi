@@ -116,6 +116,7 @@ namespace Quantum {
     FireFlower,
     PenguinSuit,
     FrogSuit,
+    TanookiSuit,
     PropellerMushroom,
     BuilderSuit,
     BlueShell,

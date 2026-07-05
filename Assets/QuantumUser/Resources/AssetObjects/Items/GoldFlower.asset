@@ -25,7 +25,7 @@ MonoBehaviour:
     RawValue: -8192
   BelowAverageBonus:
     RawValue: 163840
-  BlockSpawnSoundEffect: 69
+  BlockSpawnSoundEffect: 127
   Flags: 23
   MaxNumberOfItems: 0
   CameraSpawnOffset:
@@ -142,10 +142,4 @@ MonoBehaviour:
   StatePriority: 2
   ItemPriority: 2
   EnterReserveIfOverridden: 1
-  SfxOverrides:
-  - SoundEffect: 69
-    Mode: 0
-    Priority: 0
-    PlayGlobally: 0
-    AudioClips:
-    - {fileID: 8300000, guid: 92acf5cb2368f9f4183b7d60b9712ff0, type: 3}
+  SfxOverrides: []

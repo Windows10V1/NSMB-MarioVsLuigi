@@ -1,5 +1,5 @@
 public enum SoundEffect : byte {
-    //CURRENT HIGHEST NUMBER: 134 (use 135 next)
+    //CURRENT HIGHEST NUMBER: 138 (use 139 next)
     //Enemy
     Enemy_Generic_Freeze = 0,
     Enemy_Generic_FreezeShatter = 1,
@@ -34,6 +34,7 @@ public enum SoundEffect : byte {
     Player_Sound_PowerupCollect = 16,
     Player_Sound_PowerupCollect_Superball = 123,
     Player_Sound_PowerupCollect_Goldflower = 124,
+    Player_Sound_PowerupCollect_TanookiSuit = 135,
     Player_Sound_PowerupReserveStore = 25,
     Player_Sound_PowerupReserveUse = 26,
     Player_Sound_Powerdown = 27,
@@ -96,6 +97,9 @@ public enum SoundEffect : byte {
     Powerup_CloudFlower_Bounce = 132,
     Powerup_BuilderSuit_Hammer = 133,
     Powerup_BuilderSuit_Block = 134,
+    Powerup_TanookiSuit_Attack = 136,
+    Powerup_TanookiSuit_Flail = 137,
+    Powerup_TanookiSuit_PSpeed = 138,
 
     //UI Sounds / Songs / Jingles
     UI_HurryUp = 60,

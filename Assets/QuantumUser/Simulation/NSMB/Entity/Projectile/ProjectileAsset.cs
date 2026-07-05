@@ -60,4 +60,5 @@ public enum ProjectileEffectType {
     Boomerang,
     GoldBall,
     SuperBall,
+    TanookiTailAttack,
 }

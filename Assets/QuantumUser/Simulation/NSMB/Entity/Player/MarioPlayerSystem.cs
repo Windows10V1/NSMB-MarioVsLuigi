@@ -1432,6 +1432,7 @@ namespace Quantum {
             switch (mario->CurrentPowerupState) {
             case PowerupState.BuilderSuit:
             case PowerupState.PenguinSuit:
+            case PowerupState.TanookiSuit:
             case PowerupState.FireFlower:
             case PowerupState.HammerSuit:
             case PowerupState.BoomerangFlower:
@@ -1467,7 +1468,9 @@ namespace Quantum {
                 byte volleySize = DEFAULT_VOLLEY_SIZE;
                 byte volleyFrames = DEFAULT_VOLLEY_FRAMES;
                 
-                AssetRef<EntityPrototype> projectilePrototype = mario->CurrentPowerupState == PowerupState.HammerSuit
+                AssetRef<EntityPrototype> projectilePrototype = mario->CurrentPowerupState == PowerupState.TanookiSuit
+                    ? f.SimulationConfig.TanookiTailAttackPrototype
+                    : mario->CurrentPowerupState == PowerupState.HammerSuit
                     ? f.SimulationConfig.HammerPrototype
                     : mario->CurrentPowerupState == PowerupState.BoomerangFlower
                     ? f.SimulationConfig.BoomerangPrototype
@@ -1676,6 +1679,8 @@ namespace Quantum {
 
             EntityRef newEntity = f.Create(mario->CurrentPowerupState == PowerupState.GoldFlower
                 ? f.SimulationConfig.GoldballPrototype
+                : mario->CurrentPowerupState == PowerupState.TanookiSuit
+                ? f.SimulationConfig.TanookiTailAttackPrototype
                 : mario->CurrentPowerupState == PowerupState.SuperBallFlower
                 ? f.SimulationConfig.SuperballPrototype
                 : mario->CurrentPowerupState == PowerupState.BuilderSuit
@@ -2258,6 +2263,7 @@ namespace Quantum {
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
                 && !(mario->CurrentPowerupState == PowerupState.GoldFlower && projectileAsset.Effect == ProjectileEffectType.GoldBall)
                 && !(mario->CurrentPowerupState == PowerupState.HammerSuit && marioPhysics->IsTouchingGround && projectileAsset.Effect != ProjectileEffectType.Freeze);
+                // && !(mario->CurrentPowerupState == PowerupState.TanookiSuit && mario->TanookiStatueFrames > 0)
 
             if (damageable) {
                 bool didKnockback = false;
@@ -2294,6 +2300,15 @@ namespace Quantum {
                     }
                     if (!damaged) {
                         didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
+                        damaged = true;
+                    }
+                    break;
+                case ProjectileEffectType.TanookiTailAttack:
+                    if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
+                        damaged = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 0 : 0, KnockbackStrength.Groundpound, projectileEntity);
+                    }
+                    if (!damaged) {
+                        didKnockback = mario->DoKnockback(f, marioEntity, knockbackFromRight, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectileEntity);
                         damaged = true;
                     }
                     break;

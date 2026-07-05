@@ -106,7 +106,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, acornModel, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuckShell, boomerangModel, cloudModel, cloudBuddy, frogModel, builderHelmet, builderHipHammer, builderSuperHammer, builderBelt; // builderPocket1, builderPocket2, builderPocket3;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, acornModel, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuckShell, boomerangModel, cloudModel, cloudBuddy, frogModel, tanookiModel, tanookiTail, tanookiHandsA, tanookiHandsB, builderHelmet, builderHipHammer, builderSuperHammer, builderBelt; // builderPocket1, builderPocket2, builderPocket3;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -259,6 +259,7 @@ namespace NSMB.Entities.Player {
             mario->CurrentPowerupState != PowerupState.PenguinSuit &&
             mario->CurrentPowerupState != PowerupState.BuilderSuit &&
             mario->CurrentPowerupState != PowerupState.FrogSuit &&
+            mario->CurrentPowerupState != PowerupState.TanookiSuit &&
             mario->CurrentPowerupState != PowerupState.BoomerangFlower &&
             mario->CurrentPowerupState != PowerupState.CloudFlower);
         }
@@ -676,31 +677,48 @@ namespace NSMB.Entities.Player {
 
             // Model changing
             bool large = mario->CurrentPowerupState >= PowerupState.Mushroom;
+
             largeModel.SetActive(large);
             smallModel.SetActive(!large);
             blueShell.SetActive(mario->CurrentPowerupState == PowerupState.BlueShell);
             propellerHelmet.SetActive(mario->CurrentPowerupState == PowerupState.PropellerMushroom);
 
-            // Hammer Suit Models
-            HammerHelm.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit && !mario->IsCrouching);
-            HammerShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit && !mario->IsCrouching);
-            HammerTuckShell.SetActive(mario->CurrentPowerupState == PowerupState.HammerSuit && mario->IsCrouching);
-
             // Model Swaps
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
             acornModel.SetActive(mario->CurrentPowerupState == PowerupState.SuperAcorn);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
-            cloudModel.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower);
-            cloudBuddy.SetActive(mario->CurrentPowerupState == PowerupState.CloudFlower && mario->CloudBlocksUsed < 1);
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
+
+            // Hammer Suit Models
+            bool isHammerSuit = mario->CurrentPowerupState == PowerupState.HammerSuit;
+
+            HammerHelm.SetActive(isHammerSuit && !mario->IsCrouching);
+            HammerShell.SetActive(isHammerSuit && !mario->IsCrouching);
+            HammerTuckShell.SetActive(isHammerSuit && mario->IsCrouching);
+
+            // Cloud Flower Models
+            bool isCloudFlower = mario->CurrentPowerupState == PowerupState.CloudFlower;
+            cloudModel.SetActive(isCloudFlower);
+            cloudBuddy.SetActive(isCloudFlower && mario->CloudBlocksUsed < 1);
+
+            // Tanooki Suit Models
+            bool isTanookiSuit = mario->CurrentPowerupState == PowerupState.TanookiSuit;
+            // bool isTanookiFlying = mario->TanookiFlyFrames > 0 || (mario->TanookiPSpeedFrames > 0))
+
+            tanookiModel.SetActive(isTanookiSuit);
+            tanookiTail.SetActive(isTanookiSuit);
+            // tanookiStatue.SetActive(isTanookiSuit && mario->TanookiStatueFrames > 0);
+            // tanookiHandsA.SetActive(isTanookiSuit && !mario->TanookiFlying);
+            // tanookiHandsB.SetActive(isTanookiSuit && mario->TanookiFlying);
 
             // Builder Suit Models
             bool isBuilderSuit = mario->CurrentPowerupState == PowerupState.BuilderSuit;
             bool inSuperHammerState = animator.GetCurrentAnimatorStateInfo(0).shortNameHash == ParamSuperHammer && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f;
+            
             builderBelt.SetActive(isBuilderSuit);
-            // builderPocket1.SetActive(isBuilderSuit && BuilderBoxCount < 1);
-            // builderPocket2.SetActive(isBuilderSuit && BuilderBoxCount < 2);
-            // builderPocket3.SetActive(isBuilderSuit && BuilderBoxCount < 3);
+            // builderPocket1.SetActive(isBuilderSuit && mario->BuilderBoxesUsed < 1);
+            // builderPocket2.SetActive(isBuilderSuit && mario->BuilderBoxesUsed < 2);
+            // builderPocket3.SetActive(isBuilderSuit && mario->BuilderBoxesUsed < 3);
             builderHelmet.SetActive(isBuilderSuit);
             builderHipHammer.SetActive(isBuilderSuit && !inSuperHammerState);
             builderSuperHammer.SetActive(isBuilderSuit && inSuperHammerState);
