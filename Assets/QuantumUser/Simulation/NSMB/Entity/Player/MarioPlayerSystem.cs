@@ -1361,6 +1361,7 @@ namespace Quantum {
                 f.Unsafe.GetPointer<ComboKeeper>(filter.Entity)->Combo = 0;
             }
             QuantumUtils.Decrement(ref mario->PropellerSpinFrames);
+            QuantumUtils.Decrement(ref mario->ProjectileDelayFrames);
             QuantumUtils.Decrement(ref mario->ProjectileCooldownFrames);
             if (QuantumUtils.Decrement(ref mario->ProjectileVolleyFrames)) {
                 mario->CurrentVolley = 0;
@@ -1651,11 +1652,11 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50);
+
             EntityRef newEntity = f.Create(f.SimulationConfig.BoomerangPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50) + asset.SpawnOffset;
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }
@@ -1664,11 +1665,10 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40);
             EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40) + asset.SpawnOffset;
             projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown);
             return projectile;
         }
@@ -1689,9 +1689,9 @@ namespace Quantum {
                 ? f.SimulationConfig.IceballPrototype
                 : f.SimulationConfig.FireballPrototype);
 
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35);
+
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            var asset = f.FindAsset<ProjectileAsset>(projectile->Asset);
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35) + asset.SpawnOffset;
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }
