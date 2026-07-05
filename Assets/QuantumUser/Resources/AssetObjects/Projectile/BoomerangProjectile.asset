@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/BoomerangProjectile
     Guid:
       Value: 399601692553361196
-  Effect: 4
+  Effect: 5
   Bounce: 0
   Speed:
     RawValue: 704512
@@ -39,6 +39,11 @@ MonoBehaviour:
   IsBoomerang: 1
   IsSuperBall: 0
   IsGoldball: 0
+  SpawnOffset:
+    X:
+      RawValue: 0
+    Y:
+      RawValue: 0
   CooldownFrames: 0
   MaxInstantProjectiles: 1
   MaxProjectileCount: 1

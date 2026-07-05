@@ -106,7 +106,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, acornModel, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuckShell, boomerangModel, cloudModel, cloudBuddy, frogModel, tanookiModel, tanookiTail, tanookiHandsA, tanookiHandsB, builderHelmet, builderHipHammer, builderSuperHammer, builderBelt; // builderPocket1, builderPocket2, builderPocket3;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuckShell, boomerangModel, cloudModel, cloudBuddy, frogModel, tanookiModel, tanookiTail, tanookiHandsA, tanookiHandsB, builderHelmet, builderHipHammer, builderSuperHammer, builderBelt; // builderPocket1, builderPocket2, builderPocket3;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -415,7 +415,6 @@ namespace NSMB.Entities.Player {
                     PowerupState.BlueShell => 90f,
                     PowerupState.BoomerangFlower => 90f,
                     PowerupState.MegaMushroom => 78.75f,
-                    PowerupState.SuperAcorn => 56.25f,
                     _ => 67.5f,
                 };
             if (animator.GetCurrentAnimatorStateInfo(0).shortNameHash == ParamSuperHammer && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f) {
@@ -636,7 +635,6 @@ namespace NSMB.Entities.Player {
                 PowerupState.FireFlower => 1,
                 PowerupState.PropellerMushroom => 2,
                 PowerupState.HammerSuit => 3,
-                PowerupState.SuperAcorn => 3,
                 PowerupState.BoomerangFlower => 4,
                 PowerupState.CloudFlower => 5,
                 PowerupState.FrogSuit => 6,
@@ -685,7 +683,6 @@ namespace NSMB.Entities.Player {
 
             // Model Swaps
             penguinModel.SetActive(mario->CurrentPowerupState == PowerupState.PenguinSuit);
-            acornModel.SetActive(mario->CurrentPowerupState == PowerupState.SuperAcorn);
             boomerangModel.SetActive(mario->CurrentPowerupState == PowerupState.BoomerangFlower);
             frogModel.SetActive(mario->CurrentPowerupState == PowerupState.FrogSuit);
 

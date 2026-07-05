@@ -121,7 +121,6 @@ namespace Quantum {
     BuilderSuit,
     BlueShell,
     HammerSuit,
-    SuperAcorn,
     CloudFlower,
     SuperBallFlower,
     MegaMushroom,
