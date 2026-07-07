@@ -35,7 +35,7 @@ MonoBehaviour:
   DoesntEffectBlueShell: 0
   CollectCoins: 0
   DestroyParticleEffect: 0
-  ShootSound: 44
+  ShootSound: 136
   IsBoomerang: 0
   IsSuperBall: 0
   IsGoldball: 0
@@ -44,7 +44,7 @@ MonoBehaviour:
       RawValue: 0
     Y:
       RawValue: 0
-  CooldownFrames: 0
+  CooldownFrames: 30
   MaxInstantProjectiles: 1
   MaxProjectileCount: 1
   SfxOverrides: []

@@ -94,6 +94,7 @@ namespace NSMB.Entities.Player {
         private static readonly int ParamHeadPickup = Animator.StringToHash("head-pickup");
         private static readonly int ParamFireball = Animator.StringToHash("fireball");
         private static readonly int ParamSuperHammer = Animator.StringToHash("super-hammer");
+        private static readonly int ParamTanookiTailAttack = Animator.StringToHash("tanooki-attack");
         #endregion
 
         //---Public Variables
@@ -106,7 +107,7 @@ namespace NSMB.Entities.Player {
         [Header("Animation + Rigging")]
         [SerializeField] private Animator animator;
         [SerializeField] private Avatar smallAvatar, largeAvatar;
-        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuckShell, boomerangModel, cloudModel, cloudBuddy, frogModel, tanookiModel, tanookiTail, tanookiHandsA, tanookiHandsB, builderHelmet, builderHipHammer, builderSuperHammer, builderBelt; // builderPocket1, builderPocket2, builderPocket3;
+        [SerializeField] private GameObject smallModel, largeModel, largeExclude, blueShell, penguinModel, propellerHelmet, propeller, HammerHelm, HammerShell, HammerTuckShell, boomerangModel, cloudModel, cloudBuddy, frogModel, tanookiModel, tanookiTail, tanookiHandAL, tanookiHandAR, tanookiHandBL, tanookiHandBR, builderModel, builderHipHammer, builderSuperHammer; // builderPocket1, builderPocket2, builderPocket3;
 
         [Header("Prefabs")]
         [SerializeField] private GameObject coinNumberParticle;
@@ -257,8 +258,8 @@ namespace NSMB.Entities.Player {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
             largeExclude.SetActive(!animator.GetCurrentAnimatorStateInfo(0).IsName("in-shell") &&
             mario->CurrentPowerupState != PowerupState.PenguinSuit &&
-            mario->CurrentPowerupState != PowerupState.BuilderSuit &&
             mario->CurrentPowerupState != PowerupState.FrogSuit &&
+            mario->CurrentPowerupState != PowerupState.BuilderSuit &&
             mario->CurrentPowerupState != PowerupState.TanookiSuit &&
             mario->CurrentPowerupState != PowerupState.BoomerangFlower &&
             mario->CurrentPowerupState != PowerupState.CloudFlower);
@@ -459,7 +460,9 @@ namespace NSMB.Entities.Player {
             } else if (f.Unsafe.TryGetPointer(mario->CurrentSpinner, out Spinner* spinner)
                        && physicsObject->IsTouchingGround && mario->ProjectileDelayFrames == 0
                        && Mathf.Abs(physicsObject->Velocity.X.AsFloat) < 0.3f && !f.Exists(mario->HeldEntity)
-                       && !animator.GetCurrentAnimatorStateInfo(0).IsName("fireball")) {
+                       && !animator.GetCurrentAnimatorStateInfo(0).IsName("fireball")
+                       && !animator.GetCurrentAnimatorStateInfo(0).IsName("super-hammer")
+                       && !animator.GetCurrentAnimatorStateInfo(0).IsName("tanooki-attack")) {
 
                 modelRotationTarget *= Quaternion.Euler(0, spinner->AngularVelocity.AsFloat * delta, 0);
                 modelRotateInstantly = true;
@@ -639,6 +642,7 @@ namespace NSMB.Entities.Player {
                 PowerupState.CloudFlower => 5,
                 PowerupState.FrogSuit => 6,
                 PowerupState.BuilderSuit => 7,
+                PowerupState.TanookiSuit => 8,
                 _ => 0
             };
             materialBlock.SetFloat(ParamPowerupState, ps);
@@ -700,23 +704,26 @@ namespace NSMB.Entities.Player {
 
             // Tanooki Suit Models
             bool isTanookiSuit = mario->CurrentPowerupState == PowerupState.TanookiSuit;
+            bool inTailAttackState = animator.GetCurrentAnimatorStateInfo(0).shortNameHash == ParamTanookiTailAttack && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f;
             // bool isTanookiFlying = mario->TanookiFlyFrames > 0 || (mario->TanookiPSpeedFrames > 0))
 
             tanookiModel.SetActive(isTanookiSuit);
             tanookiTail.SetActive(isTanookiSuit);
             // tanookiStatue.SetActive(isTanookiSuit && mario->TanookiStatueFrames > 0);
-            // tanookiHandsA.SetActive(isTanookiSuit && !mario->TanookiFlying);
-            // tanookiHandsB.SetActive(isTanookiSuit && mario->TanookiFlying);
+
+            // tanookiHandAL.SetActive(isTanookiSuit && !isTanookiFlying);
+            // tanookiHandAR.SetActive(isTanookiSuit && !isTanookiFlying || isTanookiSuit && mario->TanookiStatueFrames <= 0);
+            // tanookiHandBL.SetActive(isTanookiSuit && isTanookiFlying && !inTailAttackState);
+            // tanookiHandBR.SetActive(isTanookiSuit && isTanookiFlying && !inTailAttackState || isTanookiSuit && !inTailAttackState && mario->TanookiStatueFrames > 0);
 
             // Builder Suit Models
             bool isBuilderSuit = mario->CurrentPowerupState == PowerupState.BuilderSuit;
             bool inSuperHammerState = animator.GetCurrentAnimatorStateInfo(0).shortNameHash == ParamSuperHammer && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f;
             
-            builderBelt.SetActive(isBuilderSuit);
             // builderPocket1.SetActive(isBuilderSuit && mario->BuilderBoxesUsed < 1);
             // builderPocket2.SetActive(isBuilderSuit && mario->BuilderBoxesUsed < 2);
             // builderPocket3.SetActive(isBuilderSuit && mario->BuilderBoxesUsed < 3);
-            builderHelmet.SetActive(isBuilderSuit);
+            builderModel.SetActive(isBuilderSuit);
             builderHipHammer.SetActive(isBuilderSuit && !inSuperHammerState);
             builderSuperHammer.SetActive(isBuilderSuit && inSuperHammerState);
 
@@ -971,6 +978,8 @@ namespace NSMB.Entities.Player {
             }
 
             animator.ResetTrigger(ParamFireball);
+            animator.ResetTrigger(ParamSuperHammer);
+            animator.ResetTrigger(ParamTanookiTailAttack);
             animator.ResetTrigger(ParamThrow);
             
             if (e.HoldAboveHead) {
@@ -1110,6 +1119,8 @@ namespace NSMB.Entities.Player {
             var mario = PredictedFrame.Unsafe.GetPointer<MarioPlayer>(e.Entity);
             if (mario->CurrentPowerupState == PowerupState.BuilderSuit) {
                 animator.SetTrigger("superHammer");
+            } else if (mario->CurrentPowerupState == PowerupState.TanookiSuit) {
+                animator.SetTrigger("tanookiTailAttack");
             } else {
                 animator.SetTrigger("fireball");
             }
