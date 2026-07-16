@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/TanookiTailAttack
     Guid:
       Value: 281449712836028574
-  Effect: 0
+  Effect: 8
   Bounce: 0
   Speed:
     RawValue: 0
@@ -43,8 +43,8 @@ MonoBehaviour:
     X:
       RawValue: 0
     Y:
-      RawValue: 0
-  CooldownFrames: 30
+      RawValue: 21299
+  CooldownFrames: 15
   MaxInstantProjectiles: 1
   MaxProjectileCount: 1
   SfxOverrides: []

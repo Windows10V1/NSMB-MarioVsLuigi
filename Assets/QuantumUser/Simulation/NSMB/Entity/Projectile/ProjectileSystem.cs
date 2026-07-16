@@ -393,12 +393,19 @@ namespace Quantum {
             var projectileAssetA = f.FindAsset(projectileA->Asset);
             var projectileAssetB = f.FindAsset(projectileB->Asset);
 
+            // Fireball/Iceball or Hammer/Boomerang collided, destroy both. Or Fireball/Iceball collided with Superball, destroy the Fireball/Iceball.
             if ((projectileAssetA.Effect == ProjectileEffectType.Fire && projectileAssetB.Effect == ProjectileEffectType.Freeze)
                 || (projectileAssetB.Effect == ProjectileEffectType.Fire && projectileAssetA.Effect == ProjectileEffectType.Freeze)
                 || (projectileAssetA.Effect == ProjectileEffectType.Hammer && projectileAssetB.Effect == ProjectileEffectType.Boomerang)
                 || (projectileAssetB.Effect == ProjectileEffectType.Hammer && projectileAssetA.Effect == ProjectileEffectType.Boomerang)) {
-                // Fireball collided with Iceball/Hammer collided with Boomerang. Destroy both.
                 Destroy(f, projectileEntityA, projectileAssetA.DestroyParticleEffect);
+                Destroy(f, projectileEntityB, projectileAssetB.DestroyParticleEffect);
+            }
+            if ((projectileAssetA.Effect == ProjectileEffectType.Fire || projectileAssetA.Effect == ProjectileEffectType.Freeze)
+                && (projectileAssetB.Effect == ProjectileEffectType.SuperBall)) {
+                Destroy(f, projectileEntityA, projectileAssetA.DestroyParticleEffect);
+            } else if ((projectileAssetB.Effect == ProjectileEffectType.Fire || projectileAssetB.Effect == ProjectileEffectType.Freeze)
+                && (projectileAssetA.Effect == ProjectileEffectType.SuperBall)) {
                 Destroy(f, projectileEntityB, projectileAssetB.DestroyParticleEffect);
             }
         }

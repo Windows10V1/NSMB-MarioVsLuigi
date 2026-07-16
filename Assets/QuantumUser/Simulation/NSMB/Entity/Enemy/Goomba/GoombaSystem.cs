@@ -135,6 +135,13 @@ namespace Quantum {
                 goomba->Kill(f, goombaEntity, projectileEntity, EnemyKillReason.Groundpounded);
                 break;
             }
+            case ProjectileEffectType.TanookiTailAttack: {
+                var physics = f.Unsafe.GetPointer<PhysicsObject>(goombaEntity);
+                physics->Velocity.Y = FP.FromFloat_UNSAFE(10);
+                physics->IsTouchingGround = false;
+                physics->WasTouchingGround = false;
+                break;
+            }
             }
 
             f.Signals.OnProjectileHitEntity(projectileEntity, goombaEntity);

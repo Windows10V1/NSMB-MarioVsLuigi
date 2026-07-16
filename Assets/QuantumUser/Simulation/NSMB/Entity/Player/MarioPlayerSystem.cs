@@ -90,6 +90,17 @@ namespace Quantum {
                 filter.Inputs = default;
             }
 
+            if (mario->IsStatue) {
+                // Check for statue cancellation before blocking inputs.
+                if (filter.Inputs.Up.IsDown && filter.Inputs.PowerupAction.WasPressed && mario->CurrentPowerupState == PowerupState.TanookiSuit) {
+                    mario->IsStatue = false;
+                    mario->StatueCooldownFrames = 1200; // 20 seconds
+                    mario->DamageInvincibilityFrames = 90;
+                } else {
+                    filter.Inputs = default;
+                }
+            }
+
             bool wasGroundpoundActive = mario->IsGroundpounding;
             HandlePowerups(f, ref filter, physics, stage);
             HandleBreakingBlocks(f, ref filter, physics, stage);
@@ -1414,6 +1425,28 @@ namespace Quantum {
                 }
             }
 
+            // Tanooki Suit Statue Mode
+            if (mario->CurrentPowerupState == PowerupState.TanookiSuit) {
+                if (!mario->IsStatue && mario->StatueCooldownFrames == 0 && inputs.Up.IsDown && inputs.PowerupAction.WasPressed) {
+                    // Activate statue mode
+                    mario->IsStatue = true;
+                    mario->IsCrouching = false;
+                    mario->IsSliding = false;
+                    mario->IsPenguinSliding = false;
+                    mario->IsGroundpounding = false;
+                    mario->IsInShell = false;
+                    mario->IsPropellerFlying = false;
+                    mario->IsSpinnerFlying = false;
+                    mario->IsDrilling = false;
+                    physicsObject->Velocity.X = 0;
+                    f.Events.MarioPlayerStatueActivated(filter.Entity);
+                }
+                QuantumUtils.Decrement(ref mario->StatueCooldownFrames);
+            } else {
+                mario->IsStatue = false;
+                mario->StatueCooldownFrames = 0;
+            }
+
             PowerupState state = mario->CurrentPowerupState;
             if (mario->MegaMushroomStartFrames > 0) {
                 return;
@@ -1522,6 +1555,8 @@ namespace Quantum {
                     projectile = ShootHammerProjectile(f, ref filter, physics);
                 } else if (mario->CurrentPowerupState == PowerupState.BoomerangFlower) {
                     projectile = ShootBoomerangProjectile(f, ref filter, physics);
+                } else if (mario->CurrentPowerupState == PowerupState.TanookiSuit) {
+                    projectile = ShootTanookiTailAttack(f, ref filter, physics);
                 } else {
                     projectile = ShootNormalProjectile(f, ref filter, physics);
                 }
@@ -1652,11 +1687,12 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50);
-
             EntityRef newEntity = f.Create(f.SimulationConfig.BoomerangPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            var asset = f.FindAsset(projectile->Asset);
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50) + new FPVector2(mario->FacingRight ? asset.SpawnOffset.X : -asset.SpawnOffset.X, asset.SpawnOffset.Y);
+
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }
@@ -1665,10 +1701,12 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40);
             EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            var asset = f.FindAsset(projectile->Asset);
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40) + new FPVector2(mario->FacingRight ? asset.SpawnOffset.X : -asset.SpawnOffset.X, asset.SpawnOffset.Y);
+
             projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown);
             return projectile;
         }
@@ -1679,8 +1717,6 @@ namespace Quantum {
 
             EntityRef newEntity = f.Create(mario->CurrentPowerupState == PowerupState.GoldFlower
                 ? f.SimulationConfig.GoldballPrototype
-                : mario->CurrentPowerupState == PowerupState.TanookiSuit
-                ? f.SimulationConfig.TanookiTailAttackPrototype
                 : mario->CurrentPowerupState == PowerupState.SuperBallFlower
                 ? f.SimulationConfig.SuperballPrototype
                 : mario->CurrentPowerupState == PowerupState.BuilderSuit
@@ -1689,9 +1725,23 @@ namespace Quantum {
                 ? f.SimulationConfig.IceballPrototype
                 : f.SimulationConfig.FireballPrototype);
 
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35);
+            var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            var asset = f.FindAsset(projectile->Asset);
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35) + new FPVector2(mario->FacingRight ? asset.SpawnOffset.X : -asset.SpawnOffset.X, asset.SpawnOffset.Y);
+
+            projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
+            return projectile;
+        }
+
+        private Projectile* ShootTanookiTailAttack(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
+            var mario = filter.MarioPlayer;
+
+            EntityRef newEntity = f.Create(f.SimulationConfig.TanookiTailAttackPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            var asset = f.FindAsset(projectile->Asset);
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? asset.SpawnOffset.X : -asset.SpawnOffset.X, asset.SpawnOffset.Y);
+
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }
@@ -2260,6 +2310,7 @@ namespace Quantum {
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && mario->IsDamageable
+                && !mario->IsStatue
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
                 && !(mario->CurrentPowerupState == PowerupState.GoldFlower && projectileAsset.Effect == ProjectileEffectType.GoldBall)
                 && !(mario->CurrentPowerupState == PowerupState.HammerSuit && marioPhysics->IsTouchingGround && projectileAsset.Effect != ProjectileEffectType.Freeze);
@@ -2754,6 +2805,13 @@ namespace Quantum {
             var defenderPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(defender);
             var defenderPhysics = f.FindAsset(defenderMario->PhysicsAsset);
 
+            // Statue mode blocks blue shell stomps
+            if (defenderMario->IsStatue) {
+                var blueShellAttackerMario = f.Unsafe.GetPointer<MarioPlayer>(attacker);
+                blueShellAttackerMario->DoEntityBounce = true;
+                return;
+            }
+
             FPVector2 raycastPosition = f.Unsafe.GetPointer<Transform2D>(defender)->Position + f.Unsafe.GetPointer<PhysicsCollider2D>(defender)->Shape.Centroid;
 
             bool goLeft = fromRight;
@@ -2788,6 +2846,28 @@ namespace Quantum {
             var attackerMario = f.Unsafe.GetPointer<MarioPlayer>(attacker);
             var defenderMario = f.Unsafe.GetPointer<MarioPlayer>(defender);
             var defenderPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(defender);
+
+            // Statue mode blocks stomps (except mega mushroom groundpound)
+            bool megaGroundpound = attackerMario->CurrentPowerupState == PowerupState.MegaMushroom && (attackerMario->IsGroundpoundActive || attackerMario->IsDrilling);
+            if (defenderMario->IsStatue && !megaGroundpound) {
+                attackerMario->DoEntityBounce = true;
+                return;
+            }
+
+            // Mega mushroom groundpound breaks statue mode
+            if (defenderMario->IsStatue && megaGroundpound) {
+                defenderMario->IsStatue = false;
+                defenderMario->StatueCooldownFrames = 1200; // 20 seconds
+                defenderMario->DamageInvincibilityFrames = 120;
+                defenderMario->Powerdown(f, defender, true, attacker);
+                attackerMario->DoEntityBounce = true;
+                attackerMario->IsGroundpounding = false;
+                attackerMario->IsDrilling = false;
+                if (!attackerMario->IsSpinnerFlying && !attackerMario->IsPropellerFlying) {
+                    attackerMario->ForceJumpTimer = 8;
+                }
+                return;
+            }
 
             attackerMario->DoEntityBounce = defenderMario->CurrentPowerupState != PowerupState.MiniMushroom && !attackerMario->IsGroundpounding && !attackerMario->IsDrilling;
             bool groundpounded = attackerMario->IsGroundpoundActive || attackerMario->IsDrilling;
@@ -2860,9 +2940,13 @@ namespace Quantum {
         }
 
         public void OnBobombExplodeEntity(Frame f, EntityRef bobomb, EntityRef entity) {
-            if (f.Unsafe.TryGetPointer(entity, out MarioPlayer* mario)) {
-                mario->Powerdown(f, entity, false, bobomb);
+            if (!f.Unsafe.TryGetPointer(entity, out MarioPlayer* mario)) {
+                return;
             }
+            if (mario->IsStatue) {
+                return;
+            }
+            mario->Powerdown(f, entity, false, bobomb);
         }
 
         public void OnTryLiquidSplash(Frame f, EntityRef entity, EntityRef liquidEntity, QBoolean exit, bool* doSplash) {
@@ -2888,10 +2972,14 @@ namespace Quantum {
                 case LiquidType.Water:
                     break;
                 case LiquidType.Lava:
-                    mario->Death(f, entity, true, true, entity);
+                    if (!mario->IsStatue) {
+                        mario->Death(f, entity, true, true, entity);
+                    }
                     break;
                 case LiquidType.Poison:
-                    mario->Death(f, entity, false, true, entity);
+                    if (!mario->IsStatue) {
+                        mario->Death(f, entity, false, true, entity);
+                    }
                     break;
                 }
             }
@@ -2902,7 +2990,7 @@ namespace Quantum {
                 return;
             }
 
-            if (!fromBelow || mario->IsInKnockback || mario->IsStuckInBlock) {
+            if (!fromBelow || mario->IsInKnockback || mario->IsStuckInBlock || mario->IsStatue) {
                 return;
             }
 

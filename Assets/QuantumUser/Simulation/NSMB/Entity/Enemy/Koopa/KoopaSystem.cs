@@ -433,6 +433,20 @@ namespace Quantum {
                 koopa->Kill(f, koopaEntity, projectileEntity, EnemyKillReason.Groundpounded);
                 break;
             }
+            case ProjectileEffectType.TanookiTailAttack: {
+                var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
+                var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(koopaEntity);
+                var koopaTransform = f.Unsafe.GetPointer<Transform2D>(koopaEntity);
+                var projectileTransform = f.Unsafe.GetPointer<Transform2D>(projectileEntity);
+
+                if (!koopa->IsInShell || koopa->IsKicked) {
+                    koopa->EnterShell(f, koopaEntity, projectile->Owner, false, false);
+                }
+
+                bool fromRight = projectileTransform->Position.X > koopaTransform->Position.X;
+                physicsObject->Velocity.X = fromRight ? 3 : -3;
+                break;
+            }
             }
 
             f.Signals.OnProjectileHitEntity(projectileEntity, koopaEntity);

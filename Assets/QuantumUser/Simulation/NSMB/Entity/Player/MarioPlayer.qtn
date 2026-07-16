@@ -60,7 +60,7 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte RespawnFrames;
 	[ExcludeFromPrototype] byte NoLivesStarDirection;
 	
-	[ExcludeFromPrototype] bitset[23] Flags;
+	[ExcludeFromPrototype] bitset[24] Flags;
 
 	// Walk/Running
     [ExcludeFromPrototype] byte FastTurnaroundFrames;
@@ -126,6 +126,8 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte PropellerSpinFrames;
 	[ExcludeFromPrototype] byte PropellerDrillCooldown;
 	[ExcludeFromPrototype] byte PropellerDrillHoldFrames;
+
+	[ExcludeFromPrototype] ushort StatueCooldownFrames;
 
 	[ExcludeFromPrototype] ushort ProjectileCooldownFrames;
 
@@ -306,6 +308,10 @@ event MarioPlayerPenguinSlideStarted {
 }
 
 event MarioPlayerPenguinSlideStopped {
+	EntityRef Entity;
+}
+
+event MarioPlayerStatueActivated {
 	EntityRef Entity;
 }
 

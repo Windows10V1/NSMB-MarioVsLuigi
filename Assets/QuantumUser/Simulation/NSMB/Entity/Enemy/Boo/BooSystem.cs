@@ -135,6 +135,16 @@ namespace Quantum {
         public void OnBooProjectileInteraction(Frame f, EntityRef booEntity, EntityRef projectileEntity) {
             var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
 
+            if (projectileAsset.Effect == ProjectileEffectType.TanookiTailAttack) {
+                var booPhysics = f.Unsafe.GetPointer<PhysicsObject>(booEntity);
+                var booTransform = f.Unsafe.GetPointer<Transform2D>(booEntity);
+                var projectileTransform = f.Unsafe.GetPointer<Transform2D>(projectileEntity);
+
+                bool fromRight = projectileTransform->Position.X > booTransform->Position.X;
+                booPhysics->Velocity.X = fromRight ? 8 : -8;
+                return;
+            }
+
             if (projectileAsset.DestroyOnHit) {
                 ProjectileSystem.Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
             }

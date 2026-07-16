@@ -95,6 +95,7 @@ namespace NSMB.Entities.Player {
         private static readonly int ParamFireball = Animator.StringToHash("fireball");
         private static readonly int ParamSuperHammer = Animator.StringToHash("super-hammer");
         private static readonly int ParamTanookiTailAttack = Animator.StringToHash("tanooki-attack");
+        private static readonly int ParamStatueMode = Animator.StringToHash("tanookiStatue");
         #endregion
 
         //---Public Variables
@@ -159,6 +160,7 @@ namespace NSMB.Entities.Player {
         private bool cloudSummonSpinFacingRight;
         private byte previousCloudBlockSummonCounter;
         private byte previousPOWBounceFrames;
+        private Animator tailAnimator;
 
         public void OnValidate() {
             this.SetIfNull(ref animator);
@@ -180,6 +182,10 @@ namespace NSMB.Entities.Player {
             }
 
             modelRotationTarget = models.transform.rotation;
+
+            if (tanookiTail != null) {
+                tailAnimator = tanookiTail.GetComponent<Animator>();
+            }
 
             StartCoroutine(BlinkRoutine());
 
@@ -210,6 +216,7 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerEnteredPipe>(this, OnMarioPlayerEnteredPipe, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerStoppedSliding>(this, OnMarioPlayerStoppedSliding, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUsedSpinner>(this, OnMarioPlayerUsedSpinner, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventMarioPlayerStatueActivated>(this, OnMarioPlayerStatueActivated, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerDeathUp>(this, OnMarioPlayerDeathUp);
             QuantumEvent.Subscribe<EventPlayBumpSound>(this, OnPlayBumpSound, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerStompedByTeammate>(this, OnMarioPlayerStompedByTeammate, FilterOutReplayFastForward);
@@ -412,12 +419,12 @@ namespace NSMB.Entities.Player {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.SetFacingDirection");
             float delta = Time.deltaTime;
 
-            float angle = mario->CurrentPowerupState switch {
+            float angle = mario->IsStatue ? 0f : (mario->CurrentPowerupState switch {
                     PowerupState.BlueShell => 90f,
                     PowerupState.BoomerangFlower => 90f,
                     PowerupState.MegaMushroom => 78.75f,
                     _ => 67.5f,
-                };
+                });
             if (animator.GetCurrentAnimatorStateInfo(0).shortNameHash == ParamSuperHammer && animator.GetCurrentAnimatorStateInfo(0).normalizedTime < 1f) {
                 angle = 90f;
             }
@@ -575,6 +582,7 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamAHeld, inputs.Jump.IsDown);
             animator.SetBool(ParamFireballKnockback, mario->IsInWeakKnockback);
             animator.SetBool(ParamFireDeath, mario->FireDeath);
+            animator.SetBool(ParamStatueMode, mario->IsStatue);
             animator.SetBool(ParamPushing, mario->LastPushingFrame + 5 >= f.Number);
             animator.SetBool(ParamFrozen, freezable->IsFrozen(f));
             animator.SetBool(ParamKnockforwards, mario->KnockForwards);
@@ -598,6 +606,10 @@ namespace NSMB.Entities.Player {
             animator.SetFloat(ParamVelocityX, animatedVelocity);
             animator.SetFloat(ParamVelocityY, physicsObject->Velocity.Y.AsFloat);
             animator.SetFloat(ParamVelocityMagnitude, physicsObject->Velocity.Magnitude.AsFloat);
+
+            if (tailAnimator != null) {
+                tailAnimator.SetBool("tanookiStatue", mario->IsStatue);
+            }
         }
 
         private void HandleMiscStates(Frame f, MarioPlayer* mario, PhysicsObject* physicsObject, Freezable* freezable) {
@@ -666,7 +678,7 @@ namespace NSMB.Entities.Player {
             foreach (Renderer r in renderers) {
                 r.SetPropertyBlock(materialBlock);
                 foreach (var m in materials[r]) {
-                    var newShader = mario->IsStarmanInvincible ? rainbowShader : (mario->CurrentPowerupState == PowerupState.GoldFlower ? goldShader : (mario->CurrentPowerupState == PowerupState.SuperBallFlower ? superBallShader : normalShader));
+                    var newShader = mario->IsStarmanInvincible ? rainbowShader : (mario->IsStatue ? superBallShader : (mario->CurrentPowerupState == PowerupState.GoldFlower ? goldShader : (mario->CurrentPowerupState == PowerupState.SuperBallFlower ? superBallShader : normalShader)));
                     if (m.shader != newShader) {
                         m.shader = newShader;
                     }
@@ -711,10 +723,10 @@ namespace NSMB.Entities.Player {
             tanookiTail.SetActive(isTanookiSuit);
             // tanookiStatue.SetActive(isTanookiSuit && mario->TanookiStatueFrames > 0);
 
-            // tanookiHandAL.SetActive(isTanookiSuit && !isTanookiFlying);
-            // tanookiHandAR.SetActive(isTanookiSuit && !isTanookiFlying || isTanookiSuit && mario->TanookiStatueFrames <= 0);
-            // tanookiHandBL.SetActive(isTanookiSuit && isTanookiFlying && !inTailAttackState);
-            // tanookiHandBR.SetActive(isTanookiSuit && isTanookiFlying && !inTailAttackState || isTanookiSuit && !inTailAttackState && mario->TanookiStatueFrames > 0);
+            tanookiHandAL.SetActive(isTanookiSuit);
+            tanookiHandAR.SetActive(isTanookiSuit && !mario->IsStatue);
+            tanookiHandBL.SetActive(false);
+            tanookiHandBR.SetActive(isTanookiSuit && mario->IsStatue);
 
             // Builder Suit Models
             bool isBuilderSuit = mario->CurrentPowerupState == PowerupState.BuilderSuit;
@@ -1121,6 +1133,7 @@ namespace NSMB.Entities.Player {
                 animator.SetTrigger("superHammer");
             } else if (mario->CurrentPowerupState == PowerupState.TanookiSuit) {
                 animator.SetTrigger("tanookiTailAttack");
+                tailAnimator?.SetTrigger("tanookiTailAttack");
             } else {
                 animator.SetTrigger("fireball");
             }
@@ -1354,6 +1367,14 @@ namespace NSMB.Entities.Player {
             }
 
             PlaySound(SoundEffect.Player_Voice_SpinnerLaunch);
+        }
+
+        private void OnMarioPlayerStatueActivated(EventMarioPlayerStatueActivated e) {
+            if (!IsMarioLocal(e.Entity)) {
+                return;
+            }
+
+            PlaySound(SoundEffect.Player_Sound_PowerupCollect_TanookiSuit);
         }
 
         private void OnGameResynced(CallbackGameResynced e) {

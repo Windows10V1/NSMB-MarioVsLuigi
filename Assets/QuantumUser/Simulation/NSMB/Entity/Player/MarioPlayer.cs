@@ -95,11 +95,15 @@ namespace Quantum {
             readonly get => Flags.IsSet(22);
             set => SetValue(ref Flags, 22, value);
         }
+        public bool IsStatue {
+            readonly get => Flags.IsSet(23);
+            set => SetValue(ref Flags, 23, value);
+        }
 
         public readonly bool IsStarmanInvincible => InvincibilityFrames > 0;
         public readonly bool IsWallsliding => WallslideLeft || WallslideRight;
         public readonly bool IsCrouchedInShell => CurrentPowerupState == PowerupState.BlueShell && (IsCrouching || IsGroundpounding && GroundpoundStartFrames <= 11) && !IsInShell;
-        public readonly bool IsDamageable => !IsStarmanInvincible && DamageInvincibilityFrames == 0;
+        public readonly bool IsDamageable => !IsStarmanInvincible && DamageInvincibilityFrames == 0 && !IsStatue;
         public readonly bool IsInKnockback => CurrentKnockback != KnockbackStrength.None;
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
 
@@ -610,7 +614,7 @@ namespace Quantum {
             f.Events.MarioPlayerEnteredPipe(mario, CurrentPipe, false, horizontalDirection, FPVector2.Zero);
         }
 
-        private static void SetValue(ref BitSet23 bitset, int index, bool value) {
+        private static void SetValue(ref BitSet24 bitset, int index, bool value) {
             if (value) {
                 bitset.Set(index);
             } else {
