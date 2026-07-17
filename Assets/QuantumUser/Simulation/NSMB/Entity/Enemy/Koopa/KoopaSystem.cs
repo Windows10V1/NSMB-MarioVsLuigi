@@ -391,10 +391,6 @@ namespace Quantum {
 
             if (koopa->IsInShell && koopa->IsKicked) {
                 IceBlockSystem.Destroy(f, iceBlockEntity, IceBlockBreakReason.Shell, koopaEntity);
-
-                if (f.Unsafe.TryGetPointer(iceBlock->Entity, out MarioPlayer* frozenMario)) {
-                    frozenMario->Powerdown(f, iceBlock->Entity, false, koopaEntity);
-                }
             }
             return false;
         }
