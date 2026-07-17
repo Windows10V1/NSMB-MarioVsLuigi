@@ -2883,8 +2883,7 @@ namespace Quantum {
             case IceBlockBreakReason.BlockBump:
                 // Soft knockback, no i-frames.
                 strength = KnockbackStrength.Normal;
-                EntityRef blockBumpOwner = f.Unsafe.TryGetPointer(attacker, out BlockBump* blockBump) ? blockBump->Owner : attacker;
-                damaged = mario->DoKnockback(f, entity, faceAwayFromAttacker, 1, strength, blockBumpOwner);
+                damaged = mario->DoKnockback(f, entity, faceAwayFromAttacker, 1, strength, attacker);
                 break;
 
             case IceBlockBreakReason.Groundpounded:
