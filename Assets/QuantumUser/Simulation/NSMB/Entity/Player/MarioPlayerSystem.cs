@@ -833,6 +833,8 @@ namespace Quantum {
             if (!mario->IsInShell && !mario->IsSliding && !mario->IsSkidding && !mario->IsInKnockback && !mario->IsTurnaround) {
                 if (rightOrLeft) {
                     mario->FacingRight = inputs.Right.IsDown;
+                } else if (!physicsObject->IsTouchingGround && (mario->IsPropellerFlying || mario->IsSpinnerFlying) && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05) {
+                    mario->FacingRight = physicsObject->Velocity.X > 0;
                 }
             } else if (mario->MegaMushroomStartFrames == 0 && mario->MegaMushroomEndFrames == 0 && !mario->IsSkidding && !mario->IsTurnaround) {
                 if (!mario->IsInShell && ((FPMath.Abs(physicsObject->Velocity.X) < FP._0_50 && mario->IsCrouching) || physicsObject->IsOnSlipperyGround) && rightOrLeft) {
