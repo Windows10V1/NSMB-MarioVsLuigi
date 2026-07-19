@@ -833,6 +833,8 @@ namespace Quantum {
             if (!mario->IsInShell && !mario->IsSliding && !mario->IsSkidding && !mario->IsInKnockback && !mario->IsTurnaround) {
                 if (rightOrLeft) {
                     mario->FacingRight = inputs.Right.IsDown;
+                } else if (!physicsObject->IsTouchingGround && (mario->IsPropellerFlying || mario->IsSpinnerFlying) && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05) {
+                    mario->FacingRight = physicsObject->Velocity.X > 0;
                 }
             } else if (mario->MegaMushroomStartFrames == 0 && mario->MegaMushroomEndFrames == 0 && !mario->IsSkidding && !mario->IsTurnaround) {
                 if (!mario->IsInShell && ((FPMath.Abs(physicsObject->Velocity.X) < FP._0_50 && mario->IsCrouching) || physicsObject->IsOnSlipperyGround) && rightOrLeft) {
@@ -2401,7 +2403,6 @@ namespace Quantum {
                         // transitions use this bool to make them lose a star
                         bool poweredDown = false;
                         // Hit them, powerdown them
-                        marioB->FacingRight = !fromRight;
                         // powerdown must come before doknockback or it will not occur
                         if (dropStars) {
                             poweredDown = marioB->Powerdown(f, marioBEntity, false, marioAEntity);
@@ -2417,7 +2418,6 @@ namespace Quantum {
                     if (!marioAAbove) {
                         bool poweredDown = false;
                         // Hit them, powerdown them
-                        marioA->FacingRight = fromRight;
                         if (dropStars) {
                             poweredDown = marioA->Powerdown(f, marioAEntity, false, marioBEntity);
                         }
@@ -2859,12 +2859,12 @@ namespace Quantum {
                 } else if (iceBlockPhysicsObject->IsTouchingRightWall) {
                     mario->FacingRight = false;
                 }
-            } else {
-                if (f.Unsafe.TryGetPointer(attacker, out Transform2D* attackerTransform)) {
-                    var marioTransform = f.Unsafe.GetPointer<Transform2D>(entity);
-                    QuantumUtils.UnwrapWorldLocations(f, marioTransform->Position, attackerTransform->Position, out FPVector2 ourPos, out FPVector2 theirPos);
-                    mario->FacingRight = ourPos.X < theirPos.X;
-                }
+            }
+
+            if (f.Unsafe.TryGetPointer(attacker, out Transform2D* attackerTransform)) {
+                var marioTransform = f.Unsafe.GetPointer<Transform2D>(entity);
+                QuantumUtils.UnwrapWorldLocations(f, marioTransform->Position, attackerTransform->Position, out FPVector2 ourPos, out FPVector2 theirPos);
+                mario->FacingRight = ourPos.X < theirPos.X;
             }
 
             bool damaged = false;
