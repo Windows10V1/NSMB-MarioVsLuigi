@@ -124,6 +124,28 @@ namespace Quantum {
             }
         }
 
+        public readonly bool CheckTeamAttack(Frame f, EntityRef attacker, out bool dropObjectives) {
+            dropObjectives = true;
+
+            // Always, if team attack == Full
+            if (f.Global->Rules.TeamAttack == TeamAttackOptions.Full) {
+                return true;
+            }
+
+            // True if attacker Mario is on different team
+            if (f.Unsafe.TryGetPointer(attacker, out MarioPlayer* attackerMario)
+                && GetTeam(f) == attackerMario->GetTeam(f)) {
+                // Same team
+                dropObjectives = false;
+
+                // Allow hit if team attack is KnockbackOnly
+                return f.Global->Rules.TeamAttack == TeamAttackOptions.KnockbackOnly;
+            }
+
+            // Fallback to true
+            return true;
+        }
+
         public readonly FPVector2 GetHeldItemOffset(Frame f, EntityRef marioEntity) {
             if (!f.Exists(HeldEntity)) {
                 return default;

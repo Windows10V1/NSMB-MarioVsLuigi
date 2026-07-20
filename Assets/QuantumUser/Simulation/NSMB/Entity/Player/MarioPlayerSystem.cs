@@ -2163,25 +2163,21 @@ namespace Quantum {
             var marioPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
             var projectileAsset = f.FindAsset(projectile->Asset);
 
-            var rules = f.Global->Rules;
-
-            bool dropStars = true;
-            if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* ownerMario)) {
-                dropStars = ownerMario->GetTeam(f) != mario->GetTeam(f) || rules.TeamAttack == TeamAttackOptions.Full;
-            }
+            bool dropStars = false;
 
             // Mario is "damageable" when he's...
             // not in knockback, not Mega
             // regular damageable checks (iframes is 0, not starman invincible)
             // not in a powerUP transition while mini (specifically)
             // Mario is in his Blue Shell and projectile doesn't affect blue Shell
+            // Team attack allows him to get hit
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && (mario->IsDamageable(f) || (mario->TryGetCurrentPowerTransition(f, out _) && mario->CurrentPowerupState == PowerupState.MiniMushroom))
-                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
+                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
+                && mario->CheckTeamAttack(f, projectile->Owner, out dropStars);
 
-            // allow the projectiles to collide, but do no knockback if no team attack
-            if (damageable && (rules.TeamAttack != TeamAttackOptions.None || dropStars)) {
+            if (damageable) {
                 bool didKnockback = false;
                 switch (projectileAsset.Effect) {
                 case ProjectileEffectType.KillEnemiesAndSoftKnockbackPlayers:
@@ -2241,12 +2237,8 @@ namespace Quantum {
                 return;
             }
 
-            // check game rules
-            var rules = f.Global->Rules;
-            bool dropStars = marioA->GetTeam(f) != marioB->GetTeam(f) || rules.TeamAttack == TeamAttackOptions.Full;
-
-            // using drop stars as a team check
-            if (rules.TeamAttack == TeamAttackOptions.None && !dropStars) {
+            // Check if hit should be prevented due to team attack rules
+            if (!marioA->CheckTeamAttack(f, marioBEntity, out bool dropStars)) {
                 return;
             }
 
@@ -2778,6 +2770,11 @@ namespace Quantum {
                 return;
             }
 
+            // Check if hit should be prevented due to team attack rules
+            if (!mario->CheckTeamAttack(f, bumper, out bool dropStars)) {
+                return;
+            }
+
             FPVector2 bumperPosition;
             if (f.Unsafe.TryGetPointer(bumper, out Transform2D* bumperTransform)) {
                 bumperPosition = bumperTransform->Position;
@@ -2787,16 +2784,6 @@ namespace Quantum {
             var marioTransform = f.Unsafe.GetPointer<Transform2D>(entity);
             QuantumUtils.UnwrapWorldLocations(f, marioTransform->Position, bumperPosition, out FPVector2 ourPos, out FPVector2 theirPos);
             bool onRight = ourPos.X > theirPos.X;
-
-            var rules = f.Global->Rules;
-            bool dropStars = true;
-            if (f.Unsafe.TryGetPointer(bumper, out MarioPlayer* bumperMario)) {
-                bool teamMatch = bumperMario->GetTeam(f) == mario->GetTeam(f);
-                if (rules.TeamAttack == TeamAttackOptions.None && teamMatch) {
-                    return;
-                }
-                dropStars = !teamMatch || rules.TeamAttack == TeamAttackOptions.Full;
-            }
 
             bool damaged = mario->DoKnockback(f, entity, !onRight, dropStars ? 1 : 0, KnockbackStrength.Normal, bumper, bypassDamageInvincibility: true, ignoreInvincibleStates: true);
             if (damaged) {
