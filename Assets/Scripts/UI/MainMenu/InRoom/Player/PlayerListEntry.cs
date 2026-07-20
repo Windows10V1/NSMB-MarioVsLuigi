@@ -96,7 +96,8 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             } else {
                 chattingIcon.SetActive(false);
                 typingCounter = 0;
-            };
+            }
+            ;
         }
 
         public unsafe void SetPlayer(Frame f, PlayerRef player) {

@@ -717,6 +717,7 @@ namespace Quantum {
             }
 
             if (mario->WallslideEndFrames > 0 && QuantumUtils.Decrement(ref mario->WallslideEndFrames)) {
+                mario->FacingRight = mario->WallslideRight;
                 mario->WallslideRight = false;
                 mario->WallslideLeft = false;
                 return;

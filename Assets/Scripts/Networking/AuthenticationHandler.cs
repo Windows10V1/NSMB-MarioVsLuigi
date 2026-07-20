@@ -1,11 +1,11 @@
+using Newtonsoft.Json;
 using NSMB.Utilities;
 using Photon.Realtime;
-using UnityEngine;
-using UnityEngine.Networking;
 using System;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
+using UnityEngine;
+using UnityEngine.Networking;
 
 namespace NSMB.Networking {
     public class AuthenticationHandler {

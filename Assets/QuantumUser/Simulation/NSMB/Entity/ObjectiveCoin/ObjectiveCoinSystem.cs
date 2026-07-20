@@ -1,5 +1,4 @@
 using Photon.Deterministic;
-using Quantum.Physics2D;
 
 namespace Quantum {
     public unsafe class ObjectiveCoinSystem : SystemMainThread, ISignalOnMarioPlayerDropObjective, ISignalOnMarioPlayerCollectedCoin,

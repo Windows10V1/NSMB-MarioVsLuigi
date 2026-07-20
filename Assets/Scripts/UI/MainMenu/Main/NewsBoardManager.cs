@@ -1,10 +1,7 @@
-using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NSMB.Networking;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;

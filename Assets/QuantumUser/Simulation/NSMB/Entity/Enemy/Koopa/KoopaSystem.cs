@@ -194,13 +194,16 @@ namespace Quantum {
 
             bool koopaABeingHeld = f.Exists(f.Unsafe.GetPointer<Holdable>(koopaEntityA)->Holder);
             bool koopaBBeingHeld = f.Exists(f.Unsafe.GetPointer<Holdable>(koopaEntityB)->Holder);
+            bool koopaAKicked = koopaA->IsKicked;
+            bool koopaBKicked = koopaB->IsKicked;
+
             bool anyDamaged = false;
-            if (koopaABeingHeld || koopaBBeingHeld || koopaA->IsKicked) {
+            if (koopaABeingHeld || koopaBBeingHeld || koopaAKicked) {
                 // Destroy B
                 koopaB->Kill(f, koopaEntityB, koopaEntityA, EnemyKillReason.Special);
                 anyDamaged = true;
             }
-            if (koopaABeingHeld || koopaBBeingHeld || koopaB->IsKicked) {
+            if (koopaABeingHeld || koopaBBeingHeld || koopaBKicked) {
                 // Destroy A
                 koopaA->Kill(f, koopaEntityA, koopaEntityB, EnemyKillReason.Special);
                 anyDamaged = true;
@@ -305,7 +308,7 @@ namespace Quantum {
                     PowerupReserveResult result = powerup.Collect(f, marioEntity);
                     koopaEnemy->IsActive = false;
                     koopaEnemy->IsDead = true;
-                    koopaEnemy->SetDelayedRespawn(600); // a little longer...
+                    koopaEnemy->SetDelayedRespawn(10 * f.UpdateRate); // a little longer...
                     koopaPhysicsObject->IsFrozen = true;
                     f.Events.MarioPlayerCollectedPowerup(marioEntity, result, powerup);
                 } else {
@@ -340,7 +343,7 @@ namespace Quantum {
 
                             koopaEnemy->IsActive = false;
                             koopaEnemy->IsDead = true;
-                            koopaEnemy->SetDelayedRespawn(600); // a little longer...
+                            koopaEnemy->SetDelayedRespawn(10 * f.UpdateRate); // a little longer...
                             koopaPhysicsObject->IsFrozen = true;
                         } else {
                             koopa->EnterShell(f, koopaEntity, marioEntity, false, false);
