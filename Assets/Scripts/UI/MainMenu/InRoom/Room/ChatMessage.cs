@@ -61,6 +61,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         private void OnLanguageChanged(TranslationManager tm) {
             chatText.text = tm.GetTranslationWithReplacements(data.message, data.replacements);
             chatText.horizontalAlignment = tm.RightToLeft ? HorizontalAlignmentOptions.Right : HorizontalAlignmentOptions.Left;
+            LayoutRebuilder.MarkLayoutForRebuild((RectTransform) transform);
         }
     }
 }

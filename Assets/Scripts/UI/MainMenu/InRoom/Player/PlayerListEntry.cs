@@ -156,7 +156,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
                 builder.Append("<sprite name=player_muted>");
             }
 
-            if (playerData->IsRoomHost) {
+            if (playerData->IsRoomHost(f)) {
                 builder.Append("<sprite name=room_host>");
             }
 

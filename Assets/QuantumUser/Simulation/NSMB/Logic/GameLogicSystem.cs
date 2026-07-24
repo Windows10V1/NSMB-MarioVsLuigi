@@ -309,11 +309,7 @@ namespace Quantum {
 
             if (playerDatas.Count == 0) {
                 // First player is host
-                newData->IsRoomHost = true;
-                newData->IsReady = false;
-                newData->IsTeamLocked = false;
-                f.Global->Host = player;
-                f.Events.HostChanged(player);
+                newData->SetAsHost(f, true);
             }
 
             foreach ((_, EntityRef otherEntity) in playerDatas) {
@@ -342,7 +338,7 @@ namespace Quantum {
             if (playerDatas.TryGetValue(player, out EntityRef entity)
                 && f.Unsafe.TryGetPointer(entity, out PlayerData* deletedPlayerData)) {
 
-                if (deletedPlayerData->IsRoomHost) {
+                if (deletedPlayerData->IsRoomHost(f)) {
                     // Give the host to the youngest player.
                     PlayerData* youngestPlayer = null;
                     foreach ((_, EntityRef otherEntity) in playerDatas) {
@@ -357,11 +353,7 @@ namespace Quantum {
                     }
 
                     if (youngestPlayer != null) {
-                        youngestPlayer->IsRoomHost = true;
-                        youngestPlayer->IsReady = false;
-                        youngestPlayer->IsTeamLocked = false;
-                        f.Global->Host = youngestPlayer->PlayerRef;
-                        f.Events.HostChanged(youngestPlayer->PlayerRef);
+                        youngestPlayer->SetAsHost(f, true);
                     }
 
                     hostChanged = true;

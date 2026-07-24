@@ -3348,8 +3348,6 @@ namespace Quantum {
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(20)]
     public PlayerRef PlayerRef;
-    [FieldOffset(36)]
-    public QBoolean IsRoomHost;
     [FieldOffset(28)]
     public QBoolean IsLoaded;
     [FieldOffset(56)]
@@ -3358,13 +3356,13 @@ namespace Quantum {
     public AssetRef<PaletteSet> Palette;
     [FieldOffset(1)]
     public Byte RequestedTeam;
-    [FieldOffset(40)]
+    [FieldOffset(36)]
     public QBoolean IsSpectator;
-    [FieldOffset(48)]
-    public QBoolean ManualSpectator;
-    [FieldOffset(52)]
-    public QBoolean VotedToContinue;
     [FieldOffset(44)]
+    public QBoolean ManualSpectator;
+    [FieldOffset(48)]
+    public QBoolean VotedToContinue;
+    [FieldOffset(40)]
     public QBoolean IsTeamLocked;
     [FieldOffset(16)]
     public Int32 Wins;
@@ -3384,7 +3382,6 @@ namespace Quantum {
       unchecked { 
         var hash = 10271;
         hash = hash * 31 + PlayerRef.GetHashCode();
-        hash = hash * 31 + IsRoomHost.GetHashCode();
         hash = hash * 31 + IsLoaded.GetHashCode();
         hash = hash * 31 + Character.GetHashCode();
         hash = hash * 31 + Palette.GetHashCode();
@@ -3415,7 +3412,6 @@ namespace Quantum {
         QBoolean.Serialize(&p->IsInSettings, serializer);
         QBoolean.Serialize(&p->IsLoaded, serializer);
         QBoolean.Serialize(&p->IsReady, serializer);
-        QBoolean.Serialize(&p->IsRoomHost, serializer);
         QBoolean.Serialize(&p->IsSpectator, serializer);
         QBoolean.Serialize(&p->IsTeamLocked, serializer);
         QBoolean.Serialize(&p->ManualSpectator, serializer);
