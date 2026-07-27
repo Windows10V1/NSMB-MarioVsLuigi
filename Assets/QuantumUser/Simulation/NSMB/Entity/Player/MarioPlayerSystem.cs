@@ -2423,10 +2423,10 @@ namespace Quantum {
                 }
 
                 // Crouched in shell stomps
-                if (marioA->IsCrouchedInShell && marioBAbove && !marioB->IsGroundpoundActive && !marioB->IsDrilling && marioB->CurrentPowerupState != PowerupState.MegaMushroom) {
+                if (marioA->IsCrouchedInShell && marioB->LastAttacker != marioAEntity && marioBAbove && !marioB->IsGroundpoundActive && !marioB->IsDrilling && marioB->CurrentPowerupState != PowerupState.MegaMushroom) {
                     MarioMarioBlueShellStomp(f, stage, marioBEntity, marioAEntity, fromRight);
                     return;
-                } else if (marioB->IsCrouchedInShell && marioAAbove && !marioA->IsGroundpoundActive && !marioA->IsDrilling && marioA->CurrentPowerupState != PowerupState.MegaMushroom) {
+                } else if (marioB->IsCrouchedInShell && marioA->LastAttacker != marioBEntity && marioAAbove && !marioA->IsGroundpoundActive && !marioA->IsDrilling && marioA->CurrentPowerupState != PowerupState.MegaMushroom) {
                     MarioMarioBlueShellStomp(f, stage, marioAEntity, marioBEntity, fromRight);
                     return;
                 }
