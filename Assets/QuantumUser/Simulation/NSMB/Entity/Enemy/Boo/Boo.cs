@@ -35,7 +35,7 @@ namespace Quantum {
             f.Events.PlayComboSound(booEntity, combo);
 
             enemy->IsDead = true;
-            enemy->SetDelayedRespawn(sparklesTime: 120);
+            enemy->SetDelayedRespawn(sparklesTime: 2 * f.UpdateRate);
 
             var collider = f.Unsafe.GetPointer<PhysicsCollider2D>(booEntity);
             FPVector2 center = booTransform->Position + collider->Shape.Centroid;

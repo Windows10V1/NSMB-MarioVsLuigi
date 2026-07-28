@@ -1,5 +1,4 @@
 using Photon.Deterministic;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace Quantum {
@@ -122,6 +121,28 @@ namespace Quantum {
             } else {
                 return (byte) (data->RealTeam % Constants.MaxPlayers);
             }
+        }
+
+        public readonly bool CheckTeamAttack(Frame f, EntityRef attacker, out bool dropObjectives) {
+            dropObjectives = true;
+
+            // Always, if team attack == Full
+            if (f.Global->Rules.TeamAttack == TeamAttackOptions.Full) {
+                return true;
+            }
+
+            // True if attacker Mario is on different team
+            if (f.Unsafe.TryGetPointer(attacker, out MarioPlayer* attackerMario)
+                && GetTeam(f) == attackerMario->GetTeam(f)) {
+                // Same team
+                dropObjectives = false;
+
+                // Allow hit if team attack is KnockbackOnly
+                return f.Global->Rules.TeamAttack == TeamAttackOptions.KnockbackOnly;
+            }
+
+            // Fallback to true
+            return true;
         }
 
         public readonly FPVector2 GetHeldItemOffset(Frame f, EntityRef marioEntity) {
@@ -497,7 +518,7 @@ namespace Quantum {
             }
 
             var freezable = f.Unsafe.GetPointer<Freezable>(entity);
-            if ((!bypassDamageInvincibility && DamageInvincibilityFrames > 0) || f.Exists(CurrentPipe) || (freezable->IsFrozen(f) && freezable->FrozenCubeEntity != attacker) || IsDead || MegaMushroomStartFrames > 0 || MegaMushroomEndFrames > 0) {
+            if ((!bypassDamageInvincibility && DamageInvincibilityFrames > 0) || f.Exists(CurrentPipe) || IsDead || MegaMushroomStartFrames > 0 || MegaMushroomEndFrames > 0) {
                 return false;
             }
 

@@ -348,7 +348,7 @@ namespace NSMB.Networking {
             foreach (var ban in bans) {
                 if (ban.MatchesPlayer(player)) {
                     // We're banned...
-                    QuantumRunner.Default.Shutdown(ShutdownCause.NetworkError);
+                    QuantumRunner.Default.Shutdown(ShutdownCause.Ok);
                     ThrowError("ui.error.join.banned", true);
                     return;
                 }

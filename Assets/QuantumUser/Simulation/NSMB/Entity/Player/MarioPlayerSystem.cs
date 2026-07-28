@@ -717,6 +717,7 @@ namespace Quantum {
             }
 
             if (mario->WallslideEndFrames > 0 && QuantumUtils.Decrement(ref mario->WallslideEndFrames)) {
+                mario->FacingRight = mario->WallslideRight;
                 mario->WallslideRight = false;
                 mario->WallslideLeft = false;
                 return;
@@ -833,6 +834,8 @@ namespace Quantum {
             if (!mario->IsInShell && !mario->IsSliding && !mario->IsSkidding && !mario->IsInKnockback && !mario->IsTurnaround) {
                 if (rightOrLeft) {
                     mario->FacingRight = inputs.Right.IsDown;
+                } else if (!physicsObject->IsTouchingGround && (mario->IsPropellerFlying || mario->IsSpinnerFlying) && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05) {
+                    mario->FacingRight = physicsObject->Velocity.X > 0;
                 }
             } else if (mario->MegaMushroomStartFrames == 0 && mario->MegaMushroomEndFrames == 0 && !mario->IsSkidding && !mario->IsTurnaround) {
                 if (!mario->IsInShell && ((FPMath.Abs(physicsObject->Velocity.X) < FP._0_50 && mario->IsCrouching) || physicsObject->IsOnSlipperyGround) && rightOrLeft) {
@@ -2161,25 +2164,21 @@ namespace Quantum {
             var marioPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
             var projectileAsset = f.FindAsset(projectile->Asset);
 
-            var rules = f.Global->Rules;
-
-            bool dropStars = true;
-            if (f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* ownerMario)) {
-                dropStars = ownerMario->GetTeam(f) != mario->GetTeam(f) || rules.TeamAttack == TeamAttackOptions.Full;
-            }
+            bool dropStars = false;
 
             // Mario is "damageable" when he's...
             // not in knockback, not Mega
             // regular damageable checks (iframes is 0, not starman invincible)
             // not in a powerUP transition while mini (specifically)
             // Mario is in his Blue Shell and projectile doesn't affect blue Shell
+            // Team attack allows him to get hit
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && (mario->IsDamageable(f) || (mario->TryGetCurrentPowerTransition(f, out _) && mario->CurrentPowerupState == PowerupState.MiniMushroom))
-                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell);
+                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
+                && mario->CheckTeamAttack(f, projectile->Owner, out dropStars);
 
-            // allow the projectiles to collide, but do no knockback if no team attack
-            if (damageable && (rules.TeamAttack != TeamAttackOptions.None || dropStars)) {
+            if (damageable) {
                 bool didKnockback = false;
                 switch (projectileAsset.Effect) {
                 case ProjectileEffectType.KillEnemiesAndSoftKnockbackPlayers:
@@ -2239,12 +2238,8 @@ namespace Quantum {
                 return;
             }
 
-            // check game rules
-            var rules = f.Global->Rules;
-            bool dropStars = marioA->GetTeam(f) != marioB->GetTeam(f) || rules.TeamAttack == TeamAttackOptions.Full;
-
-            // using drop stars as a team check
-            if (rules.TeamAttack == TeamAttackOptions.None && !dropStars) {
+            // Check if hit should be prevented due to team attack rules
+            if (!marioA->CheckTeamAttack(f, marioBEntity, out bool dropStars)) {
                 return;
             }
 
@@ -2401,7 +2396,6 @@ namespace Quantum {
                         // transitions use this bool to make them lose a star
                         bool poweredDown = false;
                         // Hit them, powerdown them
-                        marioB->FacingRight = !fromRight;
                         // powerdown must come before doknockback or it will not occur
                         if (dropStars) {
                             poweredDown = marioB->Powerdown(f, marioBEntity, false, marioAEntity);
@@ -2417,7 +2411,6 @@ namespace Quantum {
                     if (!marioAAbove) {
                         bool poweredDown = false;
                         // Hit them, powerdown them
-                        marioA->FacingRight = fromRight;
                         if (dropStars) {
                             poweredDown = marioA->Powerdown(f, marioAEntity, false, marioBEntity);
                         }
@@ -2430,10 +2423,10 @@ namespace Quantum {
                 }
 
                 // Crouched in shell stomps
-                if (marioA->IsCrouchedInShell && marioBAbove && !marioB->IsGroundpoundActive && !marioB->IsDrilling && marioB->CurrentPowerupState != PowerupState.MegaMushroom) {
+                if (marioA->IsCrouchedInShell && marioB->LastAttacker != marioAEntity && marioBAbove && !marioB->IsGroundpoundActive && !marioB->IsDrilling && marioB->CurrentPowerupState != PowerupState.MegaMushroom) {
                     MarioMarioBlueShellStomp(f, stage, marioBEntity, marioAEntity, fromRight);
                     return;
-                } else if (marioB->IsCrouchedInShell && marioAAbove && !marioA->IsGroundpoundActive && !marioA->IsDrilling && marioA->CurrentPowerupState != PowerupState.MegaMushroom) {
+                } else if (marioB->IsCrouchedInShell && marioA->LastAttacker != marioBEntity && marioAAbove && !marioA->IsGroundpoundActive && !marioA->IsDrilling && marioA->CurrentPowerupState != PowerupState.MegaMushroom) {
                     MarioMarioBlueShellStomp(f, stage, marioAEntity, marioBEntity, fromRight);
                     return;
                 }
@@ -2778,6 +2771,11 @@ namespace Quantum {
                 return;
             }
 
+            // Check if hit should be prevented due to team attack rules
+            if (!mario->CheckTeamAttack(f, bumper, out bool dropStars)) {
+                return;
+            }
+
             FPVector2 bumperPosition;
             if (f.Unsafe.TryGetPointer(bumper, out Transform2D* bumperTransform)) {
                 bumperPosition = bumperTransform->Position;
@@ -2787,16 +2785,6 @@ namespace Quantum {
             var marioTransform = f.Unsafe.GetPointer<Transform2D>(entity);
             QuantumUtils.UnwrapWorldLocations(f, marioTransform->Position, bumperPosition, out FPVector2 ourPos, out FPVector2 theirPos);
             bool onRight = ourPos.X > theirPos.X;
-
-            var rules = f.Global->Rules;
-            bool dropStars = true;
-            if (f.Unsafe.TryGetPointer(bumper, out MarioPlayer* bumperMario)) {
-                bool teamMatch = bumperMario->GetTeam(f) == mario->GetTeam(f);
-                if (rules.TeamAttack == TeamAttackOptions.None && teamMatch) {
-                    return;
-                }
-                dropStars = !teamMatch || rules.TeamAttack == TeamAttackOptions.Full;
-            }
 
             bool damaged = mario->DoKnockback(f, entity, !onRight, dropStars ? 1 : 0, KnockbackStrength.Normal, bumper, bypassDamageInvincibility: true, ignoreInvincibleStates: true);
             if (damaged) {
@@ -2859,12 +2847,12 @@ namespace Quantum {
                 } else if (iceBlockPhysicsObject->IsTouchingRightWall) {
                     mario->FacingRight = false;
                 }
-            } else {
-                if (f.Unsafe.TryGetPointer(attacker, out Transform2D* attackerTransform)) {
-                    var marioTransform = f.Unsafe.GetPointer<Transform2D>(entity);
-                    QuantumUtils.UnwrapWorldLocations(f, marioTransform->Position, attackerTransform->Position, out FPVector2 ourPos, out FPVector2 theirPos);
-                    mario->FacingRight = ourPos.X < theirPos.X;
-                }
+            }
+
+            if (f.Unsafe.TryGetPointer(attacker, out Transform2D* attackerTransform)) {
+                var marioTransform = f.Unsafe.GetPointer<Transform2D>(entity);
+                QuantumUtils.UnwrapWorldLocations(f, marioTransform->Position, attackerTransform->Position, out FPVector2 ourPos, out FPVector2 theirPos);
+                mario->FacingRight = ourPos.X < theirPos.X;
             }
 
             bool damaged = false;

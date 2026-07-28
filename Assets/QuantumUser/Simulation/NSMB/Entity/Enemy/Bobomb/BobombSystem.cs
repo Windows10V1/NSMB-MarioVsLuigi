@@ -122,7 +122,7 @@ namespace Quantum {
 
             enemy->IsDead = true;
             enemy->IsActive = false;
-            enemy->SetDelayedRespawn(180); // three seconds instead of the usual 6
+            enemy->SetDelayedRespawn();
             physicsObject->Velocity = FPVector2.Zero;
             physicsObject->IsFrozen = true;
             f.Events.BobombExploded(filter.Entity);

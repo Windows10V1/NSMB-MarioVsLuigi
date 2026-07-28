@@ -2,6 +2,7 @@ using NSMB.Cameras;
 using NSMB.Particles;
 using NSMB.Quantum;
 using NSMB.Sound;
+using NSMB.UI;
 using NSMB.UI.Game;
 using NSMB.Utilities;
 using NSMB.Utilities.Extensions;
@@ -11,7 +12,6 @@ using Quantum.Profiling;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using NSMB.UI;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Scripting;
@@ -1318,6 +1318,7 @@ namespace NSMB.Entities.Player {
             }
 
             previousPowerupVisuals = null;
+            GlowColor = Utils.GetPlayerColor(f, mario->PlayerRef);
         }
 
         private void OnMarioPlayerLandedWithAnimation(EventMarioPlayerLandedWithAnimation e) {

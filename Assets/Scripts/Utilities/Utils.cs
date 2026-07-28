@@ -164,8 +164,7 @@ namespace NSMB.Utilities {
                     symbolStringBuilder.Append(c);
                 }
             }
-            for (int i = str.Length; i < padUpToNLength; i++)
-            {
+            for (int i = str.Length; i < padUpToNLength; i++) {
                 symbolStringBuilder.Append("<space=0.5em><size=0>.</size>"); // invisible character suffix because if <SPACE> is at the end of the text, the component would trim it.
             }
             

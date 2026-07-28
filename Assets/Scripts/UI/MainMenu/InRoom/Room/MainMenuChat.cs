@@ -1,6 +1,6 @@
 using NSMB.Chat;
-using NSMB.Utilities.Extensions;
 using NSMB.UI.Translation;
+using NSMB.Utilities.Extensions;
 using Quantum;
 using System.Collections;
 using System.Collections.Generic;
