@@ -2849,34 +2849,34 @@ namespace Quantum {
                 }
             }
 
+            bool hitFromRight = mario->FacingRight;
             if (f.Unsafe.TryGetPointer(attacker, out Transform2D* attackerTransform)) {
                 var marioTransform = f.Unsafe.GetPointer<Transform2D>(entity);
                 QuantumUtils.UnwrapWorldLocations(f, marioTransform->Position, attackerTransform->Position, out FPVector2 ourPos, out FPVector2 theirPos);
-                mario->FacingRight = ourPos.X < theirPos.X;
+                hitFromRight = ourPos.X < theirPos.X;
             }
-
+            
             bool damaged = false;
             KnockbackStrength strength = KnockbackStrength.Normal;
             switch (breakReason) {
             case IceBlockBreakReason.HitWall:
             case IceBlockBreakReason.Other:
-            other:
                 // Weak knockback, i-frames.
                 strength = KnockbackStrength.FireballBump;
-                damaged = mario->DoKnockback(f, entity, mario->FacingRight, 1, strength, attacker);
+                damaged = mario->DoKnockback(f, entity, hitFromRight, 1, strength, attacker);
                 mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
                 break;
 
             case IceBlockBreakReason.BlockBump:
                 // Soft knockback, no i-frames.
                 strength = KnockbackStrength.Normal;
-                damaged = mario->DoKnockback(f, entity, mario->FacingRight, 1, strength, attacker);
+                damaged = mario->DoKnockback(f, entity, hitFromRight, 1, strength, attacker);
                 break;
 
             case IceBlockBreakReason.Groundpounded:
                 // Hard knockback, i-frames.
                 strength = KnockbackStrength.Groundpound;
-                damaged = mario->DoKnockback(f, entity, mario->FacingRight, 2, strength, attacker);
+                damaged = mario->DoKnockback(f, entity, hitFromRight, 2, strength, attacker);
                 mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
                 break;
 
@@ -2886,7 +2886,7 @@ namespace Quantum {
                 // Damage, i-frames.
                 strength = KnockbackStrength.Groundpound;
                 if (mario->Powerdown(f, entity, false, attacker)) {
-                    mario->DoKnockback(f, entity, mario->FacingRight, 0, KnockbackStrength.FireballBump, attacker);
+                    mario->DoKnockback(f, entity, hitFromRight, 0, KnockbackStrength.FireballBump, attacker);
                 }
                 damaged = false; // No "bump" effect.
                 mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
@@ -2902,9 +2902,8 @@ namespace Quantum {
                 break;
 
             default:
-                // Fall through.
-                Log.DebugWarn($"Unhandled IceBlockBreakReason {breakReason} in {nameof(OnIceBlockBroken)}!");
-                goto other;
+                Log.DebugWarn($"Unhandled IceBlockBreakReason {breakReason} in {nameof(OnIceBlockBroken)}! Defaulting to {IceBlockBreakReason.Other}");
+                goto case IceBlockBreakReason.Other;
             }
 
             if (damaged) {
