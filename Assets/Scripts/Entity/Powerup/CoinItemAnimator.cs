@@ -139,7 +139,8 @@ namespace NSMB.Entities.CoinItems {
         }
 
         private void HandleDespawningBlinking(CoinItem* coinItem) {
-            if (coinItem->Lifetime <= 60) {
+            float despawnTimeRemaining = coinItem->Lifetime / 60f;
+            if (despawnTimeRemaining < 3) {
                 renderer.enabled = ((coinItem->Lifetime / 60f * blinkingRate) % 1) > 0.5f;
             }
         }
