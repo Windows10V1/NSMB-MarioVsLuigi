@@ -624,7 +624,7 @@ namespace NSMB.Entities.Player {
             bool modelShouldBeInvisible = f.Global->GameState < GameState.Playing
                 || mario->IsRespawning
                 || (mario->IsDead && IsBelowDeathplane)
-                || (!mario->IsDead && remainingDamageInvincibility > 0 && (f.Number * f.DeltaTime.AsFloat) * (remainingDamageInvincibility <= 0.75f ? 5 : 2) % 0.2f < 0.1f);
+                || (remainingDamageInvincibility > 0 && (f.Number * f.DeltaTime.AsFloat) * (remainingDamageInvincibility <= 0.75f ? 5 : 2) % 0.2f < 0.1f);
 
             bool modelFinalVisibleState = modelShouldBeVisible || !modelShouldBeInvisible;
             if (modelFinalVisibleState != modelRoot.activeSelf) {

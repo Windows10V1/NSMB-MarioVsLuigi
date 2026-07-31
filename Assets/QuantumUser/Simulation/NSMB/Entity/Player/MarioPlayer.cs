@@ -344,7 +344,8 @@ namespace Quantum {
             ForceJumpTimer = 0;
             LastAttacker = EntityRef.None;
             TauntFrames = 0;
-            
+            DamageInvincibilityFrames = 0;
+
             if (f.Unsafe.TryGetPointer(HeldEntity, out Holdable* holdable)) {
                 holdable->DropWithoutThrowing(f, HeldEntity);
             }
