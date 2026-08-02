@@ -2,7 +2,7 @@ using Photon.Deterministic;
 using Quantum.Physics2D;
 
 namespace Quantum {
-    public unsafe class BigStarSystem : SystemMainThread, ISignalOnReturnToRoom, ISignalOnMarioPlayerDropObjective {
+    public unsafe class BigStarSystem : SystemMainThread, ISignalOnMarioPlayerDropObjective {
 
         public override bool StartEnabled => false;
 
@@ -135,12 +135,6 @@ namespace Quantum {
             f.Destroy(starEntity);
         }
 
-        public void OnReturnToRoom(Frame f) {
-            f.Global->MainBigStar = EntityRef.None;
-            f.Global->BigStarSpawnTimer = 0;
-            f.Global->UsedStarSpawns.ClearAll();
-        }
-
         public void OnMarioPlayerDropObjective(Frame f, EntityRef entity, int amount, EntityRef attacker) {
             if (f.Unsafe.TryGetPointer(entity, out MarioPlayer* mario)) {
                 SpawnStarsFromPlayer(f, entity, mario, amount);
@@ -157,9 +151,11 @@ namespace Quantum {
                 int bitsSet = usedSpawnpoints.GetSetCount();
                 if (bitsSet >= numSpawnpoints) {
                     usedSpawnpoints.ClearAll();
+                    bitsSet = 0;
                 }
 
-                int count = f.RNG->Next(0, numSpawnpoints - bitsSet);
+                int selection = f.RNG->Next(0, numSpawnpoints - bitsSet);
+                int count = selection;
                 int index = 0;
                 for (int j = 0; j < numSpawnpoints; j++) {
                     if (!usedSpawnpoints.IsSet(j)) {

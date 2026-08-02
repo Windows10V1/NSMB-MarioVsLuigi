@@ -213,9 +213,6 @@ namespace Quantum {
                     f.Global->GameState = GameState.PreGameRoom;
                     f.Events.GameStateChanged(GameState.PreGameRoom);
                     f.SystemDisable<StartDisabledSystemGroup>();
-
-                    var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
-                    gamemode.DisableGamemode(f);
                 }
                 break;
             }
@@ -475,7 +472,6 @@ namespace Quantum {
             for (int i = 0; i < f.Global->PlayerInfo.Length; i++) {
                 f.Global->PlayerInfo[i] = default;
             }
-            f.Global->UsedStarSpawns.ClearAll();
 
             foreach ((_, var data) in f.Unsafe.GetComponentBlockIterator<PlayerData>()) {
                 data->IsLoaded = false;
@@ -484,6 +480,8 @@ namespace Quantum {
                 data->VotedToContinue = false;
                 data->RealTeam = 255;
             }
+
+            f.FindAsset(f.Global->Rules.Gamemode).OnReturnToRoom(f);
         }
 
         public void OnRemoved(Frame f, EntityRef entity, MarioPlayer* component) {
