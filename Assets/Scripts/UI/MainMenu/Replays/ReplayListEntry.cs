@@ -20,8 +20,8 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         //---Properties
         public BinaryReplayFile ReplayFile { get; private set; }
-        public bool IsTemporary => string.IsNullOrEmpty(ReplayFile.FilePath) || ReplayFile.FilePath.StartsWith(Path.Combine(ReplayListManager.ReplayDirectory, "temp"));
-        public bool IsFavorited => !string.IsNullOrEmpty(ReplayFile.FilePath) && ReplayFile.FilePath.StartsWith(Path.Combine(ReplayListManager.ReplayDirectory, "favorite"));
+        public bool IsTemporary => string.IsNullOrEmpty(ReplayFile.FilePath) || FileInFolder(ReplayListManager.TempDirectory, ReplayFile.FilePath);
+        public bool IsFavorited => !string.IsNullOrEmpty(ReplayFile.FilePath) && FileInFolder(ReplayListManager.FavoriteDirectory, ReplayFile.FilePath);
         private bool Selected => manager.Selected == this;
         public bool IsOpen { get; private set; }
 
@@ -137,20 +137,17 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         [Preserve]
         public void OnFavoriteClicked() {
-            string destination = ReplayListManager.ReplayDirectory;
-            string path = ReplayFile.FilePath[destination.Length..];
-            int nextSlash = path.IndexOf(Path.DirectorySeparatorChar, 1);
-            if (nextSlash != -1) {
-                path = path[(nextSlash + 1)..];
-            }
-
+            string newFolder;
             if (IsTemporary || IsFavorited) {
                 // Save / Unfavorite
-                destination = Path.Combine(destination, "saved", path);
+                newFolder = ReplayListManager.SavedDirectory;
             } else {
                 // Favorite
-                destination = Path.Combine(destination, "favorite", path);
+                newFolder = ReplayListManager.FavoriteDirectory;
             }
+
+            string filename = Path.GetFileName(ReplayFile.FilePath);
+            string destination = Path.Combine(newFolder, filename);
 
             File.Move(ReplayFile.FilePath, destination);
             ReplayFile.FilePath = destination;
@@ -279,6 +276,11 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
         private void OnLanguageChanged(TranslationManager tm) {
             UpdateText();
+        }
+
+        private static bool FileInFolder(string folderPath, string filePath) {
+            return !Path.GetRelativePath(Path.GetFullPath(folderPath), Path.GetFullPath(filePath))
+                .StartsWith(".." + Path.DirectorySeparatorChar);
         }
     }
 }

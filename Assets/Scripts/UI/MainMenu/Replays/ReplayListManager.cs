@@ -863,6 +863,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
         }
 
         public void RemoveReplayByPath(string path) {
+            path = path.Replace('\\', '/');
             RemoveReplay(replayListEntries.FirstOrDefault(rle => rle.ReplayFile.FilePath == path));
         }
 
