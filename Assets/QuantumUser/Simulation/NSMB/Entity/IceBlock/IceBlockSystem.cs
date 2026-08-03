@@ -225,6 +225,9 @@ namespace Quantum {
             }
 
             ice->IsSliding = !dropped;
+            if (dropped) {
+                physicsObject->Velocity.X = 0;
+            }
             ice->IsFlying = false;
             ice->FacingRight = mario->FacingRight;
             FP bonusSpeed = FPMath.Abs(marioPhysicsObject->Velocity.X / 3);

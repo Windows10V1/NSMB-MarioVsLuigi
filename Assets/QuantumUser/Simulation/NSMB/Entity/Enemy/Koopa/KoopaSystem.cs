@@ -489,10 +489,7 @@ namespace Quantum {
                 || !f.Unsafe.TryGetPointer(entity, out Holdable* holdable)
                 || !f.Unsafe.TryGetPointer(entity, out Enemy* enemy)
                 || !f.Unsafe.TryGetPointer(entity, out PhysicsObject* physicsObject)
-                || !f.Unsafe.TryGetPointer(entity, out PhysicsCollider2D* collider)
-                || !f.Unsafe.TryGetPointer(entity, out Transform2D* transform)
-                || !f.Unsafe.TryGetPointer(marioEntity, out MarioPlayer* mario)
-                || !f.Unsafe.TryGetPointer(marioEntity, out PhysicsObject* marioPhysics)) {
+                || !f.Unsafe.TryGetPointer(marioEntity, out MarioPlayer* mario)) {
                 return;
             }
 
@@ -511,7 +508,12 @@ namespace Quantum {
             } else {
                 koopa->WakeupFrames = 15 * 60;
                 koopa->IsKicked = true;
-                koopa->CurrentSpeed = koopa->KickSpeed + FPMath.Abs(marioPhysics->Velocity.X / 3);
+                koopa->CurrentSpeed = koopa->KickSpeed;
+
+                if (f.Unsafe.TryGetPointer(marioEntity, out PhysicsObject* marioPhysics)) {
+                    koopa->CurrentSpeed += FPMath.Abs(marioPhysics->Velocity.X * FP._0_33);
+                }
+
                 f.Events.MarioPlayerThrewObject(marioEntity, entity);
             }
             enemy->ChangeFacingRight(f, entity, mario->FacingRight);
