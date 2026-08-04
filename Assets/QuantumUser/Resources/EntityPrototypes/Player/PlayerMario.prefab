@@ -1325,6 +1325,14 @@ MonoBehaviour:
         type: 3}
       CapMaskTexture: {fileID: 0}
       StarmanAlbedoTexture: {fileID: 0}
+    - Material: {fileID: 2100000, guid: 6a0ff0c8adb71d0469b702946398eb3d, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: c7d0fedea93d5904ebb241dcbacf39c1, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 2800000, guid: f665423d353e3f74398b020964ce854c,
+        type: 3}
+      CapMaskTexture: {fileID: 2800000, guid: ba009bdd33770244e9c7af7724d105df, type: 3}
+      StarmanAlbedoTexture: {fileID: 2800000, guid: 5f2d8ce488662404ca916c6eff899054,
+        type: 3}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   - State: 6
@@ -1334,7 +1342,15 @@ MonoBehaviour:
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 1, y: 1, z: 1}
     ModelHeightInBlocks: 1
-    TextureReplacements: []
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: aa0ae4b7edaf62842ad504eb5d367de6, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 8301373c08169994b86469eaa260c7db, type: 3}
+      OverallsMaskTexture: {fileID: 2800000, guid: 0cf743dadec2dde40b894fd9202c3b51,
+        type: 3}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 0}
+      StarmanAlbedoTexture: {fileID: 2800000, guid: 5d5f9ad4948945b4c83685ca4f0933b0,
+        type: 3}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   - State: 7
@@ -1353,7 +1369,7 @@ MonoBehaviour:
       ShirtMaskTexture: {fileID: 2800000, guid: bf5f4ebd679e6474399c9aa14e6bdbb7,
         type: 3}
       CapMaskTexture: {fileID: 0}
-      StarmanAlbedoTexture: {fileID: 2800000, guid: 290f358be6599584db28453134e4d6a0,
+      StarmanAlbedoTexture: {fileID: 2800000, guid: 225db2a4d1cba464788f960e7e9a4cdc,
         type: 3}
     - Material: {fileID: 2100000, guid: 49ac98ccce83c884f926e06d76d6f7d5, type: 2}
       AlbedoTexture: {fileID: 2800000, guid: 831bacc1797a49c4aa1e0efec6e04be5, type: 3}
@@ -7037,100 +7053,6 @@ Transform:
   - {fileID: 1933478114614969444}
   m_Father: {fileID: 4179535912005182115}
   m_LocalEulerAnglesHint: {x: -104.589, y: 0, z: 0}
---- !u!1001 &169359194882895959
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 4865570266982932041}
-    m_Modifications:
-    - target: {fileID: 3094612392314655968, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3094612392314655968, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: moveWithTransform
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3094612392314655968, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: EmissionModule.rateOverTime.scalar
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4895065583142849143, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_Name
-      value: InvincibleSparkles (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 4895065583142849143, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      propertyPath: m_Layer
-      value: 17
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: d758aa65baab42b43ba031de88063bb7, type: 3}
---- !u!4 &4273854514351752547 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-    type: 3}
-  m_PrefabInstance: {fileID: 169359194882895959}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &500651139988642812
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10476,11 +10398,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 4273854514351752547}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d758aa65baab42b43ba031de88063bb7, type: 3}
 --- !u!4 &4865570266982932041 stripped

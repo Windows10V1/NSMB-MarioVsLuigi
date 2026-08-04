@@ -124,7 +124,7 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            if (!physicsObject->IsTouchingGround || FPMath.Abs(physicsObject->Velocity.X) > 2 || physicsObject->IsUnderwater
+            if (!physicsObject->IsTouchingGround || FPMath.Abs(physicsObject->Velocity.X) > 3 /*|| physicsObject->IsUnderwater*/
                 || mario->IsWallsliding || mario->IsGroundpounding || f.Exists(mario->CurrentPipe) || mario->IsInKnockback
                 || mario->IsPropellerFlying || mario->IsSpinnerFlying || mario->IsSkidding || mario->IsSliding || mario->IsCrouching
                 || mario->IsInShell || mario->IsTurnaround || mario->IsStuckInBlock || f.Exists(mario->HeldEntity) || mario->DoEntityBounce) {
@@ -1180,7 +1180,11 @@ namespace Quantum {
                 return;
             }
 
-            if (mario->IsInShell && (physicsObject->IsTouchingLeftWall || physicsObject->IsTouchingRightWall)) {
+            // Can cause wrong sliding sounds on ice
+            mario->IsTurnaround = false;
+            mario->IsSkidding = false;
+
+            if (physicsObject->IsTouchingLeftWall || physicsObject->IsTouchingRightWall) {
                 QList<PhysicsContact> contacts = f.ResolveList(physicsObject->Contacts);
                 FPVector2? maxVector = null;
                 foreach (var contact in contacts) {
@@ -2400,7 +2404,7 @@ namespace Quantum {
                         if (dropStars) {
                             poweredDown = marioB->Powerdown(f, marioBEntity, false, marioAEntity);
                         }
-                        marioB->DoKnockback(f, marioBEntity, !fromRight, poweredDown ? 0 : 1, KnockbackStrength.Normal, marioAEntity, bypassDamageInvincibility: true, wasBlueShell: true);
+                        marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars && !poweredDown ? 1 : 0, KnockbackStrength.Normal, marioAEntity, bypassDamageInvincibility: true, wasBlueShell: true);
                         marioA->FacingRight = !marioA->FacingRight;
                         marioA->ShellSpeedStage = marioAPhysicsInfo.ShellNormalStage;
                         f.Events.PlayBumpSound(marioAEntity);
@@ -2414,7 +2418,7 @@ namespace Quantum {
                         if (dropStars) {
                             poweredDown = marioA->Powerdown(f, marioAEntity, false, marioBEntity);
                         }
-                        marioA->DoKnockback(f, marioAEntity, fromRight, poweredDown ? 0 : 1, KnockbackStrength.Normal, marioBEntity, bypassDamageInvincibility: true, wasBlueShell: true);
+                        marioA->DoKnockback(f, marioAEntity, fromRight, dropStars && !poweredDown ? 1 : 0, KnockbackStrength.Normal, marioBEntity, bypassDamageInvincibility: true, wasBlueShell: true);
                         marioB->FacingRight = !marioB->FacingRight;
                         marioB->ShellSpeedStage = marioBPhysicsInfo.ShellNormalStage;
                         f.Events.PlayBumpSound(marioBEntity);
@@ -2627,11 +2631,11 @@ namespace Quantum {
             defenderPhysicsObject->Velocity.Y = FPMath.Min(0, attackerPhysicsObject->Velocity.Y, defenderPhysicsObject->Velocity.Y);
 
             // avoid overlap issues when stomping
-                var attackerTransform = f.Unsafe.GetPointer<Transform2D>(attacker);
-                var defenderCollider = f.Unsafe.GetPointer<PhysicsCollider2D>(defender);
+            var attackerTransform = f.Unsafe.GetPointer<Transform2D>(attacker);
+            var defenderCollider = f.Unsafe.GetPointer<PhysicsCollider2D>(defender);
 
-                // move the attacker above the defender so they don't interact
-                attackerTransform->Position.Y += defenderCollider->Shape.Box.Extents.Y;
+            // move the attacker above the defender so they don't interact
+            attackerTransform->Position.Y += defenderCollider->Shape.Box.Extents.Y;
 
             var attackerMario = f.Unsafe.GetPointer<MarioPlayer>(attacker);
             attackerMario->DoEntityBounce = true;
