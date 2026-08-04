@@ -227,6 +227,7 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerLandedWithAnimation>(this, OnMarioPlayerLandedWithAnimation, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerTaunted>(this, OnMarioPlayerTaunted, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventMarioPlayerTauntCancelled>(this, OnMarioPlayerTauntCancelled, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUpdatePowerupQueue>(this, OnMarioPlayerUpdatePowerupQueue, FilterOutReplayFastForward);
         }
 
@@ -1353,6 +1354,13 @@ namespace NSMB.Entities.Player {
             PlaySound(SoundEffect.Player_Voice_Taunt);
         }
 
+        private void OnMarioPlayerTauntCancelled(EventMarioPlayerTauntCancelled e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            sfx.Stop();
+        }
         private void OnMarioPlayerUpdatePowerupQueue(EventMarioPlayerUpdatePowerupQueue e) {
             if (e.Entity != EntityRef) {
                 return;

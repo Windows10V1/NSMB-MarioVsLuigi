@@ -324,6 +324,10 @@ event MarioPlayerTaunted {
 	EntityRef Entity;
 }
 
+event MarioPlayerTauntCancelled {
+	EntityRef Entity;
+}
+
 // these events are for external replay tools
 
 event MarioPlayerTookKnockback {

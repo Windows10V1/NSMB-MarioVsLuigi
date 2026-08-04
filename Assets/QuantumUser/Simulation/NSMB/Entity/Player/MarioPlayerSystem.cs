@@ -84,6 +84,8 @@ namespace Quantum {
             }
 
             if (HandleTaunting(f, ref filter, command is CommandTaunt)) {
+                filter.Inputs = default;
+                HandleWalkingRunning(f, ref filter, physics);
                 HandlePowerups(f, ref filter, physics, stage);
                 HandleKnockback(f, ref filter);
                 HandleHitbox(f, ref filter, physics);
@@ -124,23 +126,34 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            if (!physicsObject->IsTouchingGround || FPMath.Abs(physicsObject->Velocity.X) > 3 /*|| physicsObject->IsUnderwater*/
+            if (!physicsObject->IsTouchingGround || (FPMath.Abs(physicsObject->Velocity.X) > 3 && !physicsObject->IsOnSlipperyGround) /*|| physicsObject->IsUnderwater*/
                 || mario->IsWallsliding || mario->IsGroundpounding || f.Exists(mario->CurrentPipe) || mario->IsInKnockback
                 || mario->IsPropellerFlying || mario->IsSpinnerFlying || mario->IsSkidding || mario->IsSliding || mario->IsCrouching
                 || mario->IsInShell || mario->IsTurnaround || mario->IsStuckInBlock || f.Exists(mario->HeldEntity) || mario->DoEntityBounce) {
                 // Disgusting.
 
+                if (mario->TauntFrames > 0) {
+                    f.Events.MarioPlayerTauntCancelled(filter.Entity);
+                }
                 mario->TauntFrames = 0;
                 return false;
             }
-
+            
             QuantumUtils.Decrement(ref mario->TauntFrames);
 
             if (start && mario->TauntFrames == 0) {
                 mario->TauntFrames = 125;
                 mario->JumpBufferFrames = 0;
-                physicsObject->Velocity.X = 0;
+                if (!physicsObject->IsOnSlipperyGround) {
+                    physicsObject->Velocity.X = 0;
+                }
                 f.Events.MarioPlayerTaunted(filter.Entity);
+            }
+
+            // Cancel up to 13 frames early
+            if (mario->TauntFrames <= 13 && (filter.Inputs.Left.IsDown || filter.Inputs.Right.IsDown || filter.Inputs.Jump.IsDown)) {
+                mario->TauntFrames = 0;
+                return false;
             }
 
             return mario->TauntFrames > 0;
@@ -174,13 +187,6 @@ namespace Quantum {
             if (!physicsObject->IsTouchingGround || swimming) {
                 mario->IsSkidding = false;
             }
-
-            /*
-            if (f.Unsafe.TryGetPointer(mario->HeldEntity, out Holdable* holdable) && holdable->HoldAboveHead && f.Number - mario->HoldStartFrame < physics.IceBlockPickupFreezeFrames) {
-                physicsObject->Velocity.X = 0;
-                return;
-            }
-            */
 
             ref var inputs = ref filter.Inputs;
             bool mega = mario->CurrentPowerupState == PowerupState.MegaMushroom;
