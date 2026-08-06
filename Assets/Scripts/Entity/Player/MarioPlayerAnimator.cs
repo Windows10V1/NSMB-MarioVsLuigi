@@ -870,7 +870,9 @@ namespace NSMB.Entities.Player {
             }
 
             KnockbackStrength strength = e.Strength;
-            PlaySound((strength is KnockbackStrength.FireballBump or KnockbackStrength.CollisionBump) ? SoundEffect.Player_Sound_Collision_Fireball : SoundEffect.Player_Sound_Collision);
+            if (e.PlayKnockbackSound) {
+                PlaySound((strength is KnockbackStrength.FireballBump or KnockbackStrength.CollisionBump) ? SoundEffect.Player_Sound_Collision_Fireball : SoundEffect.Player_Sound_Collision);
+            }
 
             if (IsMarioLocal(e.Entity)) {
                 float rumbleStrength = strength switch {

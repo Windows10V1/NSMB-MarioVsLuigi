@@ -707,12 +707,13 @@ namespace Quantum {
         _f.AddEvent(ev);
         return ev;
       }
-      public EventPlayKnockbackEffect PlayKnockbackEffect(EntityRef Entity, EntityRef Attacker, KnockbackStrength Strength, NullableFPVector2 AttackerPosition) {
+      public EventPlayKnockbackEffect PlayKnockbackEffect(EntityRef Entity, EntityRef Attacker, KnockbackStrength Strength, NullableFPVector2 AttackerPosition, QBoolean PlayKnockbackSound) {
         var ev = _f.Context.AcquireEvent<EventPlayKnockbackEffect>(EventPlayKnockbackEffect.ID);
         ev.Entity = Entity;
         ev.Attacker = Attacker;
         ev.Strength = Strength;
         ev.AttackerPosition = AttackerPosition;
+        ev.PlayKnockbackSound = PlayKnockbackSound;
         _f.AddEvent(ev);
         return ev;
       }
@@ -2870,6 +2871,7 @@ namespace Quantum {
     public EntityRef Attacker;
     public KnockbackStrength Strength;
     public NullableFPVector2 AttackerPosition;
+    public QBoolean PlayKnockbackSound;
     protected EventPlayKnockbackEffect(Int32 id, EventFlags flags) : 
         base(id, flags) {
     }
@@ -2890,6 +2892,7 @@ namespace Quantum {
         hash = hash * 31 + Entity.GetHashCode();
         hash = hash * 31 + Attacker.GetHashCode();
         hash = hash * 31 + Strength.GetHashCode();
+        hash = hash * 31 + PlayKnockbackSound.GetHashCode();
         return hash;
       }
     }
