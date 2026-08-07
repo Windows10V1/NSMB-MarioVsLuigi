@@ -35,12 +35,7 @@ namespace Quantum {
             }
 
             // Play combo sound
-            byte combo;
-            if (f.Unsafe.TryGetPointer(killerEntity, out ComboKeeper* comboKeeper)) {
-                combo = comboKeeper->Combo++;
-            } else {
-                combo = 0;
-            }
+            byte combo = ComboKeeper.IncrementOrDefault(f, killerEntity);
             f.Events.PlayComboSound(booEntity, combo);
 
             enemy->IsDead = true;

@@ -61,13 +61,8 @@ namespace Quantum {
                 Constants._2_50
             );
             physicsObject->Gravity = new FPVector2(0, -Constants._14_75);
-
-            byte combo;
-            if (f.Unsafe.TryGetPointer(killerEntity, out ComboKeeper* comboKeeper)) {
-                combo = comboKeeper->Combo++;
-            } else {
-                combo = 0;
-            }
+            
+            byte combo = ComboKeeper.IncrementOrDefault(f, killerEntity);
             f.Events.PlayComboSound(bobombEntity, combo);
 
             enemy->IsDead = true;

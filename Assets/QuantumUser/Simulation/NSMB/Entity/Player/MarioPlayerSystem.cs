@@ -2244,7 +2244,7 @@ namespace Quantum {
             }
 
             // Or if a player just got damaged
-            if ((f.Number - marioA->KnockbackTick) < 12 || (f.Number - marioB->KnockbackTick) < 12) {
+            if ((f.Number - marioA->KnockbackTick) < 8 || (f.Number - marioB->KnockbackTick) < 8) {
                 return;
             }
 

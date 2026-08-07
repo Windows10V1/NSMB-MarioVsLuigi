@@ -15,7 +15,6 @@ namespace Quantum {
         private ComponentGetter<PhysicsObjectSystem.Filter> PhysicsObjectSystemFilterGetter;
 
         public override void OnInit(Frame f) {
-            f.Context.ExcludeEntityAndPlayerMask = ~f.Layers.GetLayerMask("Entity", "Player");
             PhysicsObjectSystemFilterGetter = f.Unsafe.ComponentGetter<PhysicsObjectSystem.Filter>();
         }
 
@@ -125,6 +124,10 @@ namespace Quantum {
             if (platform->CanCrushEntities && (tempHit1 || tempHit2) && shape->Type != Shape2DType.Edge) {
                 // Crushed
                 physicsObject->IsBeingCrushed = true;
+
+                if (!physicsObject->WasBeingCrushed) {
+                    f.Signals.OnEntityCrushed(hit.Entity);
+                }
             }
         }
     }
