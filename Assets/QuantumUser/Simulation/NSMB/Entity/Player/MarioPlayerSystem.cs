@@ -1506,15 +1506,20 @@ namespace Quantum {
                     return;
                 }
 
+                var projectileAsset = GetShotProjectileAsset(f, mario->CurrentPowerupState);
+                if (projectileAsset == null) {
+                    return;
+                }
+
                 byte activeProjectiles = mario->CurrentProjectiles;
-                if (activeProjectiles >= physics.MaxProjecitles) {
+                if (activeProjectiles >= projectileAsset.MaxSimultaneousProjectiles) {
                     return;
                 }
 
                 if (activeProjectiles < 2) {
                     // Always allow if < 2
                     mario->CurrentVolley = (byte) (activeProjectiles + 1);
-                } else if (mario->CurrentVolley < physics.ProjectileVolleySize) {
+                } else if (mario->CurrentVolley < projectileAsset.MaxInstantProjectiles) {
                     // Allow in this volley
                     mario->CurrentVolley++;
                 } else {
@@ -1523,8 +1528,8 @@ namespace Quantum {
                 }
 
                 mario->CurrentProjectiles++;
-                mario->ProjectileDelayFrames = physics.ProjectileDelayFrames;
-                mario->ProjectileVolleyFrames = physics.ProjectileVolleyFrames;
+                mario->ProjectileDelayFrames = projectileAsset.ShootCooldownFrames;
+                mario->ProjectileVolleyFrames = projectileAsset.VolleyFrames;
 
                 Projectile* projectile;
                 if (mario->CurrentPowerupState == PowerupState.HammerSuit) {
@@ -1598,6 +1603,26 @@ namespace Quantum {
             if (QuantumUtils.Decrement(ref currAnim->Timer)) {
                 queue.RemoveAt(0);
             }
+        }
+
+        private ProjectileAsset GetShotProjectileAsset(Frame f, PowerupState state) {
+            AssetRef<EntityPrototype> projectilePrototype = state switch {
+                PowerupState.IceFlower => f.SimulationConfig.IceballPrototype,
+                PowerupState.HammerSuit => f.SimulationConfig.HammerPrototype,
+                _ => f.SimulationConfig.FireballPrototype,
+            };
+
+            var prototype = f.FindAsset(projectilePrototype);
+            if (prototype == null) {
+                return null;
+            }
+
+            foreach (var component in prototype.Container.Components) {
+                if (component is Quantum.Prototypes.ProjectilePrototype projectileComponent) {
+                    return f.FindAsset(projectileComponent.Asset);
+                }
+            }
+            return null;
         }
 
         private Projectile* ShootBoomerangProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {

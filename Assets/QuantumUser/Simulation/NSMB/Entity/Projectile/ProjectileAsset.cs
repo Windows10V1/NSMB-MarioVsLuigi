@@ -17,6 +17,12 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
     public bool DoesntEffectBlueShell = true;
     public bool CollectCoins = false;
 
+    // --- Shooting rate limits
+    public byte MaxSimultaneousProjectiles = 6;
+    public byte MaxInstantProjectiles = 2;
+    public byte ShootCooldownFrames = 6;
+    public byte VolleyFrames = 75;
+
     public ParticleEffect DestroyParticleEffect = ParticleEffect.None;
     public SoundEffect ShootSound = SoundEffect.Powerup_Fireball_Shoot;
 
