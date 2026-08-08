@@ -411,20 +411,30 @@ namespace Quantum {
 
         public static void OnKoopaProjectileInteraction(Frame f, EntityRef koopaEntity, EntityRef projectileEntity) {
             var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
+            var koopa = f.Unsafe.GetPointer<Koopa>(koopaEntity);
 
             switch (projectileAsset.Effect) {
-            case ProjectileEffectType.KillEnemiesAndSoftKnockbackPlayers:
+            case ProjectileEffectType.Hammer:
             case ProjectileEffectType.Fire: {
-                f.Unsafe.GetPointer<Koopa>(koopaEntity)->Kill(f, koopaEntity, projectileEntity, EnemyKillReason.Special);
+                koopa->Kill(f, koopaEntity, projectileEntity, EnemyKillReason.Special);
                 break;
             }
             case ProjectileEffectType.Freeze: {
                 IceBlockSystem.Freeze(f, koopaEntity);
                 break;
             }
+            case ProjectileEffectType.Boomerang: {
+                // Boomerangs don't kill koopas/spinies but bounces them up into their shell
+                if (!koopa->IsInShell) {
+                    koopa->EnterShell(f, koopaEntity, projectileEntity, false, false);
+                }
+                var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(koopaEntity);
+                physicsObject->Velocity.Y = Constants._5_50;
+                break;
             }
 
             f.Signals.OnProjectileHitEntity(projectileEntity, koopaEntity);
+            }
         }
 
         public static void OnKoopaBooInteraction(Frame f, EntityRef koopaEntity, EntityRef booEntity) {

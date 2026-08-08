@@ -50,5 +50,9 @@ namespace Quantum {
             physicsObject->Velocity = velocity;
             physicsObject->Gravity = FPVector2.Up * (playerHoldingUp ? FP.FromString("-37.512") : FP.FromString("-28.125"));
         }
+
+        public void InitializeBoomerang() {
+            // TODO: Boomerang mechanics, i think.
+        }
     }
 }

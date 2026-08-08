@@ -8,7 +8,7 @@ namespace Quantum {
         public UnityEngine.Color ParticleColor;
 #endif
 
-        public BreakableBy BreakingRules = BreakableBy.SmallMarioDrill | BreakableBy.LargeMario | BreakableBy.LargeMarioGroundpound | BreakableBy.LargeMarioDrill | BreakableBy.MegaMario | BreakableBy.Shells | BreakableBy.Bombs;
+        public BreakableBy BreakingRules = BreakableBy.SmallMarioDrill | BreakableBy.LargeMario | BreakableBy.LargeMarioGroundpound | BreakableBy.LargeMarioDrill | BreakableBy.MegaMario | BreakableBy.Shells | BreakableBy.Bombs | BreakableBy.Boomerangs;
         public bool BumpIfNotBroken;
         public FPVector2 BumpSize = new FPVector2(FP._0_50, FP._0_50);
         public FPVector2 BumpOffset = FPVector2.Zero;
@@ -75,6 +75,13 @@ namespace Quantum {
                 playBumpSound = true;
             }
 
+            var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(entity)->Asset);
+            if (f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
+                if (projectileAsset.Effect == ProjectileEffectType.Boomerang) {
+                    doBreak = BreakingRules.HasFlag(BreakableBy.Boomerangs);
+                }
+            }
+
             return doBreak;
         }
 
@@ -120,6 +127,7 @@ namespace Quantum {
             MegaMario = 1 << 6,
             Shells = 1 << 7,
             Bombs = 1 << 8,
+            Boomerangs = 1 << 9,
         }
     }
 }

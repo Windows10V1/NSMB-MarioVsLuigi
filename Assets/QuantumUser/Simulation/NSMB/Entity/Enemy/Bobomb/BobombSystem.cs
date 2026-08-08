@@ -228,7 +228,7 @@ namespace Quantum {
             var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
 
             switch (projectileAsset.Effect) {
-            case ProjectileEffectType.KillEnemiesAndSoftKnockbackPlayers: {
+            case ProjectileEffectType.Hammer: {
                 f.Unsafe.GetPointer<Bobomb>(bobombEntity)->Kill(f, bobombEntity, projectileEntity, EnemyKillReason.Special);
                 break;
             }
@@ -242,6 +242,17 @@ namespace Quantum {
             }
             case ProjectileEffectType.Freeze: {
                 IceBlockSystem.Freeze(f, bobombEntity);
+                break;
+            }
+            case ProjectileEffectType.Boomerang: {
+                if (bobomb->CurrentDetonationFrames > 0) {
+                    bobomb->Kick(f, bobombEntity, projectileEntity, 0);
+                } else {
+                    // Boomerang lights bob-ombs and bounces them up.
+                    Light(f, bobombEntity, bobomb, false);
+                    var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(bobombEntity);
+                    physicsObject->Velocity.Y = Constants._5_50;
+                }
                 break;
             }
             }
