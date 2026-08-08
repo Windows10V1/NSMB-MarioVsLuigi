@@ -28,6 +28,10 @@ namespace Quantum {
 
         private void TryMove(Frame f, ref Filter filter, VersusStageData stage) {
             var queries = f.ResolveList(filter.Platform->Queries);
+            if (queries.Count <= 0) {
+                // Probably was just added this frame.
+                return;
+            }
             TryMoveShape(f, ref filter, stage, queries, &filter.Collider->Shape, 0);
 
             var platform = filter.Platform;

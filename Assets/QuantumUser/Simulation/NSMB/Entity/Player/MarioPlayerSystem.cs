@@ -2824,6 +2824,9 @@ namespace Quantum {
                 mario->PlayerRef = PlayerRef.None;
                 mario->Death(f, entity, false, true, entity);
             }
+
+            // In the case they were already dead...
+            GameLogicSystem.CheckForGameEnd(f);
         }
 
         public void OnIceBlockBroken(Frame f, EntityRef brokenIceBlock, IceBlockBreakReason breakReason, EntityRef attacker) {
