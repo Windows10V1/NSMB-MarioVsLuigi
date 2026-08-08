@@ -104,8 +104,10 @@ namespace Quantum {
             var projectileAssetB = f.FindAsset(projectileB->Asset);
 
             if ((projectileAssetA.Effect == ProjectileEffectType.Fire && projectileAssetB.Effect == ProjectileEffectType.Freeze)
-                || (projectileAssetB.Effect == ProjectileEffectType.Fire && projectileAssetA.Effect == ProjectileEffectType.Freeze)) {
-                // Fireball collided with Iceball. Destroy both.
+                || (projectileAssetB.Effect == ProjectileEffectType.Fire && projectileAssetA.Effect == ProjectileEffectType.Freeze)
+                || (projectileAssetA.Effect == ProjectileEffectType.Hammer && projectileAssetB.Effect == ProjectileEffectType.Boomerang)
+                || (projectileAssetB.Effect == ProjectileEffectType.Hammer && projectileAssetA.Effect == ProjectileEffectType.Boomerang)) {
+                // Fireball collided with Iceball, or Hammer collided with Boomerang. Destroy both.
                 Destroy(f, projectileEntityA, projectileAssetA.DestroyParticleEffect);
                 Destroy(f, projectileEntityB, projectileAssetB.DestroyParticleEffect);
             }
