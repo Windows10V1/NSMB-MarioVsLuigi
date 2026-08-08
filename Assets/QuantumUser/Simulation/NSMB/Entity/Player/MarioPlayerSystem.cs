@@ -1631,9 +1631,7 @@ namespace Quantum {
 
             FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50);
 
-            EntityRef newEntity = f.Create(mario->CurrentPowerupState == PowerupState.IceFlower
-                ? f.SimulationConfig.IceballPrototype
-                : f.SimulationConfig.FireballPrototype);
+            EntityRef newEntity = f.Create(f.SimulationConfig.BoomerangPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             projectile->InitializeBoomerang(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);

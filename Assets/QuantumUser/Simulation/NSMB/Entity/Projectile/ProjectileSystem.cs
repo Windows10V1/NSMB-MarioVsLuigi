@@ -12,6 +12,7 @@ namespace Quantum {
 
         public override void OnInit(Frame f) {
             f.Context.Interactions.Register<Projectile, Projectile>(f, OnProjectileProjectileInteraction);
+            f.Context.Interactions.Register<Projectile, Coin>(f, OnProjectileCoinInteraction);
         }
 
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
@@ -79,6 +80,16 @@ namespace Quantum {
                 physicsObject->IsTouchingGround = false;
                 projectile->HasBounced = true;
             }
+        }
+
+        private void OnProjectileCoinInteraction(Frame f, EntityRef projectileEntity, EntityRef coinEntity) {
+            var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
+            var asset = f.FindAsset(projectile->Asset);
+            if (asset == null || !asset.CollectCoins) {
+                return;
+            }
+
+            CoinSystem.TryCollectCoin(f, coinEntity, projectile->Owner);
         }
 
         private void OnProjectileProjectileInteraction(Frame f, EntityRef projectileEntityA, EntityRef projectileEntityB) {

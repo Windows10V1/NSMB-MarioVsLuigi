@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: mat_helmet
+  m_Name: mat_boomerangshell
   m_Shader: {fileID: -6465566751694194690, guid: 914d964962549de41a603aa0bd374229,
     type: 3}
   m_Parent: {fileID: 0}
@@ -26,11 +26,15 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - EyeTextures:
-        m_Texture: {fileID: 18700000, guid: 86d0d983b7ffae444b5e270df0725c3a, type: 3}
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - FireFlowerTexture:
+        m_Texture: {fileID: 2800000, guid: a13da4655a7223d438c8268b546b43e5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
-        m_Texture: {fileID: 2800000, guid: 692727cde62fc994180a55acf58c6d2f, type: 3}
+        m_Texture: {fileID: 2800000, guid: de07a01239bc839479c9ccd4c40cff77, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -57,12 +61,16 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _HatMask:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: f0db2f5109ba9cc49a235350bf7c0785, type: 3}
+        m_Texture: {fileID: 2800000, guid: 012053dab1418be479a1dbb9aa26e5d9, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 2800000, guid: cc1c8cefa112bb2418666326d5ba0ea2, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -70,7 +78,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OverallsMask:
-        m_Texture: {fileID: 2800000, guid: e8b5efe82f079254ca940b6f40f9b6eb, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ParallaxMap:
@@ -85,6 +93,14 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _StarmanGradient:
+        m_Texture: {fileID: 2800000, guid: d6fa11c722df8c245a6ca48664463032, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _StarmanTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _StarmanTexture:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -93,8 +109,20 @@ Material:
         m_Texture: {fileID: 2800000, guid: d6fa11c722df8c245a6ca48664463032, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _TextureRecolorerWithMask_6bbf880355714ebfbae89779016b832b_Texture_3193008599:
+        m_Texture: {fileID: 2800000, guid: fd1684127f4f8264183691353ad282fd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureRecolorerWithMask_8ed6b2c214344ef49e03ff0b5c2b5602_Texture_3193008599:
+        m_Texture: {fileID: 2800000, guid: fd1684127f4f8264183691353ad282fd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _TextureRecolorerWithMask_ac52f6065827448ba36c6f5fd9dcd0ee_Texture_3193008599:
+        m_Texture: {fileID: 2800000, guid: fd1684127f4f8264183691353ad282fd, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _Textures:
-        m_Texture: {fileID: 18700000, guid: 692727cde62fc994180a55acf58c6d2f, type: 3}
+        m_Texture: {fileID: 18700000, guid: de07a01239bc839479c9ccd4c40cff77, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -113,12 +141,11 @@ Material:
     m_Floats:
     - HatUsesOverallsColor: 0
     - IsEyeTexture: 0
+    - OutlineSize: 0.02
     - PowerupState: 0
     - RainbowEnabled: 0
     - _AlphaClip: 0
-    - _AlphaToMask: 0
     - _Blend: 0
-    - _BlendModePreserveSpecular: 1
     - _BumpScale: 1
     - _CapUsesOverallsColor: 0
     - _ClearCoatMask: 0
@@ -128,12 +155,12 @@ Material:
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
-    - _DstBlendAlpha: 0
     - _EnvironmentReflections: 1
     - _EyeState: 0
     - _GlossMapScale: 1
     - _Glossiness: 0
     - _GlossyReflections: 1
+    - _HatUsesOverallsColor: 0
     - _IsEyeTexture: 0
     - _Metallic: 0
     - _Mode: 0
@@ -143,11 +170,11 @@ Material:
     - _QueueControl: 1
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Smoothness: 0
+    - _Smoothness: 0.5
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _SrcBlendAlpha: 1
+    - _StarmanSpeed: 0.75
     - _StarmanUsesWhiteCustomColors: 0
     - _Surface: 0
     - _UVSec: 0
@@ -155,18 +182,19 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - MultiplyColor: {r: 1, g: 1, b: 1, a: 0}
+    - OutlineColor: {r: 0, g: 0, b: 0, a: 0}
     - OverallsColor: {r: 0, g: 0, b: 0, a: 0}
     - ShirtColor: {r: 0, g: 0, b: 0, a: 0}
-    - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
+    - _BaseColor: {r: 0.9063317, g: 0.9063317, b: 0.9063317, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 0}
+    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _MultiplyColor: {r: 1, g: 1, b: 1, a: 1}
     - _OverallsColor: {r: 0, g: 0, b: 0, a: 0}
     - _ShirtColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &4743744567591362883
+--- !u!114 &2628736096288289065
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

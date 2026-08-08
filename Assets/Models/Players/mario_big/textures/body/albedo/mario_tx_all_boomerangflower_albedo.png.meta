@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fcdc22aa3c297204797ea6c078b0151d
+guid: 5d298114d785fbf4ea786e53814f4088
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2653571340443730215
-    second: blue_shell_tx_albedo_0
+      213: -141604293343866501
+    second: mario_tx_all_boomerangflower_albedo_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -40,9 +40,9 @@ TextureImporter:
     filterMode: 0
     aniso: 1
     mipBias: 0
-    wrapU: 0
-    wrapV: 0
-    wrapW: 0
+    wrapU: 2
+    wrapV: 2
+    wrapW: 2
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
@@ -100,7 +100,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: blue_shell_tx_albedo_0
+      name: mario_tx_all_boomerangflower_albedo_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9deb1b2dcee9c2bd0800000000000000
-      internalID: -2653571340443730215
+      spriteID: b71919c35abe80ef0800000000000000
+      internalID: -141604293343866501
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      blue_shell_tx_albedo_0: -2653571340443730215
+      mario_tx_all_boomerangflower_albedo_0: -141604293343866501
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
