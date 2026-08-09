@@ -226,6 +226,7 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventPhysicsObjectLanded>(this, OnPhysicsObjectLanded, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerLandedWithAnimation>(this, OnMarioPlayerLandedWithAnimation, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventEnemyPierced>(this, OnEnemyPierced, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerTaunted>(this, OnMarioPlayerTaunted, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerTauntCancelled>(this, OnMarioPlayerTauntCancelled, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUpdatePowerupQueue>(this, OnMarioPlayerUpdatePowerupQueue, FilterOutReplayFastForward);
@@ -1344,6 +1345,14 @@ namespace NSMB.Entities.Player {
             }
 
             PlaySound(SoundEffect.Powerup_HammerSuit_Bounce);
+        }
+
+        private void OnEnemyPierced(EventEnemyPierced e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            PlaySound(SoundEffect.Powerup_BoomerangFlower_Pierce);
         }
 
         private void OnMarioPlayerTaunted(EventMarioPlayerTaunted e) {

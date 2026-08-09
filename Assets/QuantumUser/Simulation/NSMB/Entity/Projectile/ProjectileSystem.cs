@@ -135,6 +135,8 @@ namespace Quantum {
                 if (projectile->Speed < 1) {
                     Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
                 }
+            } else {
+                f.Events.EnemyPierced(hitEntity, false);
             }
         }
     }

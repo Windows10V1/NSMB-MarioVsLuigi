@@ -52,8 +52,7 @@ namespace Quantum {
         }
 
         public void InitializeBoomerang(Frame f, EntityRef thisEntity, EntityRef owner, FPVector2 spawnpoint, bool right) {
-            // TODO: Boomerang mechanics, i think.
-            Initialize(f, thisEntity, owner, spawnpoint, right);
+            // TODO: Boomerang mechanics.
         }
     }
 }

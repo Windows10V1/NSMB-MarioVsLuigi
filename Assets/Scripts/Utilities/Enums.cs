@@ -29,6 +29,8 @@ namespace NSMB.Utilities {
 
             [PrefabParticleData("Particle/BulletBillLauncher")] BulletBillLauncher_Break,
 
+            [PrefabParticleData("Particle/CoinSparkles")] Coin_Sparkles,
+
             [PrefabParticleData("Particle/Puff")] Enemy_Puff,
             [PrefabParticleData("Particle/EnemyHardKick")] Enemy_HardKick,
             [PrefabParticleData("Particle/KillPoof")] Enemy_KillPoof,
