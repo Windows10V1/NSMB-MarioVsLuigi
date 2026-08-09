@@ -407,6 +407,7 @@ namespace NSMB.Entities.Player {
 
             float angle = mario->CurrentPowerupState switch {
                 PowerupState.BlueShell => 90f,
+                PowerupState.BoomerangFlower => 90f,
                 PowerupState.MegaMushroom => 78.75f,
                 _ => 67.5f,
             };
@@ -552,7 +553,7 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamHeadCarry, heldObject != null && heldObject->HoldAboveHead);
             animator.SetBool(ParamCarryStart, heldObject != null && heldObject->HoldAboveHead && (f.Number - mario->HoldStartFrame) < 27);
             animator.SetBool(ParamPipe, f.Exists(mario->CurrentPipe));
-            animator.SetBool(ParamBlueShell, DisplayPowerupState(mario, f) == PowerupState.BlueShell);
+            animator.SetBool(ParamBlueShell, DisplayPowerupState(mario, f) == PowerupState.BlueShell || DisplayPowerupState(mario, f) == PowerupState.BoomerangFlower);
             animator.SetBool(ParamMini, mario->CurrentPowerupState == PowerupState.MiniMushroom);
             animator.SetBool(ParamMega, mario->CurrentPowerupState == PowerupState.MegaMushroom);
             animator.SetBool(ParamInShell, mario->IsInShell || (mario->CurrentPowerupState == PowerupState.BlueShell && (mario->IsCrouching || mario->IsGroundpounding || mario->IsSliding) && mario->GroundpoundStartFrames <= 9));
