@@ -476,7 +476,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
 
             result.Initialize(this, replay);
             result.name = replay.Header.GetDisplayName();
-            result.UpdateText();
+            //result.UpdateText();
             result.UpdateNavigation(previousEntry);
             result.transform.SetAsLastSibling();
             result.gameObject.SetActive(true);

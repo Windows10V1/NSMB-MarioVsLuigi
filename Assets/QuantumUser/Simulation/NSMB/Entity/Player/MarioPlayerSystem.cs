@@ -2219,8 +2219,13 @@ namespace Quantum {
                 }
 
                 if (didKnockback) {
-                    FPVector2 particlePos = (f.Unsafe.GetPointer<Transform2D>(marioEntity)->Position + f.Unsafe.GetPointer<Transform2D>(projectileEntity)->Position) / 2;
-                    f.Events.PlayKnockbackEffect(marioEntity, projectileEntity, KnockbackStrength.FireballBump, particlePos);
+                    QuantumUtils.UnwrapWorldLocations(f.FindAsset<VersusStageData>(f.Map.UserAsset), 
+                        f.Unsafe.GetPointer<Transform2D>(marioEntity)->Position, 
+                        f.Unsafe.GetPointer<Transform2D>(projectileEntity)->Position, 
+                        out FPVector2 marioPos, out FPVector2 projectilePos);
+
+                    FPVector2 avgPosition = (marioPos + projectilePos) / 2;
+                    f.Events.PlayKnockbackEffect(marioEntity, projectileEntity, KnockbackStrength.FireballBump, avgPosition);
                 }
             }
 
@@ -2299,7 +2304,7 @@ namespace Quantum {
                     bool knockbacked;
                     if (marioB->TryGetCurrentPowerTransition(f, out _) && !marioB->IsStarmanInvincible) {
                         // recalculate
-                        marioBAbove = dot < -Constants._0_66 && FPMath.Abs(yDiff) > Constants._0_73 * (Constants._3_50 + FP._0_25);
+                        marioBAbove = dot < -Constants._0_66 && FPMath.Abs(yDiff) > Constants._2_75;
                         goto NormalInteractions;
                     }
                     if (dropStars) {
@@ -2320,7 +2325,7 @@ namespace Quantum {
                     return;
                 } else if (marioBMega) {
                     if (marioA->TryGetCurrentPowerTransition(f, out _) && !marioA->IsStarmanInvincible) {
-                        marioAAbove = dot > Constants._0_66 && FPMath.Abs(yDiff) > Constants._0_73 * (Constants._3_50 + FP._0_25);
+                        marioAAbove = dot > Constants._0_66 && FPMath.Abs(yDiff) > Constants._2_75;
                         goto NormalInteractions;
                     }
                     bool knockbacked;
@@ -2363,13 +2368,13 @@ namespace Quantum {
                     if (marioB->TryGetCurrentPowerTransition(f, out _) && !marioB->IsStarmanInvincible) {
                         goto NormalInteractions;
                     }
-                    MarioMarioAttackStarman(f, marioAEntity, marioBEntity, fromRight, dropStars);
+                    MarioMarioAttackStarman(f, marioAEntity, marioBEntity, fromRight, dropStars, avgPosition);
                     return;
                 } else if (marioBStarman) {
                     if (marioA->TryGetCurrentPowerTransition(f, out _) && !marioA->IsStarmanInvincible) {
                         goto NormalInteractions;
                     }
-                    MarioMarioAttackStarman(f, marioBEntity, marioAEntity, !fromRight, dropStars);
+                    MarioMarioAttackStarman(f, marioBEntity, marioAEntity, !fromRight, dropStars, avgPosition);
                     return;
                 }
             }
@@ -2455,7 +2460,8 @@ namespace Quantum {
                 }
 
                 // crouched in shell interactions
-                if (marioA->IsCrouchedInShell && marioB->CurrentPowerupState != PowerupState.MegaMushroom || marioB->IsCrouchedInShell && marioA->CurrentPowerupState != PowerupState.MegaMushroom) {
+                if ((marioA->IsCrouchedInShell && marioB->CurrentPowerupState != PowerupState.MegaMushroom)
+                    || (marioB->IsCrouchedInShell && marioA->CurrentPowerupState != PowerupState.MegaMushroom)) {
                     // push the other Mario back only if grounded otherwise do knockback
                     if (marioA->IsCrouchedInShell && marioB->IsCrouchedInShell) {
                         // Bump
@@ -2509,10 +2515,10 @@ namespace Quantum {
                         // Minis
                         bool dealtKnockback = false;
                         if (marioAMini) {
-                            dealtKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioBEntity);
+                            dealtKnockback |= marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioBEntity);
                         }
                         if (marioBMini) {
-                            dealtKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioAEntity);
+                            dealtKnockback |= marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioAEntity);
                         }
                         if (dealtKnockback) {
                             f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.Normal, avgPosition);
@@ -2557,7 +2563,8 @@ namespace Quantum {
             }
 
             // handle pushing
-            if (!eitherDamageInvincible && !marioA->IsInKnockback && !marioB->IsInKnockback && marioA->CurrentPowerupState != PowerupState.MegaMushroom && marioB->CurrentPowerupState != PowerupState.MegaMushroom) {
+            if (!eitherDamageInvincible && !marioA->IsInKnockback && !marioB->IsInKnockback
+                && marioA->CurrentPowerupState != PowerupState.MegaMushroom && marioB->CurrentPowerupState != PowerupState.MegaMushroom) {
                 // Collide
                 int directionToOtherPlayer = fromRight ? -1 : 1;
                 var marioACollider = f.Unsafe.GetPointer<PhysicsCollider2D>(marioAEntity);
@@ -2588,7 +2595,7 @@ namespace Quantum {
             }
         }
 
-        private static void MarioMarioAttackStarman(Frame f, EntityRef attacker, EntityRef defender, bool fromRight, bool dropStars) {
+        private static void MarioMarioAttackStarman(Frame f, EntityRef attacker, EntityRef defender, bool fromRight, bool dropStars, FPVector2 avgPosition) {
             var attackerMario = f.Unsafe.GetPointer<MarioPlayer>(attacker);
             var defenderMario = f.Unsafe.GetPointer<MarioPlayer>(defender);
 
@@ -2608,7 +2615,6 @@ namespace Quantum {
             }
 
             if (dealtKnockback) {
-                FPVector2 avgPosition = (f.Unsafe.GetPointer<Transform2D>(attacker)->Position + f.Unsafe.GetPointer<Transform2D>(defender)->Position) / 2;
                 f.Events.PlayKnockbackEffect(attacker, defender, KnockbackStrength.CollisionBump, avgPosition);
             }
         }
