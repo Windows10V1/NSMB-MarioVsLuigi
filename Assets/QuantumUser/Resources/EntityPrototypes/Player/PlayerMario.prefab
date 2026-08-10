@@ -1479,15 +1479,6 @@ MonoBehaviour:
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
   - State: 8
     AdditionalGameObjects:
-    - {fileID: 2749634281061596644}
-    BaseModel: {fileID: 2209300530651413591}
-    ModelScale: {x: 3.6, y: 3.6, z: 3.6}
-    ModelHeightInBlocks: 1
-    TextureReplacements: []
-    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
-    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
-  - State: 9
-    AdditionalGameObjects:
     - {fileID: 241955207267418966}
     - {fileID: 8824588212483152706}
     - {fileID: 6047814328768317032}
@@ -1516,6 +1507,15 @@ MonoBehaviour:
       CapMaskTexture: {fileID: 0}
       StarmanAlbedoTexture: {fileID: 2800000, guid: 5d5f9ad4948945b4c83685ca4f0933b0,
         type: 3}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
+  - State: 9
+    AdditionalGameObjects:
+    - {fileID: 2749634281061596644}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 3.6, y: 3.6, z: 3.6}
+    ModelHeightInBlocks: 1
+    TextureReplacements: []
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
 --- !u!114 &8832712012989740833
