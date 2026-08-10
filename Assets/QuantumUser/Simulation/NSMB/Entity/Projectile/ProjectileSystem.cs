@@ -145,7 +145,7 @@ namespace Quantum {
             var projectile = filter.Projectile;
             var physicsObject = filter.PhysicsObject;
 
-            FP speed = asset.Speed;
+            FP speed = projectile->Speed;
             if (!projectile->BoomerangReturning) {
                 // Travel outwards for 15 frames, then gradually slow down to 0 over the next 15.
                 if (projectile->BoomerangTravelFrames >= BoomerangMaxTravelFrames + BoomerangSlowdownFrames) {
@@ -154,20 +154,22 @@ namespace Quantum {
                     projectile->BoomerangReturnFrames = 0;
                     speed = 0;
                 } else if (projectile->BoomerangTravelFrames >= BoomerangMaxTravelFrames) {
-                    speed = asset.Speed * (BoomerangMaxTravelFrames + BoomerangSlowdownFrames - projectile->BoomerangTravelFrames) / BoomerangSlowdownFrames;
+                    speed = projectile->Speed * (BoomerangMaxTravelFrames + BoomerangSlowdownFrames - projectile->BoomerangTravelFrames) / BoomerangSlowdownFrames;
                 }
                 projectile->BoomerangTravelFrames++;
             } else if (projectile->BoomerangReturnFrames < BoomerangReturnFramesTotal) {
                 // Gradually accelerate back up to max speed over 10 frames.
-                speed = asset.Speed * (projectile->BoomerangReturnFrames + 1) / BoomerangReturnFramesTotal;
+                speed = projectile->Speed * (projectile->BoomerangReturnFrames + 1) / BoomerangReturnFramesTotal;
                 projectile->BoomerangReturnFrames++;
             }
 
             if (projectile->BoomerangReturning
                 && f.Unsafe.TryGetPointer(projectile->Owner, out Transform2D* ownerTransform)
                 && f.Unsafe.TryGetPointer(projectile->Owner, out PhysicsCollider2D* ownerCollider)) {
-                // Follow the shooter's hitbox center, wherever they've gone.
-                FPVector2 toOwner = (ownerTransform->Position + ownerCollider->Shape.Centroid) - filter.Transform->Position;
+                // Follow the shooter's hitbox center, wrapped across the level seam.
+                FPVector2 ownerTarget = ownerTransform->Position + ownerCollider->Shape.Centroid;
+                QuantumUtils.UnwrapWorldLocations(f, ownerTarget, filter.Transform->Position, out FPVector2 unwrappedOwner, out FPVector2 unwrappedSelf);
+                FPVector2 toOwner = unwrappedOwner - unwrappedSelf;
                 if (toOwner.SqrMagnitude > FP._0_01) {
                     physicsObject->Velocity = toOwner.Normalized * speed;
                     return;

@@ -246,12 +246,19 @@ namespace Quantum {
             }
             case ProjectileEffectType.Boomerang: {
                 if (bobomb->CurrentDetonationFrames > 0) {
+                    // Already lit: just get kicked, like a fireball.
                     bobomb->Kick(f, bobombEntity, projectileEntity, 0);
                 } else {
-                    // Boomerang lights bob-ombs and bounces them up.
+                    // Light the fuse and bounce the bob-omb up, like a block bump from below.
                     Light(f, bobombEntity, bobomb, false);
+
                     var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(bobombEntity);
-                    physicsObject->Velocity.Y = Constants._5_50;
+                    QuantumUtils.UnwrapWorldLocations(f, f.Unsafe.GetPointer<Transform2D>(bobombEntity)->Position, f.Unsafe.GetPointer<Transform2D>(projectileEntity)->Position, out FPVector2 ourPos, out FPVector2 theirPos);
+                    physicsObject->Velocity = new FPVector2(
+                        ourPos.X > theirPos.X ? 1 : -1,
+                        Constants._5_50
+                    );
+                    physicsObject->IsTouchingGround = false;
                 }
                 break;
             }

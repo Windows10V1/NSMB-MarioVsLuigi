@@ -438,9 +438,9 @@ namespace Quantum {
                 physicsObject->IsTouchingGround = false;
                 break;
             }
+            }
 
             f.Signals.OnProjectileHitEntity(projectileEntity, koopaEntity);
-            }
         }
 
         public static void OnKoopaBooInteraction(Frame f, EntityRef koopaEntity, EntityRef booEntity) {

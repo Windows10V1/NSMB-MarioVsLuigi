@@ -2230,7 +2230,10 @@ namespace Quantum {
                     && hammerMario->IsCrouching) {
 
                     var projectilePhysics = f.Unsafe.GetPointer<PhysicsObject>(projectileEntity);
-                    projectilePhysics->Velocity.Y = -projectile->Speed / 2;
+                    projectile->Speed *= Constants._0_85;
+                    projectilePhysics->Gravity *= Constants._0_85;
+                    projectilePhysics->Velocity.Y = projectile->Speed;
+                    f.Events.EnemyPierced(marioEntity);
                     return;
                 }
             }

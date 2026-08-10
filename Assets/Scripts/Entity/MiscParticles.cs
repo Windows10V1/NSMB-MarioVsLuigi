@@ -71,7 +71,7 @@ namespace NSMB.Particles {
             }
             if (view) {
                 Instantiate(
-                    Enums.PrefabParticle.Enemy_KillPoof.GetGameObject(),
+                    Enums.PrefabParticle.Enemy_HardKick.GetGameObject(),
                     view.transform.position + (Vector3.back * 5) + (Vector3.up * 0.1f),
                     Quaternion.identity);
             }
