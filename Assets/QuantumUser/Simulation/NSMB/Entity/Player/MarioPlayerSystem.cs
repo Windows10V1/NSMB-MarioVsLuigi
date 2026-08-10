@@ -1609,6 +1609,7 @@ namespace Quantum {
             AssetRef<EntityPrototype> projectilePrototype = state switch {
                 PowerupState.IceFlower => f.SimulationConfig.IceballPrototype,
                 PowerupState.HammerSuit => f.SimulationConfig.HammerPrototype,
+                PowerupState.BoomerangFlower => f.SimulationConfig.BoomerangPrototype,
                 _ => f.SimulationConfig.FireballPrototype,
             };
 
@@ -2208,13 +2209,33 @@ namespace Quantum {
             }
 
             var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
+            var projectileAsset = f.FindAsset(projectile->Asset);
+
             if (projectile->Owner == marioEntity) {
+                // The boomerang spawns overlapping its owner, so those initial
+                // contacts aren't real catches: only despawn once it's coming back.
+                if (projectileAsset.Effect == ProjectileEffectType.Boomerang && projectile->BoomerangReturning) {
+                    ProjectileSystem.Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
+                }
                 return;
             }
 
+            if (projectileAsset.Effect == ProjectileEffectType.Boomerang) {
+                // A hammer-suit player crouching on the ground deflects the boomerang
+                // upward without taking damage.
+                var hammerMario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
+                var hammerMarioPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
+                if (hammerMario->CurrentPowerupState == PowerupState.HammerSuit
+                    && hammerMarioPhysics->IsTouchingGround
+                    && hammerMario->IsCrouching) {
+
+                    var projectilePhysics = f.Unsafe.GetPointer<PhysicsObject>(projectileEntity);
+                    projectilePhysics->Velocity.Y = -projectile->Speed / 2;
+                    return;
+                }
+            }
+
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
-            var marioPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
-            var projectileAsset = f.FindAsset(projectile->Asset);
 
             bool dropStars = false;
 
@@ -2248,7 +2269,8 @@ namespace Quantum {
                     if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
                         mario->Powerdown(f, marioEntity, false, projectileEntity);
                     } else {
-                        didKnockback = mario->DoKnockback(f, marioEntity, marioPhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
+                        var projectilePhysics = f.Unsafe.GetPointer<PhysicsObject>(projectileEntity);
+                        didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
                     }
                     break;
                 case ProjectileEffectType.Freeze:

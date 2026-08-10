@@ -10,6 +10,9 @@ component Projectile {
 	[ExcludeFromPrototype] bool HasBounced;
 	[ExcludeFromPrototype] bool CheckedCollision;
 	[ExcludeFromPrototype] byte Combo;
+	[ExcludeFromPrototype] bool BoomerangReturning;
+	[ExcludeFromPrototype] byte BoomerangTravelFrames;
+	[ExcludeFromPrototype] byte BoomerangReturnFrames;
 }
 
 signal OnProjectileHitEntity(EntityRef projectile, EntityRef hitEntity);

@@ -3451,29 +3451,38 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct Projectile : Quantum.IComponent {
-    public const Int32 SIZE = 40;
+    public const Int32 SIZE = 48;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(16)]
-    public AssetRef<ProjectileAsset> Asset;
-    [FieldOffset(32)]
-    public FP Speed;
-    [FieldOffset(1)]
-    public Byte Lifetime;
     [FieldOffset(24)]
+    public AssetRef<ProjectileAsset> Asset;
+    [FieldOffset(40)]
+    public FP Speed;
+    [FieldOffset(3)]
+    public Byte Lifetime;
+    [FieldOffset(32)]
     [ExcludeFromPrototype()]
     public EntityRef Owner;
-    [FieldOffset(8)]
-    [ExcludeFromPrototype()]
-    public QBoolean FacingRight;
     [FieldOffset(12)]
     [ExcludeFromPrototype()]
+    public QBoolean FacingRight;
+    [FieldOffset(16)]
+    [ExcludeFromPrototype()]
     public QBoolean HasBounced;
-    [FieldOffset(4)]
+    [FieldOffset(8)]
     [ExcludeFromPrototype()]
     public QBoolean CheckedCollision;
-    [FieldOffset(0)]
+    [FieldOffset(2)]
     [ExcludeFromPrototype()]
     public Byte Combo;
+    [FieldOffset(4)]
+    [ExcludeFromPrototype()]
+    public QBoolean BoomerangReturning;
+    [FieldOffset(1)]
+    [ExcludeFromPrototype()]
+    public Byte BoomerangTravelFrames;
+    [FieldOffset(0)]
+    [ExcludeFromPrototype()]
+    public Byte BoomerangReturnFrames;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 16141;
@@ -3485,13 +3494,19 @@ namespace Quantum {
         hash = hash * 31 + HasBounced.GetHashCode();
         hash = hash * 31 + CheckedCollision.GetHashCode();
         hash = hash * 31 + Combo.GetHashCode();
+        hash = hash * 31 + BoomerangReturning.GetHashCode();
+        hash = hash * 31 + BoomerangTravelFrames.GetHashCode();
+        hash = hash * 31 + BoomerangReturnFrames.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (Projectile*)ptr;
+        serializer.Stream.Serialize(&p->BoomerangReturnFrames);
+        serializer.Stream.Serialize(&p->BoomerangTravelFrames);
         serializer.Stream.Serialize(&p->Combo);
         serializer.Stream.Serialize(&p->Lifetime);
+        QBoolean.Serialize(&p->BoomerangReturning, serializer);
         QBoolean.Serialize(&p->CheckedCollision, serializer);
         QBoolean.Serialize(&p->FacingRight, serializer);
         QBoolean.Serialize(&p->HasBounced, serializer);

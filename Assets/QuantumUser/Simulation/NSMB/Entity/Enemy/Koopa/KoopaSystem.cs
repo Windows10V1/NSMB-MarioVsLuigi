@@ -424,12 +424,18 @@ namespace Quantum {
                 break;
             }
             case ProjectileEffectType.Boomerang: {
-                // Boomerangs don't kill koopas/spinies but bounces them up into their shell
-                if (!koopa->IsInShell) {
-                    koopa->EnterShell(f, koopaEntity, projectileEntity, false, false);
-                }
+                // Bounce the koopa up and flip it into its shell, like a block bump from below.
+                koopa->IsInShell = true; // Force sound effect off
+                koopa->EnterShell(f, koopaEntity, projectileEntity, true, false);
+                f.Events.PlayComboSound(koopaEntity, 0);
+
                 var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(koopaEntity);
-                physicsObject->Velocity.Y = Constants._5_50;
+                QuantumUtils.UnwrapWorldLocations(f, f.Unsafe.GetPointer<Transform2D>(koopaEntity)->Position, f.Unsafe.GetPointer<Transform2D>(projectileEntity)->Position, out FPVector2 ourPos, out FPVector2 theirPos);
+                physicsObject->Velocity = new FPVector2(
+                    ourPos.X > theirPos.X ? 1 : -1,
+                    Constants._5_50
+                );
+                physicsObject->IsTouchingGround = false;
                 break;
             }
 

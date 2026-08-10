@@ -59,6 +59,12 @@ namespace Quantum {
             } else if (f.Has<Bobomb>(entity)) {
                 doBreak = BreakingRules.HasFlag(BreakableBy.Bombs);
                 doBump = false;
+
+            } else if (f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
+                var projectileAsset = f.FindAsset(projectile->Asset);
+                if (projectileAsset.Effect == ProjectileEffectType.Boomerang) {
+                    doBreak = BreakingRules.HasFlag(BreakableBy.Boomerangs);
+                }
             }
 
             var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
@@ -73,13 +79,6 @@ namespace Quantum {
                 Bump(f, stage, tilePosition, tileInstance, direction, bumpOwner, allowSelfDamage);
             } else {
                 playBumpSound = true;
-            }
-
-            var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(entity)->Asset);
-            if (f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
-                if (projectileAsset.Effect == ProjectileEffectType.Boomerang) {
-                    doBreak = BreakingRules.HasFlag(BreakableBy.Boomerangs);
-                }
             }
 
             return doBreak;
