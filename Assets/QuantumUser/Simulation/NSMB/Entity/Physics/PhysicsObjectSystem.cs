@@ -221,9 +221,12 @@ namespace Quantum {
                 if (!physicsObject->WasTouchingGround && physicsObject->IsTouchingGround) {
                     f.Events.PhysicsObjectLanded(entity);
                 }
+
+                /* Moved to MovingPlatformSystem
                 if (!physicsObject->WasBeingCrushed && physicsObject->IsBeingCrushed) {
                     f.Signals.OnEntityCrushed(entity);
                 }
+                */
             }
         }
 

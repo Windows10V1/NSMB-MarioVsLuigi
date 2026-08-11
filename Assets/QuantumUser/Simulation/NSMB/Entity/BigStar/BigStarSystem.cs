@@ -215,7 +215,7 @@ namespace Quantum {
             bool fastStars = amount > 2 && starChasersData->Stars > 2;
             int starDirection = mario->FacingRight ? 1 : 2;
 
-            if (f.Global->Rules.IsLivesEnabled && mario->Lives == 0) {
+            if (!mario->IsValid(f)) {
                 fastStars = true;
                 mario->NoLivesStarDirection = (byte) ((mario->NoLivesStarDirection + 1) % 4);
                 starDirection = mario->NoLivesStarDirection;

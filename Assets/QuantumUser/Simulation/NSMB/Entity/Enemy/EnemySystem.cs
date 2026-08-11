@@ -85,7 +85,6 @@ namespace Quantum {
                 enemy->IntangibilityFrames = 30; // 30 / 60 is .50 for .50 seconds
                 enemy->Respawn(f, filter.Entity);
                 f.Events.EnemyAfterDelayedRespawn(filter.Entity);
-                f.Signals.OnEnemyRespawned(filter.Entity);
 
             } else if (enemy->RespawnTimer == enemy->RespawnSparklesTimer && enemy->RespawnSparklesTimer != 0) {
                 filter.Transform->Teleport(f, enemy->Spawnpoint);
@@ -170,7 +169,6 @@ namespace Quantum {
                     }
 
                     enemy->Respawn(f, entity);
-                    f.Signals.OnEnemyRespawned(entity);
                 }
 
                 if (enemy->IsActive) {
