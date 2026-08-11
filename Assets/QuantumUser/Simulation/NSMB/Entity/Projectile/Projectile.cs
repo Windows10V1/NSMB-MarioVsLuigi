@@ -65,8 +65,7 @@ namespace Quantum {
             physicsObject->Gravity = asset.Gravity;
             if (asset.InheritShooterVelocity
                 && f.Unsafe.TryGetPointer(owner, out PhysicsObject* ownerPhysicsObject)
-                // Moving in same direction
-                && FPMath.Sign(ownerPhysicsObject->Velocity.X) == 1 == FacingRight) {
+                && FPMath.Sign(ownerPhysicsObject->Velocity.X) == (FacingRight ? 1 : -1)) {
 
                 Speed += FPMath.Abs(ownerPhysicsObject->Velocity.X / 3);
             }
