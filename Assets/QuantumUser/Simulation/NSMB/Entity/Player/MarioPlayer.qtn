@@ -315,6 +315,7 @@ event PlayKnockbackEffect {
 	EntityRef Attacker;
 	KnockbackStrength Strength;
 	nothashed FPVector2? AttackerPosition;
+	bool PlayKnockbackSound;
 }
 
 event MarioPlayerBlueShellStomped {
