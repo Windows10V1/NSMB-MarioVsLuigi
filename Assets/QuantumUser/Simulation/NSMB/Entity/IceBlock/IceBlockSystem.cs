@@ -14,7 +14,6 @@ namespace Quantum {
         }
 
         public override void OnInit(Frame f) {
-            f.Context.Interactions.Register<Projectile, IceBlock>(f, OnIceBlockProjectileInteraction);
             f.Context.Interactions.Register<MarioPlayer, IceBlock>(f, OnIceBlockMarioInteraction);
             f.Context.Interactions.Register<Coin, IceBlock>(f, OnIceBlockCoinInteraction);
         }
@@ -202,15 +201,6 @@ namespace Quantum {
             }
 
             CoinSystem.TryCollectCoin(f, coinEntity, holdable->PreviousHolder);
-        }
-
-        public static bool OnIceBlockProjectileInteraction(Frame f, EntityRef projectileEntity, EntityRef iceBlockEntity, PhysicsContact contact) {
-            var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
-
-            if (projectileAsset.DestroyOnHit) {
-                ProjectileSystem.Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
-            }
-            return false;
         }
         #endregion
 

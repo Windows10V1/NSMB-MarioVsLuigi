@@ -2615,7 +2615,7 @@ namespace Quantum {
             }
 
             if (dealtKnockback) {
-                f.Events.PlayKnockbackEffect(attacker, defender, KnockbackStrength.CollisionBump, avgPosition);
+                f.Events.PlayKnockbackEffect(attacker, defender, KnockbackStrength.CollisionBump, avgPosition, true);
             }
         }
 
@@ -2727,7 +2727,7 @@ namespace Quantum {
                 }
             }
         }
-#endregion
+        #endregion
 
         #region Signals
         public void OnRemoved(Frame f, EntityRef entity, Projectile* component) {
