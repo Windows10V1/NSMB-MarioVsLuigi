@@ -2,6 +2,7 @@ using Photon.Deterministic;
 using Quantum.Collections;
 using Quantum.Profiling;
 using System;
+using System.Runtime.CompilerServices;
 
 namespace Quantum {
 #if MULTITHREADED
@@ -303,9 +304,7 @@ namespace Quantum {
             var physicsObject = filter.PhysicsObject;
 
             if (!physicsObject->DisableCollision) {
-                if (!contacts.HasValue) {
-                    contacts = f.ResolveList(physicsObject->Contacts);
-                }
+                contacts ??= f.ResolveList(physicsObject->Contacts);
 
                 var collider = filter.Collider;
                 var shape = &collider->Shape;
@@ -453,7 +452,7 @@ namespace Quantum {
                     }
 
                     // Get n-lowest contacts (within tolerance)
-                    InsertionSortByDistance(potentialContacts, potentialContactCount);
+                    InsertionSortByDistance(potentialContacts[..potentialContactCount]);
                     //QuickSortSpan(potentialContacts, 0, potentialContactCount - 1);
                     FP tolerance = FP._0_01;
                     FP? min = null;
@@ -533,17 +532,15 @@ namespace Quantum {
                 hitObject = false;
                 return velocity;
             }
-            var physicsObject = filter.PhysicsObject;
-            if (!contacts.HasValue) {
-                contacts = f.ResolveList(physicsObject->Contacts);
-            }
 
+            var physicsObject = filter.PhysicsObject;
             var transform = filter.Transform;
 
             FPVector2 directionVector = velocityX > 0 ? FPVector2.Right : FPVector2.Left;
 
-
             if (!physicsObject->DisableCollision) {
+                contacts ??= f.ResolveList(physicsObject->Contacts);
+
                 var collider = filter.Collider;
                 var shape = &collider->Shape;
                 var boxShape = &shape->Box;
@@ -690,7 +687,7 @@ namespace Quantum {
                     }
 
                     // Get n-lowest contacts (within tolerance)
-                    InsertionSortByDistance(potentialContacts, potentialContactCount);
+                    InsertionSortByDistance(potentialContacts[..potentialContactCount]);
                     //QuickSortSpan(potentialContacts, 0, potentialContactCount - 1);
                     FP tolerance = FP._0_01;
                     FP? min = null;
@@ -1000,6 +997,7 @@ namespace Quantum {
             return count;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static FPVector2 GetNormal(FPVector2 a, FPVector2 b) {
             FPVector2 diff = b - a;
             return new FPVector2(-diff.Y, diff.X);
@@ -1071,6 +1069,7 @@ namespace Quantum {
             return true;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static FPVector2 Project(FPVector2 a, FPVector2 b) {
             return b * (FPVector2.Dot(a, b) / b.Magnitude);
         }
@@ -1082,9 +1081,9 @@ namespace Quantum {
             FPVector2 boxMax = origin + extents;
 
             Span<FPVector2> boxCorners = stackalloc FPVector2[4];
-            boxCorners[0] = new(origin.X - extents.X, origin.Y + extents.Y);
+            boxCorners[0] = new(boxMin.X, boxMax.Y);
             boxCorners[1] = boxMax;
-            boxCorners[2] = new(origin.X + extents.X, origin.Y - extents.Y);
+            boxCorners[2] = new(boxMax.X, boxMin.Y);
             boxCorners[3] = boxMin;
             
             return PointIsInsidePolygon(testPosition, boxCorners);
@@ -1300,10 +1299,14 @@ namespace Quantum {
             return result ^ IsCounterClockWise(polygon);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool IsCounterClockWise(Span<FPVector2> vertices) {
-            FPVector2 fPVector = new FPVector2(vertices[1].X - vertices[0].X, vertices[1].Y - vertices[0].Y);
-            FPVector2 fPVector2 = new FPVector2(vertices[2].X - vertices[1].X, vertices[2].Y - vertices[1].Y);
-            return fPVector.X * fPVector2.Y - fPVector.Y * fPVector2.X >= 0;
+            if (vertices.Length < 3) {
+                return false;
+            }
+
+            return (vertices[1].X - vertices[0].X) * (vertices[2].Y - vertices[1].Y) 
+                - (vertices[1].Y - vertices[0].Y) * (vertices[2].X - vertices[1].X) >= 0;
         }
 
         // ------------ https://en.wikipedia.org/wiki/Cohen%E2%80%93Sutherland_algorithm ------------ //
@@ -1397,11 +1400,11 @@ namespace Quantum {
             return accept;
         }
 
-        private static void InsertionSortByDistance(Span<PhysicsContact> span, int count) {
-            for (int i = 1; i < count; i++) {
+        private static void InsertionSortByDistance(Span<PhysicsContact> span) {
+            for (int i = 1; i < span.Length; i++) {
                 var key = span[i];
                 int j = i - 1;
-                while (j >= 0 && span[j].Distance.RawValue > key.Distance.RawValue) {
+                while (j >= 0 && span[j].Distance > key.Distance) {
                     span[j + 1] = span[j];
                     j--;
                 }
@@ -1409,6 +1412,7 @@ namespace Quantum {
             }
         }
 
+        /*
         private static void QuickSortSpan(Span<PhysicsContact> span, int lo, int hi) {
             if (lo >= hi) {
                 return;
@@ -1433,6 +1437,7 @@ namespace Quantum {
             QuickSortSpan(span, lo, num2 - 1);
             QuickSortSpan(span, num2 + 1, hi);
         }
+        */
 
         public void OnEntityEnterExitLiquid(Frame f, EntityRef entity, EntityRef liquid, QBoolean underwater) {
             if (!f.Unsafe.TryGetPointer(entity, out PhysicsObject* physicsObject)) {
