@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: -1924100074386991617}
   - component: {fileID: 8425386845761484142}
   - component: {fileID: 8958694543799367418}
+  - component: {fileID: -4707256756072448579}
   m_Layer: 19
   m_Name: Boomerang
   m_TagString: Untagged
@@ -419,8 +420,19 @@ MonoBehaviour:
   sRenderer: {fileID: 0}
   animator: {fileID: 9025442341733772760}
   legacySpriteAnimator: {fileID: 0}
-  sameTeamColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+  sameTeamColor: {r: 1, g: 1, b: 1, a: 1}
   differentTeamColor: {r: 1, g: 1, b: 1, a: 1}
+  modelRenderers:
+  - {fileID: 8818015814349666637}
+  usePalette: 1
+  paletteReplacements:
+  - Material: {fileID: 2100000, guid: acb2b75fe8dc1e343be722b1820773bf, type: 2}
+    AlbedoTexture: {fileID: 2800000, guid: d6f47ef02c1968f40a4d530510c07ab9, type: 3}
+    OverallsMaskTexture: {fileID: 2800000, guid: d6c20998680ea8a448bd8e44463ff5ca,
+      type: 3}
+    ShirtMaskTexture: {fileID: 0}
+    CapMaskTexture: {fileID: 0}
+    StarmanAlbedoTexture: {fileID: 0}
 --- !u!114 &-5850122481703649106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -461,11 +473,11 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: -8359218312643153770, guid: b73add24eb026c844b85593f8bab1f8c,
     type: 2}
   m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: cb215ac863dfaed4f99121015de61fd0, type: 3}
+  m_Resource: {fileID: 0}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1
-  Loop: 1
+  Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -564,6 +576,21 @@ MonoBehaviour:
   soundOrigin: {fileID: 6226578532214227705}
   soundRange: 12
   maxPanning: 0.8
+--- !u!114 &-4707256756072448579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6307920351473437675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 557273f467ae31f4b8e07bbb89e73e8e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::NSMB.Sound.LoopingSoundPlayer
+  audioSource: {fileID: 8425386845761484142}
+  currentAudio: {fileID: 11400000, guid: e99f552b12209f648971a693173539a7, type: 2}
+  playOnAwake: 1
 --- !u!1 &6817442949190414024
 GameObject:
   m_ObjectHideFlags: 0
@@ -715,6 +742,12 @@ PrefabInstance:
 --- !u!4 &7772443187923817931 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c7d71db7f4e39b24ea73d52b5fcdfd08,
+    type: 3}
+  m_PrefabInstance: {fileID: 7806984023966216736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8818015814349666637 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: c7d71db7f4e39b24ea73d52b5fcdfd08,
     type: 3}
   m_PrefabInstance: {fileID: 7806984023966216736}
   m_PrefabAsset: {fileID: 0}
