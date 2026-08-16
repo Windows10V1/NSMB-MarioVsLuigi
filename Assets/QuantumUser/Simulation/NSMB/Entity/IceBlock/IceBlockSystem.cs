@@ -205,7 +205,18 @@ namespace Quantum {
         }
 
         public static bool OnIceBlockProjectileInteraction(Frame f, EntityRef projectileEntity, EntityRef iceBlockEntity, PhysicsContact contact) {
-            var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
+            var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
+            var projectileAsset = f.FindAsset(projectile->Asset);
+
+            // The ice block around a frozen owner keeps a returning boomerang from ever
+            // touching the player itself: catch it on the ice block as if on the owner.
+            if (projectileAsset != null
+                && projectileAsset.Effect == ProjectileEffectType.Boomerang
+                && projectile->BoomerangReturning
+                && projectile->Owner == f.Unsafe.GetPointer<IceBlock>(iceBlockEntity)->Entity) {
+                ProjectileSystem.Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
+                return false;
+            }
 
             if (projectileAsset.DestroyOnHit) {
                 ProjectileSystem.Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
