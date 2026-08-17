@@ -1572,8 +1572,12 @@ namespace Quantum {
       unchecked { 
         var hash = 11299;
         hash = hash * 31 + _field_used_.GetHashCode();
-        hash = hash * 31 + _StarChasers.GetHashCode();
-        hash = hash * 31 + _CoinRunners.GetHashCode();
+        if (_field_used_ == STARCHASERS) {
+          hash = hash * 31 + _StarChasers.GetHashCode();
+        }
+        if (_field_used_ == COINRUNNERS) {
+          hash = hash * 31 + _CoinRunners.GetHashCode();
+        }
         return hash;
       }
     }
