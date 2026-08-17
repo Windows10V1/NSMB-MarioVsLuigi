@@ -36,7 +36,7 @@ namespace NSMB.Entities.World {
             QuantumEvent.Subscribe<EventCoinChangedType>(this, OnCoinChangedType, onlyIfEntityViewBound: true);
             QuantumEvent.Subscribe<EventCoinChangeCollected>(this, OnCoinChangedCollected, onlyIfEntityViewBound: true);
             QuantumEvent.Subscribe<EventCoinBounced>(this, OnCoinBounced, FilterOutReplayFastForward, onlyIfEntityViewBound: true);
-            QuantumCallback.Subscribe<CallbackGameResynced>(this, OnGameResynced);
+            QuantumCallback.Subscribe<CallbackGameResynced>(this, OnGameResynced, onlyIfEntityViewBound: true);
             RenderPipelineManager.beginCameraRendering += URPOnPreRender;
         }
 

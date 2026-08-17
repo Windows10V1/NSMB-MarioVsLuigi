@@ -71,6 +71,7 @@ namespace Quantum {
 
             bobomb->CurrentDetonationFrames = bobomb->DetonationFrames;
             f.Unsafe.GetPointer<PhysicsObject>(entity)->Velocity.X = 0;
+            f.Unsafe.GetPointer<Enemy>(entity)->IgnoreOffscreen = true;
 
             f.Events.BobombLit(entity, stomp);
         }

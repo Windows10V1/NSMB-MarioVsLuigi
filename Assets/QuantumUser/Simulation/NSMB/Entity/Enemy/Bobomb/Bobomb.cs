@@ -12,6 +12,7 @@ namespace Quantum {
             holdable->IgnoreOwnerFrames = 0;
 
             f.Unsafe.GetPointer<Interactable>(entity)->ColliderDisabled = false;
+            f.Unsafe.GetPointer<Enemy>(entity)->IgnoreOffscreen = false;
         }
 
         public readonly void Kick(Frame f, EntityRef entity, EntityRef initiator, FP speed) {
