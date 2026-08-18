@@ -285,7 +285,11 @@ namespace Quantum {
                 adjustment.Y = 0; // Don't preserve vertical movement, it messes with jumps.
                 
                 physicsObject->Velocity += adjustment;
+                if (physicsObject->Velocity.Y < 0 && (maxVelocity?.Y ?? 0) == 0) {
+                    physicsObject->Velocity.Y = 0;
+                }
             }
+
             physicsObject->ParentVelocity = maxVelocity ?? FPVector2.Zero;
         }
 
