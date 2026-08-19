@@ -14,7 +14,6 @@ namespace Quantum {
         private const byte BoomerangMaxTravelFrames = 15;
         private const byte BoomerangSlowdownFrames = 15;
         private const byte BoomerangReturnFramesTotal = 10;
-        private const byte BoomerangSpawnWallGraceFrames = 6;
 
         public override void OnInit(Frame f) {
             f.Context.Interactions.Register<Projectile, Projectile>(f, OnProjectileProjectileInteraction);
@@ -41,11 +40,9 @@ namespace Quantum {
 
             var physicsObject = filter.PhysicsObject;
 
-            // Check to instant-despawn if spawned inside a wall.
-            // The boomerang is exempt since it can break through some tiles; it gets
-            // a grace period in HandleBoomerangTileCollision instead.
+            // Check to instant-despawn if spawned inside a wall
             if (!physicsObject->DisableCollision && !projectile->CheckedCollision) {
-                if (asset.Effect != ProjectileEffectType.Boomerang && PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
+                if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
                     Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                     return;
                 }
@@ -121,14 +118,6 @@ namespace Quantum {
             }
 
             if (physicsObject->DisableCollision) {
-                return;
-            }
-
-            // After spawning, a boomerang can overlap the tile it was fired into
-            // (e.g. when throwing while standing flush against a wall). Ignore wall
-            // contact for a few frames so the overlap is neither counted as a
-            // ricochet nor as a despawn on the following frame.
-            if (projectile->BoomerangTravelFrames < BoomerangSpawnWallGraceFrames) {
                 return;
             }
 
