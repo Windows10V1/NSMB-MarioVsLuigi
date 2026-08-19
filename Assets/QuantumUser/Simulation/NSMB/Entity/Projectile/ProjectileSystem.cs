@@ -1,5 +1,6 @@
 using Photon.Deterministic;
 using Quantum.Collections;
+using System;
 
 namespace Quantum {
     public unsafe class ProjectileSystem : SystemMainThreadEntityFilter<Projectile, ProjectileSystem.Filter>, ISignalOnProjectileHitEntity {
@@ -43,8 +44,12 @@ namespace Quantum {
             // Check to instant-despawn if spawned inside a wall
             if (!physicsObject->DisableCollision && !projectile->CheckedCollision) {
                 if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
-                    Destroy(f, filter.Entity, asset.DestroyParticleEffect);
-                    return;
+                    // Boomerangs smash their way out of breakable bricks instead.
+                    bool smashedOut = asset.Effect == ProjectileEffectType.Boomerang && TryBreakInWall(f, ref filter, stage);
+                    if (!smashedOut) {
+                        Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                        return;
+                    }
                 }
                 projectile->CheckedCollision = true;
             }
@@ -61,6 +66,41 @@ namespace Quantum {
                     physicsObject->TerminalVelocity = -projectile->Speed;
                 }
             }
+        }
+
+        // Breaks any breakable bricks overlapping the hitbox. Returns true if at least one was broken.
+        private bool TryBreakInWall(Frame f, ref Filter filter, VersusStageData stage) {
+            var projectile = filter.Projectile;
+            InteractionDirection direction = projectile->FacingRight ? InteractionDirection.Right : InteractionDirection.Left;
+
+            Span<PhysicsObjectSystem.LocationTilePair> tiles = stackalloc PhysicsObjectSystem.LocationTilePair[64];
+            int count = PhysicsObjectSystem.GetTilesOverlappingHitbox(f, filter.Transform->Position, filter.PhysicsCollider->Shape, tiles, stage);
+
+            bool brokeAny = false;
+            for (int i = 0; i < count; i++) {
+                IntVector2 location = tiles[i].Position;
+                StageTileInstance tileInstance = stage.GetTileRelative(f, location);
+                if (tileInstance.Tile == default || !f.TryFindAsset(tileInstance.Tile, out StageTile tile)) {
+                    continue;
+                }
+
+                while (tile is TileInteractionRelocator relocator) {
+                    location = relocator.RelocateTo;
+                    tileInstance = stage.GetTileRelative(f, location);
+                    tile = f.FindAsset(tileInstance.Tile);
+                }
+
+                // Match OnBoomerangPreContact: only plain breakable bricks, not coin/powerup blocks.
+                if (tile is not BreakableBrickTile breakable || tile is CoinTile or PowerupTileBase) {
+                    continue;
+                }
+
+                if (breakable.Interact(f, filter.Entity, direction, location, tileInstance, out _)) {
+                    brokeAny = true;
+                }
+            }
+
+            return brokeAny;
         }
 
         public void HandleTileCollision(Frame f, ref Filter filter, ProjectileAsset asset) {
