@@ -504,6 +504,9 @@ namespace NSMB.Networking {
             if (Runner) {
                 Runner.Shutdown(ShutdownCause.NetworkError);
             }
+            if (RealtimeDisconnectCauses.TryGetValue(cause, out string key)) {
+                ThrowError(key, true);
+            }
         }
 
         public void OnRegionListReceived(RegionHandler regionHandler) { }
