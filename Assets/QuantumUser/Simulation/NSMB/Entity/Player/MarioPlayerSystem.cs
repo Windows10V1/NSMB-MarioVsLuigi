@@ -129,7 +129,8 @@ namespace Quantum {
             if (!physicsObject->IsTouchingGround || (FPMath.Abs(physicsObject->Velocity.X) > 3 && !physicsObject->IsOnSlipperyGround) /*|| physicsObject->IsUnderwater*/
                 || mario->IsWallsliding || mario->IsGroundpounding || f.Exists(mario->CurrentPipe) || mario->IsInKnockback
                 || mario->IsPropellerFlying || mario->IsSpinnerFlying || mario->IsSkidding || mario->IsSliding || mario->IsCrouching
-                || mario->IsInShell || mario->IsTurnaround || mario->IsStuckInBlock || f.Exists(mario->HeldEntity) || mario->DoEntityBounce) {
+                || mario->IsInShell || mario->IsTurnaround || mario->IsStuckInBlock || f.Exists(mario->HeldEntity) || mario->DoEntityBounce
+                || mario->IsWalkingOnWater(f, filter.Entity)) {
                 // Disgusting.
 
                 if (mario->TauntFrames > 0) {
@@ -2705,6 +2706,10 @@ namespace Quantum {
                 }
                 attackerPhysicsObject->Velocity.Y = 4;
                 attackerMario->DoEntityBounce = false;
+                if (attackerMario->IsInKnockback) {
+                    // Prevents softlocks
+                    attackerMario->ResetKnockback(f, attacker);
+                }
                 f.Events.EnemyKicked(defender, false);
             } else {
                 // Normal knockbacks

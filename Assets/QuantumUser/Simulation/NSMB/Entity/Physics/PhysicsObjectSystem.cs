@@ -286,7 +286,8 @@ namespace Quantum {
                 
                 physicsObject->Velocity += adjustment;
                 if (physicsObject->Velocity.Y < 0 && (maxVelocity?.Y ?? 0) == 0) {
-                    physicsObject->Velocity.Y = 0;
+                    // Setting to 0 breaks ground snap
+                    physicsObject->Velocity.Y = physicsObject->Gravity.Y;
                 }
             }
 

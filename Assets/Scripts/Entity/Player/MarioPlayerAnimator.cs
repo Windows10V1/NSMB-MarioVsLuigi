@@ -322,23 +322,13 @@ namespace NSMB.Entities.Player {
             using var profilerScope = HostProfiler.Start("MarioPlayerAnimator.HandleAnimations");
             // Particles
             bool disableParticles = mario->IsDead || freezable->IsFrozen(f) || f.Global->GameState == GameState.Ended;
-
-            bool onWater = false;
-            if (physicsObject->IsTouchingGround && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
-                var contacts = f.ResolveList(physicsObject->Contacts);
-                foreach (var contact in contacts) {
-                    if (f.Has<Liquid>(contact.Entity)) {
-                        onWater = true;
-                        break;
-                    }
-                }
-            }
-
+            bool walkingOnWater = mario->IsWalkingOnWater(f, EntityRef);
+            
             SetParticleEmission(drillParticle, !disableParticles && mario->IsDrilling);
             SetParticleEmission(sparkles, !disableParticles && mario->IsStarmanInvincible);
             SetParticleEmission(iceSkiddingParticle, !disableParticles && physicsObject->IsOnSlipperyGround && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
-            SetParticleEmission(waterSkiddingParticle, !disableParticles && onWater && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
-            SetParticleEmission(waterRunningParticle, !disableParticles && !waterSkiddingParticle.isPlaying && onWater && FPMath.Abs(physicsObject->Velocity.X) > FP._0_10);
+            SetParticleEmission(waterSkiddingParticle, !disableParticles && walkingOnWater && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
+            SetParticleEmission(waterRunningParticle, !disableParticles && !waterSkiddingParticle.isPlaying && walkingOnWater && FPMath.Abs(physicsObject->Velocity.X) > FP._0_10);
             SetParticleEmission(dust, !disableParticles && !iceSkiddingParticle.isPlaying && !waterSkiddingParticle.isPlaying && (mario->IsWallsliding || (physicsObject->IsTouchingGround && ((mario->IsSkidding || (mario->IsCrouching && !physicsObject->IsOnSlipperyGround)) && Mathf.Abs(physicsObject->Velocity.X.AsFloat) > 0.25f)) || mario->FastTurnaroundFrames > 0 || (((mario->IsSliding && Mathf.Abs(physicsObject->Velocity.X.AsFloat) > 0.25f) || mario->IsInShell) && physicsObject->IsTouchingGround)) && !f.Exists(mario->CurrentPipe));
             SetParticleEmission(giantParticle, !disableParticles && mario->CurrentPowerupState == PowerupState.MegaMushroom && mario->MegaMushroomStartFrames == 0);
             SetParticleEmission(fireParticle, mario->IsDead && !mario->IsRespawning && mario->FireDeath && !physicsObject->IsFrozen);
