@@ -838,7 +838,7 @@ namespace Quantum {
             ref var inputs = ref filter.Inputs;
             bool rightOrLeft = (inputs.Right.IsDown ^ inputs.Left.IsDown);
 
-            if (!mario->IsInShell && !mario->IsSliding && !mario->IsSkidding && !mario->IsInKnockback && !mario->IsTurnaround) {
+            if (!mario->IsInShell && !mario->IsSliding && !mario->IsSkidding && !mario->IsTurnaround) {
                 if (rightOrLeft) {
                     mario->FacingRight = inputs.Right.IsDown;
                 } else if (!physicsObject->IsTouchingGround && (mario->IsPropellerFlying || mario->IsSpinnerFlying) && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05) {
@@ -847,7 +847,7 @@ namespace Quantum {
             } else if (mario->MegaMushroomStartFrames == 0 && mario->MegaMushroomEndFrames == 0 && !mario->IsSkidding && !mario->IsTurnaround) {
                 if (!mario->IsInShell && ((FPMath.Abs(physicsObject->Velocity.X) < FP._0_50 && mario->IsCrouching) || physicsObject->IsOnSlipperyGround) && rightOrLeft) {
                     mario->FacingRight = inputs.Right.IsDown;
-                } else if (mario->IsInKnockback || (physicsObject->IsTouchingGround && mario->CurrentPowerupState != PowerupState.MegaMushroom && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05 && !mario->IsCrouching)) {
+                } else if ((physicsObject->IsTouchingGround && mario->CurrentPowerupState != PowerupState.MegaMushroom && FPMath.Abs(physicsObject->Velocity.X) > FP._0_05 && !mario->IsCrouching)) {
                     mario->FacingRight = physicsObject->Velocity.X > 0;
                 } else if ((!mario->IsInShell || mario->MegaMushroomStartFrames > 0) && rightOrLeft) {
                     mario->FacingRight = inputs.Right.IsDown;
