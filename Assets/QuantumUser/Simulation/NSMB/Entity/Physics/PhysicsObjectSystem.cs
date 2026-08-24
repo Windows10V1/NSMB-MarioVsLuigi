@@ -287,7 +287,7 @@ namespace Quantum {
                 physicsObject->Velocity += adjustment;
                 if (physicsObject->Velocity.Y < 0 && (maxVelocity?.Y ?? 0) == 0) {
                     // Setting to 0 breaks ground snap
-                    physicsObject->Velocity.Y = physicsObject->Gravity.Y;
+                    physicsObject->Velocity.Y = physicsObject->Gravity.Y * f.DeltaTime;
                 }
             }
 
@@ -640,7 +640,9 @@ namespace Quantum {
 
                                 for (int i = 0; i < polygonContacts; i++) {
                                     PhysicsContact newContact = contactBuffer[i];
+                                    newContact.Frame = f.Number;
                                     newContact.Tile = tilePos;
+
                                     potentialContacts[potentialContactCount++] = newContact;
                                 }
                             }
@@ -981,13 +983,14 @@ namespace Quantum {
 
                 bool valid = false;
                 if ((length == 2 || !isPolygon) && (i == 0 || i == length - 1)) {
-                    /*
+                    // This was previously commented out.......
+                    // Why?? This broke mega mushroom interacting with thin semisolids (since the left/right edges of their hitbox would "miss" our polygon)
+                    // Undoing it for now, but its best to figure out... yknow... why...
                     if (i == 0) {
                         valid = FPVector2.Dot(GetNormal(polygon[i], polygon[i + 1]), direction) < 0;
                     } else {
                         valid = FPVector2.Dot(GetNormal(polygon[i - 1], polygon[i]), direction) < 0;
                     }
-                    */
                 } else {
                     valid |= FPVector2.Dot(GetNormal(point, polygon[(i + 1) % polygon.Length]), direction) < 0;
                     valid |= FPVector2.Dot(GetNormal(polygon[(i - 1 + polygon.Length) % polygon.Length], point), direction) < 0;

@@ -179,7 +179,8 @@ namespace Quantum {
             return false;
 
             void TryDamageMario() {
-                bool allowHit = mario->CheckTeamAttack(f, holdable->PreviousHolder, out bool dropStars);
+                bool dropStars = false;
+                bool allowHit = holdable->PreviousHolder != marioEntity && mario->CheckTeamAttack(f, holdable->PreviousHolder, out dropStars);
 
                 if (allowHit) {
                     bool damaged = mario->DoKnockback(f, marioEntity, contact.Normal.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, iceBlockEntity);

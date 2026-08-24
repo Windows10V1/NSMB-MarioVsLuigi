@@ -466,11 +466,12 @@ namespace Quantum {
             }
 
             if (!mario->DoEntityBounce
-                && f.Unsafe.TryGetPointer(mario->CurrentSpinner, out Spinner* Spinner) && mario->ProjectileDelayFrames == 0
+                && f.Unsafe.TryGetPointer(mario->CurrentSpinner, out Spinner* spinner)
+                && mario->ProjectileDelayFrames == 0 && spinner->ArmPosition <= FP._0_75
                 && !f.Exists(mario->HeldEntity) && !mario->IsInShell) {
-                // Jump of spinner
+                // Jump off spinner
                 physicsObject->Velocity.Y = physics.SpinnerLaunchVelocity;
-                Spinner->PlatformWaitFrames = 6;
+                spinner->PlatformWaitFrames = 6;
 
                 mario->IsSkidding = false;
                 mario->IsTurnaround = false;
