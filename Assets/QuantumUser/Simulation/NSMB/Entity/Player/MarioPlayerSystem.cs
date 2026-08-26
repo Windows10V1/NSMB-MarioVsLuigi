@@ -926,7 +926,7 @@ namespace Quantum {
             QuantumUtils.Decrement(ref mario->GroundpoundCooldownFrames);
             QuantumUtils.Decrement(ref mario->PropellerDrillCooldown);
 
-            if (inputs.Down.IsDown && allowGroundpoundStart) {
+            if (inputs.Down.IsDown && allowGroundpoundStart && f.IsPlayerVerifiedOrLocal(mario->PlayerRef)) {
                 TryStartGroundpound(f, ref filter, physics, stage);
             }
 

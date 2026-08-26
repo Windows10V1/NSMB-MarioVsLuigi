@@ -3,6 +3,7 @@ using Quantum;
 using Quantum.Collections;
 using Quantum.Core;
 using System;
+using System.Runtime.CompilerServices;
 
 public static unsafe class QuantumUtils {
 
@@ -299,10 +300,12 @@ public static unsafe class QuantumUtils {
         return 1 - (1 - x) * (1 - x);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Modulo(int x, int m) {
         return ((x % m) + m) % m;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static FP Modulo(FP x, FP m) {
         return ((x % m) + m) % m;
     }

@@ -983,6 +983,9 @@ namespace Quantum {
 
                 bool valid = false;
                 if ((length == 2 || !isPolygon) && (i == 0 || i == length - 1)) {
+                    if (a.Y < point.Y || b.Y < point.Y) {
+                        continue;
+                    }
                     // This was previously commented out.......
                     // Why?? This broke mega mushroom interacting with thin semisolids (since the left/right edges of their hitbox would "miss" our polygon)
                     // Undoing it for now, but its best to figure out... yknow... why...
@@ -992,8 +995,8 @@ namespace Quantum {
                         valid = FPVector2.Dot(GetNormal(polygon[i - 1], polygon[i]), direction) < 0;
                     }
                 } else {
-                    valid |= FPVector2.Dot(GetNormal(point, polygon[(i + 1) % polygon.Length]), direction) < 0;
-                    valid |= FPVector2.Dot(GetNormal(polygon[(i - 1 + polygon.Length) % polygon.Length], point), direction) < 0;
+                    valid |= FPVector2.Dot(GetNormal(point, polygon[QuantumUtils.Modulo(i + 1, polygon.Length)]), direction) < 0;
+                    valid |= FPVector2.Dot(GetNormal(polygon[QuantumUtils.Modulo(i - 1, polygon.Length)], point), direction) < 0;
                 }
 
                 if (valid) {
