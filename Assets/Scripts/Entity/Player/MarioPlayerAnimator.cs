@@ -407,7 +407,7 @@ namespace NSMB.Entities.Player {
 
             float angle = mario->CurrentPowerupState switch {
                 PowerupState.BlueShell => 90f,
-                PowerupState.BoomerangFlower => 90f,
+                PowerupState.BoomerangFlower => 56.25f,
                 PowerupState.MegaMushroom => 78.75f,
                 _ => 67.5f,
             };
