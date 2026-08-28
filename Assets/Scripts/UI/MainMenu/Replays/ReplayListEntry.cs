@@ -1,3 +1,4 @@
+using JimmysUnityUtilities;
 using NSMB.Replay;
 using NSMB.UI.Translation;
 using NSMB.Utilities.Extensions;
@@ -178,8 +179,10 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 DownloadFile(name, nameof(FileDownloadedCallback), $"{ReplayFile.Header.GetDisplayName()}.{ReplayListManager.ReplayFileExtension}", stream.ToArray(), (int) replaySize);
             }
 #else
+            string validDisplayName = ReplayFile.Header.GetDisplayName().ReplaceAny(Path.GetInvalidFileNameChars(), '-');
+
             TranslationManager tm = GlobalController.Instance.translationManager;
-            StandaloneFileBrowser.SaveFilePanelAsync(tm.GetTranslation("ui.extras.replays.actions.export.prompt"), null, ReplayFile.Header.GetDisplayName(), ReplayListManager.ReplayFileExtension, (file) => {
+            StandaloneFileBrowser.SaveFilePanelAsync(tm.GetTranslation("ui.extras.replays.actions.export.prompt"), null, validDisplayName, ReplayListManager.ReplayFileExtension, (file) => {
                 if (string.IsNullOrWhiteSpace(file)) {
                     return;
                 }

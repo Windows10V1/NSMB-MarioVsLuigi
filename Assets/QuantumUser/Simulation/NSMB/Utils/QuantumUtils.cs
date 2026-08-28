@@ -301,6 +301,11 @@ public static unsafe class QuantumUtils {
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static ref T IndexModulo<T>(Span<T> arr, int index) {
+        return ref arr[Modulo(index, arr.Length)];
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static int Modulo(int x, int m) {
         return ((x % m) + m) % m;
     }

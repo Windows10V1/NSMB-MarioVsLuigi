@@ -467,7 +467,7 @@ namespace Quantum {
 
             if (!mario->DoEntityBounce
                 && f.Unsafe.TryGetPointer(mario->CurrentSpinner, out Spinner* spinner)
-                && mario->ProjectileDelayFrames == 0 && spinner->ArmPosition <= FP._0_75
+                && mario->ProjectileDelayFrames == 0
                 && !f.Exists(mario->HeldEntity) && !mario->IsInShell) {
                 // Jump off spinner
                 physicsObject->Velocity.Y = physics.SpinnerLaunchVelocity;
@@ -483,24 +483,13 @@ namespace Quantum {
                 mario->IsSpinnerFlying = true;
                 mario->IsPropellerFlying = false;
                 mario->JumpBufferFrames = 0;
+                mario->CoyoteTimeFrames = 0;
                 physicsObject->WasTouchingGround = false;
                 physicsObject->IsTouchingGround = false;
 
-                /*
-                var contacts = f.ResolveList(physicsObject->Contacts);
-                for (int i = contacts.Count - 1; i >= 0; i--) {
-                    if (contacts[i].Entity == mario->CurrentSpinner) {
-                        contacts.RemoveAtUnordered(i);
-                    }
-                }
-                */
-
-                // Disable koyote time
-                mario->CoyoteTimeFrames = 0;
-
                 f.Events.MarioPlayerUsedSpinner(filter.Entity, mario->CurrentSpinner);
-
                 mario->CurrentSpinner = EntityRef.None;
+
                 return;
             }
 

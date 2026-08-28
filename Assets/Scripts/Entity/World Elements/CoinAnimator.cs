@@ -41,7 +41,9 @@ namespace NSMB.Entities.World {
         }
 
         public override void OnActivate(Frame f) {
-            var coin = f.Unsafe.GetPointer<Coin>(EntityRef);
+            if (!f.Unsafe.TryGetPointer(EntityRef, out Coin* coin)) {
+                return;
+            }
 
             bool dotted = coin->IsCurrentlyDotted;
             defaultCoinAnimate.isDisplaying = !dotted;

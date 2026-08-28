@@ -187,8 +187,7 @@ namespace Quantum {
                 }
 
                 effectiveVelocity -= physicsObject->ParentVelocity;
-                physicsObject->Velocity.X = effectiveVelocity.X / velocityModifier.X;
-                physicsObject->Velocity.Y = effectiveVelocity.Y / velocityModifier.Y;
+                physicsObject->Velocity = effectiveVelocity;
 
                 HandleCeilingCrushers(f, ref filter, contacts);
 
@@ -459,7 +458,7 @@ namespace Quantum {
                     // Get n-lowest contacts (within tolerance)
                     InsertionSortByDistance(potentialContacts[..potentialContactCount]);
                     //QuickSortSpan(potentialContacts, 0, potentialContactCount - 1);
-                    FP tolerance = FP._0_01;
+                    FP tolerance = 0;
                     FP? min = null;
                     FPVector2 avgNormal = FPVector2.Zero;
                     int contactCount = 0;
@@ -478,6 +477,7 @@ namespace Quantum {
                         }
 
                         if (earlyContinue
+                            || (i > 0 && contact.Equals(potentialContacts[i - 1]))
                             || (min.HasValue && min.Value > 0 && contact.Distance - min.Value > tolerance)
                             || contact.Distance > FPMath.Abs(velocityY)
                             /* || removedContacts.Contains(contact) */
@@ -587,7 +587,7 @@ namespace Quantum {
                 }
 
                 physicsHits.SortCastDistance();
-                
+
                 position += shape->Centroid;
                 FP checkPointX = position.X + boxShape->Extents.X * (velocityX > 0 ? 1 : -1);
                 FPVector2 bottomWorldCheckPoint = new(checkPointX, position.Y - boxShape->Extents.Y);
@@ -611,7 +611,7 @@ namespace Quantum {
                     for (FP y = bottom; y <= top; y += FP._0_50) {
                         FPVector2 worldPos = new FPVector2(x + FP._0_25, y + FP._0_25);
                         StageTileInstance tile = stage.GetTileWorld(f, worldPos);
-                        
+
                         if (!tile.GetWorldPolygons(f, stage, vertexBuffer, shapeVertexCountBuffer, out StageTile stageTile, worldPos)) {
                             continue;
                         }
@@ -696,7 +696,7 @@ namespace Quantum {
                     // Get n-lowest contacts (within tolerance)
                     InsertionSortByDistance(potentialContacts[..potentialContactCount]);
                     //QuickSortSpan(potentialContacts, 0, potentialContactCount - 1);
-                    FP tolerance = FP._0_01;
+                    FP tolerance = 0;
                     FP? min = null;
                     FPVector2 avgNormal = FPVector2.Zero;
                     int contactCount = 0;
@@ -715,6 +715,7 @@ namespace Quantum {
                         }
                         
                         if (earlyContinue
+                            || (i > 0 && contact.Equals(potentialContacts[i - 1]))
                             || (min.HasValue && min.Value > 0 && contact.Distance - min.Value > tolerance)
                             || contact.Distance - Constants.PhysicsSkin > FPMath.Abs(velocityX) + Constants.PhysicsSkin
                             /* || removedContacts.Contains(contact) */
@@ -981,24 +982,27 @@ namespace Quantum {
                     continue;
                 }
 
-                bool valid = false;
+                FPVector2 checkDirection;
                 if ((length == 2 || !isPolygon) && (i == 0 || i == length - 1)) {
                     if (a.Y < point.Y || b.Y < point.Y) {
+                        // This biases semisolids to only work consistently when they're facing upwards.
+                        // TODO: fix so it works with any arbitrary directions
                         continue;
                     }
-                    // This was previously commented out.......
-                    // Why?? This broke mega mushroom interacting with thin semisolids (since the left/right edges of their hitbox would "miss" our polygon)
-                    // Undoing it for now, but its best to figure out... yknow... why...
+
                     if (i == 0) {
-                        valid = FPVector2.Dot(GetNormal(polygon[i], polygon[i + 1]), direction) < 0;
+                        checkDirection = GetNormal(point, polygon[i + 1]);
                     } else {
-                        valid = FPVector2.Dot(GetNormal(polygon[i - 1], polygon[i]), direction) < 0;
+                        checkDirection = GetNormal(polygon[i - 1], point);
                     }
                 } else {
-                    valid |= FPVector2.Dot(GetNormal(point, polygon[QuantumUtils.Modulo(i + 1, polygon.Length)]), direction) < 0;
-                    valid |= FPVector2.Dot(GetNormal(polygon[QuantumUtils.Modulo(i - 1, polygon.Length)], point), direction) < 0;
+                    checkDirection = GetAngleBisector(
+                        QuantumUtils.IndexModulo(polygon, i - 1),
+                        point,
+                        QuantumUtils.IndexModulo(polygon, i + 1));
                 }
 
+                bool valid = FPVector2.Dot(direction, checkDirection) < 0;
                 if (valid) {
                     contact.Normal *= -1; // Inverted normals
                     contactBuffer[count++] = contact;
@@ -1006,6 +1010,11 @@ namespace Quantum {
             }
 
             return count;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private static FPVector2 GetAngleBisector(FPVector2 a, FPVector2 b, FPVector2 c) {
+            return -((a - b).Normalized + (c - b).Normalized).Normalized;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

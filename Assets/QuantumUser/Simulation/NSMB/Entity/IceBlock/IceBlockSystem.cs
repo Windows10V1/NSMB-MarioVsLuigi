@@ -25,6 +25,7 @@ namespace Quantum {
             if (!f.Unsafe.TryGetPointer(iceBlock->Entity, out Freezable* childFreezable)) {
                 // Child despawned.
                 Destroy(f, entity, IceBlockBreakReason.None, EntityRef.None);
+                return;
             }
 
             var transform = filter.Transform;
@@ -35,9 +36,7 @@ namespace Quantum {
                 return;
             }
 
-            var physicsObject = filter.PhysicsObject;
-
-            if (!physicsObject->IsFrozen && childFreezable->IsCarryable && (f.Number + entity.Index) % 2 == 0 
+            if (childFreezable->IsCarryable && (f.Number + entity.Index) % 2 == 0 
                 && PhysicsObjectSystem.BoxInGround(f, transform->Position, physicsCollider->Shape, true, stage, entity)) {
                 Destroy(f, entity, IceBlockBreakReason.HitWall, EntityRef.None);
                 return;
@@ -53,6 +52,7 @@ namespace Quantum {
                 }
             }
 
+            var physicsObject = filter.PhysicsObject;
             if (iceBlock->IsSliding) {
                 physicsObject->IsFrozen = false;
                 physicsObject->Velocity.X = (iceBlock->SlidingSpeed + iceBlock->BonusSpeed) * (iceBlock->FacingRight ? 1 : -1);
