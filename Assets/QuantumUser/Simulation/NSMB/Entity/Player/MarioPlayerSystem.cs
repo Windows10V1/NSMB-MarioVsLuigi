@@ -2871,14 +2871,25 @@ namespace Quantum {
             }
             
             bool damaged = false;
+            var hitTransform = f.Unsafe.GetPointer<Transform2D>(entity);
             KnockbackStrength strength = KnockbackStrength.Normal;
             switch (breakReason) {
             case IceBlockBreakReason.HitWall:
             case IceBlockBreakReason.Other:
-                // Weak knockback, i-frames.
-                strength = KnockbackStrength.FireballBump;
-                damaged = mario->DoKnockback(f, entity, hitFromRight, 1, strength, attacker);
-                mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
+                // No floor below:
+                if (!PhysicsObjectSystem.Raycast(f, null, hitTransform->Position, FPVector2.Down, 8, out _)) {
+                    strength = KnockbackStrength.CollisionBump;
+                    damaged = mario->DoKnockback(f, entity, hitFromRight, 1, strength, attacker);
+                    if (damaged) {
+                        // Upwards bounce and shortened knockback.
+                        physicsObject->Velocity.Y = Constants._6_00;
+                        mario->KnockbackTick -= 15;
+                    }
+                } else {
+                    // Floor below: Normal hitstun duration.
+                    strength = KnockbackStrength.FireballBump;
+                    damaged = mario->DoKnockback(f, entity, hitFromRight, 1, strength, attacker);
+                }
                 break;
 
             case IceBlockBreakReason.BlockBump:
