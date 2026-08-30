@@ -139,7 +139,7 @@ namespace Quantum {
                 // Bottom
                 if (iceBlock->IsSliding) {
                     TryDamageMario();
-                    Destroy(f, iceBlockEntity, IceBlockBreakReason.HitWall, marioEntity);
+                    Destroy(f, iceBlockEntity, f.Has<MarioPlayer>(iceBlock->Entity) ? IceBlockBreakReason.HitPlayer : IceBlockBreakReason.HitWall, marioEntity);
                     return false;
                 } else if (f.Exists(holdable->Holder)) {
                     return false;
@@ -155,7 +155,7 @@ namespace Quantum {
                     return false;
                 } else if (iceBlock->IsSliding && iceBlock->FacingRight == rightContact) {
                     TryDamageMario();
-                    Destroy(f, iceBlockEntity, IceBlockBreakReason.HitWall, marioEntity);
+                    Destroy(f, iceBlockEntity, f.Has<MarioPlayer>(iceBlock->Entity) ? IceBlockBreakReason.HitPlayer : IceBlockBreakReason.HitWall, marioEntity);
                     return false;
                 }
             }

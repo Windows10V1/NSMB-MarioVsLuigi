@@ -559,7 +559,7 @@ namespace Quantum {
             f.Events.MarioPlayerJumped(filter.Entity, mario->CurrentPowerupState, mario->JumpState, mario->DoEntityBounce, false);
             if (mario->DoEntityBounce) {
                 mario->IsCrouching = false;
-                mario->PropellerDrillCooldown = 30;
+                mario->PropellerDrillCooldown = 15;
             }
             mario->DoEntityBounce = false;
 
@@ -878,8 +878,8 @@ namespace Quantum {
                     || (inputs.Down.IsDown && mario->IsStuckInBlock) // allow Mario to crouch while in a block
                         // this disables crouching when Mario is hip dropping or while he's sliding while not in a Blue Shell
                     || (physicsObject->IsTouchingGround && inputs.Down.IsDown && (!mario->IsGroundpounding && !mario->IsSliding || mario->CurrentPowerupState == PowerupState.BlueShell))
-                        // if Mario is not touching the ground, freeze him in the crouch if he's GOing UP (and not in blue shell), if he holds down then Mario remains in crouch, also disables crouch while underwater and not touching ground
-                    || (!physicsObject->IsTouchingGround && (inputs.Down.IsDown || (physicsObject->Velocity.Y > 0 && mario->CurrentPowerupState != PowerupState.BlueShell)) && mario->IsCrouching && !physicsObject->IsUnderwater)
+                        // if Mario is not touching the ground, he stays crouched if he holds down, alsodisables crouch while underwater and not touching ground
+                    || (!physicsObject->IsTouchingGround && inputs.Down.IsDown && mario->IsCrouching && !physicsObject->IsUnderwater)
                 /* || (mario->IsCrouching && ForceCrouchCheck(f, ref filter, physics)) */
                 )
                 && !mario->HeldEntity.IsValid
@@ -907,8 +907,8 @@ namespace Quantum {
             var physicsObject = filter.PhysicsObject;
 
             if (inputs.Down.WasPressed && mario->GroundpoundCooldownFrames == 0) {
-                // 4 frame delay
-                mario->GroundpoundCooldownFrames = 5;
+                // 1 frame delay
+                mario->GroundpoundCooldownFrames = 2;
             }
 
             bool allowGroundpoundStart = mario->GroundpoundCooldownFrames == 1 || mario->IsPropellerFlying || mario->IsSpinnerFlying;
@@ -919,13 +919,9 @@ namespace Quantum {
                 TryStartGroundpound(f, ref filter, physics, stage);
             }
 
-            if (mario->IsDrilling && mario->IsPropellerFlying && inputs.Down.IsDown) {
-                mario->PropellerDrillHoldFrames = 15;
-            }
-
-            if (QuantumUtils.Decrement(ref mario->PropellerDrillHoldFrames) && mario->IsPropellerFlying && mario->IsDrilling) {
+            if (mario->IsDrilling && mario->IsPropellerFlying && !inputs.Down.IsDown) {
                 mario->IsDrilling = false;
-                mario->PropellerDrillCooldown = 20;
+                mario->PropellerDrillCooldown = 0;
             }
 
             HandleGroundpoundStartAnimation(ref filter, physics);
@@ -964,7 +960,7 @@ namespace Quantum {
 
             if (physicsObject->IsTouchingGround || mario->IsInKnockback || mario->IsGroundpounding || mario->IsDrilling
                 || mario->HeldEntity.IsValid || mario->IsCrouching || mario->IsSliding || mario->IsInShell
-                || mario->IsWallsliding || mario->GroundpoundCooldownFrames > 0 || physicsObject->IsUnderwater
+                || mario->IsWallsliding || (mario->GroundpoundCooldownFrames > 0  && !mario->IsPropellerFlying && !mario->IsSpinnerFlying) || physicsObject->IsUnderwater
                 || f.Exists(mario->CurrentPipe)) {
                 return;
             }
@@ -1535,7 +1531,7 @@ namespace Quantum {
 
                 mario->PropellerLaunchFrames = physics.PropellerLaunchFrames;
                 mario->UsedPropellerThisJump = true;
-                mario->PropellerDrillCooldown = 30;
+                mario->PropellerDrillCooldown = 15;
 
                 mario->IsPropellerFlying = true;
                 mario->IsSpinnerFlying = false;
@@ -1596,7 +1592,7 @@ namespace Quantum {
             EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, false /* filter.Inputs.Up.IsDown */);
+            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown);
             return projectile;
         }
 
