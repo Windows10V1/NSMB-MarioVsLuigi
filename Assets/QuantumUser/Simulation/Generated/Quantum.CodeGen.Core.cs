@@ -1573,8 +1573,12 @@ namespace Quantum {
       unchecked { 
         var hash = 11299;
         hash = hash * 31 + _field_used_.GetHashCode();
-        hash = hash * 31 + _StarChasers.GetHashCode();
-        hash = hash * 31 + _CoinRunners.GetHashCode();
+        if (_field_used_ == STARCHASERS) {
+          hash = hash * 31 + _StarChasers.GetHashCode();
+        }
+        if (_field_used_ == COINRUNNERS) {
+          hash = hash * 31 + _CoinRunners.GetHashCode();
+        }
         return hash;
       }
     }
@@ -3912,6 +3916,14 @@ namespace Quantum {
         return result;
       }
     }
+    /// <summary>2.75</summary>
+    public static FP _2_75 {
+      [MethodImpl(MethodImplOptions.AggressiveInlining)] get { 
+        FP result;
+        result.RawValue = 180224;
+        return result;
+      }
+    }
     /// <summary>0.05</summary>
     public static FP PhysicsRaycastSkin {
       [MethodImpl(MethodImplOptions.AggressiveInlining)] get { 
@@ -4020,6 +4032,8 @@ namespace Quantum {
       public const Int64 _3_75 = 245760;
       /// <summary>0.73</summary>
       public const Int64 _0_73 = 47841;
+      /// <summary>2.75</summary>
+      public const Int64 _2_75 = 180224;
       /// <summary>0.05</summary>
       public const Int64 PhysicsRaycastSkin = 3277;
       /// <summary>0.005</summary>

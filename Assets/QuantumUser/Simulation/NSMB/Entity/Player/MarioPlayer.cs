@@ -114,6 +114,21 @@ namespace Quantum {
             return true;
         }
 
+        public readonly bool IsWalkingOnWater(Frame f, EntityRef entity) {
+            if (CurrentPowerupState == PowerupState.MiniMushroom 
+                && f.Unsafe.TryGetPointer(entity, out PhysicsObject* physicsObject)
+                && physicsObject->IsTouchingGround) {
+
+                var contacts = f.ResolveList(physicsObject->Contacts);
+                foreach (var contact in contacts) {
+                    if (f.Has<Liquid>(contact.Entity)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
         public readonly byte? GetTeam(Frame f) {
             var data = QuantumUtils.GetPlayerData(f, PlayerRef);
             if (data == null) {
