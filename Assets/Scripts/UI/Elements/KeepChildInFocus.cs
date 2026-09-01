@@ -3,11 +3,12 @@ using NSMB.Utilities.Extensions;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace NSMB.UI.Elements {
     [RequireComponent(typeof(ScrollRect))]
-    public class KeepChildInFocus : MonoBehaviour, IScrollHandler {
+    public class KeepChildInFocus : MonoBehaviour, IScrollHandler, IPointerMoveHandler {
 
         //---Serialized Variables
         [SerializeField] private float scrollAmount = 15;
@@ -15,10 +16,9 @@ namespace NSMB.UI.Elements {
         //---Private Variables
         private readonly List<ScrollRect> components = new();
         private ScrollRect rect;
-        private float scrollPos = 0;
         private GameObject previousObject;
-        private bool scrolled;
         private EventSystem eventSystem;
+        private bool usingMouse;
 
         public void Awake() {
             this.SetIfNull(ref rect);
@@ -28,27 +28,28 @@ namespace NSMB.UI.Elements {
             eventSystem = EventSystem.current;
         }
 
+        public void OnDisable() {
+            usingMouse = false;
+        }
+
         public void Update() {
             if (!rect.content) {
                 return;
             }
 
-            rect.verticalNormalizedPosition = Mathf.Lerp(rect.verticalNormalizedPosition, scrollPos, scrollAmount * Time.deltaTime);
-
             GameObject obj = eventSystem.currentSelectedGameObject;
             if (obj != previousObject) {
-                scrolled = false;
+                usingMouse = false;
                 previousObject = obj;
             }
-            if (!obj) {
+
+            if (usingMouse || !obj) {
                 return;
             }
 
             RectTransform target = (RectTransform) obj.transform;
-            if (!scrolled && IsFirstParent(target) && !target.TryGetComponentInParent(out Scrollbar _)) {
-                scrollPos = rect.ScrollIntoView(target, true, 32);
-            } else {
-                scrollPos = rect.verticalNormalizedPosition;
+            if (IsFirstParent(target) && !target.TryGetComponentInParent(out Scrollbar _)) {
+                rect.verticalNormalizedPosition = Mathf.Lerp(rect.verticalNormalizedPosition, rect.ScrollIntoView(target, true, 32), scrollAmount * Time.deltaTime);
             }
         }
 
@@ -69,7 +70,11 @@ namespace NSMB.UI.Elements {
         }
 
         public void OnScroll(PointerEventData eventData) {
-            scrolled = true;
+            usingMouse = true;
+        }
+
+        public void OnPointerMove(PointerEventData eventData) {
+            usingMouse = true;
         }
 
         public interface IFocusIgnore { }

@@ -125,7 +125,6 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             ascendingToggle.isOn = false;
             searchField.SetTextWithoutNotify("");
             replayTemplate.gameObject.SetActive(false);
-            scrollRect.verticalNormalizedPosition = 1;
             LayoutRebuilder.ForceRebuildLayoutImmediate((RectTransform) layout.transform);
             Canvas.ForceUpdateCanvases();
 
