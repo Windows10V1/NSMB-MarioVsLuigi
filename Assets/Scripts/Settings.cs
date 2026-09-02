@@ -261,6 +261,7 @@ namespace NSMB {
 
         public void OnDestroy() {
             _controls.Disable();
+            _controls.Dispose();
         }
 
         public void SaveSettings() {

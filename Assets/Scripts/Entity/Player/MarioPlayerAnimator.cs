@@ -112,6 +112,7 @@ namespace NSMB.Entities.Player {
         [Header("Sound")]
         [SerializeField] private AudioSource sfx;
         [SerializeField] private AudioSource coinSfx;
+        [SerializeField] private AudioSource tauntSfx;
         [SerializeField] private AudioClip normalDrill, propellerDrill;
         [SerializeField] private LoopingSoundPlayer dustPlayer, drillPlayer;
         [SerializeField] private LoopingSoundData wallSlideData, shellSlideData, spinnerDrillData, propellerDrillData;
@@ -738,12 +739,15 @@ namespace NSMB.Entities.Player {
             return false;
         }
 
-        public void PlaySound(SoundEffect soundEffect, IList<ISoundOverrideProvider> extraProviders = null, int? variant = null, float volume = 1) {
+        public void PlaySound(SoundEffect soundEffect, IList<ISoundOverrideProvider> extraProviders = null, int? variant = null, float volume = 1, AudioSource src = null) {
             List<ISoundOverrideProvider> providers = new() { character };
             if (extraProviders != null) {
                 providers.AddRange(extraProviders);
             }
-            sfx.PlayOneShot(soundEffect, providers, variant, volume);
+            if (!src) {
+                src = sfx;
+            }
+            src.PlayOneShot(soundEffect, providers, variant, volume);
         }
 
         public GameObject SpawnParticle(GameObject particle, Vector3 worldPos, Quaternion? rot = null) {
@@ -756,7 +760,7 @@ namespace NSMB.Entities.Player {
         [Preserve]
         public void Footstep() {
             Frame f = PredictedFrame;
-            if (IsReplayFastForwarding || !f.Exists(EntityRef)) {
+            if (IsReplayFastForwarding || !f.Exists(EntityRef) || Game.Session.IsDestroyed) {
                 return;
             }
 
@@ -1353,7 +1357,7 @@ namespace NSMB.Entities.Player {
                 return;
             }
 
-            PlaySound(SoundEffect.Player_Voice_Taunt);
+            PlaySound(SoundEffect.Player_Voice_Taunt, src: tauntSfx);
         }
 
         private void OnMarioPlayerTauntCancelled(EventMarioPlayerTauntCancelled e) {
@@ -1361,8 +1365,9 @@ namespace NSMB.Entities.Player {
                 return;
             }
 
-            sfx.Stop();
+            tauntSfx.Stop();
         }
+
         private void OnMarioPlayerUpdatePowerupQueue(EventMarioPlayerUpdatePowerupQueue e) {
             if (e.Entity != EntityRef) {
                 return;

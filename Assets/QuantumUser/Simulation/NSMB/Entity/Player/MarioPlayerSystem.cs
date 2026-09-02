@@ -2283,8 +2283,8 @@ namespace Quantum {
 
             bool eitherDamageInvincible = marioA->DamageInvincibilityFrames > 0 || marioB->DamageInvincibilityFrames > 0;
 
-            FPVector2 previousMarioAPosition = marioAPosition - (marioAPhysics->Velocity * f.DeltaTime);
-            FPVector2 previousMarioBPosition = marioBPosition - (marioBPhysics->Velocity * f.DeltaTime);
+            FPVector2 previousMarioAPosition = marioAPosition - (marioAPhysics->PreviousFrameVelocity * f.DeltaTime);
+            FPVector2 previousMarioBPosition = marioBPosition - (marioBPhysics->PreviousFrameVelocity * f.DeltaTime);
             FP dot = FPVector2.Dot((previousMarioAPosition - previousMarioBPosition).Normalized, FPVector2.Up);
             FP yDiff = previousMarioAPosition.Y - previousMarioBPosition.Y;
             bool marioAAbove = dot > Constants._0_66 && FPMath.Abs(yDiff) >= FP._0_10;
