@@ -280,12 +280,23 @@ namespace NSMB.Networking {
                 AddonsEnabled = GlobalController.Instance.addonManager.LoadedAddons.Count > 0
             };
 
+            string stageGuid;
+            if (f.Global->GameState == GameState.PreGameRoom) {
+                if (f.Global->Rules.ChooseMode == StageChooseMode.Random) {
+                    stageGuid = "random";
+                } else {
+                    stageGuid = f.Global->Rules.Stage.Id.ToString();
+                }
+            } else {
+                stageGuid = f.MapAssetRef.Id.ToString();
+            }
+
             RuntimePlayer hostData = f.GetPlayerData(host);
             Client.CurrentRoom.SetCustomProperties(new PhotonHashtable {
                 [Enums.NetRoomProperties.IntProperties] = (int) intProperties,
                 [Enums.NetRoomProperties.BoolProperties] = (int) boolProperties,
                 [Enums.NetRoomProperties.HostName] = hostData?.PlayerNickname ?? "noname",
-                [Enums.NetRoomProperties.StageGuid] = rules.Stage.Id.ToString(),
+                [Enums.NetRoomProperties.StageGuid] = stageGuid,
                 [Enums.NetRoomProperties.GamemodeGuid] = rules.Gamemode.Id.ToString(),
             });
         }
