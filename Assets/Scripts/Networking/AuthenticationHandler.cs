@@ -42,7 +42,8 @@ namespace NSMB.Networking {
             webRequest.disposeUploadHandlerOnDispose = true;
             webRequest.timeout = 10;
 
-            Debug.Log($"[Authentication] Sending authentication init request to {requestUrl.Replace(token, "[REDACTED]")}");
+            string redactedUrl = string.IsNullOrEmpty(token) ? requestUrl : requestUrl.Replace(token, "[REDACTED]");
+            Debug.Log($"[Authentication] Sending authentication init request to {redactedUrl}");
             await webRequest.SendWebRequest();
 
             string result = webRequest.downloadHandler.text.Trim();

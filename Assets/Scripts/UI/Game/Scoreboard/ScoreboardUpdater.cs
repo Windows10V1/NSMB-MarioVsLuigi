@@ -290,7 +290,7 @@ namespace NSMB.UI.Game.Scoreboard {
         }
 
         private void OnCondensedScoreboardChanged() {
-            repositioner.minWidth = Settings.Instance.GeneralCondensedScoreboard ? 130 : 238;
+            repositioner.preferredWidth = Settings.Instance.GeneralCondensedScoreboard ? 130 : 238;
             UpdateTeamHeader(QuantumRunner.DefaultGame.Frames.Predicted);
         }
 

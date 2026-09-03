@@ -173,13 +173,13 @@ namespace NSMB.Networking {
                 short response = await Client.JoinLobbyAsync(TypedLobby.Default);
                 if (response == 0) {
                     Debug.Log($"[Network] Successfully connected to region '{Client.CurrentRegion}'");
+                    Instance.lastRegion = Client.CurrentRegion;
                 } else {
                     string responseAsString = RealtimeErrorCodeNames.GetValueOrDefault(response, "Unknown Error");
                     Debug.LogError($"[Network] Failed to join lobby in region '{region ?? "best"}' with error code {response} ({responseAsString})");
                     return false;
                 }
 
-                Instance.lastRegion = Client.CurrentRegion;
                 return true;
             } catch (Exception e) {
                 Debug.Log($"[Network] Failed to connect with thrown exception: {e.Message}");
@@ -192,7 +192,8 @@ namespace NSMB.Networking {
             int regionIndex = RoomIdValidChars.IndexOf(roomId.ToUpper()[0]);
             string targetRegion = Regions.ElementAt(regionIndex).Code;
 
-            if (Client.State == ClientState.ConnectedToMasterServer && Client.CurrentRegion == targetRegion) {
+            if (Client.State is ClientState.ConnectedToMasterServer or ClientState.JoinedLobby
+                && Client.CurrentRegion.Equals(targetRegion, StringComparison.InvariantCultureIgnoreCase)) {
                 return true;
             }
 
