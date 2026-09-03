@@ -9,44 +9,44 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09abfd75f8de0ab47b15cc437e916a34, type: 3}
-  m_Name: MegaMushroom
-  m_EditorClassIdentifier: Quantum.Simulation::MegaMushroomPowerupAsset
+  m_Script: {fileID: 11500000, guid: a77651c98eb177748a49241e377f4457, type: 3}
+  m_Name: BoomerangFlower
+  m_EditorClassIdentifier: 
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Items/MegaMushroom
+    Path: QuantumUser/Resources/AssetObjects/Items/BoomerangFlower
     Guid:
-      Value: 481353246829238635
+      Value: 348825844190755719
   Prefab:
     Id:
-      Value: 1300211052819551813
+      Value: 1349070666859566638
   SpawnChance:
-    RawValue: -131072
+    RawValue: 65536
   AboveAverageBonus:
-    RawValue: 0
+    RawValue: -65536
   BelowAverageBonus:
-    RawValue: 311296
-  BlockSpawnSoundEffect: 99
-  Flags: 3
+    RawValue: 65536
+  BlockSpawnSoundEffect: 69
+  Flags: 23
   MaxNumberOfItems: 0
   CanSpawnAfterSeconds:
-    RawValue: 1310720
-  TranslationKey: coinitem.megamushroom
+    RawValue: 0
+  TranslationKey: coinitem.boomerangflower
   CameraSpawnOffset:
     X:
       RawValue: 0
     Y:
       RawValue: 110100
-  MaxMatchingPowerStates: 1
+  MaxMatchingPowerStates: 0
   MaxMatchingReserveState: 0
-  State: 9
+  State: 5
   SoundPlaysEverywhere: 0
-  SoundEffect: 40
-  ReserveSprite: {fileID: -1604689058, guid: a87d3b028baa82640b06b88398a8c4f0, type: 3}
-  AvoidPlayers: 1
+  SoundEffect: 16
+  ReserveSprite: {fileID: 1954154672, guid: a87d3b028baa82640b06b88398a8c4f0, type: 3}
+  AvoidPlayers: 0
   Speed:
-    RawValue: 98304
+    RawValue: 0
   BounceStrength:
-    RawValue: 229376
+    RawValue: 0
   TerminalVelocity:
     RawValue: -524288
   BumpedFromBelowVelocity:
@@ -76,10 +76,8 @@ MonoBehaviour:
     OriginalPreWrapMode: 0
     OriginalPostWrapMode: 0
     Keys: []
-  StatePriority: 4
-  ItemPriority: 4
+  StatePriority: 2
+  ItemPriority: 2
   EnterReserveIfOverridden: 1
-  Instant: 1
+  Instant: 0
   SfxOverrides: []
-  GrowAnimationDuration:
-    RawValue: 98304
