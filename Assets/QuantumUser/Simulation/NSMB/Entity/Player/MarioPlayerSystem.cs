@@ -2933,6 +2933,11 @@ namespace Quantum {
                 particlePos.Y += iceBlock->Size.Y / 2;
                 f.Events.PlayKnockbackEffect(entity, brokenIceBlock, strength, particlePos, true);
             }
+
+            var holdable = f.Unsafe.GetPointer<Holdable>(brokenIceBlock);
+            if (f.Exists(holdable->PreviousHolder)) {
+                mario->LastAttacker = holdable->PreviousHolder;
+            }
         }
 
         public void OnStageReset(Frame f, QBoolean full) {
