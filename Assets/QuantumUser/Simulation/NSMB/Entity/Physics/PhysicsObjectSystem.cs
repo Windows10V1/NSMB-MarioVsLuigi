@@ -1090,7 +1090,7 @@ namespace Quantum {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static FPVector2 Project(FPVector2 a, FPVector2 b) {
+        public static FPVector2 Project(FPVector2 a, FPVector2 b) {
             return b * (FPVector2.Dot(a, b) / b.Magnitude);
         }
 

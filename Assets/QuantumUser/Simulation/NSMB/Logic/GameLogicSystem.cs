@@ -440,7 +440,7 @@ namespace Quantum {
                     PlayerRef = data->PlayerRef,
                     Nickname = runtimePlayer.PlayerNickname,
                     NicknameColor = runtimePlayer.NicknameColor,
-                    Character = runtimePlayer.Character,
+                    Character = data->Character,
                     Team = data->RealTeam,
                 };
             }

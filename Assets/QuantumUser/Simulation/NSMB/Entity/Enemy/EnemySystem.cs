@@ -36,6 +36,13 @@ namespace Quantum {
             if (transform->Position.Y + collider->Shape.Box.Extents.Y + collider->Shape.Centroid.Y < stage.StageWorldMin.Y) {
                 enemy->IsActive = false;
                 enemy->IsDead = true;
+
+                if (enemy->DisableRespawning && enemy->Spawnpoint == FPVector2.Zero && !f.Has<MapEntityLink>(filter.Entity)) {
+                    // Spawned via script
+                    f.Destroy(filter.Entity);
+                    return;
+                }
+                
                 if (!enemy->DisableRespawning) {
                     enemy->SetDelayedRespawn();
                 }

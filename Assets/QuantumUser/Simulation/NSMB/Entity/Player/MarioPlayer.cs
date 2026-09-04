@@ -597,6 +597,7 @@ namespace Quantum {
             KnockForwards = FacingRight != fromRight;
             IsInShell = false;
             IsGroundpounding = false;
+            GroundpoundStartFrames = 0;
             IsSpinnerFlying = false;
             IsPropellerFlying = false;
             PropellerLaunchFrames = 0;

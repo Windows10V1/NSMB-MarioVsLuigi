@@ -307,7 +307,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                     var allTeams = AssetRepository<TeamAsset>.AllAssets;
                     TeamAsset team = allTeams[info.Team % allTeams.Count];
                     stringBuilder.Append("<nobr>");
-                    stringBuilder.Append("<color=#").Append(Utils.ColorToHex(team.color, false)).Append(">").Append(Settings.Instance.GraphicsColorblind ? team.textSpriteColorblind : team.textSpriteNormal);
+                    stringBuilder.Append("<color=#").Append(Utils.ColorToHex(team.color)).Append(">").Append(Settings.Instance.GraphicsColorblind ? team.textSpriteColorblind : team.textSpriteNormal);
                 } else {
                     stringBuilder.Append("<color=white>");
                     stringBuilder.Append("<nobr>- ");
