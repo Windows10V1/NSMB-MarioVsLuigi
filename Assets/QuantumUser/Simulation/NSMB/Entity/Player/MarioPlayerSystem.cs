@@ -2876,17 +2876,15 @@ namespace Quantum {
             switch (breakReason) {
             case IceBlockBreakReason.HitWall:
             case IceBlockBreakReason.Other:
+                strength = KnockbackStrength.FireballBump;
                 damaged = mario->DoKnockback(f, entity, hitFromRight, 1, strength, attacker);
                 if (damaged) {
                     // No floor below:
                     if (!PhysicsObjectSystem.Raycast(f, null, hitTransform->Position, FPVector2.Down, 8, out _)) {
                         // Upwards bounce and shortened knockback.
-                        strength = KnockbackStrength.CollisionBump;
                         physicsObject->Velocity.Y = Constants._6_00;
+                        mario->InvincibilityFrames = Constants.DamageInvincibilityFrames;
                         mario->KnockbackTick -= 15;
-                    } else {
-                        // Normal hitstun duration.
-                        strength = KnockbackStrength.FireballBump;
                     }
                 }
                 break;
