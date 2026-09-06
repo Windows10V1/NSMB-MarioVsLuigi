@@ -3454,15 +3454,15 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct Projectile : Quantum.IComponent {
-    public const Int32 SIZE = 40;
+    public const Int32 SIZE = 48;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(16)]
+    [FieldOffset(24)]
     public AssetRef<ProjectileAsset> Asset;
-    [FieldOffset(32)]
+    [FieldOffset(40)]
     public FP Speed;
     [FieldOffset(1)]
     public Byte Lifetime;
-    [FieldOffset(24)]
+    [FieldOffset(32)]
     [ExcludeFromPrototype()]
     public EntityRef Owner;
     [FieldOffset(8)]
@@ -3477,6 +3477,9 @@ namespace Quantum {
     [FieldOffset(0)]
     [ExcludeFromPrototype()]
     public Byte Combo;
+    [FieldOffset(16)]
+    [ExcludeFromPrototype()]
+    public QBoolean IsHammer;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 16141;
@@ -3488,6 +3491,7 @@ namespace Quantum {
         hash = hash * 31 + HasBounced.GetHashCode();
         hash = hash * 31 + CheckedCollision.GetHashCode();
         hash = hash * 31 + Combo.GetHashCode();
+        hash = hash * 31 + IsHammer.GetHashCode();
         return hash;
       }
     }
@@ -3498,6 +3502,7 @@ namespace Quantum {
         QBoolean.Serialize(&p->CheckedCollision, serializer);
         QBoolean.Serialize(&p->FacingRight, serializer);
         QBoolean.Serialize(&p->HasBounced, serializer);
+        QBoolean.Serialize(&p->IsHammer, serializer);
         AssetRef.Serialize(&p->Asset, serializer);
         EntityRef.Serialize(&p->Owner, serializer);
         FP.Serialize(&p->Speed, serializer);

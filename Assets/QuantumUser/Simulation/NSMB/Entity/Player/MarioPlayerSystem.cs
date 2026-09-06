@@ -559,7 +559,7 @@ namespace Quantum {
             f.Events.MarioPlayerJumped(filter.Entity, mario->CurrentPowerupState, mario->JumpState, mario->DoEntityBounce, false);
             if (mario->DoEntityBounce) {
                 mario->IsCrouching = false;
-                mario->PropellerDrillCooldown = 30;
+                mario->PropellerDrillCooldown = 15;
             }
             mario->DoEntityBounce = false;
 
@@ -879,7 +879,7 @@ namespace Quantum {
                         // this disables crouching when Mario is hip dropping or while he's sliding while not in a Blue Shell
                     || (physicsObject->IsTouchingGround && inputs.Down.IsDown && (!mario->IsGroundpounding && !mario->IsSliding || mario->CurrentPowerupState == PowerupState.BlueShell))
                         // if Mario is not touching the ground, freeze him in the crouch if he's GOing UP (and not in blue shell), if he holds down then Mario remains in crouch, also disables crouch while underwater and not touching ground
-                    || (!physicsObject->IsTouchingGround && (inputs.Down.IsDown || (physicsObject->Velocity.Y > 0 && mario->CurrentPowerupState != PowerupState.BlueShell)) && mario->IsCrouching && !physicsObject->IsUnderwater)
+                    || (!physicsObject->IsTouchingGround && inputs.Down.IsDown && mario->IsCrouching && !physicsObject->IsUnderwater)
                 /* || (mario->IsCrouching && ForceCrouchCheck(f, ref filter, physics)) */
                 )
                 && !mario->HeldEntity.IsValid
@@ -906,9 +906,9 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
-            if (inputs.Down.WasPressed && mario->GroundpoundCooldownFrames == 0) {
-                // 4 frame delay
-                mario->GroundpoundCooldownFrames = 5;
+            if (inputs.Down.WasPressed && mario->GroundpoundCooldownFrames == 0 && !mario->IsPropellerFlying && !mario->IsSpinnerFlying) {
+                // 1 frame delay
+                mario->GroundpoundCooldownFrames = 2;
             }
 
             bool allowGroundpoundStart = mario->GroundpoundCooldownFrames == 1 || mario->IsPropellerFlying || mario->IsSpinnerFlying;
@@ -919,11 +919,7 @@ namespace Quantum {
                 TryStartGroundpound(f, ref filter, physics, stage);
             }
 
-            if (mario->IsDrilling && mario->IsPropellerFlying && inputs.Down.IsDown) {
-                mario->PropellerDrillHoldFrames = 15;
-            }
-
-            if (QuantumUtils.Decrement(ref mario->PropellerDrillHoldFrames) && mario->IsPropellerFlying && mario->IsDrilling) {
+            if (mario->IsDrilling && mario->IsPropellerFlying && !inputs.Down.IsDown) {
                 mario->IsDrilling = false;
                 mario->PropellerDrillCooldown = 20;
             }
@@ -1535,7 +1531,7 @@ namespace Quantum {
 
                 mario->PropellerLaunchFrames = physics.PropellerLaunchFrames;
                 mario->UsedPropellerThisJump = true;
-                mario->PropellerDrillCooldown = 30;
+                mario->PropellerDrillCooldown = 15;
 
                 mario->IsPropellerFlying = true;
                 mario->IsSpinnerFlying = false;
@@ -1596,7 +1592,7 @@ namespace Quantum {
             EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, false /* filter.Inputs.Up.IsDown */);
+            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown);
             return projectile;
         }
 
@@ -2172,11 +2168,13 @@ namespace Quantum {
             // regular damageable checks (iframes is 0, not starman invincible)
             // not in a powerUP transition while mini (specifically)
             // Mario is in his Blue Shell and projectile doesn't affect blue Shell
+            // Mario is crouching and touching the ground with hammer suit
             // Team attack allows him to get hit
             bool damageable = !mario->IsInKnockback
                 && mario->CurrentPowerupState != PowerupState.MegaMushroom
                 && (mario->IsDamageable(f) || (mario->TryGetCurrentPowerTransition(f, out _) && mario->CurrentPowerupState == PowerupState.MiniMushroom))
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
+                && !(mario->CurrentPowerupState == PowerupState.HammerSuit && mario->IsCrouching)
                 && mario->CheckTeamAttack(f, projectile->Owner, out dropStars);
 
             if (damageable) {
@@ -2218,6 +2216,10 @@ namespace Quantum {
                     FPVector2 avgPosition = (marioPos + projectilePos) / 2;
                     f.Events.PlayKnockbackEffect(marioEntity, projectileEntity, KnockbackStrength.FireballBump, avgPosition, true);
                 }
+            }
+
+            if (!damageable && projectile->IsHammer && mario->CurrentPowerupState == PowerupState.HammerSuit && mario->IsCrouching) {
+                f.Events.EnemyKicked(marioEntity, false);
             }
 
             if (damageable || projectileAsset.DestroyOnHit || ((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)) {
@@ -2474,9 +2476,9 @@ namespace Quantum {
                             && velocityDifference >= averageWalkSpeed && FPMath.Abs(marioAPhysics->Velocity.X) > marioAPhysicsInfo.WalkMaxVelocity[marioAPhysicsInfo.WalkSpeedStage]
 #endif
                             ) {
-                            bool didKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioAEntity);
+                            bool didKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 1 : 0, KnockbackStrength.Groundpound, marioAEntity);
                             if (didKnockback) {
-                                f.Events.PlayKnockbackEffect(marioBEntity, marioAEntity, KnockbackStrength.Normal, avgPosition, true);
+                                f.Events.PlayKnockbackEffect(marioBEntity, marioAEntity, KnockbackStrength.Groundpound, avgPosition, true);
                             }
                         }
                     } else if (marioB->IsCrouchedInShell) {
@@ -2491,9 +2493,9 @@ namespace Quantum {
                             && velocityDifference >= averageWalkSpeed && FPMath.Abs(marioBPhysics->Velocity.X) > marioBPhysicsInfo.WalkMaxVelocity[marioBPhysicsInfo.WalkSpeedStage]
 #endif
                             ) {
-                            bool didKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioBEntity);
+                            bool didKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.Groundpound, marioBEntity);
                             if (didKnockback) {
-                                f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.Normal, avgPosition, true);
+                                f.Events.PlayKnockbackEffect(marioAEntity, marioBEntity, KnockbackStrength.Groundpound, avgPosition, true);
                             }
                         }
                     }
@@ -2871,14 +2873,28 @@ namespace Quantum {
             }
             
             bool damaged = false;
+            var hitTransform = f.Unsafe.GetPointer<Transform2D>(entity);
             KnockbackStrength strength = KnockbackStrength.Normal;
             switch (breakReason) {
             case IceBlockBreakReason.HitWall:
             case IceBlockBreakReason.Other:
-                // Weak knockback, i-frames.
                 strength = KnockbackStrength.FireballBump;
                 damaged = mario->DoKnockback(f, entity, hitFromRight, 1, strength, attacker);
+                if (damaged) {
+                    // No floor below:
+                    if (!PhysicsObjectSystem.Raycast(f, null, hitTransform->Position, FPVector2.Down, 8, out _)) {
+                        // Shortened knockback.
+                        mario->KnockbackTick -= 20;
+                    }
+                }
+                break;
+
+            case IceBlockBreakReason.HitPlayer:
+                // Extended knockback, i-frames.
+                strength = KnockbackStrength.Normal;
+                damaged = mario->DoKnockback(f, entity, hitFromRight, 1, strength, attacker);
                 mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
+                mario->KnockbackTick -= 15;
                 break;
 
             case IceBlockBreakReason.BlockBump:
@@ -2890,8 +2906,7 @@ namespace Quantum {
             case IceBlockBreakReason.Groundpounded:
                 // Hard knockback, i-frames.
                 strength = KnockbackStrength.Groundpound;
-                damaged = mario->DoKnockback(f, entity, hitFromRight, 2, strength, attacker);
-                mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
+                damaged = mario->DoKnockback(f, entity, hitFromRight, 3, strength, attacker);
                 break;
 
             case IceBlockBreakReason.Shell:

@@ -16,6 +16,7 @@ namespace Quantum {
         public override void OnInit(Frame f) {
             f.Context.Interactions.Register<MarioPlayer, IceBlock>(f, OnIceBlockMarioInteraction);
             f.Context.Interactions.Register<Coin, IceBlock>(f, OnIceBlockCoinInteraction);
+            f.Context.Interactions.Register<Projectile, IceBlock>(f, OnIceBlockProjectileInteraction);
         }
 
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
@@ -139,7 +140,7 @@ namespace Quantum {
                 // Bottom
                 if (iceBlock->IsSliding) {
                     TryDamageMario();
-                    Destroy(f, iceBlockEntity, IceBlockBreakReason.HitWall, marioEntity);
+                    Destroy(f, iceBlockEntity, f.Has<MarioPlayer>(iceBlockEntity) ? IceBlockBreakReason.HitPlayer : IceBlockBreakReason.HitWall, marioEntity);
                     return false;
                 } else if (f.Exists(holdable->Holder)) {
                     return false;
@@ -155,7 +156,7 @@ namespace Quantum {
                     return false;
                 } else if (iceBlock->IsSliding && iceBlock->FacingRight == rightContact) {
                     TryDamageMario();
-                    Destroy(f, iceBlockEntity, IceBlockBreakReason.HitWall, marioEntity);
+                    Destroy(f, iceBlockEntity, f.Has<MarioPlayer>(iceBlockEntity) ? IceBlockBreakReason.HitPlayer : IceBlockBreakReason.HitWall, marioEntity);
                     return false;
                 }
             }
@@ -202,6 +203,17 @@ namespace Quantum {
             }
 
             CoinSystem.TryCollectCoin(f, coinEntity, holdable->PreviousHolder);
+        }
+
+        public static void OnIceBlockProjectileInteraction(Frame f, EntityRef projectileEntity, EntityRef iceBlockEntity) {
+            var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
+
+            if (!projectile->IsHammer) {
+                return;
+            }
+
+            f.Events.EnemyKicked(iceBlockEntity, false);
+            f.Signals.OnProjectileHitEntity(projectileEntity, iceBlockEntity);
         }
         #endregion
 
