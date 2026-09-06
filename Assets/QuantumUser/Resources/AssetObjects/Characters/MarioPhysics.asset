@@ -36,10 +36,10 @@ MonoBehaviour:
   ShellFastSlopeStage: 2
   ShellStarStage: 3
   WalkBlueShellMultiplier:
-  - RawValue: 58982
   - RawValue: 65536
   - RawValue: 72090
-  - RawValue: 58982
+  - RawValue: 78643
+  - RawValue: 65536
   WalkButtonReleaseDeceleration:
     RawValue: 259200
   SlowTurnaroundAcceleration:
@@ -88,6 +88,8 @@ MonoBehaviour:
     RawValue: 24248
   LargeHitboxHeight:
     RawValue: 53739
+  BlueShellHitboxHeight:
+    RawValue: 27525
   JumpBufferFrames: 12
   CoyoteTimeFrames: 5
   JumpVelocity:

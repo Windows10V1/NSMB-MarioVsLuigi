@@ -739,6 +739,29 @@ namespace Quantum {
                     mario->WallslideEndFrames = 0;
                     mario->JumpBufferFrames = 0;
                 }
+            } else if ((physicsObject->IsTouchingLeftWall || physicsObject->IsTouchingRightWall) && mario->JumpBufferFrames > 0 && mario->WalljumpFrames == 0 && physicsObject->Velocity.Y > 0) {
+                // Walljump while moving up (not wallsliding)
+                bool touchingLeft = physicsObject->IsTouchingLeftWall;
+                bool touchingRight = physicsObject->IsTouchingRightWall;
+                bool facingWall = (touchingRight && mario->FacingRight) || (touchingLeft && !mario->FacingRight);
+                if (facingWall && !mario->IsInShell && !mario->IsGroundpounding && !physicsObject->IsTouchingGround
+                    && !mario->HeldEntity.IsValid && mario->CurrentPowerupState != PowerupState.MegaMushroom
+                    && !mario->IsSpinnerFlying && !mario->IsDrilling && !mario->IsCrouching && !mario->IsSliding
+                    && !mario->IsInKnockback && mario->PropellerLaunchFrames == 0) {
+
+                    physicsObject->Velocity = new(physics.WalljumpHorizontalVelocity * (touchingRight ? -1 : 1), mario->CurrentPowerupState == PowerupState.MiniMushroom ? physics.WalljumpMiniVerticalVelocity : physics.WalljumpVerticalVelocity);
+                    mario->JumpState = JumpState.SingleJump;
+                    physicsObject->IsTouchingGround = false;
+                    mario->DoEntityBounce = false;
+                    mario->FacingRight = !touchingRight;
+
+                    f.Events.MarioPlayerWalljumped(filter.Entity, filter.Transform->Position, touchingRight, filter.PhysicsCollider->Shape.Box.Extents);
+                    mario->WalljumpFrames = 16;
+                    mario->WallslideRight = false;
+                    mario->WallslideLeft = false;
+                    mario->WallslideEndFrames = 0;
+                    mario->JumpBufferFrames = 0;
+                }
             } else if (physicsObject->IsTouchingLeftWall || physicsObject->IsTouchingRightWall) {
                 // Walljump starting check
                 bool canWallslide = !mario->IsInShell && physicsObject->Velocity.Y < -FP._0_10 && !mario->IsGroundpounding && !physicsObject->IsTouchingGround && !mario->HeldEntity.IsValid && mario->CurrentPowerupState != PowerupState.MegaMushroom && !mario->IsSpinnerFlying && !mario->IsDrilling && !mario->IsCrouching && !mario->IsSliding && !mario->IsInKnockback && mario->PropellerLaunchFrames == 0;
@@ -2198,7 +2221,10 @@ namespace Quantum {
                             mario->Powerdown(f, marioEntity, false, projectileEntity);
                         } else {
                             // otherwise freeze
-                            IceBlockSystem.Freeze(f, marioEntity);
+                            EntityRef iceBlockEntity = IceBlockSystem.Freeze(f, marioEntity);
+                            if (f.Unsafe.TryGetPointer(iceBlockEntity, out Holdable* holdable)) {
+                                holdable->PreviousHolder = projectile->Owner;
+                            }
                         }
                     } else {
                         // team projectile
@@ -2690,7 +2716,7 @@ namespace Quantum {
                 if (didKnockback) {
                     f.Events.PlayKnockbackEffect(defender, attacker, strength, avgPosition, didKnockback);
                 }
-            } else if (defenderMario->CurrentPowerupState == PowerupState.HammerSuit && defenderPhysicsObject->IsTouchingGround && defenderMario->IsCrouching && !groundpounded) {
+            } else if (defenderMario->CurrentPowerupState == PowerupState.HammerSuit && defenderMario->IsCrouching) {
                 // Bounce
                 var attackerPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(attacker);
                 if (FPMath.Abs(attackerPhysicsObject->Velocity.X) < 2) {
@@ -2709,13 +2735,6 @@ namespace Quantum {
                     // Bounce
                     f.Events.MarioPlayerStompedByTeammate(defender);
                 } else {
-                    if (attackerMario->IsPropellerFlying && attackerMario->IsDrilling) {
-                        attackerMario->IsDrilling = false;
-                        attackerMario->DoEntityBounce = true;
-                        if (!attackerMario->IsSpinnerFlying && !attackerMario->IsPropellerFlying) {
-                            attackerMario->ForceJumpTimer = 8;
-                        }
-                    }
                     KnockbackStrength strength = groundpounded ? KnockbackStrength.Groundpound : KnockbackStrength.Normal;
                     bool dealtKnockback = defenderMario->DoKnockback(f, defender, !fromRight, dropStars ? (groundpounded ? 3 : 1) : 0, strength, attacker);
                     if (dealtKnockback || !groundpounded) {
