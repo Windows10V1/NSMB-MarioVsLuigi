@@ -403,7 +403,9 @@ namespace Quantum {
             PreviousPowerupState = CurrentPowerupState;
 
             switch (CurrentPowerupState) {
-            case PowerupState.MiniMushroom:
+            case PowerupState.MiniMushroom: {
+                return false;
+            }
             case PowerupState.NoPowerup: {
                 Death(f, entity, false, true, attacker);
                 break;
