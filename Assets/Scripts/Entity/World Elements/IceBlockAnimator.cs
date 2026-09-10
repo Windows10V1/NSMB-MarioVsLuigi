@@ -21,6 +21,7 @@ namespace NSMB.Entities.World {
 
         public void Start() {
             QuantumEvent.Subscribe<EventIceBlockSinking>(this, OnIceBlockSinking, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
         }
 
         public override void OnActivate(Frame f) {
@@ -70,6 +71,14 @@ namespace NSMB.Entities.World {
             if (e.LiquidType == LiquidType.Lava) {
                 sfx.PlayOneShot(SoundEffect.Enemy_Generic_FreezeMelt);
             }
+        }
+
+        private void OnEnemyKicked(EventEnemyKicked e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
         }
     }
 }

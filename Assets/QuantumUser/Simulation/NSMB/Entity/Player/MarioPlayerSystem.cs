@@ -2687,7 +2687,7 @@ namespace Quantum {
             if (attackerMario->CurrentPowerupState == PowerupState.MiniMushroom && defenderMario->CurrentPowerupState != PowerupState.MiniMushroom) {
                 // Attacker is mini, they arent. special rules.
                 if (groundpounded) {
-                    bool dealtKnockback = defenderMario->DoKnockback(f, defender, !fromRight, dropStars ? 3 : 0, KnockbackStrength.Groundpound, attacker);
+                    bool dealtKnockback = defenderMario->DoKnockback(f, defender, !fromRight, dropStars ? 4 : 0, KnockbackStrength.Groundpound, attacker);
                     f.Events.PlayKnockbackEffect(defender, attacker, KnockbackStrength.Groundpound, avgPosition, dealtKnockback);
                     attackerMario->IsGroundpounding = false;
                     attackerMario->DoEntityBounce = true;
