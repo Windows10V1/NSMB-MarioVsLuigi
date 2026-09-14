@@ -335,21 +335,13 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
             stringBuilder.Append("<align=center><color=white>");
             stringBuilder.AppendLine(gamemodeName);
 
-            if (gamemode is CoinRunnersGamemode) {
-                stringBuilder.Append("<sprite name=room_timer> ").Append(Utils.SecondsToMinuteSeconds(rules.TimerMinutes * 60)).Append("    ");
-                stringBuilder.Append("<sprite name=room_coins> ").Append(rules.CoinsForPowerup).Append("    ");
-                stringBuilder.Append("<sprite name=room_lives> ").Append(rules.Lives > 0 ? rules.Lives : off).Append("    ");
-                stringBuilder.Append("<sprite name=room_powerups>").Append(rules.CustomPowerupsEnabled ? on : off).Append("    ");
-                stringBuilder.Append("<sprite name=room_teams>").AppendLine(rules.TeamsEnabled ? on : off);
-            } else {
-                // Default to star chasers
-                stringBuilder.Append("<sprite name=room_stars> ").Append(rules.StarsToWin).Append("    ");
-                stringBuilder.Append("<sprite name=room_coins> ").Append(rules.CoinsForPowerup).Append("    ");
-                stringBuilder.Append("<sprite name=room_lives> ").Append(rules.Lives > 0 ? rules.Lives : off).Append("    ");
-                stringBuilder.Append("<sprite name=room_timer> ").Append(rules.TimerMinutes > 0 ? Utils.SecondsToMinuteSeconds(rules.TimerMinutes * 60) : off).Append("    ");
-                stringBuilder.Append("<sprite name=room_powerups>").Append(rules.CustomPowerupsEnabled ? on : off).Append("    ");
-                stringBuilder.Append("<sprite name=room_teams>").AppendLine(rules.TeamsEnabled ? on : off);
-            } 
+            // Default to star chasers (CoinRunners gamemode deleted)
+            stringBuilder.Append("<sprite name=room_stars> ").Append(rules.StarsToWin).Append("    ");
+            stringBuilder.Append("<sprite name=room_coins> ").Append(rules.CoinsForPowerup).Append("    ");
+            stringBuilder.Append("<sprite name=room_lives> ").Append(rules.Lives > 0 ? rules.Lives : off).Append("    ");
+            stringBuilder.Append("<sprite name=room_timer> ").Append(rules.TimerMinutes > 0 ? Utils.SecondsToMinuteSeconds(rules.TimerMinutes * 60) : off).Append("    ");
+            stringBuilder.Append("<sprite name=room_powerups>").Append(rules.CustomPowerupsEnabled ? on : off).Append("    ");
+            stringBuilder.Append("<sprite name=room_teams>").AppendLine(rules.TeamsEnabled ? on : off); 
             stringBuilder.Append("<color=#aaa>").Append(tm.DateTimeToLocalizedString(DateTime.UnixEpoch.AddSeconds(header.UnixTimestamp), false, false)).Append(" - ");
             stringBuilder.Append(Utils.SecondsToMinuteSeconds(header.ReplayLengthInFrames / 60)).Append(" - ").Append(Utils.BytesToString(replay.ReplayFile.FileSize));
 
@@ -793,7 +785,7 @@ namespace NSMB.UI.MainMenu.Submenus.Replays {
                 var newPageNumber = Instantiate(pageTemplate, parent);
                 newPageNumber.text = text.ToString();
                 if (selected) {
-                    newPageNumber.text = "» " + newPageNumber.text + " «";
+                    newPageNumber.text = "ï¿½ " + newPageNumber.text + " ï¿½";
                     newPageNumber.color = Color.white;
                 }
                 newPageNumber.gameObject.SetActive(true);

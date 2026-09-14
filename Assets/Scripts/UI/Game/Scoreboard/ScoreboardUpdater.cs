@@ -61,8 +61,6 @@ namespace NSMB.UI.Game.Scoreboard {
             QuantumCallback.Subscribe<CallbackUpdateView>(this, OnUpdateView);
             QuantumEvent.Subscribe<EventMarioPlayerDied>(this, OnMarioPlayerDied);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedStar>(this, OnMarioPlayerCollectedStar);
-            QuantumEvent.Subscribe<EventMarioPlayerObjectiveCoinsChanged>(this, OnMarioPlayerObjectiveCoinsChanged);
-            QuantumEvent.Subscribe<EventMarioPlayerCollectedStarCoin>(this, OnMarioPlayerCollectedStarCoin);
             QuantumEvent.Subscribe<EventMarioPlayerDroppedStar>(this, OnMarioPlayerDroppedStar);
             QuantumEvent.Subscribe<EventMarioPlayerRespawned>(this, OnMarioPlayerRespawned);
             QuantumEvent.Subscribe<EventPlayerAdded>(this, OnPlayerAdded);
@@ -256,14 +254,6 @@ namespace NSMB.UI.Game.Scoreboard {
         }
 
         private void OnMarioPlayerCollectedStar(EventMarioPlayerCollectedStar e) {
-            UpdateTeamHeader(e.Game.Frames.Predicted);
-        }
-
-        private void OnMarioPlayerCollectedStarCoin(EventMarioPlayerCollectedStarCoin e) {
-            UpdateTeamHeader(e.Game.Frames.Predicted);
-        }
-
-        private void OnMarioPlayerObjectiveCoinsChanged(EventMarioPlayerObjectiveCoinsChanged e) {
             UpdateTeamHeader(e.Game.Frames.Predicted);
         }
 

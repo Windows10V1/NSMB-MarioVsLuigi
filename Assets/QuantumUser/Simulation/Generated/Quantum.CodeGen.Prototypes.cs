@@ -555,21 +555,6 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.GoldBlock))]
-  public unsafe partial class GoldBlockPrototype : ComponentPrototype<Quantum.GoldBlock> {
-    [HideInInspector()]
-    public Int32 _empty_prototype_dummy_field_;
-    partial void MaterializeUser(Frame frame, ref Quantum.GoldBlock result, in PrototypeMaterializationContext context);
-    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
-        Quantum.GoldBlock component = default;
-        Materialize((Frame)f, ref component, in context);
-        return f.Set(entity, component) == SetResult.ComponentAdded;
-    }
-    public void Materialize(Frame frame, ref Quantum.GoldBlock result, in PrototypeMaterializationContext context = default) {
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.Goomba))]
   public unsafe partial class GoombaPrototype : ComponentPrototype<Quantum.Goomba> {
     public FP Speed;
@@ -783,21 +768,6 @@ namespace Quantum.Prototypes {
         result.Velocity = this.Velocity;
         result.IgnoreMovement = this.IgnoreMovement;
         result.CanCrushEntities = this.CanCrushEntities;
-        MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.ObjectiveCoin))]
-  public unsafe partial class ObjectiveCoinPrototype : ComponentPrototype<Quantum.ObjectiveCoin> {
-    [HideInInspector()]
-    public Int32 _empty_prototype_dummy_field_;
-    partial void MaterializeUser(Frame frame, ref Quantum.ObjectiveCoin result, in PrototypeMaterializationContext context);
-    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
-        Quantum.ObjectiveCoin component = default;
-        Materialize((Frame)f, ref component, in context);
-        return f.Set(entity, component) == SetResult.ComponentAdded;
-    }
-    public void Materialize(Frame frame, ref Quantum.ObjectiveCoin result, in PrototypeMaterializationContext context = default) {
         MaterializeUser(frame, ref result, in context);
     }
   }
@@ -1031,21 +1001,6 @@ namespace Quantum.Prototypes {
         result.Stars = this.Stars;
         result.DeathStarThreshold = this.DeathStarThreshold;
         MaterializeUser(frame, ref result, in context);
-    }
-  }
-  [System.SerializableAttribute()]
-  [Quantum.Prototypes.Prototype(typeof(Quantum.StarCoin))]
-  public unsafe class StarCoinPrototype : ComponentPrototype<Quantum.StarCoin> {
-    public Byte DespawnCounter;
-    public MapEntityId Collector;
-    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
-        Quantum.StarCoin component = default;
-        Materialize((Frame)f, ref component, in context);
-        return f.Set(entity, component) == SetResult.ComponentAdded;
-    }
-    public void Materialize(Frame frame, ref Quantum.StarCoin result, in PrototypeMaterializationContext context = default) {
-        result.DespawnCounter = this.DespawnCounter;
-        PrototypeValidator.FindMapEntity(this.Collector, in context, out result.Collector);
     }
   }
   [System.SerializableAttribute()]

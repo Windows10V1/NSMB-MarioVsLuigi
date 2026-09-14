@@ -93,7 +93,6 @@ namespace Quantum {
         public readonly bool IsWallsliding => WallslideLeft || WallslideRight;
         public readonly bool IsCrouchedInShell => CurrentPowerupState == PowerupState.BlueShell && (IsCrouching || (IsGroundpounding && GroundpoundStartFrames <= 11)) && !IsInShell;
         public readonly bool IsInKnockback => CurrentKnockback != KnockbackStrength.None;
-        public readonly bool CanCollectOwnTeamsObjectiveCoins => !IsInKnockback && DamageInvincibilityFrames == 0;
         public readonly bool IsStarmanOrMega => IsStarmanInvincible || CurrentPowerupState == PowerupState.MegaMushroom;
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
         public readonly bool IsDamageable(Frame f) => !IsStarmanInvincible && DamageInvincibilityFrames == 0 && !TryGetCurrentPowerTransition(f, out _);
@@ -403,7 +402,9 @@ namespace Quantum {
             PreviousPowerupState = CurrentPowerupState;
 
             switch (CurrentPowerupState) {
-            case PowerupState.MiniMushroom:
+            case PowerupState.MiniMushroom: {
+                return false;
+            }
             case PowerupState.NoPowerup: {
                 Death(f, entity, false, true, attacker);
                 break;
@@ -576,18 +577,13 @@ namespace Quantum {
 
             KnockbackTick = f.Number;
 
-            bool forceWeak = false;
-            if (freezable->IsFrozen(f) && strength != KnockbackStrength.Normal && strength != KnockbackStrength.Groundpound) {
-                forceWeak = true;
-                KnockbackTick -= 25;
-            }
             if (strength == KnockbackStrength.FireballBump && !physicsObject->IsTouchingGround) {
                 // FacingRight = fromRight;
                 knockbackVelocity.X *= FP._0_75;
             }
 
             CurrentKnockback = strength;
-            IsInWeakKnockback = forceWeak || (CurrentPowerupState != PowerupState.MegaMushroom && (strength == KnockbackStrength.CollisionBump || (strength == KnockbackStrength.FireballBump && physicsObject->IsTouchingGround)));
+            IsInWeakKnockback = CurrentPowerupState != PowerupState.MegaMushroom && (strength == KnockbackStrength.CollisionBump || (strength == KnockbackStrength.FireballBump && physicsObject->IsTouchingGround));
 
             physicsObject->Velocity = knockbackVelocity;
             physicsObject->IsTouchingGround = false;
@@ -622,8 +618,7 @@ namespace Quantum {
         private static bool IsImmuneFromKnockbackStrength(KnockbackStrength currentStrength, KnockbackStrength newStrength) {
             return currentStrength == newStrength
                 || (currentStrength == KnockbackStrength.Groundpound && newStrength == KnockbackStrength.Normal)
-                || (currentStrength == KnockbackStrength.Normal && newStrength == KnockbackStrength.Groundpound)
-                || (currentStrength == KnockbackStrength.FireballBump && newStrength == KnockbackStrength.CollisionBump);
+                || (currentStrength == KnockbackStrength.Normal && newStrength == KnockbackStrength.Groundpound);
         }
 
         public void GetupKnockback(Frame f, EntityRef entity) {

@@ -59,10 +59,6 @@ namespace NSMB.UI.Game {
             MarioPlayerAnimator.MarioPlayerDestroyed += OnMarioDestroyed;
             BigStarAnimator.BigStarInitialized += OnBigStarInitialized;
             BigStarAnimator.BigStarDestroyed += OnBigStarDestroyed;
-            StarCoinAnimator.StarCoinInitialized += OnStarCoinInitialized;
-            StarCoinAnimator.StarCoinDestroyed += OnStarCoinDestroyed;
-            CoinAnimator.ObjectiveCoinInitialized += OnObjectiveCoinInitialized;
-            CoinAnimator.ObjectiveCoinDestroyed += OnObjectiveCoinDestroyed;
             TranslationManager.OnLanguageChanged += OnLanguageChanged;
             Settings.Controls.Debug.ToggleHUD.performed += OnToggleHUD;
             OnLanguageChanged(GlobalController.Instance.translationManager);
@@ -74,10 +70,6 @@ namespace NSMB.UI.Game {
             MarioPlayerAnimator.MarioPlayerDestroyed -= OnMarioDestroyed;
             BigStarAnimator.BigStarInitialized -= OnBigStarInitialized;
             BigStarAnimator.BigStarDestroyed -= OnBigStarDestroyed;
-            StarCoinAnimator.StarCoinInitialized -= OnStarCoinInitialized;
-            StarCoinAnimator.StarCoinDestroyed -= OnStarCoinDestroyed;
-            CoinAnimator.ObjectiveCoinInitialized -= OnObjectiveCoinInitialized;
-            CoinAnimator.ObjectiveCoinDestroyed -= OnObjectiveCoinDestroyed;
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
             Settings.Controls.Debug.ToggleHUD.performed -= OnToggleHUD;
         }
@@ -165,22 +157,6 @@ namespace NSMB.UI.Game {
 
         private void OnBigStarDestroyed(Frame f, BigStarAnimator star) {
             DestroyTrackIcon(star);
-        }
-
-        private void OnStarCoinInitialized(Frame f, StarCoinAnimator starCoin) {
-            entityTrackIcons[starCoin] = CreateTrackIcon(Updater, f, starCoin.EntityRef, starCoin.transform);
-        }
-
-        private void OnStarCoinDestroyed(Frame f, StarCoinAnimator starCoin) {
-            DestroyTrackIcon(starCoin);
-        }
-
-        private void OnObjectiveCoinInitialized(Frame f, CoinAnimator objectiveCoin) {
-            entityTrackIcons[objectiveCoin] = CreateTrackIcon(Updater, f, objectiveCoin.EntityRef, objectiveCoin.transform);
-        }
-
-        private void OnObjectiveCoinDestroyed(CoinAnimator objectiveCoin) {
-            DestroyTrackIcon(objectiveCoin);
         }
 
         private void UpdateStoredItemUI(MarioPlayer* mario, bool playAnimation) {
@@ -331,15 +307,6 @@ namespace NSMB.UI.Game {
             TrackIcon icon;
             if (f.Has<BigStar>(entity)) {
                 icon = Instantiate(starTrackTemplate, starTrackTemplate.transform.parent);
-            } else if (f.Has<StarCoin>(entity)) {
-                icon = Instantiate(starCoinTrackTemplate, starCoinTrackTemplate.transform.parent);
-            } else if (f.Has<ObjectiveCoin>(entity)) {
-                if (availablePooledTrackIcons.TryGetValue(typeof(CoinAnimator), out var pool) && pool.Count > 0) {
-                    icon = pool[0];
-                    pool.RemoveAt(0);
-                } else {
-                    icon = Instantiate(objectiveCoinTrackTemplate, objectiveCoinTrackTemplate.transform.parent);
-                }
             } else if (f.Has<MarioPlayer>(entity)) {
                 icon = Instantiate(playerTrackTemplate, playerTrackTemplate.transform.parent);
             } else {

@@ -1,0 +1,559 @@
+fileFormatVersion: 2
+guid: d57b6144e505ed447ae0f59d50521180
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -523373380225687741
+    second: yoshi_tx_all_albedo_0
+  - first:
+      213: -4100031280425061682
+    second: yoshi_tx_all_albedo_1
+  - first:
+      213: 6277510580855968113
+    second: yoshi_tx_all_albedo_2
+  - first:
+      213: -6864872867187523715
+    second: yoshi_tx_all_albedo_3
+  - first:
+      213: 3095270164030233861
+    second: yoshi_tx_all_albedo_4
+  - first:
+      213: 4915343598882066171
+    second: yoshi_tx_all_albedo_5
+  - first:
+      213: -3127317556877654233
+    second: yoshi_tx_all_albedo_6
+  - first:
+      213: 4868883694193709464
+    second: yoshi_tx_all_albedo_7
+  - first:
+      213: -4089359615128526128
+    second: yoshi_tx_all_albedo_8
+  - first:
+      213: -7975095878307756491
+    second: yoshi_tx_all_albedo_9
+  - first:
+      213: -1367206788288571189
+    second: yoshi_tx_all_albedo_10
+  - first:
+      213: -6285575678176685001
+    second: yoshi_tx_all_albedo_11
+  - first:
+      213: 413303128119680372
+    second: yoshi_tx_all_albedo_12
+  - first:
+      213: -2069977265891671741
+    second: yoshi_tx_all_albedo_13
+  - first:
+      213: 2063041315193971813
+    second: yoshi_tx_all_albedo_14
+  - first:
+      213: -1873915133753068424
+    second: yoshi_tx_all_albedo_15
+  - first:
+      213: -6930202845424417025
+    second: yoshi_tx_all_albedo_16
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1215
+        width: 128
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 34f90c20faa9cb8f0800000000000000
+      internalID: -523373380225687741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_1
+      rect:
+        serializedVersion: 2
+        x: 45
+        y: 1155
+        width: 41
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ec2364af543c917c0800000000000000
+      internalID: -4100031280425061682
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_2
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 1154
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 1711da51d923e1750800000000000000
+      internalID: 6277510580855968113
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_3
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 1088
+        width: 102
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d7ff11bbf721bb0a0800000000000000
+      internalID: -6864872867187523715
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_4
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 959
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 50d13e290db94fa20800000000000000
+      internalID: 3095270164030233861
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 831
+        width: 86
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bfe0b58e5fec63440800000000000000
+      internalID: 4915343598882066171
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_6
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 834
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 727077250498994d0800000000000000
+      internalID: -3127317556877654233
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_7
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 703
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8919b156cefb19340800000000000000
+      internalID: 4868883694193709464
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_8
+      rect:
+        serializedVersion: 2
+        x: 105
+        y: 681
+        width: 21
+        height: 12
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0d2af6da81daf37c0800000000000000
+      internalID: -4089359615128526128
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_9
+      rect:
+        serializedVersion: 2
+        x: 83
+        y: 643
+        width: 25
+        height: 18
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 536c8c37d84c25190800000000000000
+      internalID: -7975095878307756491
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_10
+      rect:
+        serializedVersion: 2
+        x: 3
+        y: 576
+        width: 102
+        height: 65
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc89e897ba4b60de0800000000000000
+      internalID: -1367206788288571189
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_11
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 578
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 734917d193625c8a0800000000000000
+      internalID: -6285575678176685001
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_12
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 447
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 47d912851095cb500800000000000000
+      internalID: 413303128119680372
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 319
+        width: 86
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3418465d4a6f543e0800000000000000
+      internalID: -2069977265891671741
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_14
+      rect:
+        serializedVersion: 2
+        x: 92
+        y: 322
+        width: 26
+        height: 16
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 564671d452561ac10800000000000000
+      internalID: 2063041315193971813
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 191
+        width: 128
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8747b614d148ef5e0800000000000000
+      internalID: -1873915133753068424
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: yoshi_tx_all_albedo_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 63
+        width: 86
+        height: 66
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ff68319da39f2df90800000000000000
+      internalID: -6930202845424417025
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      yoshi_tx_all_albedo_0: -523373380225687741
+      yoshi_tx_all_albedo_1: -4100031280425061682
+      yoshi_tx_all_albedo_10: -1367206788288571189
+      yoshi_tx_all_albedo_11: -6285575678176685001
+      yoshi_tx_all_albedo_12: 413303128119680372
+      yoshi_tx_all_albedo_13: -2069977265891671741
+      yoshi_tx_all_albedo_14: 2063041315193971813
+      yoshi_tx_all_albedo_15: -1873915133753068424
+      yoshi_tx_all_albedo_16: -6930202845424417025
+      yoshi_tx_all_albedo_2: 6277510580855968113
+      yoshi_tx_all_albedo_3: -6864872867187523715
+      yoshi_tx_all_albedo_4: 3095270164030233861
+      yoshi_tx_all_albedo_5: 4915343598882066171
+      yoshi_tx_all_albedo_6: -3127317556877654233
+      yoshi_tx_all_albedo_7: 4868883694193709464
+      yoshi_tx_all_albedo_8: -4089359615128526128
+      yoshi_tx_all_albedo_9: -7975095878307756491
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

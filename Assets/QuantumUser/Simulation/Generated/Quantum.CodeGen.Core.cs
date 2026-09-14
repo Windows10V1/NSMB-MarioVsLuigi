@@ -53,7 +53,6 @@ namespace Quantum {
   public enum CoinType : byte {
     BakedInStage = 1,
     Dotted = 2,
-    Objective = 4,
   }
   public enum EnemyKillReason : byte {
     Normal,
@@ -2422,35 +2421,6 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct GoldBlock : Quantum.IComponent {
-    public const Int32 SIZE = 16;
-    public const Int32 ALIGNMENT = 8;
-    [FieldOffset(8)]
-    [ExcludeFromPrototype()]
-    public EntityRef AttachedTo;
-    [FieldOffset(4)]
-    [ExcludeFromPrototype()]
-    public Int32 ObjectiveCoinsRemaining;
-    [FieldOffset(0)]
-    [ExcludeFromPrototype()]
-    public Byte Timer;
-    public override readonly Int32 GetHashCode() {
-      unchecked { 
-        var hash = 5399;
-        hash = hash * 31 + AttachedTo.GetHashCode();
-        hash = hash * 31 + ObjectiveCoinsRemaining.GetHashCode();
-        hash = hash * 31 + Timer.GetHashCode();
-        return hash;
-      }
-    }
-    public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (GoldBlock*)ptr;
-        serializer.Stream.Serialize(&p->Timer);
-        serializer.Stream.Serialize(&p->ObjectiveCoinsRemaining);
-        EntityRef.Serialize(&p->AttachedTo, serializer);
-    }
-  }
-  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct Goomba : Quantum.IComponent {
     public const Int32 SIZE = 16;
     public const Int32 ALIGNMENT = 8;
@@ -3183,30 +3153,6 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct ObjectiveCoin : Quantum.IComponent {
-    public const Int32 SIZE = 8;
-    public const Int32 ALIGNMENT = 4;
-    [FieldOffset(0)]
-    [ExcludeFromPrototype()]
-    public Byte UncollectableByTeam;
-    [FieldOffset(4)]
-    [ExcludeFromPrototype()]
-    public QBoolean SpawnedViaSelfDamage;
-    public override readonly Int32 GetHashCode() {
-      unchecked { 
-        var hash = 21031;
-        hash = hash * 31 + UncollectableByTeam.GetHashCode();
-        hash = hash * 31 + SpawnedViaSelfDamage.GetHashCode();
-        return hash;
-      }
-    }
-    public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (ObjectiveCoin*)ptr;
-        serializer.Stream.Serialize(&p->UncollectableByTeam);
-        QBoolean.Serialize(&p->SpawnedViaSelfDamage, serializer);
-    }
-  }
-  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct PhysicsObject : Quantum.IComponent {
     public const Int32 SIZE = 144;
     public const Int32 ALIGNMENT = 8;
@@ -3577,28 +3523,6 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
-  public unsafe partial struct StarCoin : Quantum.IComponent {
-    public const Int32 SIZE = 16;
-    public const Int32 ALIGNMENT = 8;
-    [FieldOffset(0)]
-    public Byte DespawnCounter;
-    [FieldOffset(8)]
-    public EntityRef Collector;
-    public override readonly Int32 GetHashCode() {
-      unchecked { 
-        var hash = 17623;
-        hash = hash * 31 + DespawnCounter.GetHashCode();
-        hash = hash * 31 + Collector.GetHashCode();
-        return hash;
-      }
-    }
-    public static void Serialize(void* ptr, FrameSerializer serializer) {
-        var p = (StarCoin*)ptr;
-        serializer.Stream.Serialize(&p->DespawnCounter);
-        EntityRef.Serialize(&p->Collector, serializer);
-    }
-  }
-  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct WrappingObject : Quantum.IComponent {
     public const Int32 SIZE = 4;
     public const Int32 ALIGNMENT = 4;
@@ -3909,6 +3833,14 @@ namespace Quantum {
         return result;
       }
     }
+    /// <summary>6</summary>
+    public static FP _6_00 {
+      [MethodImpl(MethodImplOptions.AggressiveInlining)] get { 
+        FP result;
+        result.RawValue = 393216;
+        return result;
+      }
+    }
     /// <summary>0.05</summary>
     public static FP PhysicsRaycastSkin {
       [MethodImpl(MethodImplOptions.AggressiveInlining)] get { 
@@ -4019,6 +3951,8 @@ namespace Quantum {
       public const Int64 _0_73 = 47841;
       /// <summary>2.75</summary>
       public const Int64 _2_75 = 180224;
+      /// <summary>6</summary>
+      public const Int64 _6_00 = 393216;
       /// <summary>0.05</summary>
       public const Int64 PhysicsRaycastSkin = 3277;
       /// <summary>0.005</summary>
@@ -4167,8 +4101,6 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<Quantum.Freezable>();
       BuildSignalsArrayOnComponentAdded<Quantum.GenericMover>();
       BuildSignalsArrayOnComponentRemoved<Quantum.GenericMover>();
-      BuildSignalsArrayOnComponentAdded<Quantum.GoldBlock>();
-      BuildSignalsArrayOnComponentRemoved<Quantum.GoldBlock>();
       BuildSignalsArrayOnComponentAdded<Quantum.Goomba>();
       BuildSignalsArrayOnComponentRemoved<Quantum.Goomba>();
       BuildSignalsArrayOnComponentAdded<Quantum.Holdable>();
@@ -4201,8 +4133,6 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<NavMeshPathfinder>();
       BuildSignalsArrayOnComponentAdded<NavMeshSteeringAgent>();
       BuildSignalsArrayOnComponentRemoved<NavMeshSteeringAgent>();
-      BuildSignalsArrayOnComponentAdded<Quantum.ObjectiveCoin>();
-      BuildSignalsArrayOnComponentRemoved<Quantum.ObjectiveCoin>();
       BuildSignalsArrayOnComponentAdded<PhysicsBody2D>();
       BuildSignalsArrayOnComponentRemoved<PhysicsBody2D>();
       BuildSignalsArrayOnComponentAdded<PhysicsBody3D>();
@@ -4231,8 +4161,6 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<Quantum.Projectile>();
       BuildSignalsArrayOnComponentAdded<Quantum.Spinner>();
       BuildSignalsArrayOnComponentRemoved<Quantum.Spinner>();
-      BuildSignalsArrayOnComponentAdded<Quantum.StarCoin>();
-      BuildSignalsArrayOnComponentRemoved<Quantum.StarCoin>();
       BuildSignalsArrayOnComponentAdded<Transform2D>();
       BuildSignalsArrayOnComponentRemoved<Transform2D>();
       BuildSignalsArrayOnComponentAdded<Transform2DVertical>();
@@ -4685,7 +4613,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.GameState), 1);
       typeRegistry.Register(typeof(Quantum.GamemodeSpecificData), Quantum.GamemodeSpecificData.SIZE);
       typeRegistry.Register(typeof(Quantum.GenericMover), Quantum.GenericMover.SIZE);
-      typeRegistry.Register(typeof(Quantum.GoldBlock), Quantum.GoldBlock.SIZE);
       typeRegistry.Register(typeof(Quantum.Goomba), Quantum.Goomba.SIZE);
       typeRegistry.Register(typeof(HingeJoint), HingeJoint.SIZE);
       typeRegistry.Register(typeof(HingeJoint3D), HingeJoint3D.SIZE);
@@ -4727,7 +4654,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(NullableFPVector2), NullableFPVector2.SIZE);
       typeRegistry.Register(typeof(NullableFPVector3), NullableFPVector3.SIZE);
       typeRegistry.Register(typeof(NullableNonNegativeFP), NullableNonNegativeFP.SIZE);
-      typeRegistry.Register(typeof(Quantum.ObjectiveCoin), Quantum.ObjectiveCoin.SIZE);
       typeRegistry.Register(typeof(ParticleEffect), 1);
       typeRegistry.Register(typeof(PhysicsBody2D), PhysicsBody2D.SIZE);
       typeRegistry.Register(typeof(PhysicsBody3D), PhysicsBody3D.SIZE);
@@ -4771,7 +4697,6 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.StageTileFlags), 1);
       typeRegistry.Register(typeof(Quantum.StageTileInstance), Quantum.StageTileInstance.SIZE);
       typeRegistry.Register(typeof(Quantum.StarChasersData), Quantum.StarChasersData.SIZE);
-      typeRegistry.Register(typeof(Quantum.StarCoin), Quantum.StarCoin.SIZE);
       typeRegistry.Register(typeof(Quantum.TeamAttackOptions), 1);
       typeRegistry.Register(typeof(Transform2D), Transform2D.SIZE);
       typeRegistry.Register(typeof(Transform2DVertical), Transform2DVertical.SIZE);
@@ -4781,7 +4706,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum._globals_), Quantum._globals_.SIZE);
     }
     static partial void InitComponentTypeIdGen() {
-      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 41)
+      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 38)
         .AddBuiltInComponents()
         .Add<Quantum.BetterPhysicsObject>(Quantum.BetterPhysicsObject.Serialize, Quantum.BetterPhysicsObject.OnAdded, Quantum.BetterPhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.BigStar>(Quantum.BigStar.Serialize, null, null, ComponentFlags.None)
@@ -4803,7 +4728,6 @@ namespace Quantum {
         .Add<Quantum.FireSnakeSegment>(Quantum.FireSnakeSegment.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Freezable>(Quantum.Freezable.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.GenericMover>(Quantum.GenericMover.Serialize, null, null, ComponentFlags.None)
-        .Add<Quantum.GoldBlock>(Quantum.GoldBlock.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Goomba>(Quantum.Goomba.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Holdable>(Quantum.Holdable.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.IceBlock>(Quantum.IceBlock.Serialize, null, null, ComponentFlags.None)
@@ -4815,14 +4739,12 @@ namespace Quantum {
         .Add<Quantum.MarioBrosPlatform>(Quantum.MarioBrosPlatform.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.MarioPlayer>(Quantum.MarioPlayer.Serialize, Quantum.MarioPlayer.OnAdded, Quantum.MarioPlayer.OnRemoved, ComponentFlags.None)
         .Add<Quantum.MovingPlatform>(Quantum.MovingPlatform.Serialize, Quantum.MovingPlatform.OnAdded, Quantum.MovingPlatform.OnRemoved, ComponentFlags.None)
-        .Add<Quantum.ObjectiveCoin>(Quantum.ObjectiveCoin.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PhysicsObject>(Quantum.PhysicsObject.Serialize, Quantum.PhysicsObject.OnAdded, Quantum.PhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.PiranhaPlant>(Quantum.PiranhaPlant.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PlayerData>(Quantum.PlayerData.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Powerup>(Quantum.Powerup.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Projectile>(Quantum.Projectile.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Spinner>(Quantum.Spinner.Serialize, Quantum.Spinner.OnAdded, Quantum.Spinner.OnRemoved, ComponentFlags.None)
-        .Add<Quantum.StarCoin>(Quantum.StarCoin.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.WrappingObject>(Quantum.WrappingObject.Serialize, null, null, ComponentFlags.None)
         .Finish();
     }

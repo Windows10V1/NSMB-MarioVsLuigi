@@ -73,7 +73,7 @@ Material:
     - WidthTiles: 30
     - _BUILTIN_QueueControl: -1
     - _BUILTIN_QueueOffset: 0
-    - _GlowPower: 4
+    - _GlowPower: 3
     - _Points: 160
     - _RandomizeOffset: 0
     - _TextureIndex: 0
@@ -83,7 +83,8 @@ Material:
     - FoamColor: {r: 1, g: 0.96761364, b: 0.36226404, a: 1}
     - RippleColor: {r: 1, g: 0.630872, b: 0, a: 1}
     - TopColor: {r: 1, g: 0.14068651, b: 0, a: 1}
-    - _Glow: {r: 1, g: 1, b: 1, a: 0}
+    - White: {r: 1, g: 1, b: 1, a: 1}
+    - _Glow: {r: 1, g: 0, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &7893850056676362737

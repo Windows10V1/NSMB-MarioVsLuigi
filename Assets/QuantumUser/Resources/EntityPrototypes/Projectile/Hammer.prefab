@@ -334,8 +334,6 @@ MonoBehaviour:
       Value: 0
     IsWaterSolid:
       Value: 0
-    BreakMegaObjects:
-      Value: 0
 --- !u!114 &3977285621181604314
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -419,8 +417,18 @@ MonoBehaviour:
   sRenderer: {fileID: 0}
   animator: {fileID: 9025442341733772760}
   legacySpriteAnimator: {fileID: 0}
-  sameTeamColor: {r: 0.75, g: 0.75, b: 0.75, a: 1}
+  sameTeamColor: {r: 1, g: 1, b: 1, a: 1}
   differentTeamColor: {r: 1, g: 1, b: 1, a: 1}
+  modelRenderers:
+  - {fileID: 8818015814349666637}
+  usePalette: 1
+  paletteReplacements:
+  - Material: {fileID: 2100000, guid: 436709448a2f933469714699f2dd2c83, type: 2}
+    AlbedoTexture: {fileID: 2800000, guid: 83c88742599e18c4fb6eb401fcc9539a, type: 3}
+    OverallsMaskTexture: {fileID: 0}
+    ShirtMaskTexture: {fileID: 2800000, guid: ea58864ad2a670c4dbbad1879f6176ea, type: 3}
+    CapMaskTexture: {fileID: 0}
+    StarmanAlbedoTexture: {fileID: 0}
 --- !u!114 &-5850122481703649106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -522,7 +530,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5082207059470328561
 Transform:
   m_ObjectHideFlags: 0
@@ -5444,6 +5452,12 @@ PrefabInstance:
 --- !u!4 &7772443187923817931 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: f46b8fc151393264695663a47f3ba684,
+    type: 3}
+  m_PrefabInstance: {fileID: 7806984023966216736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8818015814349666637 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: f46b8fc151393264695663a47f3ba684,
     type: 3}
   m_PrefabInstance: {fileID: 7806984023966216736}
   m_PrefabAsset: {fileID: 0}

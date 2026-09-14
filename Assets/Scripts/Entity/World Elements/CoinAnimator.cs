@@ -1,27 +1,20 @@
-using NSMB.UI.Game;
 using NSMB.Utilities;
 using NSMB.Utilities.Components;
 using NSMB.Utilities.Extensions;
 using Quantum;
 using Quantum.Profiling;
-using System;
 using UnityEngine;
-using UnityEngine.Rendering;
 using static NSMB.Utilities.QuantumViewUtils;
 
 namespace NSMB.Entities.World {
     public unsafe class CoinAnimator : QuantumEntityViewComponent {
-
-        //---Static
-        public static event Action<Frame, CoinAnimator> ObjectiveCoinInitialized;
-        public static event Action<CoinAnimator> ObjectiveCoinDestroyed;
 
         //---Serialized Variables
         [SerializeField] private LegacyAnimateSpriteRenderer defaultCoinAnimate, dottedCoinAnimate;
         [SerializeField] private AudioSource sfx;
         [SerializeField] private SpriteRenderer sRenderer;
         [SerializeField] private ParticleSystem sparkles;
-        [SerializeField] private bool looseCoin, objectiveCoin;
+        [SerializeField] private bool looseCoin;
 
         //---Private Variables
         private bool alreadyBounced;
@@ -37,7 +30,6 @@ namespace NSMB.Entities.World {
             QuantumEvent.Subscribe<EventCoinChangeCollected>(this, OnCoinChangedCollected, onlyIfEntityViewBound: true);
             QuantumEvent.Subscribe<EventCoinBounced>(this, OnCoinBounced, FilterOutReplayFastForward, onlyIfEntityViewBound: true);
             QuantumCallback.Subscribe<CallbackGameResynced>(this, OnGameResynced, onlyIfEntityViewBound: true);
-            RenderPipelineManager.beginCameraRendering += URPOnPreRender;
         }
 
         public override void OnActivate(Frame f) {
@@ -55,9 +47,6 @@ namespace NSMB.Entities.World {
                 defaultCoinAnimate.frame = UnityEngine.Random.Range(0, defaultCoinAnimate.frames.Length);
                 dottedCoinAnimate.frame = UnityEngine.Random.Range(0, dottedCoinAnimate.frames.Length);
             }
-            if (objectiveCoin) {
-                ObjectiveCoinInitialized?.Invoke(f, this);
-            }
         }
 
         public override void OnDeactivate() {
@@ -69,13 +58,6 @@ namespace NSMB.Entities.World {
                 newSparkles.Play();
                 Destroy(newSparkles.gameObject, 0.5f);
             }
-            if (objectiveCoin) {
-                ObjectiveCoinDestroyed?.Invoke(this);
-            }
-        }
-
-        public void OnDestroy() {
-            RenderPipelineManager.beginCameraRendering -= URPOnPreRender;
         }
 
         public override void OnUpdateView() {
@@ -94,38 +76,6 @@ namespace NSMB.Entities.World {
             }
         }
 
-        private unsafe void URPOnPreRender(ScriptableRenderContext context, Camera camera) {
-            Frame f = PredictedFrame;
-            if (f == null || !f.Unsafe.TryGetPointer(EntityRef, out ObjectiveCoin* coin)) {
-                return;
-            }
-
-            Color newColor = sRenderer.color;
-            bool sameTeam = IsSameTeamAsCamera(coin->UncollectableByTeam - 1, camera, out MarioPlayer* mario);
-            if (mario != null && sameTeam && (!mario->CanCollectOwnTeamsObjectiveCoins || coin->SpawnedViaSelfDamage)) {
-                // Can't collect
-                newColor.a = 0.33f;
-            } else {
-                newColor.a = 1;
-            }
-            sRenderer.color = newColor;
-        }
-
-        private bool IsSameTeamAsCamera(int team, Camera camera, out MarioPlayer* mario) {
-            Frame f = PredictedFrame;
-            foreach (var playerElement in PlayerElements.AllPlayerElements) {
-                if (playerElement.IsOurCamera(camera)) {
-                    if (!f.Unsafe.TryGetPointer(playerElement.Entity, out mario)) {
-                        return false;
-                    }
-
-                    return (mario->GetTeam(f) ?? int.MinValue) == team;
-                }
-            }
-            mario = null;
-            return false;
-        }
-
         private void OnCoinBounced(EventCoinBounced e) {
             if (e.Entity != EntityRef) {
                 return;
@@ -135,8 +85,8 @@ namespace NSMB.Entities.World {
                 return;
             }
 
-            sfx.pitch = objectiveCoin ? UnityEngine.Random.Range(1.35f, 1.45f) : 1f;
-            sfx.volume = objectiveCoin ? 0.1f : 1f;
+            sfx.pitch = 1f;
+            sfx.volume = 1f;
             sfx.PlayOneShot(SoundEffect.World_Coin_Drop);
             alreadyBounced = true;
         }

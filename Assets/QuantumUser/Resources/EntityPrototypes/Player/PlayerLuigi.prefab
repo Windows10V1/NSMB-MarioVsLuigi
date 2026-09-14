@@ -605,37 +605,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1 &3969380940220378773
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 5132215146939292994}
-  m_Layer: 18
-  m_Name: LargeGoldBlockBone
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &5132215146939292994
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3969380940220378773}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
-  m_LocalPosition: {x: -0.0004, y: 0.0022, z: 0.0068}
-  m_LocalScale: {x: 1.1, y: 1.1, z: 1.1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4179535912005182115}
-  m_LocalEulerAnglesHint: {x: 270, y: 0, z: 0}
 --- !u!1 &4056376664574429795
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,7 +992,7 @@ MonoBehaviour:
   character: {fileID: 11400000, guid: 20241e3c68674eb4dbb58f063d01cfd2, type: 2}
   modelRoot: {fileID: 8422425992379838812}
   animator: {fileID: 2254935152879088866}
-  largeShellExclude: {fileID: 3969380940220378773}
+  largeShellExclude: {fileID: 0}
   propeller: {fileID: 8626919663303982960}
   coinNumberParticle: {fileID: 4677531960176377302, guid: 818e60315a414df48a229c8d1186ce98,
     type: 3}
@@ -1048,10 +1017,6 @@ MonoBehaviour:
   shellSlideData: {fileID: 11400000, guid: c74256c46183cf14ab95e81152a2d8d9, type: 2}
   spinnerDrillData: {fileID: 11400000, guid: 1aa16efb891dabe408c2a0c2a3ff045e, type: 2}
   propellerDrillData: {fileID: 11400000, guid: eef8bb198b37ff940a8a8de713e95481, type: 2}
-  smallGoldBlockBone: {fileID: 5473728730983173058}
-  largeGoldBlockBone: {fileID: 5132215146939292994}
-  goldBlockMesh: {fileID: -5872077933228866730, guid: 4da64203134decc4eba1d912ae31e804,
-    type: 3}
   dust: {fileID: 4824223342336871185}
   sparkles: {fileID: 5792148850622185373}
   drillParticle: {fileID: 6547395847332199368}
@@ -1253,7 +1218,7 @@ MonoBehaviour:
     - Material: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
       AlbedoTexture: {fileID: 2800000, guid: 5a7f2adc9a2d3784e804dfcbb822353b, type: 3}
       OverallsMaskTexture: {fileID: 0}
-      ShirtMaskTexture: {fileID: 2800000, guid: b17d63742da247248a1024b007e091f3,
+      ShirtMaskTexture: {fileID: 2800000, guid: 84cec8262880e694180990c993de32e1,
         type: 3}
       CapMaskTexture: {fileID: 0}
       StarmanAlbedoTexture: {fileID: 2800000, guid: 290f358be6599584db28453134e4d6a0,
@@ -8507,10 +8472,6 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 2841491710274673560}
-    - targetCorrespondingSourceObject: {fileID: -6311553853212023899, guid: 77fa7e39322fd5440bec69cf0275d39d,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5132215146939292994}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77fa7e39322fd5440bec69cf0275d39d, type: 3}
 --- !u!4 &1187103148091860255 stripped
@@ -10648,7 +10609,7 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: bfc52f78a6c0397499f9306bfbfcb273,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

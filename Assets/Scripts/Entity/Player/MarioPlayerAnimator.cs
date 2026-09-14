@@ -117,11 +117,6 @@ namespace NSMB.Entities.Player {
         [SerializeField] private LoopingSoundPlayer dustPlayer, drillPlayer;
         [SerializeField] private LoopingSoundData wallSlideData, shellSlideData, spinnerDrillData, propellerDrillData;
 
-        [Header("Gold Block")]
-        [SerializeField] private Transform smallGoldBlockBone;
-        [SerializeField] private Transform largeGoldBlockBone;
-        [SerializeField] private Mesh goldBlockMesh;
-
         [Header("Particle Systems")]
         [SerializeField] private ParticleSystem dust;
         [SerializeField] private ParticleSystem sparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
@@ -137,8 +132,6 @@ namespace NSMB.Entities.Player {
         //---Properties
         public Color GlowColor { get; private set; }
         public bool DisableHeadwear { get; set; }
-        public Transform ActiveGoldBlockBone => smallGoldBlockBone.gameObject.activeInHierarchy ? smallGoldBlockBone : largeGoldBlockBone;
-        public Mesh GoldBlockMesh => goldBlockMesh;
         public GameObject PropellerBlades => propeller;
         public Animator Animator => animator;
         public GameObject ModelRoot => modelRoot;
@@ -204,7 +197,6 @@ namespace NSMB.Entities.Player {
             QuantumEvent.Subscribe<EventMarioPlayerCollectedPowerup>(this, OnMarioPlayerCollectedPowerup, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUsedReserveItem>(this, OnMarioPlayerUsedReserveItem, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerCollectedCoin>(this, OnMarioPlayerCollectedCoin, FilterOutReplayFastForward);
-            QuantumEvent.Subscribe<EventMarioPlayerCollectedObjectiveCoin>(this, OnMarioPlayerCollectedObjectiveCoin, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerWalljumped>(this, OnMarioPlayerWalljumped, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerShotProjectile>(this, OnMarioPlayerShotProjectile, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerUsedPropeller>(this, OnMarioPlayerUsedPropeller, FilterOutReplayFastForward);
@@ -587,7 +579,11 @@ namespace NSMB.Entities.Player {
             materialBlock.SetFloat(ParamEyeState, (int) (mario->IsDead || mario->IsInKnockback ? Enums.PlayerEyeState.Death : eyeState));
             materialBlock.SetFloat(ParamModelScale, modelRoot.transform.lossyScale.x * (mario->CurrentPowerupState >= PowerupState.Mushroom ? 1f : 0.5f));
             materialBlock.SetColor(ParamOverallsColor, skin?.OverallsColor.AsColor ?? Color.clear);
-            materialBlock.SetColor(ParamShirtColor, skin?.ShirtColor.AsColor ?? Color.clear);
+            Color shirtColor = skin?.ShirtColor.AsColor ?? Color.clear;
+            if (DisplayPowerupState(mario, f) == PowerupState.HammerSuit) {
+                shirtColor = Utils.HueShift(shirtColor, 50f);
+            }
+            materialBlock.SetColor(ParamShirtColor, shirtColor);
             materialBlock.SetFloat(ParamCapUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
 
             Vector3 giantMultiply = Vector3.one;
@@ -1100,15 +1096,6 @@ namespace NSMB.Entities.Player {
                 coin.GetComponentInChildren<Animator>().SetBool("down", e.Downwards);
                 Destroy(coin, 1);
             }
-        }
-
-        private void OnMarioPlayerCollectedObjectiveCoin(EventMarioPlayerCollectedObjectiveCoin e) {
-            if (e.Entity != EntityRef) {
-                return;
-            }
-
-            coinSfx.pitch = UnityEngine.Random.Range(1.35f, 1.45f);
-            coinSfx.Play();
         }
 
         private void OnMarioPlayerUsedReserveItem(EventMarioPlayerUsedReserveItem e) {

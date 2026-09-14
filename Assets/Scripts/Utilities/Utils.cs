@@ -356,5 +356,12 @@ namespace NSMB.Utilities {
 
             return timer % (1f / blinksPerSecond) < (0.5f / blinksPerSecond);
         }
+
+        public static Color HueShift(Color color, float degrees) {
+            Color.RGBToHSV(color, out float h, out float s, out float v);
+            Color shifted = Color.HSVToRGB((h + degrees / 360f) % 1f, s, v);
+            shifted.a = color.a;
+            return shifted;
+        }
     }
 }

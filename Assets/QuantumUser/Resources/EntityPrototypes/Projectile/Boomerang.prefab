@@ -421,6 +421,17 @@ MonoBehaviour:
   legacySpriteAnimator: {fileID: 0}
   sameTeamColor: {r: 1, g: 1, b: 1, a: 1}
   differentTeamColor: {r: 1, g: 1, b: 1, a: 1}
+  modelRenderers:
+  - {fileID: 8818015814349666637}
+  usePalette: 1
+  paletteReplacements:
+  - Material: {fileID: 2100000, guid: 749dbcbe6ef349f4d97c34afc76810ea, type: 2}
+    AlbedoTexture: {fileID: 2800000, guid: d6f47ef02c1968f40a4d530510c07ab9, type: 3}
+    OverallsMaskTexture: {fileID: 2800000, guid: d6c20998680ea8a448bd8e44463ff5ca,
+      type: 3}
+    ShirtMaskTexture: {fileID: 0}
+    CapMaskTexture: {fileID: 0}
+    StarmanAlbedoTexture: {fileID: 0}
 --- !u!114 &-5850122481703649106
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -770,6 +781,12 @@ PrefabInstance:
 --- !u!4 &7772443187923817931 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: c7d71db7f4e39b24ea73d52b5fcdfd08,
+    type: 3}
+  m_PrefabInstance: {fileID: 7806984023966216736}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &8818015814349666637 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7635826562936255635, guid: c7d71db7f4e39b24ea73d52b5fcdfd08,
     type: 3}
   m_PrefabInstance: {fileID: 7806984023966216736}
   m_PrefabAsset: {fileID: 0}
