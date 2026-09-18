@@ -158,8 +158,8 @@ Transform:
   m_GameObject: {fileID: 880582643022226802}
   serializedVersion: 2
   m_LocalRotation: {x: 0.44440308, y: -0.5586722, z: -0.520064, w: 0.4689614}
-  m_LocalPosition: {x: 0.0005, y: 0.0108, z: -0.0045}
-  m_LocalScale: {x: -0.7000001, y: 0.69999987, z: 0.55}
+  m_LocalPosition: {x: 0.0006, y: 0.01, z: -0.0212}
+  m_LocalScale: {x: -0.7, y: 0.7, z: 0.65}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7192167547613311844}
@@ -250,7 +250,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.5619519, y: -0.41440186, z: -0.6017062, w: 0.38785428}
   m_LocalPosition: {x: 0.0010000018, y: 0.04310004, z: -0.0010000035}
-  m_LocalScale: {x: -1, y: 1, z: 1}
+  m_LocalScale: {x: -1.25, y: 1.125, z: -1.1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7192167547613311844}
@@ -403,7 +403,7 @@ Transform:
   m_GameObject: {fileID: 3629787967981286811}
   serializedVersion: 2
   m_LocalRotation: {x: 0.5129171, y: -0.4867402, z: -0.5129171, w: 0.4867402}
-  m_LocalPosition: {x: 0, y: 0.0025, z: -0.0013}
+  m_LocalPosition: {x: 0, y: 0.0032, z: -0.0175}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -853,7 +853,7 @@ MonoBehaviour:
   character: {fileID: 11400000, guid: 05333b500fb46b24c85c8ef2953423bd, type: 2}
   modelRoot: {fileID: 8422425992379838812}
   animator: {fileID: 2254935152879088866}
-  largeShellExclude: {fileID: 4719565792943726761}
+  largeShellExclude: {fileID: 2209300530651413591}
   propeller: {fileID: 8626919663303982960}
   coinNumberParticle: {fileID: 4677531960176377302, guid: 818e60315a414df48a229c8d1186ce98,
     type: 3}
@@ -994,6 +994,32 @@ MonoBehaviour:
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 35f5988bada5ded4a9c21fea06c60352,
       type: 2}
+  - State: 6
+    AdditionalGameObjects:
+    - {fileID: 8712194458326895251}
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: a5c7b963c313ae641997af6aafbc3b10, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 28e20a26829e5b6489242121db8baca3, type: 3}
+      OverallsMaskTexture: {fileID: 2800000, guid: 0acd28187d736dc4cab3ed6c8cef3e82,
+        type: 3}
+      ShirtMaskTexture: {fileID: 2800000, guid: b2eebd5a4f335a94eb014f87fe63c7c9,
+        type: 3}
+      CapMaskTexture: {fileID: 0}
+      StarmanAlbedoTexture: {fileID: 0}
+    - Material: {fileID: 2100000, guid: 838d1fcefa1ded54fb6b7dc2f8d9724c, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: 71cc3941c211974448cf770d4d684899, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 2800000, guid: defbd3254000a5849b3778f763aa3c68,
+        type: 3}
+      CapMaskTexture: {fileID: 2800000, guid: 39022c0a98eef364cbd9acfac310509f, type: 3}
+      StarmanAlbedoTexture: {fileID: 2800000, guid: 874e633ad66048d4d96b3568f5414b21,
+        type: 3}
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 35f5988bada5ded4a9c21fea06c60352,
+      type: 2}
   - State: 7
     AdditionalGameObjects:
     - {fileID: 3629787967981286811}
@@ -1096,7 +1122,7 @@ Animator:
   m_GameObject: {fileID: 4824223341387914446}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
-  m_Controller: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
+  m_Controller: {fileID: 22100000, guid: 35f5988bada5ded4a9c21fea06c60352, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -6734,8 +6760,8 @@ Transform:
   m_GameObject: {fileID: 7632124874972648398}
   serializedVersion: 2
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -0, y: -0.0662, z: -0.019}
+  m_LocalScale: {x: 1.2, y: 0.9582917, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 7192167547613311844}
@@ -8384,12 +8410,6 @@ GameObject:
 --- !u!4 &4179535912005182115 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -6311553853212023899, guid: 024ceb223bceebd488dbc425555f4df0,
-    type: 3}
-  m_PrefabInstance: {fileID: 1326427675585282310}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4719565792943726761 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: -3236066249884769873, guid: 024ceb223bceebd488dbc425555f4df0,
     type: 3}
   m_PrefabInstance: {fileID: 1326427675585282310}
   m_PrefabAsset: {fileID: 0}

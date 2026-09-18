@@ -3730,6 +3730,16 @@ PrefabInstance:
       propertyPath: 'MapEntityReferences.Array.data[10]'
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 8642252342915534796, guid: dcdc633a29f212843ae9cbdf4be58fb2,
+        type: 3}
+      propertyPath: LocalPlayers.Array.data[0].Palette.Id.Value
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8642252342915534796, guid: dcdc633a29f212843ae9cbdf4be58fb2,
+        type: 3}
+      propertyPath: LocalPlayers.Array.data[0].Character.Id.Value
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

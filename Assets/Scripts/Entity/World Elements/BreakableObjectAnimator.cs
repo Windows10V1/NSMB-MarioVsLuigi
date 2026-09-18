@@ -32,7 +32,10 @@ namespace NSMB.Entities.World {
                 return;
             }
 
-            var breakable = f.Unsafe.GetPointer<BreakableObject>(EntityRef);
+            // BreakableObject is optional: Banzai Bill launchers aren't breakable.
+            if (!f.Unsafe.TryGetPointer(EntityRef, out BreakableObject* breakable)) {
+                return;
+            }
             sRenderer.size = new Vector2(sRenderer.size.x, breakable->CurrentHeight.AsFloat);
             sRenderer.sprite = breakable->IsBroken ? brokenSprite : unbrokenSprite;
         }
@@ -76,7 +79,11 @@ namespace NSMB.Entities.World {
 #if UNITY_EDITOR
         public void OnDrawGizmos() {
             Gizmos.color = Color.red;
-            var breakable = GetComponent<QPrototypeBreakableObject>().Prototype;
+            var prototype = GetComponent<QPrototypeBreakableObject>();
+            if (prototype == null) {
+                return;
+            }
+            var breakable = prototype.Prototype;
             var extents = GetComponent<QuantumEntityPrototype>().PhysicsCollider.Shape2D.BoxExtents;
             Gizmos.DrawLine(
                 transform.position + (transform.rotation * new Vector3(-extents.X.AsFloat, breakable.MinimumHeight.AsFloat * 0.5f)),

@@ -8,7 +8,6 @@ using System.Linq;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using AssetObjectQuery = Quantum.AssetObjectQuery;
 
 [assembly: QuantumMapBakeAssembly]
 namespace NSMB.Quantum { 
@@ -134,9 +133,26 @@ namespace NSMB.Quantum {
                 return default;
             }
 
-            StageTile existingTile = QuantumUnityDB.Global.GetAssets(new AssetObjectQuery { Type = typeof(StageTile) })
-                .Cast<StageTile>()
-                .FirstOrDefault(st => st.Tile == tile);
+            // NOTE: Do NOT use QuantumUnityDB.Global.GetAssets() here. That loads every
+            // StageTile through the Quantum DB, so a single asset with a stale/duplicated
+            // Guid (e.g. a duplicated sub-asset whose serialized Guid doesn't match the
+            // DB entry) aborts the whole bake with:
+            // "Expected to load [X], but [Y] was loaded instead".
+            // StageTiles are sub-assets of their Tile, so look them up directly via
+            // AssetDatabase instead - faster and immune to DB staleness.
+            string tilePath = AssetDatabase.GetAssetPath(tile);
+            StageTile existingTile = null;
+            if (!string.IsNullOrEmpty(tilePath)) {
+                existingTile = AssetDatabase.LoadAllAssetsAtPath(tilePath)
+                    .OfType<StageTile>()
+                    .FirstOrDefault(st => st.Tile == tile);
+            }
+
+            if (!existingTile) {
+                // Fallback for legacy standalone StageTiles living elsewhere.
+                existingTile = FindAssetsByType<StageTile>()
+                    .FirstOrDefault(st => st.Tile == tile);
+            }
 
             if (existingTile) {
                 return existingTile;
@@ -190,8 +206,8 @@ namespace NSMB.Quantum {
             Debug.Log(newTile.Guid);
             QuantumUnityDB.Global.AddAsset(newTile);
             */
-            throw new Exception("this shit's fucked, man");
-            return newTile;
+            LogError($"Tile \"{tile.name}\" has no StageTile! Select the tile asset and click \"Create\" in the inspector to make one.", tile);
+            throw new ArgumentException($"Tile \"{tile.name}\" has no StageTile. Create one via the tile inspector.", nameof(tile));
         }
 
         private static StageTile.TileCollisionData GetTileCollisionData(Tile.ColliderType collider, Sprite sprite) {

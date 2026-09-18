@@ -73,6 +73,21 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.BanzaiBill))]
+  public unsafe partial class BanzaiBillPrototype : ComponentPrototype<Quantum.BanzaiBill> {
+    public FP Speed;
+    partial void MaterializeUser(Frame frame, ref Quantum.BanzaiBill result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.BanzaiBill component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.BanzaiBill result, in PrototypeMaterializationContext context = default) {
+        result.Speed = this.Speed;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.BetterPhysicsContact))]
   public unsafe partial class BetterPhysicsContactPrototype : StructPrototype {
     public Hit Hit;

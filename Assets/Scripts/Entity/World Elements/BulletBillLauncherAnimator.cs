@@ -25,9 +25,13 @@ namespace NSMB.Entities.World {
                 return;
             }
 
-            var breakable = f.Unsafe.GetPointer<BreakableObject>(EntityRef);
+            // BreakableObject is optional: Banzai Bill launchers aren't breakable,
+            // leave the head at its prefab position in that case.
+            if (!f.Unsafe.TryGetPointer(EntityRef, out BreakableObject* breakable)) {
+                return;
+            }
             headRenderer.enabled = breakable->CurrentHeight > 0;
-            headOrigin.transform.localPosition = Vector3.up * (breakable->CurrentHeight.AsFloat * 0.5f);
+            headOrigin.transform.localPosition = Vector3.up * (breakable->CurrentHeight.AsFloat - 1f);
         }
 
         protected override void OnBreakableObjectBroken(EventBreakableObjectBroken e) {

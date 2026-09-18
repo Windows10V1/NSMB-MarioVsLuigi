@@ -1,0 +1,9 @@
+component BanzaiBill {
+	FP Speed;
+	[ExcludeFromPrototype] byte DespawnFrames;
+	[ExcludeFromPrototype] EntityRef Owner;
+}
+
+event BanzaiBillHitByProjectile {
+	EntityRef Entity;
+}

@@ -1,11 +1,10 @@
 using Photon.Deterministic;
 
 namespace Quantum {
-    public unsafe class BulletBillLauncherSystem : SystemMainThreadEntityFilter<BulletBillLauncher, BulletBillLauncherSystem.Filter>, ISignalOnComponentRemoved<BulletBill> {
+    public unsafe class BulletBillLauncherSystem : SystemMainThreadEntityFilter<BulletBillLauncher, BulletBillLauncherSystem.Filter>, ISignalOnComponentRemoved<BulletBill>, ISignalOnComponentRemoved<BanzaiBill> {
         public struct Filter {
             public EntityRef Entity;
             public BulletBillLauncher* Launcher;
-            public BreakableObject* Breakable;
             public PhysicsCollider2D* Collider;
             public Transform2D* Transform;
         }
@@ -13,11 +12,16 @@ namespace Quantum {
         private static readonly FPVector2 SpawnOffset = new FPVector2(0, FP.FromString("-0.45"));
 
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
-            if (filter.Breakable->IsBroken) {
+            // BreakableObject is optional: Banzai Bill launchers aren't breakable.
+            if (f.Unsafe.TryGetPointer(filter.Entity, out BreakableObject* breakable) && breakable->IsBroken) {
                 return;
             }
             var launcher = filter.Launcher;
-            if (launcher->BulletBillCount >= 3) {
+            // Banzai launchers aren't breakable and only keep 1 bill alive at a
+            // time; regular launchers keep up to 3. A freed slot (kill/destroy)
+            // can shoot again once the cooldown below elapses.
+            byte maxBills = f.Has<BreakableObject>(filter.Entity) ? (byte) 3 : (byte) 1;
+            if (launcher->BulletBillCount >= maxBills) {
                 return;
             }
 
@@ -57,9 +61,12 @@ namespace Quantum {
                 bool right = smallestDistance < 0;
 
                 EntityRef newBillEntity = f.Create(launcher->BulletBillPrototype);
-                var newBill = f.Unsafe.GetPointer<BulletBill>(newBillEntity);
                 var newBillTransform = f.Unsafe.GetPointer<Transform2D>(newBillEntity);
-                newBill->Initialize(f, newBillEntity, entity, right);
+                if (f.Unsafe.TryGetPointer(newBillEntity, out BulletBill* newBill)) {
+                    newBill->Initialize(f, newBillEntity, entity, right);
+                } else if (f.Unsafe.TryGetPointer(newBillEntity, out BanzaiBill* newBanzaiBill)) {
+                    newBanzaiBill->Initialize(f, newBillEntity, entity, right);
+                }
                 newBillTransform->Position = spawnpoint;
 
                 launcher->BulletBillCount++;
@@ -72,6 +79,15 @@ namespace Quantum {
         #region Signals
         public void OnRemoved(Frame f, EntityRef entity, BulletBill* component) {
             if (f.Unsafe.TryGetPointer(component->Owner, out BulletBillLauncher* launcher)) {
+                launcher->BulletBillCount--;
+            }
+        }
+
+        public void OnRemoved(Frame f, EntityRef entity, BanzaiBill* component) {
+            // Skipped when Kill already freed the slot (Owner cleared there).
+            if (component->Owner != EntityRef.None
+                && f.Unsafe.TryGetPointer(component->Owner, out BulletBillLauncher* launcher)
+                && launcher->BulletBillCount > 0) {
                 launcher->BulletBillCount--;
             }
         }

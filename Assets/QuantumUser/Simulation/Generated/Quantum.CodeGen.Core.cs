@@ -1597,6 +1597,34 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct BanzaiBill : Quantum.IComponent {
+    public const Int32 SIZE = 24;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(16)]
+    public FP Speed;
+    [FieldOffset(0)]
+    [ExcludeFromPrototype()]
+    public Byte DespawnFrames;
+    [FieldOffset(8)]
+    [ExcludeFromPrototype()]
+    public EntityRef Owner;
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 15559;
+        hash = hash * 31 + Speed.GetHashCode();
+        hash = hash * 31 + DespawnFrames.GetHashCode();
+        hash = hash * 31 + Owner.GetHashCode();
+        return hash;
+      }
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (BanzaiBill*)ptr;
+        serializer.Stream.Serialize(&p->DespawnFrames);
+        EntityRef.Serialize(&p->Owner, serializer);
+        FP.Serialize(&p->Speed, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct BetterPhysicsObject : Quantum.IComponent {
     public const Int32 SIZE = 112;
     public const Int32 ALIGNMENT = 8;
@@ -4057,6 +4085,8 @@ namespace Quantum {
       _ISignalOnTileChangedSystems = BuildSignalsArray<ISignalOnTileChanged>();
       _ComponentSignalsOnAdded = new ComponentReactiveCallbackInvoker[ComponentTypeId.Type.Length];
       _ComponentSignalsOnRemoved = new ComponentReactiveCallbackInvoker[ComponentTypeId.Type.Length];
+      BuildSignalsArrayOnComponentAdded<Quantum.BanzaiBill>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.BanzaiBill>();
       BuildSignalsArrayOnComponentAdded<Quantum.BetterPhysicsObject>();
       BuildSignalsArrayOnComponentRemoved<Quantum.BetterPhysicsObject>();
       BuildSignalsArrayOnComponentAdded<Quantum.BigStar>();
@@ -4555,6 +4585,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(AssetGuid), AssetGuid.SIZE);
       typeRegistry.Register(typeof(AssetRef), AssetRef.SIZE);
       typeRegistry.Register(typeof(Quantum.BannedPlayerInfo), Quantum.BannedPlayerInfo.SIZE);
+      typeRegistry.Register(typeof(Quantum.BanzaiBill), Quantum.BanzaiBill.SIZE);
       typeRegistry.Register(typeof(Quantum.BetterPhysicsContact), Quantum.BetterPhysicsContact.SIZE);
       typeRegistry.Register(typeof(Quantum.BetterPhysicsObject), Quantum.BetterPhysicsObject.SIZE);
       typeRegistry.Register(typeof(Quantum.BigStar), Quantum.BigStar.SIZE);
@@ -4706,8 +4737,9 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum._globals_), Quantum._globals_.SIZE);
     }
     static partial void InitComponentTypeIdGen() {
-      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 38)
+      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 39)
         .AddBuiltInComponents()
+        .Add<Quantum.BanzaiBill>(Quantum.BanzaiBill.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.BetterPhysicsObject>(Quantum.BetterPhysicsObject.Serialize, Quantum.BetterPhysicsObject.OnAdded, Quantum.BetterPhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.BigStar>(Quantum.BigStar.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.BlockBump>(Quantum.BlockBump.Serialize, null, null, ComponentFlags.None)
