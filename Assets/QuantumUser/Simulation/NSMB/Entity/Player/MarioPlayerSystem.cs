@@ -2718,19 +2718,6 @@ namespace Quantum {
                 if (didKnockback) {
                     f.Events.PlayKnockbackEffect(defender, attacker, strength, avgPosition, didKnockback);
                 }
-            } else if (defenderMario->CurrentPowerupState == PowerupState.HammerSuit && defenderPhysicsObject->IsTouchingGround && defenderMario->IsCrouching && !groundpounded) {
-                // Bounce
-                var attackerPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(attacker);
-                if (FPMath.Abs(attackerPhysicsObject->Velocity.X) < 2) {
-                    attackerPhysicsObject->Velocity.X = fromRight ? -2 : 2;
-                }
-                attackerPhysicsObject->Velocity.Y = 4;
-                attackerMario->DoEntityBounce = false;
-                if (attackerMario->IsInKnockback) {
-                    // Prevents softlocks
-                    attackerMario->ResetKnockback(f, attacker);
-                }
-                f.Events.EnemyKicked(defender, false);
             } else {
                 // Normal knockbacks
                 if (!groundpounded && !dropStars) {

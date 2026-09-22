@@ -10,17 +10,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a29518fadcd4a704abe29d73e5159d3f, type: 3}
-  m_Name: WarioCharacter
+  m_Name: WaluigiCharacter
   m_EditorClassIdentifier: 
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Characters/WarioCharacter
+    Path: QuantumUser/Resources/AssetObjects/Characters/Waluigi/WaluigiCharacter
     Guid:
-      Value: 277767022454256997
+      Value: 308474008876481968
   Prototype:
     Id:
-      Value: 1523300764234098619
-  UiString: <sprite name=hud_wario>
-  TranslationString: character.wario
+      Value: 1442633264926076283
+  UiString: <sprite name=hud_waluigi>
+  TranslationString: character.waluigi
   LoadingSmallSprite: {fileID: -3599161207798135845, guid: a7245cae141f3ee449147539ebd2a2c9,
     type: 3}
   LoadingLargeSprite: {fileID: -309644342959843524, guid: a7245cae141f3ee449147539ebd2a2c9,
@@ -29,59 +29,59 @@ MonoBehaviour:
     type: 3}
   SilhouetteSprite: {fileID: 21300000, guid: 69ebf16f7ccd5c34fb0733a2b65e900f, type: 3}
   SelectionSprite: {fileID: 1263302900, guid: 66a50f8ce62e8954a977cf86df786637, type: 3}
-  SelectionColor: {r: 0.8862745, g: 0.8862745, b: 0.23921569, a: 1}
-  Order: 2
+  SelectionColor: {r: 0.8862745, g: 0.23921569, b: 0.8862745, a: 1}
+  Order: 3
   SfxOverrides:
   - SoundEffect: 33
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: 80ee615844c06c34c9e8b1ca1447e885, type: 3}
-    - {fileID: 8300000, guid: 3a4bbbb770e43344ca109e589021d1d2, type: 3}
+    - {fileID: 8300000, guid: 6969b87416c62ca47aff76386459bf2f, type: 3}
+    - {fileID: 8300000, guid: f7ea15db51149d54b8a6f547f6832f56, type: 3}
   - SoundEffect: 34
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: fa4e0a0cd132ff54a9bec8d9399ffb96, type: 3}
+    - {fileID: 8300000, guid: 7658de44c6e4c6d488faabeea0f15412, type: 3}
   - SoundEffect: 35
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: 41a601f97d9fe314ca69c6a0df440886, type: 3}
+    - {fileID: 8300000, guid: 062dc0b65b8e4f6408e2fd6c022a885a, type: 3}
   - SoundEffect: 36
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: c1a5c50911e781443b1dcc796a4056c9, type: 3}
+    - {fileID: 8300000, guid: 58eb3a030732bf843a5fc97e33ab0396, type: 3}
   - SoundEffect: 37
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: 86a300cbb338659468ef84e59b2d0c3d, type: 3}
+    - {fileID: 8300000, guid: c181f4cc015a2164b8312129e3d4830b, type: 3}
   - SoundEffect: 38
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: 1e60987292c6a164990c3fd4a445dead, type: 3}
+    - {fileID: 8300000, guid: ee9a342e49da5aa4fbf7a3b7eae5d3ed, type: 3}
   - SoundEffect: 39
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: a398ece6c83fa3145bff56dc603bce9a, type: 3}
-    - {fileID: 8300000, guid: 3d81f7085ed8e744b855d3d15b2a0fa6, type: 3}
+    - {fileID: 8300000, guid: ad609f2a43141e644ab58713d645fbfd, type: 3}
+    - {fileID: 8300000, guid: 44cbf5aeb10571445b2647d7109279b9, type: 3}
   - SoundEffect: 40
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: eb06830b796a140408079a8271c49e33, type: 3}
+    - {fileID: 8300000, guid: c750513fd0c3b0746b073d6994a6e52e, type: 3}
   - SoundEffect: 115
     Mode: 0
     Priority: 1
@@ -92,19 +92,19 @@ MonoBehaviour:
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: 80ee615844c06c34c9e8b1ca1447e885, type: 3}
+    - {fileID: 8300000, guid: 6969b87416c62ca47aff76386459bf2f, type: 3}
   - SoundEffect: 117
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: 3d81f7085ed8e744b855d3d15b2a0fa6, type: 3}
+    - {fileID: 8300000, guid: 44cbf5aeb10571445b2647d7109279b9, type: 3}
   - SoundEffect: 118
     Mode: 0
     Priority: 1
     PlayGlobally: 0
     AudioClips:
-    - {fileID: 8300000, guid: 3d81f7085ed8e744b855d3d15b2a0fa6, type: 3}
+    - {fileID: 8300000, guid: 44cbf5aeb10571445b2647d7109279b9, type: 3}
   - SoundEffect: 120
     Mode: 0
     Priority: 1

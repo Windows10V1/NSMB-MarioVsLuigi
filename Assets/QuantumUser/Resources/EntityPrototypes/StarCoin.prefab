@@ -47,7 +47,6 @@ GameObject:
   - component: {fileID: 2102486265233113653}
   - component: {fileID: 7557662850959433588}
   - component: {fileID: 7639874500434605118}
-  - component: {fileID: 2833266734486078324}
   - component: {fileID: 4850172880020621341}
   - component: {fileID: 1164990273233542040}
   - component: {fileID: 1137042616318545776}
@@ -91,8 +90,6 @@ MonoBehaviour:
   mRenderer: {fileID: 8923656805735628525}
   starCoinCollectPrefab: {fileID: 817659606265668166, guid: 0d07cd0662b5f394fa4d95667c1d1814,
     type: 3}
-  solidMaterial: {fileID: 2100000, guid: d84f16d3664fbe34089cc9ac7937ac24, type: 2}
-  transparentMaterial: {fileID: 2100000, guid: 1e0f6573cd6d82b4bbecd5aee1dd1cd7, type: 2}
 --- !u!114 &4107006820136204820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -414,21 +411,6 @@ MonoBehaviour:
         RawValue: 0
     BroadRadius:
       RawValue: 65536
---- !u!114 &2833266734486078324
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7203940617686161723}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4bfc831f01449864ea0a64f690d2fc54, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Prototype:
-    DespawnCounter: 0
-    Collector: {fileID: 0}
 --- !u!82 &4850172880020621341
 AudioSource:
   m_ObjectHideFlags: 0
