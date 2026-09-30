@@ -2586,6 +2586,138 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: hud_wario
+      rect:
+        serializedVersion: 2
+        x: 55
+        y: 134
+        width: 25
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 939fd2fd54344854ea4c652366b8373b
+      internalID: 1919322064
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hud_waluigi
+      rect:
+        serializedVersion: 2
+        x: 81
+        y: 133
+        width: 22
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 767e902a34b423743ab41a7e4c17fafc
+      internalID: 133105851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hud_toad
+      rect:
+        serializedVersion: 2
+        x: 104
+        y: 135
+        width: 21
+        height: 19
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 7c066d105a337fe4c88e3b8bed5905be
+      internalID: -743404676
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hud_toadette
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 135
+        width: 22
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 1b2b71c99cacd454a93253644c20c6c4
+      internalID: 1096877666
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hud_peach
+      rect:
+        serializedVersion: 2
+        x: 149
+        y: 128
+        width: 21
+        height: 28
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 906866e326c4c3f4591b229d2856c10e
+      internalID: -1018355932
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: hud_daisy
+      rect:
+        serializedVersion: 2
+        x: 171
+        y: 134
+        width: 22
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5266fd0e9de62f64b95991896dfe74db
+      internalID: 837969585
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -2630,10 +2762,16 @@ TextureImporter:
       flag_ussc: 353410421
       flag_usw: -1015355915
       hud_arrow: 1388684475
+      hud_daisy: 837969585
       hud_luigi: -7975249404588759376
       hud_mario: 7263181891274304025
+      hud_peach: -1018355932
       hud_star: 1346584908
       hud_starcoin: -1029622304
+      hud_toad: -743404676
+      hud_toadette: 1096877666
+      hud_waluigi: 133105851
+      hud_wario: 1919322064
       hudnumber_0: -56961979
       hudnumber_1: -146918758
       hudnumber_2: -1355574207
