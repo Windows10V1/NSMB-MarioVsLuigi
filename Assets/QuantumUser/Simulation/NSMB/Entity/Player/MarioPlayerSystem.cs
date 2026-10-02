@@ -2179,9 +2179,12 @@ namespace Quantum {
 
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
             var marioPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
-            var projectileAsset = f.FindAsset(projectile->Asset);
+            var asset = f.FindAsset(projectile->Asset);
+            var state = mario->CurrentPowerupState;
 
             bool dropStars = false;
+
+            var hammerXBoomerang = mario->IsCrouching && marioPhysics->IsTouchingGround && state == PowerupState.HammerSuit && asset.Effect == ProjectileEffectType.Boomerang;
 
             // Mario is "damageable" when he's...
             // not in knockback, not Mega
@@ -2191,20 +2194,20 @@ namespace Quantum {
             // Mario is crouched and grounded with Hammer Suit and projectile isn't a boomerang
             // Team attack allows him to get hit
             bool damageable = !mario->IsInKnockback
-                && mario->CurrentPowerupState != PowerupState.MegaMushroom
-                && (mario->IsDamageable(f) || (mario->TryGetCurrentPowerTransition(f, out _) && mario->CurrentPowerupState == PowerupState.MiniMushroom))
-                && !((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)
-                && !(mario->IsCrouching && marioPhysics->IsTouchingGround && mario->CurrentPowerupState == PowerupState.HammerSuit && projectileAsset.Effect != ProjectileEffectType.Boomerang)
+                && state != PowerupState.MegaMushroom
+                && (mario->IsDamageable(f) || (mario->TryGetCurrentPowerTransition(f, out _) && state == PowerupState.MiniMushroom))
+                && !((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell)
+                && !hammerXBoomerang
                 && mario->CheckTeamAttack(f, projectile->Owner, out dropStars);
 
             if (damageable) {
                 bool didKnockback = false;
-                switch (projectileAsset.Effect) {
+                switch (asset.Effect) {
                 case ProjectileEffectType.Hammer:
                 case ProjectileEffectType.Fire:
                     // drop stars, that means opponent's projectile
                     // this checks if opponent projectile and we're mini, if so do the thing
-                    if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
+                    if (dropStars && state == PowerupState.MiniMushroom) {
                         mario->Powerdown(f, marioEntity, false, projectileEntity);
                     } else {
                         didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
@@ -2212,7 +2215,7 @@ namespace Quantum {
                     break;
                 case ProjectileEffectType.Boomerang:
                     // Same effect, except it's based off it's X velocity
-                    if (dropStars && mario->CurrentPowerupState == PowerupState.MiniMushroom) {
+                    if (dropStars && state == PowerupState.MiniMushroom) {
                         mario->Powerdown(f, marioEntity, false, projectileEntity);
                     } else {
                         didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
@@ -2222,7 +2225,7 @@ namespace Quantum {
                     // opponent projectile
                     if (dropStars) {
                         // we're mini, kill us
-                        if (mario->CurrentPowerupState == PowerupState.MiniMushroom) {
+                        if (state == PowerupState.MiniMushroom) {
                             mario->Powerdown(f, marioEntity, false, projectileEntity);
                         } else {
                             // otherwise freeze
@@ -2244,9 +2247,11 @@ namespace Quantum {
                     FPVector2 avgPosition = (marioPos + projectilePos) / 2;
                     f.Events.PlayKnockbackEffect(marioEntity, projectileEntity, KnockbackStrength.FireballBump, avgPosition, true);
                 }
-            } else {
-                if (mario->IsCrouching && marioPhysics->IsTouchingGround && mario->CurrentPowerupState == PowerupState.HammerSuit && projectileAsset.Effect == ProjectileEffectType.Boomerang) {
-                    // Reflect it.
+            }
+
+            if (damageable || asset.DestroyOnHit || ((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell) || hammerXBoomerang) {
+                if (hammerXBoomerang) {
+                    // Fly
                     var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(projectileEntity);
                     projectile->Speed *= Constants._0_85;
                     physicsObject->Gravity *= Constants._0_85;
@@ -2254,9 +2259,7 @@ namespace Quantum {
 
                     f.Events.EnemyPierced(marioEntity);
                 }
-            }
 
-            if (damageable || projectileAsset.DestroyOnHit || ((mario->IsCrouchedInShell || mario->IsInShell) && projectileAsset.DoesntEffectBlueShell)) {
                 f.Signals.OnProjectileHitEntity(projectileEntity, marioEntity);
             }
         }
