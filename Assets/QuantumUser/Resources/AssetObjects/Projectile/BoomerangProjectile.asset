@@ -35,6 +35,10 @@ MonoBehaviour:
   DoesntEffectBlueShell: 0
   BreakBreakableTiles: 1
   CollectCoins: 1
+  MaxProjectiles: 1
+  ProjectileVolleySize: 1
+  ProjectileDelayFrames: 6
+  ProjectileVolleyFrames: 75
   DestroyParticleEffect: 8
   ShootSound: 122
   SfxOverrides: []
