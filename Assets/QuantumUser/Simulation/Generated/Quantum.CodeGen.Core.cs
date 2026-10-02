@@ -3435,7 +3435,7 @@ namespace Quantum {
     public AssetRef<ProjectileAsset> Asset;
     [FieldOffset(32)]
     public FP Speed;
-    [FieldOffset(1)]
+    [FieldOffset(2)]
     public Byte Lifetime;
     [FieldOffset(24)]
     [ExcludeFromPrototype()]
@@ -3452,6 +3452,9 @@ namespace Quantum {
     [FieldOffset(0)]
     [ExcludeFromPrototype()]
     public Byte Combo;
+    [FieldOffset(1)]
+    [ExcludeFromPrototype()]
+    public Byte Frame;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 16141;
@@ -3463,12 +3466,14 @@ namespace Quantum {
         hash = hash * 31 + HasBounced.GetHashCode();
         hash = hash * 31 + CheckedCollision.GetHashCode();
         hash = hash * 31 + Combo.GetHashCode();
+        hash = hash * 31 + Frame.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (Projectile*)ptr;
         serializer.Stream.Serialize(&p->Combo);
+        serializer.Stream.Serialize(&p->Frame);
         serializer.Stream.Serialize(&p->Lifetime);
         QBoolean.Serialize(&p->CheckedCollision, serializer);
         QBoolean.Serialize(&p->FacingRight, serializer);

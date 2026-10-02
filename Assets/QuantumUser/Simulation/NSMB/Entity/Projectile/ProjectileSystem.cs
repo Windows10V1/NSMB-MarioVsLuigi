@@ -35,6 +35,7 @@ namespace Quantum {
             var physicsObject = filter.PhysicsObject;
 
             // Check to instant-despawn if spawned inside a wall
+            // Boomerang however gets an exception when it's a breakable tile (WIP)
             if (!physicsObject->DisableCollision && !projectile->CheckedCollision) {
                 if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
                     Destroy(f, filter.Entity, asset.DestroyParticleEffect);
@@ -43,7 +44,7 @@ namespace Quantum {
                 projectile->CheckedCollision = true;
             }
 
-            HandleTileCollision(f, ref filter, asset);
+            HandleTileCollision(f, ref filter, asset, stage);
 
             physicsObject->Velocity.X = projectile->Speed * (projectile->FacingRight ? 1 : -1);
 
@@ -56,11 +57,10 @@ namespace Quantum {
             }
         }
 
-        public void HandleTileCollision(Frame f, ref Filter filter, ProjectileAsset asset) {
+        public void HandleTileCollision(Frame f, ref Filter filter, ProjectileAsset asset, VersusStageData stage) {
             var projectile = filter.Projectile;
             var physicsObject = filter.PhysicsObject;
 
-            // Despawn
             if (!physicsObject->DisableCollision) {
                 if (physicsObject->IsTouchingLeftWall
                     || physicsObject->IsTouchingRightWall
@@ -68,7 +68,20 @@ namespace Quantum {
                     || (physicsObject->IsTouchingGround && (!asset.Bounce || (projectile->HasBounced && asset.DestroyOnSecondBounce)))
                     || PhysicsObjectSystem.BoxInGround(f, filter.Transform->Position, filter.PhysicsCollider->Shape)) {
 
-                    Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                    // Destroy tiles
+                    if (asset.BreakBreakableTiles && TryBreakTiles(f, filter.Entity, physicsObject, stage)) {
+                        return;
+                    }
+
+                    if (asset.Effect == ProjectileEffectType.Boomerang) {
+                        if (projectile->Frame < 30) {
+                            // Ricochet off the wall if not in returning state
+                            projectile->Combo = 2;
+                        }
+                    } else {
+                        Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                        return;
+                    }
                     return;
                 }
             }
@@ -84,6 +97,27 @@ namespace Quantum {
                 physicsObject->IsTouchingGround = false;
                 projectile->HasBounced = true;
             }
+        }
+
+        private static bool TryBreakTiles(Frame f, EntityRef entity, PhysicsObject* physicsObject, VersusStageData stage) {
+            bool broke = false;
+            var contacts = f.ResolveList(physicsObject->Contacts);
+            foreach (var contact in contacts) {
+                if (f.Exists(contact.Entity)) {
+                    continue;
+                }
+                var tileInstance = stage.GetTileRelative(f, contact.Tile);
+                if (f.FindAsset(tileInstance.Tile) is not IInteractableTile tile) {
+                    continue;
+                }
+                InteractionDirection direction = contact.Normal.Y > FP._0_50 ? InteractionDirection.Down
+                    : contact.Normal.Y < -FP._0_50 ? InteractionDirection.Up
+                    : contact.Normal.X > 0 ? InteractionDirection.Left : InteractionDirection.Right;
+                if (tile.Interact(f, entity, direction, contact.Tile, tileInstance, out _)) {
+                    broke = true;
+                }
+            }
+            return broke;
         }
 
         private void OnProjectileProjectileInteraction(Frame f, EntityRef projectileEntityA, EntityRef projectileEntityB) {

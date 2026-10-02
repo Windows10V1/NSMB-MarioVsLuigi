@@ -13,62 +13,52 @@ namespace NSMB.Entities.CoinItems {
         //---Serialized Variables
         [Header("Sprite")]
         [SerializeField] private SpriteRenderer sRenderer;
-        [SerializeField] private Animator animator;
         [SerializeField] private LegacyAnimateSpriteRenderer legacySpriteAnimator;
         [SerializeField] private Color sameTeamColor, differentTeamColor;
 
         [Header("Model")]
-        [SerializeField] private Renderer[] modelRenderers;
+        [SerializeField] private Animator animator;
+        [SerializeField] private Color sameTeamColor3D = Color.white, differentTeamColor3D = Color.white;
+        [SerializeField] private PowerupVisuals.MaterialTextureReplacement[] textureReplacements;
 
-        [Header("Palette")]
-        [SerializeField] private bool usePalette;
-        [SerializeField] private PowerupVisuals.MaterialTextureReplacement[] paletteReplacements;
-
-        //---Shader Properties
-        private static readonly int ParamMultiplyColor = Shader.PropertyToID("_MultiplyColor");
-        private static readonly int ParamBaseColor = Shader.PropertyToID("_BaseColor");
-        private static readonly int ParamOverallsColor = Shader.PropertyToID("_OverallsColor");
-        private static readonly int ParamShirtColor = Shader.PropertyToID("_ShirtColor");
-        private static readonly int ParamCapUsesOverallsColor = Shader.PropertyToID("_CapUsesOverallsColor");
-        private static readonly int ParamMainTex = Shader.PropertyToID("_MainTex");
-        private static readonly int ParamOverallsMask = Shader.PropertyToID("_OverallsMask");
-        private static readonly int ParamShirtMask = Shader.PropertyToID("_ShirtMask");
-        private static readonly int ParamCapMask = Shader.PropertyToID("_CapMask");
+        //---Static Variables
+        #region Shader Properties
+        private static readonly int MainTex = Shader.PropertyToID("_MainTex");
+        private static readonly int OverallsMask = Shader.PropertyToID("_OverallsMask");
+        private static readonly int ShirtMask = Shader.PropertyToID("_ShirtMask");
+        private static readonly int CapMask = Shader.PropertyToID("_CapMask");
+        private static readonly int OverallsColor = Shader.PropertyToID("_OverallsColor");
+        private static readonly int ShirtColor = Shader.PropertyToID("_ShirtColor");
+        private static readonly int CapUsesOverallsColor = Shader.PropertyToID("_CapUsesOverallsColor");
+        private static readonly int MultiplyColor = Shader.PropertyToID("_MultiplyColor");
+        #endregion
 
         //---Private Variables
-        private EntityRef owner;
         private CharacterSpecificPalette skin;
+        private EntityRef owner;
         private MaterialPropertyBlock materialBlock;
+        private readonly List<Renderer> renderers = new();
         private readonly Dictionary<Material, Material> clonedMaterials = new();
 
         public void OnValidate() {
             this.SetIfNull(ref sRenderer, UnityExtensions.GetComponentType.Children);
             this.SetIfNull(ref animator, UnityExtensions.GetComponentType.Children);
             this.SetIfNull(ref legacySpriteAnimator, UnityExtensions.GetComponentType.Children);
-            RefreshModelRenderers();
-        }
-
-        private void RefreshModelRenderers() {
-            if (modelRenderers == null || modelRenderers.Length == 0) {
-                List<Renderer> renderers = new();
-                renderers.AddRange(GetComponentsInChildren<MeshRenderer>(true));
-                renderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>(true));
-                modelRenderers = renderers.ToArray();
-            }
         }
 
         public void Awake() {
-            RefreshModelRenderers();
-            if (!usePalette || modelRenderers == null || modelRenderers.Length == 0) {
-                return;
-            }
-
-            // Get copies of all materials so palette textures don't touch shared assets.
-            foreach (Renderer r in modelRenderers) {
+            // Awake void from MarioPlayerAnimator.cs
+            renderers.AddRange(GetComponentsInChildren<MeshRenderer>(true));
+            renderers.AddRange(GetComponentsInChildren<SkinnedMeshRenderer>(true));
+            foreach (Renderer r in renderers) {
+                // Get a copy from all materials.
                 List<Material> sharedMaterials = new();
                 r.GetSharedMaterials(sharedMaterials);
                 for (int i = 0; i < sharedMaterials.Count; i++) {
                     Material material = sharedMaterials[i];
+                    if (material == null) {
+                        continue;
+                    }
                     if (!clonedMaterials.TryGetValue(material, out Material clonedMaterial)) {
                         clonedMaterials[material] = clonedMaterial = Instantiate(material);
                     }
@@ -76,41 +66,17 @@ namespace NSMB.Entities.CoinItems {
                 }
                 r.SetSharedMaterials(sharedMaterials);
             }
-
-            if (paletteReplacements != null) {
-                foreach (var replacement in paletteReplacements) {
-                    if (replacement != null && replacement.Material && clonedMaterials.TryGetValue(replacement.Material, out Material cloned)) {
-                        replacement.Material = cloned;
-                    }
-                }
-                ApplyPaletteTextures();
-            }
-        }
-
-        private void ApplyPaletteTextures() {
-            if (paletteReplacements == null) {
-                return;
-            }
-
-            foreach (var replacement in paletteReplacements) {
-                if (replacement == null || !replacement.Material) {
-                    continue;
-                }
-                replacement.Material.SetTexture(ParamMainTex, replacement.AlbedoTexture);
-                replacement.Material.SetTexture(ParamOverallsMask, replacement.OverallsMaskTexture);
-                replacement.Material.SetTexture(ParamShirtMask, replacement.ShirtMaskTexture);
-                replacement.Material.SetTexture(ParamCapMask, replacement.CapMaskTexture);
-            }
+            InitializeMaterials();
         }
 
         public override unsafe void OnActivate(Frame f) {
             RenderPipelineManager.beginCameraRendering += OnBeginCameraRendering;
-            RefreshModelRenderers();
             var projectile = f.Unsafe.GetPointer<Projectile>(EntityRef);
 
             owner = projectile->Owner;
-            ResolveSkin(f);
-            ResetVisuals();
+            ResolveOwnerPalette(f);
+            ApplyTextureReplacements();
+            ApplyPaletteColors();
 
             if (projectile->FacingRight) {
                 if (sRenderer) {
@@ -124,10 +90,11 @@ namespace NSMB.Entities.CoinItems {
 
         public override unsafe void OnUpdateView() {
             if (PredictedFrame.Unsafe.TryGetPointer(EntityRef, out Projectile* projectile)) {
-                // Fixes EntityRef hijacking so pooled projectiles don't keep the previous owner's colors.
-                if (owner != projectile->Owner) {
-                    owner = projectile->Owner;
-                    ResolveSkin(PredictedFrame);
+                // Fixes EntityRef hijacking. Hopefully.
+                owner = projectile->Owner;
+                if (skin == null) {
+                    ResolveOwnerPalette(PredictedFrame);
+                    ApplyPaletteColors();
                 }
             }
 
@@ -141,40 +108,87 @@ namespace NSMB.Entities.CoinItems {
 
         public override void OnDeactivate() {
             RenderPipelineManager.beginCameraRendering -= OnBeginCameraRendering;
-            ResetVisuals();
         }
 
-        // Clears the team tints on both the sprite and the models so recycled (pooled)
-        // projectiles don't briefly render with the previous owner's colors.
-        private void ResetVisuals() {
-            if (sRenderer) {
-                sRenderer.color = Color.white;
-            }
-            if (modelRenderers != null) {
-                foreach (Renderer r in modelRenderers) {
-                    if (r) {
-                        r.SetPropertyBlock(null);
-                    }
+        public void OnDestroy() {
+            foreach ((_, var material) in clonedMaterials) {
+                if (material) {
+                    Destroy(material);
                 }
             }
-            materialBlock = null;
         }
 
-        private unsafe void ResolveSkin(Frame f) {
-            skin = null;
-            if (!f.Unsafe.TryGetPointer(owner, out MarioPlayer* ownerMario) || !ownerMario->PlayerRef.IsValid) {
+        private void InitializeMaterials() {
+            if (textureReplacements == null) {
                 return;
             }
+            foreach (var replacement in textureReplacements) {
+                if (replacement?.Material == null) {
+                    continue;
+                }
+                if (clonedMaterials.TryGetValue(replacement.Material, out var mat)) {
+                    replacement.Material = mat;
+                }
+            }
+        }
 
-            PlayerData* playerData = QuantumUtils.GetPlayerData(f, ownerMario->PlayerRef);
+        private void ApplyTextureReplacements() {
+            if (textureReplacements == null) {
+                return;
+            }
+            foreach (var replacement in textureReplacements) {
+                if (replacement?.Material == null) {
+                    continue;
+                }
+                Material material = replacement.Material;
+                material.SetTexture(MainTex, replacement.AlbedoTexture);
+                material.SetTexture(OverallsMask, replacement.OverallsMaskTexture);
+                material.SetTexture(ShirtMask, replacement.ShirtMaskTexture);
+                material.SetTexture(CapMask, replacement.CapMaskTexture);
+            }
+        }
+
+        private void ApplyPaletteColors() {
+            if (renderers.Count == 0) {
+                return;
+            }
+            materialBlock ??= new();
+            materialBlock.SetColor(OverallsColor, skin?.OverallsColor.AsColor ?? Color.clear);
+            materialBlock.SetColor(ShirtColor, skin?.ShirtColor.AsColor ?? Color.clear);
+            materialBlock.SetFloat(CapUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
+            foreach (Renderer r in renderers) {
+                if (r) {
+                    r.SetPropertyBlock(materialBlock);
+                }
+            }
+        }
+
+        private void UpdateModelTeamColor(bool sameTeam) {
+            if (renderers.Count == 0) {
+                return;
+            }
+            materialBlock ??= new();
+            materialBlock.SetColor(MultiplyColor, sameTeam ? sameTeamColor3D : differentTeamColor3D);
+            foreach (Renderer r in renderers) {
+                if (r) {
+                    r.SetPropertyBlock(materialBlock);
+                }
+            }
+        }
+
+        private unsafe void ResolveOwnerPalette(Frame f) {
+            skin = null;
+            if (!f.Exists(owner) || !f.Unsafe.TryGetPointer(owner, out MarioPlayer* ownerMario)) {
+                return;
+            }
+            var playerData = QuantumUtils.GetPlayerData(f, ownerMario->PlayerRef);
             if (playerData == null || !f.TryFindAsset(playerData->Palette, out PaletteSet palette)) {
                 return;
             }
-
-            skin = palette.GetPaletteForCharacter(playerData->Character);
+            skin = palette.GetPaletteForCharacter(ownerMario->CharacterAsset);
         }
 
-        private void OnBeginCameraRendering(ScriptableRenderContext src, Camera camera) {
+        private unsafe void OnBeginCameraRendering(ScriptableRenderContext src, Camera camera) {
             /* Try/Catch is a bodge for this error:
                 Render Pipeline error : the XR layout still contains active passes. Executing XRSystem.EndLayout() right now.
                 NullReferenceException
@@ -189,34 +203,13 @@ namespace NSMB.Entities.CoinItems {
                   at UnityEngine.Rendering.RenderPipelineManager.DoRenderLoop_Internal (UnityEngine.Rendering.RenderPipelineAsset pipe, System.IntPtr loopPtr, UnityEngine.Object renderRequest) [0x00046] in <935634f5cc14479dbaa30641d55600a9>:0 
             */
             try {
+                bool sameTeam = IsCameraTeamFocus(camera);
                 if (sRenderer) {
-                    sRenderer.color = IsCameraTeamFocus(camera) ? sameTeamColor : differentTeamColor;
+                    sRenderer.color = sameTeam ? sameTeamColor : differentTeamColor;
                 }
-                if (modelRenderers != null && modelRenderers.Length > 0) {
-                    ApplyModelMaterials(camera);
-                }
+                UpdateModelTeamColor(sameTeam);
             } catch {
                 // Debug.LogWarning("The bug happened");
-            }
-        }
-
-        private void ApplyModelMaterials(Camera camera) {
-            Color tint = IsCameraTeamFocus(camera) ? sameTeamColor : differentTeamColor;
-
-            materialBlock ??= new MaterialPropertyBlock();
-            materialBlock.SetColor(ParamMultiplyColor, tint);
-            materialBlock.SetColor(ParamBaseColor, tint);
-
-            if (usePalette && skin != null) {
-                materialBlock.SetColor(ParamOverallsColor, skin.OverallsColor.AsColor);
-                materialBlock.SetColor(ParamShirtColor, skin.ShirtColor.AsColor);
-                materialBlock.SetFloat(ParamCapUsesOverallsColor, skin.HatUsesOverallsColor ? 1 : 0);
-            }
-
-            foreach (Renderer r in modelRenderers) {
-                if (r) {
-                    r.SetPropertyBlock(materialBlock);
-                }
             }
         }
 
