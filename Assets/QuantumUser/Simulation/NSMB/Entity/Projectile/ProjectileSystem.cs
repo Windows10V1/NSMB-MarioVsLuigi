@@ -35,6 +35,7 @@ namespace Quantum {
             var physicsObject = filter.PhysicsObject;
 
             // Check to instant-despawn if spawned inside a wall
+            // Boomerang however gets an exception when it's a breakable tile (WIP)
             if (!physicsObject->DisableCollision && !projectile->CheckedCollision) {
                 if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
                     Destroy(f, filter.Entity, asset.DestroyParticleEffect);
