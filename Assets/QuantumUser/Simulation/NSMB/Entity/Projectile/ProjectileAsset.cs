@@ -51,6 +51,7 @@ public enum ProjectileEffectType : byte {
     Freeze,
     Hammer,
     Boomerang,
+    Superball,
     Gold,
 
     None = 0xff,

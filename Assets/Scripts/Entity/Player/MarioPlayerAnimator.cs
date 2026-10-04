@@ -107,6 +107,8 @@ namespace NSMB.Entities.Player {
 
         [Header("Shaders")]
         [SerializeField] private Shader normalShader;
+        [SerializeField] private Shader superBallShader;
+        [SerializeField] private Shader goldShader;
         [SerializeField] private Shader rainbowShader;
 
         [Header("Sound")]
@@ -599,7 +601,7 @@ namespace NSMB.Entities.Player {
                 r.SetPropertyBlock(materialBlock);
             }
 
-            var newShader = mario->IsStarmanInvincible ? rainbowShader : normalShader;
+            var newShader = mario->IsStarmanInvincible ? rainbowShader : (mario->CurrentPowerupState == PowerupState.SuperBallFlower ? superBallShader : (mario->CurrentPowerupState == PowerupState.GoldFlower ? goldShader : normalShader));
             foreach ((_, var material) in clonedMaterials) {
                 if (material.shader != newShader) {
                     material.shader = newShader;
@@ -1141,6 +1143,12 @@ namespace NSMB.Entities.Player {
                     Vector3 spawnPosition = transform.position;
                     spawnPosition.z = -4f;
                     SpawnParticle(Enums.PrefabParticle.Player_MegaMushroom.GetGameObject(), spawnPosition);
+                }
+
+                if (powerup is OneUpPowerupAsset) {
+                    SpawnParticle(Enums.PrefabParticle.OneUp.GetGameObject(), transform.position + (Vector3.back * 5));
+                } else if (powerup is PoisonMushroomPowerupAsset) {
+                    SpawnParticle(Enums.PrefabParticle.Player_WaterDust.GetGameObject(), transform.position + (Vector3.back * 5));
                 }
                 break;
             }

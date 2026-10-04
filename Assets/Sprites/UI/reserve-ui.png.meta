@@ -409,7 +409,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: reserve-Hammer
+      name: reserve-hammer
       rect:
         serializedVersion: 2
         x: 192
@@ -430,6 +430,116 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: reserve-cloud
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 128
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 61ce1fb88decbbc428e438a2e2a84160
+      internalID: 129959986
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: reserve-superb
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 69f610794819ac544a2246bddd32bb4f
+      internalID: 406410915
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: reserve-gold
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3fb5938ab2a30a740a02110396b1b743
+      internalID: 331305237
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: reserve-acorn
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 0
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 72f47bb78efa89d469be315c355a8c2c
+      internalID: -367088834
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: reserver-superh
+      rect:
+        serializedVersion: 2
+        x: 320
+        y: 64
+        width: 64
+        height: 64
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8098e3dab06cf5b4d914826a2fa991d0
+      internalID: -1070693472
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -444,18 +554,24 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      reserve-Hammer: -645946170
+      reserve-acorn: -367088834
       reserve-bg: -6080119536613256813
       reserve-blueshell: 2664608197882872095
       reserve-boomerang: 1954154672
+      reserve-cloud: 129959986
       reserve-empty: -4773353537684922170
       reserve-fireflower: 2690215448161037315
       reserve-frame: 7194109699264141795
+      reserve-gold: 331305237
+      reserve-hammer: -645946170
       reserve-ice: 697740482
       reserve-mega: -1604689058
       reserve-mini: -1858463510
       reserve-mushroom: 5709720548119103520
       reserve-propeller: -14430133
+      reserve-superb: 406410915
+      reserve-ui_1: 296476446
+      reserver-superh: -1070693472
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

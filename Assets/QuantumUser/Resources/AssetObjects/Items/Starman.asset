@@ -20,11 +20,11 @@ MonoBehaviour:
     Id:
       Value: 1502268950446962426
   SpawnChance:
-    RawValue: 0
+    RawValue: -131072
   AboveAverageBonus:
     RawValue: 0
   BelowAverageBonus:
-    RawValue: 180224
+    RawValue: 311296
   BlockSpawnSoundEffect: 8
   Flags: 19
   MaxNumberOfItems: 0
@@ -80,6 +80,9 @@ MonoBehaviour:
   ItemPriority: -1
   EnterReserveIfOverridden: 1
   Instant: 1
+  ProjectileAsset:
+    Id:
+      Value: 0
   SfxOverrides: []
   StarmanDuration:
     RawValue: 655360

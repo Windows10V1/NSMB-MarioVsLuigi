@@ -38,7 +38,7 @@ namespace Quantum {
                 return;
             }
 
-            // Inactive check 
+            // Inactive check
             if (!enemy->IsAlive
                 || filter.Freezable->IsFrozen(f)) {
                 return;
@@ -121,6 +121,7 @@ namespace Quantum {
             switch (projectileAsset.Effect) {
             case ProjectileEffectType.Hammer:
             case ProjectileEffectType.Boomerang:
+            case ProjectileEffectType.Superball:
             case ProjectileEffectType.Fire: {
                 f.Unsafe.GetPointer<Goomba>(goombaEntity)->Kill(f, goombaEntity, projectileEntity, EnemyKillReason.Special);
                 break;

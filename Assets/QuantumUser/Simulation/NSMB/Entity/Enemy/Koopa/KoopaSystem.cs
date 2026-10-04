@@ -5,7 +5,7 @@ namespace Quantum {
     public unsafe class KoopaSystem : SystemMainThreadEntityFilter<Koopa, KoopaSystem.Filter>, ISignalOnThrowHoldable, ISignalOnEnemyRespawned, ISignalOnEntityBumped,
         ISignalOnBobombExplodeEntity, ISignalOnIceBlockBroken, ISignalOnEnemyKilledByStageReset, ISignalOnEnemyTurnaround, ISignalOnEntityCrushed,
         ISignalOnMarioPlayerBecameInvincible, ISignalOnEnemyReturnedHome {
-       
+
         public struct Filter {
             public EntityRef Entity;
             public Enemy* Enemy;
@@ -208,7 +208,7 @@ namespace Quantum {
                 koopaA->Kill(f, koopaEntityA, koopaEntityB, EnemyKillReason.Special);
                 anyDamaged = true;
             }
-            
+
             if (!anyDamaged) {
                 EnemySystem.EnemyBumpTurnaround(f, koopaEntityA, koopaEntityB);
             }
@@ -299,7 +299,7 @@ namespace Quantum {
                 }
                 return;
             }
-            
+
             if (groundpounded) {
                 if (koopa->SpawnPowerupWhenStomped.IsValid
                     && f.TryFindAsset(koopa->SpawnPowerupWhenStomped, out PowerupAsset powerup)) {
@@ -322,7 +322,7 @@ namespace Quantum {
                 }
                 return;
             }
-            
+
             if (koopa->IsKicked || !koopa->IsInShell) {
                 // Moving (either in shell, or walking)
                 if (attackedFromAbove) {
@@ -371,7 +371,7 @@ namespace Quantum {
                 }
                 return;
             }
-            
+
             // Stationary in shell, always kick (if we cant pick it up)
             if (mario->CanPickupItem(f, marioEntity, koopaEntity)) {
                 koopaHoldable->Pickup(f, koopaEntity, marioEntity);
@@ -381,9 +381,9 @@ namespace Quantum {
                 koopaEnemy->IgnoreOffscreen = true;
             }
         }
-        
+
         public static bool OnKoopaIceBlockInteraction(Frame f, EntityRef koopaEntity, EntityRef iceBlockEntity, PhysicsContact contact) {
-            var koopa = f.Unsafe.GetPointer<Koopa>(koopaEntity);                         
+            var koopa = f.Unsafe.GetPointer<Koopa>(koopaEntity);
             var iceBlock = f.Unsafe.GetPointer<IceBlock>(iceBlockEntity);
 
             FP upDot = FPVector2.Dot(contact.Normal, FPVector2.Up);
@@ -415,6 +415,7 @@ namespace Quantum {
 
             switch (projectileAsset.Effect) {
             case ProjectileEffectType.Hammer:
+            case ProjectileEffectType.Superball:
             case ProjectileEffectType.Fire: {
                 koopa->Kill(f, koopaEntity, projectileEntity, EnemyKillReason.Special);
                 break;
@@ -471,12 +472,12 @@ namespace Quantum {
                 piranhaPlant->Kill(f, piranhaPlantEntity, koopaEntity, EnemyKillReason.Special);
                 anyDamaged = true;
             }
-            if (beingHeld) { 
+            if (beingHeld) {
                 // Kill self, too.
                 koopa->Kill(f, koopaEntity, piranhaPlantEntity, EnemyKillReason.Special);
                 anyDamaged = true;
             }
-            
+
             if (!anyDamaged) {
                 // Turn
                 EnemySystem.EnemyBumpTurnaround(f, koopaEntity, piranhaPlantEntity, false);

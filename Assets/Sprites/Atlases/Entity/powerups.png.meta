@@ -401,6 +401,72 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: GoldFlower
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 16
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b973d551de04b664097778052c60f3a2
+      internalID: -1728297968
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: CloudFlower
+      rect:
+        serializedVersion: 2
+        x: 80
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 2282a1e88fd49be4b960ab6583bbfe01
+      internalID: 134788981
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: PoisonMushroom
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 16
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa84e8f043c3bb4409dabc65236b4532
+      internalID: 1469737348
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -418,12 +484,15 @@ TextureImporter:
       1-Up: -7415331047110381915
       BoomerangFlower: -121831947
       CatSuit: -1629917848
+      CloudFlower: 134788981
       FireFlower: -6090384608550177697
+      GoldFlower: -1728297968
       HammerSuit: -1109677166
       IceFlower: 4928671260392873470
       JumpSuit: 1662652401
       MiniMushroom: 621560852509794982
       Mushroom: 3410918491446568398
+      PoisonMushroom: 1469737348
       Shell: 2834573260081099437
       Star: -4108787663010400821
       Star_2: -1073110140

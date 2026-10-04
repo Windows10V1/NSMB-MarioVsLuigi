@@ -21,6 +21,8 @@ namespace NSMB.Utilities {
         }
 
         public enum PrefabParticle : byte {
+            [PrefabParticleData("Particle/1Up")] OneUp,
+
             [PrefabParticleData("Particle/GreenPipe")] Pipe_Break_Green,
             [PrefabParticleData("Particle/GreenPipe-D")] Pipe_Break_Green_Broken,
             [PrefabParticleData("Particle/BluePipe")] Pipe_Break_Blue,

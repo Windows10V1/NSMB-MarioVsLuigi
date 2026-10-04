@@ -59,7 +59,7 @@ namespace Quantum {
             FPVector2 offset = FPVector2.Up * (FP._0_25 + (piranhaPlant->PopupAnimationTime - 1) * FP._0_75);
             transform->Position = enemy->Spawnpoint + offset;
 
-            freezable->IceBlockSize.Y = Constants._1_10 * piranhaPlant->PopupAnimationTime; 
+            freezable->IceBlockSize.Y = Constants._1_10 * piranhaPlant->PopupAnimationTime;
         }
 
         public void OnPiranhaPlantIceBlockInteraction(Frame f, EntityRef piranhaPlantEntity, EntityRef iceBlockEntity) {
@@ -76,6 +76,7 @@ namespace Quantum {
             switch (projectileAsset.Effect) {
             case ProjectileEffectType.Hammer:
             case ProjectileEffectType.Boomerang:
+            case ProjectileEffectType.Superball:
             case ProjectileEffectType.Fire: {
                 piranhaPlant->Kill(f, piranhaPlantEntity, projectileEntity, EnemyKillReason.Special);
                 break;

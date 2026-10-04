@@ -63,7 +63,7 @@ namespace Quantum {
             var command = f.GetPlayerCommand(player);
             if (command is CommandSpawnReserveItem) {
                 SpawnReserveItem(f, ref filter);
-            } 
+            }
 #endif
 
             if (HandleMegaMushroom(f, ref filter, physics, stage)) {
@@ -139,7 +139,7 @@ namespace Quantum {
                 mario->TauntFrames = 0;
                 return false;
             }
-            
+
             QuantumUtils.Decrement(ref mario->TauntFrames);
 
             if (start && mario->TauntFrames == 0) {
@@ -1166,7 +1166,7 @@ namespace Quantum {
             if (f.IsPlayerVerifiedOrLocal(mario->PlayerRef)) {
                 mario->IsInShell &= inputs.Sprint.IsDown || (inputs.Down.IsDown && !physicsObject->IsTouchingGround);
             }
-            
+
             if (!mario->IsInShell) {
                 // don't touch the shell speed now
                 mario->ShellSpeedStage = physics.ShellNormalStage;
@@ -2212,6 +2212,7 @@ namespace Quantum {
                 switch (asset.Effect) {
                 case ProjectileEffectType.Hammer:
                 case ProjectileEffectType.Fire:
+                case ProjectileEffectType.Superball:
                     // drop stars, that means opponent's projectile
                     if (dropStars) {
                         didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
@@ -2241,9 +2242,9 @@ namespace Quantum {
                 }
 
                 if (didKnockback) {
-                    QuantumUtils.UnwrapWorldLocations(f.FindAsset<VersusStageData>(f.Map.UserAsset), 
-                        f.Unsafe.GetPointer<Transform2D>(marioEntity)->Position, 
-                        f.Unsafe.GetPointer<Transform2D>(projectileEntity)->Position, 
+                    QuantumUtils.UnwrapWorldLocations(f.FindAsset<VersusStageData>(f.Map.UserAsset),
+                        f.Unsafe.GetPointer<Transform2D>(marioEntity)->Position,
+                        f.Unsafe.GetPointer<Transform2D>(projectileEntity)->Position,
                         out FPVector2 marioPos, out FPVector2 projectilePos);
 
                     FPVector2 avgPosition = (marioPos + projectilePos) / 2;
@@ -2410,7 +2411,7 @@ namespace Quantum {
                     return;
                 }
             }
-            
+
             if (marioAStarman || marioBStarman) {
                 // Already handled starman cases.
                 return;
@@ -2604,7 +2605,7 @@ namespace Quantum {
                 FP overlap = (marioACollider->Shape.Box.Extents.X + marioBCollider->Shape.Box.Extents.X - FPMath.Abs(marioAPosition.X - marioBPosition.X)) / 2;
 
                 if (overlap > 0) {
-                    // Move 
+                    // Move
                     PhysicsObjectSystemFilterGetter.TryGet(f, marioAEntity, out var marioAFilter);
                     PhysicsObjectSystemFilterGetter.TryGet(f, marioBEntity, out var marioBFilter);
 
@@ -2890,7 +2891,7 @@ namespace Quantum {
                 QuantumUtils.UnwrapWorldLocations(f, marioTransform->Position, attackerTransform->Position, out FPVector2 ourPos, out FPVector2 theirPos);
                 hitFromRight = ourPos.X < theirPos.X;
             }
-            
+
             bool damaged = false;
             var hitTransform = f.Unsafe.GetPointer<Transform2D>(entity);
             KnockbackStrength strength = KnockbackStrength.Normal;

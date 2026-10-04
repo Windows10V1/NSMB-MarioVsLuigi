@@ -148,15 +148,16 @@ namespace Quantum {
                         // out of the sky like other flying frozen enemies.
                         ice->IsFlying = false;
                     }
-                    break;
+                break;
+                case ProjectileEffectType.Superball:
                 case ProjectileEffectType.Fire:
                     f.Events.BanzaiBillHitByProjectile(banzaiBillEntity);
-                    break;
+                break;
                 case ProjectileEffectType.Hammer:
                     // Hammer bounces off: OnProjectileHitEntity emits EnemyKicked (bounce SFX)
-                    // since the hammer asset has Bounce enabled.
+                    // since the hammer asset has Bounce enabled
                     f.Events.BanzaiBillHitByProjectile(banzaiBillEntity);
-                    break;
+                break;
                 case ProjectileEffectType.Boomerang:
                     // Does nothing, for now.
                     return;

@@ -4930,6 +4930,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 4928671260392873470, guid: 794bc215dd02bf34ab2cfae7702bfdfd,
         type: 3}
+    - target: {fileID: 8637938864149294636, guid: 9bcb5effadc837a45b61571768c543cf,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 9163656034225834080, guid: 9bcb5effadc837a45b61571768c543cf,
         type: 3}
       propertyPath: Prototype.Scriptable.Id.Value

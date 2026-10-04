@@ -103,7 +103,7 @@ TextureImporter:
       name: powblock_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 48
         y: 0
         width: 16
         height: 16
@@ -125,7 +125,7 @@ TextureImporter:
       name: powblock_1
       rect:
         serializedVersion: 2
-        x: 16
+        x: 64
         y: 0
         width: 16
         height: 16
@@ -147,7 +147,7 @@ TextureImporter:
       name: powblock_2
       rect:
         serializedVersion: 2
-        x: 32
+        x: 80
         y: 0
         width: 16
         height: 16
@@ -161,6 +161,72 @@ TextureImporter:
       bones: []
       spriteID: d1bad96b17b5b604197940bc7f91ca78
       internalID: -1851480750
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: redpowblock_0
+      rect:
+        serializedVersion: 2
+        x: 32
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4c6174e7cc3e0dc48af12fb1a13f6807
+      internalID: 967522218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: redpowblock_1
+      rect:
+        serializedVersion: 2
+        x: 16
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fd2e0772e291eef41b107d8db776142d
+      internalID: 573395379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: redpowblock_2
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: de6ec715bac526d4db1a7ef312626bc4
+      internalID: -1504441094
       vertices: []
       indices: 
       edges: []
@@ -184,6 +250,9 @@ TextureImporter:
       powblock_0: -672553771044141288
       powblock_1: 356224525
       powblock_2: -1851480750
+      redpowblock_0: 967522218
+      redpowblock_1: 573395379
+      redpowblock_2: -1504441094
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

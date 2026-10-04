@@ -28,6 +28,8 @@ MonoBehaviour:
   BlockSpawnSoundEffect: 69
   Flags: 27
   MaxNumberOfItems: 0
+  CanSpawnAfterSeconds:
+    RawValue: 2621440
   TranslationKey: coinitem.1up
   CameraSpawnOffset:
     X:
@@ -77,5 +79,8 @@ MonoBehaviour:
   StatePriority: -1
   ItemPriority: -1
   EnterReserveIfOverridden: 0
-  Instant: 0
+  Instant: 1
+  ProjectileAsset:
+    Id:
+      Value: 0
   SfxOverrides: []

@@ -56,6 +56,8 @@ namespace Quantum {
 
             if (asset.Effect == ProjectileEffectType.Boomerang) {
                 projectile->UpdateBoomerang(f, filter.Entity, physicsObject, stage);
+            } else if (asset.Effect == ProjectileEffectType.Superball) {
+                projectile->UpdateSuperball(f, physicsObject);
             }
         }
 
@@ -87,8 +89,6 @@ namespace Quantum {
                         Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                         return;
                     }
-                    // Survived terrain hit (DestroyOnHitTerrain == false): fall through
-                    // so ground bounce can still apply instead of destroying.
                 }
             }
 

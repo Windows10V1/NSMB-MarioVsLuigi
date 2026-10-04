@@ -2,9 +2,9 @@ using Photon.Deterministic;
 using Quantum.Physics2D;
 
 namespace Quantum {
-    public unsafe class BobombSystem : SystemMainThreadEntityFilter<Bobomb, BobombSystem.Filter>, ISignalOnEntityBumped, ISignalOnEnemyRespawned, ISignalOnThrowHoldable, 
+    public unsafe class BobombSystem : SystemMainThreadEntityFilter<Bobomb, BobombSystem.Filter>, ISignalOnEntityBumped, ISignalOnEnemyRespawned, ISignalOnThrowHoldable,
         ISignalOnBobombExplodeEntity, ISignalOnIceBlockBroken, ISignalOnEnemyKilledByStageReset, ISignalOnEntityCrushed, ISignalOnMarioPlayerBecameInvincible {
-        
+
         public struct Filter {
             public EntityRef Entity;
             public Bobomb* Bobomb;
@@ -98,7 +98,7 @@ namespace Quantum {
                 var seamHits = f.Physics2D.OverlapShape(transformCopy, shape);
                 ProcessHits(seamHits);
             } else if (transform->Position.X + bobomb->ExplosionRadius * 2 >= stage.StageWorldMin.X) {
-                // Overlap right seam 
+                // Overlap right seam
                 var transformCopy = *transform;
                 transformCopy.Position.X -= stage.TileDimensions.X / 2;
                 var seamHits = f.Physics2D.OverlapShape(transformCopy, shape);
@@ -182,11 +182,11 @@ namespace Quantum {
             var marioPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
 
             // Temporary invincibility, we dont want to spam the kick sound
-            if (f.Exists(bobombHoldable->Holder) 
+            if (f.Exists(bobombHoldable->Holder)
                 || (bobombHoldable->PreviousHolder == marioEntity && bobombHoldable->IgnoreOwnerFrames > 0)) {
                 return;
             }
-            
+
             var bobomb = f.Unsafe.GetPointer<Bobomb>(bobombEntity);
             var bobombEnemy = f.Unsafe.GetPointer<Enemy>(bobombEntity);
             var bobombTransform = f.Unsafe.GetPointer<Transform2D>(bobombEntity);
@@ -195,7 +195,7 @@ namespace Quantum {
 
             // Special insta-kill cases
             if (mario->InstakillsEnemies(marioPhysicsObject, true)) {
-                bobomb->Kill(f, bobombEntity, marioEntity, EnemyKillReason.Special);    
+                bobomb->Kill(f, bobombEntity, marioEntity, EnemyKillReason.Special);
                 return;
             }
 
@@ -231,7 +231,7 @@ namespace Quantum {
                     mario->IsDrilling = false;
 
                 } else if (mario->IsCrouchedInShell) {
-                    // Bounce off blue shell crouched player 
+                    // Bounce off blue shell crouched player
                     bobombEnemy->ChangeFacingRight(f, bobombEntity, ourPos.X > theirPos.X);
                     marioPhysicsObject->Velocity.X = 0;
                     return;
@@ -241,7 +241,7 @@ namespace Quantum {
                     mario->Powerdown(f, marioEntity, false, bobombEntity);
                     bobombEnemy->ChangeFacingRight(f, bobombEntity, damageDirection.X > 0);
                 }
-            } 
+            }
         }
 
         public static void OnBobombProjectileInteraction(Frame f, EntityRef bobombEntity, EntityRef projectileEntity) {
@@ -254,6 +254,7 @@ namespace Quantum {
                 break;
             }
             case ProjectileEffectType.Boomerang:
+            case ProjectileEffectType.Superball:
             case ProjectileEffectType.Fire: {
                 if (bobomb->CurrentDetonationFrames > 0) {
                     bobomb->Kick(f, bobombEntity, projectileEntity, 0);
