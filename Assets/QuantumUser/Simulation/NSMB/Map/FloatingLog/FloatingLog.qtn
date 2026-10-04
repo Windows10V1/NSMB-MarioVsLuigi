@@ -1,0 +1,32 @@
+component FloatingLog {
+	//---Tuning (prototype)
+	// Spin acceleration per standing player, in degrees/sec^2.
+	FP SpinAcceleration;
+	// Spin deceleration when no players are standing, in degrees/sec^2.
+	FP SpinDeceleration;
+	// Max spin speed for a single rider, in degrees/sec.
+	FP MaxSpinSpeed;
+	// Additional max spin speed per extra rider, in degrees/sec.
+	FP MaxSpinSpeedPerExtraRider;
+	// Absolute cap for normal (non-groundpound) spin, in degrees/sec.
+	FP AbsoluteMaxSpinSpeed;
+	// Spin acceleration while a rider is groundpounding, in degrees/sec^2.
+	FP GroundpoundAcceleration;
+	// Max spin speed while a rider is groundpounding, in degrees/sec.
+	FP GroundpoundMaxSpinSpeed;
+	// Sink speed at MaxSpinSpeed, in world units/sec.
+	FP SinkRate;
+	// Sink speed while groundpounding, in world units/sec.
+	FP GroundpoundSinkRate;
+	// Spin speed above which riders start sinking / pass through, in degrees/sec.
+	FP SinkStartSpinSpeed;
+	// Feet distance below the log top at which collision is lost and the rider falls, in world units.
+	FP DropSinkDepth;
+	// Feet distance below the log top up to which jumping is still allowed (ground forced), in world units.
+	FP JumpableSinkDepth;
+
+	//---Runtime
+	[ExcludeFromPrototype] FP SpinSpeed;
+	[ExcludeFromPrototype] FP SpinAngle;
+	[ExcludeFromPrototype, AllocateOnComponentAdded, FreeOnComponentRemoved] hash_set<EntityRef> Riders;
+}
