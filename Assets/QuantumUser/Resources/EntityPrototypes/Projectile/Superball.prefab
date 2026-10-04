@@ -348,7 +348,7 @@ MonoBehaviour:
   Prototype:
     Asset:
       Id:
-        Value: 408052301521581379
+        Value: 503653222628643586
     Speed:
       RawValue: 0
     Lifetime: 255
@@ -414,10 +414,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sRenderer: {fileID: 5329144335610595165}
-  animator: {fileID: 0}
   legacySpriteAnimator: {fileID: 0}
   sameTeamColor: {r: 0.24705882, g: 0.24705882, b: 0.24705882, a: 1}
   differentTeamColor: {r: 1, g: 1, b: 1, a: 1}
+  animator: {fileID: 0}
+  sameTeamColor3D: {r: 0, g: 0, b: 0, a: 0}
+  differentTeamColor3D: {r: 0, g: 0, b: 0, a: 0}
+  textureReplacements: []
 --- !u!114 &-8971064262029751978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -476,7 +479,7 @@ GameObject:
   - component: {fileID: 3437905331129197368}
   - component: {fileID: 5329144335610595165}
   m_Layer: 19
-  m_Name: FireGraphics
+  m_Name: SuperballGraphics
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -568,7 +571,7 @@ GameObject:
   - component: {fileID: 5202007457111186492}
   - component: {fileID: 2887448907472742947}
   m_Layer: 19
-  m_Name: FireTrail
+  m_Name: SuperballTrail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

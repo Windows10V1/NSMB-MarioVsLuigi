@@ -2397,6 +2397,99 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct FloatingLog : Quantum.IComponent {
+    public const Int32 SIZE = 120;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(88)]
+    public FP SpinAcceleration;
+    [FieldOffset(104)]
+    public FP SpinDeceleration;
+    [FieldOffset(56)]
+    public FP MaxSpinSpeed;
+    [FieldOffset(64)]
+    public FP MaxSpinSpeedPerExtraRider;
+    [FieldOffset(8)]
+    public FP AbsoluteMaxSpinSpeed;
+    [FieldOffset(24)]
+    public FP GroundpoundAcceleration;
+    [FieldOffset(32)]
+    public FP GroundpoundMaxSpinSpeed;
+    [FieldOffset(72)]
+    public FP SinkRate;
+    [FieldOffset(40)]
+    public FP GroundpoundSinkRate;
+    [FieldOffset(80)]
+    public FP SinkStartSpinSpeed;
+    [FieldOffset(16)]
+    public FP DropSinkDepth;
+    [FieldOffset(48)]
+    public FP JumpableSinkDepth;
+    [FieldOffset(112)]
+    [ExcludeFromPrototype()]
+    public FP SpinSpeed;
+    [FieldOffset(96)]
+    [ExcludeFromPrototype()]
+    public FP SpinAngle;
+    [FieldOffset(0)]
+    [ExcludeFromPrototype()]
+    [AllocateOnComponentAdded()]
+    [FreeOnComponentRemoved()]
+    public QHashSetPtr<EntityRef> Riders;
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 17387;
+        hash = hash * 31 + SpinAcceleration.GetHashCode();
+        hash = hash * 31 + SpinDeceleration.GetHashCode();
+        hash = hash * 31 + MaxSpinSpeed.GetHashCode();
+        hash = hash * 31 + MaxSpinSpeedPerExtraRider.GetHashCode();
+        hash = hash * 31 + AbsoluteMaxSpinSpeed.GetHashCode();
+        hash = hash * 31 + GroundpoundAcceleration.GetHashCode();
+        hash = hash * 31 + GroundpoundMaxSpinSpeed.GetHashCode();
+        hash = hash * 31 + SinkRate.GetHashCode();
+        hash = hash * 31 + GroundpoundSinkRate.GetHashCode();
+        hash = hash * 31 + SinkStartSpinSpeed.GetHashCode();
+        hash = hash * 31 + DropSinkDepth.GetHashCode();
+        hash = hash * 31 + JumpableSinkDepth.GetHashCode();
+        hash = hash * 31 + SpinSpeed.GetHashCode();
+        hash = hash * 31 + SpinAngle.GetHashCode();
+        hash = hash * 31 + Riders.GetHashCode();
+        return hash;
+      }
+    }
+    public void ClearPointers(FrameBase f, EntityRef entity) {
+      if (Riders != default) f.FreeHashSet(ref Riders);
+    }
+    public static void OnRemoved(FrameBase frame, EntityRef entity, void* ptr) {
+      var p = (Quantum.FloatingLog*)ptr;
+      p->ClearPointers((Frame)frame, entity);
+    }
+    public void AllocatePointers(FrameBase f, EntityRef entity) {
+      f.TryAllocateHashSet(ref Riders);
+    }
+    public static void OnAdded(FrameBase frame, EntityRef entity, void* ptr) {
+      var p = (Quantum.FloatingLog*)ptr;
+      p->AllocatePointers((Frame)frame, entity);
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (FloatingLog*)ptr;
+        QHashSet.Serialize(&p->Riders, serializer, Statics.SerializeEntityRef);
+        FP.Serialize(&p->AbsoluteMaxSpinSpeed, serializer);
+        FP.Serialize(&p->DropSinkDepth, serializer);
+        FP.Serialize(&p->GroundpoundAcceleration, serializer);
+        FP.Serialize(&p->GroundpoundMaxSpinSpeed, serializer);
+        FP.Serialize(&p->GroundpoundSinkRate, serializer);
+        FP.Serialize(&p->JumpableSinkDepth, serializer);
+        FP.Serialize(&p->MaxSpinSpeed, serializer);
+        FP.Serialize(&p->MaxSpinSpeedPerExtraRider, serializer);
+        FP.Serialize(&p->SinkRate, serializer);
+        FP.Serialize(&p->SinkStartSpinSpeed, serializer);
+        FP.Serialize(&p->SpinAcceleration, serializer);
+        FP.Serialize(&p->SpinAngle, serializer);
+        FP.Serialize(&p->SpinDeceleration, serializer);
+        FP.Serialize(&p->SpinSpeed, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct Freezable : Quantum.IComponent {
     public const Int32 SIZE = 56;
     public const Int32 ALIGNMENT = 8;
@@ -4149,6 +4242,8 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<Quantum.FireSnake>();
       BuildSignalsArrayOnComponentAdded<Quantum.FireSnakeSegment>();
       BuildSignalsArrayOnComponentRemoved<Quantum.FireSnakeSegment>();
+      BuildSignalsArrayOnComponentAdded<Quantum.FloatingLog>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.FloatingLog>();
       BuildSignalsArrayOnComponentAdded<Quantum.Freezable>();
       BuildSignalsArrayOnComponentRemoved<Quantum.Freezable>();
       BuildSignalsArrayOnComponentAdded<Quantum.GenericMover>();
@@ -4659,6 +4754,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(FPVector3), FPVector3.SIZE);
       typeRegistry.Register(typeof(Quantum.FireSnake), Quantum.FireSnake.SIZE);
       typeRegistry.Register(typeof(Quantum.FireSnakeSegment), Quantum.FireSnakeSegment.SIZE);
+      typeRegistry.Register(typeof(Quantum.FloatingLog), Quantum.FloatingLog.SIZE);
       typeRegistry.Register(typeof(FrameMetaData), FrameMetaData.SIZE);
       typeRegistry.Register(typeof(FrameTimer), FrameTimer.SIZE);
       typeRegistry.Register(typeof(Quantum.Freezable), Quantum.Freezable.SIZE);
@@ -4759,7 +4855,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum._globals_), Quantum._globals_.SIZE);
     }
     static partial void InitComponentTypeIdGen() {
-      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 39)
+      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 40)
         .AddBuiltInComponents()
         .Add<Quantum.BanzaiBill>(Quantum.BanzaiBill.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.BetterPhysicsObject>(Quantum.BetterPhysicsObject.Serialize, Quantum.BetterPhysicsObject.OnAdded, Quantum.BetterPhysicsObject.OnRemoved, ComponentFlags.None)
@@ -4780,6 +4876,7 @@ namespace Quantum {
         .Add<Quantum.EnterablePipe>(Quantum.EnterablePipe.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.FireSnake>(Quantum.FireSnake.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.FireSnakeSegment>(Quantum.FireSnakeSegment.Serialize, null, null, ComponentFlags.None)
+        .Add<Quantum.FloatingLog>(Quantum.FloatingLog.Serialize, Quantum.FloatingLog.OnAdded, Quantum.FloatingLog.OnRemoved, ComponentFlags.None)
         .Add<Quantum.Freezable>(Quantum.Freezable.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.GenericMover>(Quantum.GenericMover.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Goomba>(Quantum.Goomba.Serialize, null, null, ComponentFlags.None)

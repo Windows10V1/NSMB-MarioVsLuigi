@@ -10,27 +10,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e9c5479bb850b640b3d5d2032677f8c, type: 3}
-  m_Name: 1
+  m_Name: 4
   m_EditorClassIdentifier: Quantum.Simulation::GenericMoverAsset
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/World/MischievousForest/1
+    Path: QuantumUser/Resources/AssetObjects/World/MischievousForest/4
     Guid:
-      Value: 276272775086499969
+      Value: 506415053584944759
   ObjectPath:
   - Position:
       X:
         RawValue: 0
       Y:
         RawValue: 0
-    TravelDuration:
-      RawValue: 671744
-    EaseIn: 1
-    EaseOut: 1
-  - Position:
-      X:
-        RawValue: 0
-      Y:
-        RawValue: -81920
     TravelDuration:
       RawValue: 655360
     EaseIn: 1
@@ -39,9 +30,18 @@ MonoBehaviour:
       X:
         RawValue: 0
       Y:
+        RawValue: 131072
+    TravelDuration:
+      RawValue: 589824
+    EaseIn: 1
+    EaseOut: 1
+  - Position:
+      X:
+        RawValue: 0
+      Y:
         RawValue: 0
     TravelDuration:
-      RawValue: 671744
+      RawValue: 655360
     EaseIn: 1
     EaseOut: 1
   LoopMode: 1

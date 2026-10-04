@@ -452,6 +452,43 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.FloatingLog))]
+  public unsafe partial class FloatingLogPrototype : ComponentPrototype<Quantum.FloatingLog> {
+    public FP SpinAcceleration;
+    public FP SpinDeceleration;
+    public FP MaxSpinSpeed;
+    public FP MaxSpinSpeedPerExtraRider;
+    public FP AbsoluteMaxSpinSpeed;
+    public FP GroundpoundAcceleration;
+    public FP GroundpoundMaxSpinSpeed;
+    public FP SinkRate;
+    public FP GroundpoundSinkRate;
+    public FP SinkStartSpinSpeed;
+    public FP DropSinkDepth;
+    public FP JumpableSinkDepth;
+    partial void MaterializeUser(Frame frame, ref Quantum.FloatingLog result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.FloatingLog component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.FloatingLog result, in PrototypeMaterializationContext context = default) {
+        result.SpinAcceleration = this.SpinAcceleration;
+        result.SpinDeceleration = this.SpinDeceleration;
+        result.MaxSpinSpeed = this.MaxSpinSpeed;
+        result.MaxSpinSpeedPerExtraRider = this.MaxSpinSpeedPerExtraRider;
+        result.AbsoluteMaxSpinSpeed = this.AbsoluteMaxSpinSpeed;
+        result.GroundpoundAcceleration = this.GroundpoundAcceleration;
+        result.GroundpoundMaxSpinSpeed = this.GroundpoundMaxSpinSpeed;
+        result.SinkRate = this.SinkRate;
+        result.GroundpoundSinkRate = this.GroundpoundSinkRate;
+        result.SinkStartSpinSpeed = this.SinkStartSpinSpeed;
+        result.DropSinkDepth = this.DropSinkDepth;
+        result.JumpableSinkDepth = this.JumpableSinkDepth;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.Freezable))]
   public unsafe partial class FreezablePrototype : ComponentPrototype<Quantum.Freezable> {
     public FPVector2 IceBlockSize;

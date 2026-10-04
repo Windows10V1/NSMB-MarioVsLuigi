@@ -42,10 +42,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1444698985312168731}
   - component: {fileID: 6380810389954429617}
-  - component: {fileID: 4409816430675598087}
   - component: {fileID: 7054619197044780178}
   m_Layer: 20
-  m_Name: Floating Log
+  m_Name: FloatingLog
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -299,28 +298,6 @@ MonoBehaviour:
     IsEnabled: 0
   View:
     Id:
-      Value: 0
---- !u!114 &4409816430675598087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5853946066788006848}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb8b4489d4860b2429b2badcd175e5ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Quantum.Unity::Quantum.QPrototypeMovingPlatform
-  Prototype:
-    Velocity:
-      X:
-        RawValue: 0
-      Y:
-        RawValue: 0
-    IgnoreMovement:
-      Value: 0
-    CanCrushEntities:
       Value: 0
 --- !u!114 &7054619197044780178
 MonoBehaviour:
