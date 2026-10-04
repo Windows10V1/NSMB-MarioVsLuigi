@@ -18,15 +18,17 @@ namespace Quantum {
     partial void CreatePrototypeUser(Quantum.QuantumEntityPrototypeConverter converter, ref Quantum.Prototypes.BanzaiBillPrototype prototype);
     [DrawInline()]
     [ReadOnly(InEditMode = false)]
-    public Quantum.Prototypes.BanzaiBillPrototype Prototype;
+    public Quantum.Prototypes.Unity.BanzaiBillPrototype Prototype;
     public override System.Type ComponentType {
       get {
         return typeof(Quantum.BanzaiBill);
       }
     }
     public override ComponentPrototype CreatePrototype(Quantum.QuantumEntityPrototypeConverter converter) {
-      CreatePrototypeUser(converter, ref Prototype);
-      return Prototype;
+      Quantum.Prototypes.BanzaiBillPrototype result;
+      converter.Convert(Prototype, out result);
+      CreatePrototypeUser(converter, ref result);
+      return result;
     }
   }
 }

@@ -49,7 +49,10 @@ namespace NSMB.Entities.World {
             }
 
             headAnimation.Play();
-            bulletBillShoot.transform.position = headOrigin.position + (e.Right ? new Vector3(0.25f, 0.25f, 0) : new Vector3(-0.25f, 0.25f, 0));
+            // Banzai launchers aren't breakable and their mouth sits well above the
+            // head pivot, so the puff spawns higher to match the lowered bill.
+            float puffHeight = PredictedFrame.Has<BreakableObject>(e.Entity) ? 0.25f : 1.35f;
+            bulletBillShoot.transform.position = headOrigin.position + (e.Right ? new Vector3(0.25f, puffHeight, 0) : new Vector3(-0.25f, puffHeight, 0));
             bulletBillShoot.Play();
         }
     }

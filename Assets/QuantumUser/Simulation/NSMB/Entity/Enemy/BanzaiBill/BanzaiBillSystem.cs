@@ -1,7 +1,7 @@
 using Photon.Deterministic;
 
 namespace Quantum {
-    public unsafe class BanzaiBillSystem : SystemMainThreadEntityFilter<BanzaiBill, BanzaiBillSystem.Filter>, ISignalOnBobombExplodeEntity, ISignalOnIceBlockBroken {
+    public unsafe class BanzaiBillSystem : SystemMainThreadEntityFilter<BanzaiBill, BanzaiBillSystem.Filter>, ISignalOnBobombExplodeEntity, ISignalOnIceBlockBroken, ISignalOnEnemyRespawned {
         public struct Filter {
             public EntityRef Entity;
             public BanzaiBill* BanzaiBill;
@@ -23,14 +23,17 @@ namespace Quantum {
             var banzaiBill = filter.BanzaiBill;
 
             if (!enemy->IsAlive) {
-                if (banzaiBill->DespawnFrames == 0) {
-                    // Just died.
-                    banzaiBill->DespawnFrames = 255;
-                }
+                if (enemy->DisableRespawning) {
+                    if (banzaiBill->DespawnFrames == 0) {
+                        // Just died.
+                        banzaiBill->DespawnFrames = 255;
+                    }
 
-                if (QuantumUtils.Decrement(ref banzaiBill->DespawnFrames)) {
-                    f.Destroy(filter.Entity);
+                    if (QuantumUtils.Decrement(ref banzaiBill->DespawnFrames)) {
+                        f.Destroy(filter.Entity);
+                    }
                 }
+                // Otherwise the EnemySystem delayed respawn revives us.
                 return;
             }
 
@@ -46,6 +49,40 @@ namespace Quantum {
                     icePhysics->Velocity = FPVector2.Zero;
                 }
                 return;
+            }
+
+            if (!banzaiBill->HasFired) {
+                // Dormant until a player enters firing range, same rules as launchers.
+                FP smallestDistance = FP.UseableMax;
+                var allPlayers = f.Filter<MarioPlayer, Transform2D>();
+                while (allPlayers.NextUnsafe(out _, out _, out Transform2D* marioTransform)) {
+                    QuantumUtils.WrappedDistance(stage, filter.Transform->Position, marioTransform->Position, out FP distance);
+                    FP abs = FPMath.Abs(distance);
+
+                    // Player is too close, hold fire.
+                    if (abs < banzaiBill->MinimumShootRadius) {
+                        smallestDistance = FP.UseableMax;
+                        break;
+                    }
+
+                    if (abs < FPMath.Abs(smallestDistance)) {
+                        smallestDistance = distance;
+                    }
+                }
+
+                if (smallestDistance == FP.UseableMax || FPMath.Abs(smallestDistance) > banzaiBill->MaximumShootRadius) {
+                    return;
+                }
+
+                bool right = smallestDistance < 0;
+                enemy->FacingRight = right;
+                banzaiBill->HasFired = true;
+
+                // Cue the linked launcher's shoot animation, if any.
+                EntityRef launcher = banzaiBill->BanzaiOwner != EntityRef.None ? banzaiBill->BanzaiOwner : banzaiBill->Owner;
+                if (launcher != EntityRef.None) {
+                    f.Events.BulletBillLauncherShoot(launcher, filter.Entity, right);
+                }
             }
 
             var physicsObject = filter.PhysicsObject;
@@ -145,6 +182,14 @@ namespace Quantum {
                 banzaiBill->Kill(f, entity, bobomb, EnemyKillReason.Special);
             }
         }
+        public void OnEnemyRespawned(Frame f, EntityRef entity) {
+            if (f.Unsafe.TryGetPointer(entity, out BanzaiBill* banzaiBill)) {
+                // Come back dormant so we can fire again on proximity.
+                banzaiBill->HasFired = false;
+                banzaiBill->DespawnFrames = 0;
+            }
+        }
+
         public void OnIceBlockBroken(Frame f, EntityRef brokenIceBlock, IceBlockBreakReason breakReason, EntityRef attacker) {
             var iceBlock = f.Unsafe.GetPointer<IceBlock>(brokenIceBlock);
             if (f.Unsafe.TryGetPointer(iceBlock->Entity, out BanzaiBill* banzaiBill)) {

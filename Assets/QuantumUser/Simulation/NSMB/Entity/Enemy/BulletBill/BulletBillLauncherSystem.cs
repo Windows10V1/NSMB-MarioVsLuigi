@@ -10,10 +10,16 @@ namespace Quantum {
         }
 
         private static readonly FPVector2 SpawnOffset = new FPVector2(0, FP.FromString("-0.45"));
+        private static readonly FPVector2 BanzaiSpawnOffset = new FPVector2(0, FP.FromString("-0.80"));
 
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
             // BreakableObject is optional: Banzai Bill launchers aren't breakable.
             if (f.Unsafe.TryGetPointer(filter.Entity, out BreakableObject* breakable) && breakable->IsBroken) {
+                return;
+            }
+            if (breakable == null) {
+                // Banzai launchers don't spawn: their bills are placed in the scene
+                // and fire themselves, cueing this launcher's animation instead.
                 return;
             }
             var launcher = filter.Launcher;
@@ -27,7 +33,9 @@ namespace Quantum {
 
             var transform = filter.Transform;
             var collider = filter.Collider;
-            FPVector2 spawnpoint = transform->Position + FPVector2.Up * (collider->Shape.Box.Extents.Y * 2) + SpawnOffset;
+            // Banzai launchers fire a much bigger bill, nestled lower in the mouth.
+            FPVector2 spawnOffset = f.Has<BreakableObject>(filter.Entity) ? SpawnOffset : BanzaiSpawnOffset;
+            FPVector2 spawnpoint = transform->Position + FPVector2.Up * (collider->Shape.Box.Extents.Y * 2) + spawnOffset;
 
             var allPlayers = f.Filter<MarioPlayer, Transform2D>();
             FP smallestDistance = FP.UseableMax;

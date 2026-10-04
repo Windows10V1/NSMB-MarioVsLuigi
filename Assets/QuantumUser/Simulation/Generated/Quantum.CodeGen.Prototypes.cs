@@ -74,9 +74,11 @@ namespace Quantum.Prototypes {
   }
   [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.BanzaiBill))]
-  public unsafe partial class BanzaiBillPrototype : ComponentPrototype<Quantum.BanzaiBill> {
+  public unsafe class BanzaiBillPrototype : ComponentPrototype<Quantum.BanzaiBill> {
     public FP Speed;
-    partial void MaterializeUser(Frame frame, ref Quantum.BanzaiBill result, in PrototypeMaterializationContext context);
+    public FP MinimumShootRadius;
+    public FP MaximumShootRadius;
+    public MapEntityId BanzaiOwner;
     public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
         Quantum.BanzaiBill component = default;
         Materialize((Frame)f, ref component, in context);
@@ -84,7 +86,9 @@ namespace Quantum.Prototypes {
     }
     public void Materialize(Frame frame, ref Quantum.BanzaiBill result, in PrototypeMaterializationContext context = default) {
         result.Speed = this.Speed;
-        MaterializeUser(frame, ref result, in context);
+        result.MinimumShootRadius = this.MinimumShootRadius;
+        result.MaximumShootRadius = this.MaximumShootRadius;
+        PrototypeValidator.FindMapEntity(this.BanzaiOwner, in context, out result.BanzaiOwner);
     }
   }
   [System.SerializableAttribute()]

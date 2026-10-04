@@ -780,7 +780,7 @@
     "m_ObjectId": "17751287c29f4fa9980522129d3328a8",
     "m_Title": "Overalls",
     "m_Position": {
-        "x": -1243.9998779296875,
+        "x": -1244.0,
         "y": -2145.0
     }
 }
@@ -1840,7 +1840,7 @@
     "m_ObjectId": "4ef8620a9e8a4d17ba05e6fceb6e557b",
     "m_Title": "Shirt",
     "m_Position": {
-        "x": -782.9999389648438,
+        "x": -783.0,
         "y": -2144.0
     }
 }
@@ -2128,9 +2128,9 @@
     "m_ZWriteControl": 1,
     "m_AlphaMode": 0,
     "m_RenderFace": 2,
-    "m_AlphaClip": false,
-    "m_CastShadows": false,
-    "m_ReceiveShadows": false,
+    "m_AlphaClip": true,
+    "m_CastShadows": true,
+    "m_ReceiveShadows": true,
     "m_DisableTint": false,
     "m_Sort3DAs2DCompatible": false,
     "m_AdditionalMotionVectorMode": 0,

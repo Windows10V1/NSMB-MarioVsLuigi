@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1562881911039908346}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.844, y: 0.196, z: 0.5}
+  m_LocalPosition: {x: 1.216186, y: 0.17, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -287,7 +287,7 @@ ParticleSystem:
     startSize:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 1.52
+      scalar: 1.9
       minScalar: 1
       maxCurve:
         serializedVersion: 2
@@ -4871,7 +4871,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0.25, z: 0}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 0.36, y: 0.36, z: 0.36}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5831626546784253159}
@@ -4970,14 +4970,14 @@ MonoBehaviour:
         RawValue: 0
       BoxExtents:
         X:
-          RawValue: 52429
+          RawValue: 72090
         Y:
-          RawValue: 39322
+          RawValue: 55706
       PositionOffset:
         X:
-          RawValue: 2923
+          RawValue: 6554
         Y:
-          RawValue: 12119
+          RawValue: 9830
       RotationOffset:
         RawValue: 0
       UserTag: 0
@@ -5352,7 +5352,7 @@ MonoBehaviour:
     IgnorePlayerWhenRespawning:
       Value: 0
     DisableRespawning:
-      Value: 1
+      Value: 0
     StayAtHomeWhenOffscreen:
       Value: 0
 --- !u!114 &-2707382414775849669
@@ -5477,7 +5477,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Prototype:
     Speed:
-      RawValue: 163840
+      RawValue: 98304
+    MinimumShootRadius:
+      RawValue: 39322
+    MaximumShootRadius:
+      RawValue: 458752
+    BanzaiOwner: {fileID: 0}
 --- !u!114 &8877665544332211009
 MonoBehaviour:
   m_ObjectHideFlags: 0

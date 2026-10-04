@@ -30,13 +30,7 @@ namespace NSMB.Entities.Enemies {
             QuantumEvent.Subscribe<EventPlayComboSound>(this, OnPlayComboSound, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventBanzaiBillHitByProjectile>(this, OnBanzaiBillHitByProjectile, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
-        }
-
-        public override void OnActivate(Frame f) {
-            if (!IsReplayFastForwarding) {
-                sfx.PlayOneShot(SoundEffect.Enemy_BulletBill_Shoot);
-            }
-            trailParticles.Play();
+            QuantumEvent.Subscribe<EventBulletBillLauncherShoot>(this, OnLauncherShoot, FilterOutReplayFastForward);
         }
 
         public override void OnUpdateView() {
@@ -48,12 +42,13 @@ namespace NSMB.Entities.Enemies {
 
             var enemy = f.Unsafe.GetPointer<Enemy>(EntityRef);
             var freezable = f.Unsafe.GetPointer<Freezable>(EntityRef);
+            var banzaiBill = f.Unsafe.GetPointer<BanzaiBill>(EntityRef);
             bool frozen = freezable->IsFrozen(f);
 
             modelRoot.gameObject.SetActive(enemy->IsActive);
 
             var emission = trailParticles.emission;
-            emission.enabled = enemy->IsActive && !frozen;
+            emission.enabled = enemy->IsActive && banzaiBill->HasFired && !frozen;
 
             if (enemy->IsDead) {
                 transform.rotation *= Quaternion.Euler(0, 0, 400f * (enemy->FacingRight ? -1 : 1) * Time.deltaTime);
@@ -65,15 +60,28 @@ namespace NSMB.Entities.Enemies {
             transform.localScale = Vector3.one * scale;
             fireballScaleTimer = Mathf.Max(0, fireballScaleTimer - Time.deltaTime);
 
-            // Spin the model while flying (paused when frozen); base prefab
-            // rotation faces left, mirrored for right.
-            if (enemy->IsAlive && !frozen) {
+            // Spin the model while flying (paused when frozen or dormant); base
+            // prefab rotation faces left, mirrored for right.
+            if (enemy->IsAlive && banzaiBill->HasFired && !frozen) {
                 spinAngle += spinSpeed * Time.deltaTime;
             }
             modelRoot.localEulerAngles = new Vector3(0, enemy->FacingRight ? 90 : -90, spinAngle);
             Vector2 pos = trailParticles.transform.localPosition;
             pos.x = Mathf.Abs(pos.x) * (enemy->FacingRight ? -1 : 1);
             trailParticles.transform.localPosition = pos;
+        }
+
+        // Fired by our own launcher cue (placed bills) or the launcher spawn
+        // (spawned bills): play the shoot sound and start the trail.
+        private void OnLauncherShoot(EventBulletBillLauncherShoot e) {
+            if (e.NewBulletBill != EntityRef) {
+                return;
+            }
+
+            if (!IsReplayFastForwarding) {
+                sfx.PlayOneShot(SoundEffect.Enemy_BulletBill_Shoot);
+            }
+            trailParticles.Play();
         }
 
         private void OnBanzaiBillHitByProjectile(EventBanzaiBillHitByProjectile e) {

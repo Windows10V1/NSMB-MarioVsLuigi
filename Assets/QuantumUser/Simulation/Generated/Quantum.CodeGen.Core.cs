@@ -1598,29 +1598,46 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct BanzaiBill : Quantum.IComponent {
-    public const Int32 SIZE = 24;
+    public const Int32 SIZE = 48;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(16)]
+    [FieldOffset(40)]
     public FP Speed;
+    [FieldOffset(32)]
+    public FP MinimumShootRadius;
+    [FieldOffset(24)]
+    public FP MaximumShootRadius;
+    [FieldOffset(8)]
+    public EntityRef BanzaiOwner;
     [FieldOffset(0)]
     [ExcludeFromPrototype()]
     public Byte DespawnFrames;
-    [FieldOffset(8)]
+    [FieldOffset(16)]
     [ExcludeFromPrototype()]
     public EntityRef Owner;
+    [FieldOffset(4)]
+    [ExcludeFromPrototype()]
+    public QBoolean HasFired;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 15559;
         hash = hash * 31 + Speed.GetHashCode();
+        hash = hash * 31 + MinimumShootRadius.GetHashCode();
+        hash = hash * 31 + MaximumShootRadius.GetHashCode();
+        hash = hash * 31 + BanzaiOwner.GetHashCode();
         hash = hash * 31 + DespawnFrames.GetHashCode();
         hash = hash * 31 + Owner.GetHashCode();
+        hash = hash * 31 + HasFired.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (BanzaiBill*)ptr;
         serializer.Stream.Serialize(&p->DespawnFrames);
+        QBoolean.Serialize(&p->HasFired, serializer);
+        EntityRef.Serialize(&p->BanzaiOwner, serializer);
         EntityRef.Serialize(&p->Owner, serializer);
+        FP.Serialize(&p->MaximumShootRadius, serializer);
+        FP.Serialize(&p->MinimumShootRadius, serializer);
         FP.Serialize(&p->Speed, serializer);
     }
   }

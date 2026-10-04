@@ -9,6 +9,7 @@ namespace Quantum {
             enemy->IsDead = false;
 
             Owner = owner;
+            HasFired = true;
         }
 
         public void Kill(Frame f, EntityRef banzaiBillEntity, EntityRef killerEntity, EnemyKillReason reason) {
@@ -23,6 +24,9 @@ namespace Quantum {
                 launcher->BulletBillCount--;
             }
             Owner = EntityRef.None;
+
+            // Placed bills come back dormant after a delay and can fire again.
+            enemy->SetDelayedRespawn(300, 80);
 
             bool playSound;
             if (reason == EnemyKillReason.Normal) {
