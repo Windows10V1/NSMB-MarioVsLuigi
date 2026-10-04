@@ -38,8 +38,10 @@ namespace Quantum {
             // Boomerang however gets an exception when it's a breakable tile (WIP)
             if (!physicsObject->DisableCollision && !projectile->CheckedCollision) {
                 if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
-                    Destroy(f, filter.Entity, asset.DestroyParticleEffect);
-                    return;
+                    if (asset.DestroyOnHitTerrain) {
+                        Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                        return;
+                    }
                 }
                 projectile->CheckedCollision = true;
             }
@@ -78,11 +80,15 @@ namespace Quantum {
                             // Ricochet off the wall if not in returning state
                             projectile->Combo = 2;
                         }
-                    } else {
+                        return;
+                    }
+
+                    if (asset.DestroyOnHitTerrain) {
                         Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                         return;
                     }
-                    return;
+                    // Survived terrain hit (DestroyOnHitTerrain == false): fall through
+                    // so ground bounce can still apply instead of destroying.
                 }
             }
 
@@ -160,7 +166,10 @@ namespace Quantum {
             var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
             var projectileAsset = f.FindAsset(projectile->Asset);
 
-            if (projectileAsset.DestroyOnHit) {
+            bool destroyOnHit = f.Has<MarioPlayer>(hitEntity)
+                ? projectileAsset.DestroyOnHitPlayers
+                : projectileAsset.DestroyOnHitEnemies;
+            if (destroyOnHit) {
                 Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
             } else {
                 if (projectileAsset.Bounce) {

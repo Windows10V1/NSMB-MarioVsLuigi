@@ -28,11 +28,19 @@ MonoBehaviour:
     Y:
       RawValue: -2458386
   DestroyOnSecondBounce: 0
-  DestroyOnHit: 0
+  DestroyOnHitTerrain: 0
+  DestroyOnHitPlayers: 0
+  DestroyOnHitEnemies: 0
   LockTo45Degrees: 0
   InheritShooterVelocity: 0
   HasCollision: 0
   DoesntEffectBlueShell: 1
+  BreakBreakableTiles: 0
+  CollectCoins: 0
+  MaxProjectiles: 6
+  ProjectileVolleySize: 2
+  ProjectileDelayFrames: 6
+  ProjectileVolleyFrames: 75
   DestroyParticleEffect: 8
   ShootSound: 106
   SfxOverrides: []

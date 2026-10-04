@@ -135,7 +135,7 @@ namespace Quantum {
         public void OnBooProjectileInteraction(Frame f, EntityRef booEntity, EntityRef projectileEntity) {
             var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
 
-            if (projectileAsset.DestroyOnHit) {
+            if (projectileAsset.DestroyOnHitEnemies) {
                 ProjectileSystem.Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
             } else {
                 var boo = f.Unsafe.GetPointer<Boo>(booEntity);

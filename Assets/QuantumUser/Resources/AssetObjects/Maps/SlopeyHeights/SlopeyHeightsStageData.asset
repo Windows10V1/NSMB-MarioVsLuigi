@@ -19,8 +19,8 @@ MonoBehaviour:
   ShowAuthorAndComposer: 1
   StageAuthor: Windows10V
   MusicComposer: AdamCrossing
-  TranslationKey: level.wmm.slopeyheights
-  GroupingTranslationKey: level.header.wmm
+  TranslationKey: level.wmr.slopeyheights
+  GroupingTranslationKey: level.header.wmr
   DiscordStageImage: level-slopeyheights
   SortOrder: 1
   Icon: {fileID: 0}
@@ -77,6 +77,9 @@ MonoBehaviour:
   MegaMushroomMusic:
     Id:
       Value: 451321131049702687
+  SuperBallMusic:
+    Id:
+      Value: 0
   TileData:
   - Tile:
       Id:

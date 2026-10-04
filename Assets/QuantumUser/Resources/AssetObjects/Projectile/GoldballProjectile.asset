@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/GoldballProjectile
     Guid:
       Value: 505756156224867182
-  Effect: 6
+  Effect: 1
   Bounce: 1
   Speed:
     RawValue: 425984
@@ -28,23 +28,19 @@ MonoBehaviour:
     Y:
       RawValue: -2828796
   DestroyOnSecondBounce: 0
-  DestroyOnHit: 1
+  DestroyOnHitTerrain: 1
+  DestroyOnHitPlayers: 1
+  DestroyOnHitEnemies: 1
   LockTo45Degrees: 1
   InheritShooterVelocity: 0
   HasCollision: 1
   DoesntEffectBlueShell: 0
+  BreakBreakableTiles: 1
   CollectCoins: 0
+  MaxProjectiles: 1
+  ProjectileVolleySize: 1
+  ProjectileDelayFrames: 1
+  ProjectileVolleyFrames: 60
   DestroyParticleEffect: 9
   ShootSound: 126
-  IsBoomerang: 0
-  IsSuperBall: 0
-  IsGoldball: 1
-  SpawnOffset:
-    X:
-      RawValue: 0
-    Y:
-      RawValue: 0
-  CooldownFrames: 60
-  MaxInstantProjectiles: 1
-  MaxProjectileCount: 1
   SfxOverrides: []

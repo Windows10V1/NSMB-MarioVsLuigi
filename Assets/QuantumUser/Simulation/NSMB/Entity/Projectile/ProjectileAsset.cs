@@ -10,7 +10,9 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
     public FP BounceStrength;
     public FPVector2 Gravity;
     public bool DestroyOnSecondBounce;
-    public bool DestroyOnHit = true;
+    public bool DestroyOnHitTerrain = true;
+    public bool DestroyOnHitPlayers = true;
+    public bool DestroyOnHitEnemies = true;
     public bool LockTo45Degrees = true;
     public bool InheritShooterVelocity;
     public bool HasCollision = true;
@@ -49,6 +51,7 @@ public enum ProjectileEffectType : byte {
     Freeze,
     Hammer,
     Boomerang,
+    Gold,
 
     None = 0xff,
 }

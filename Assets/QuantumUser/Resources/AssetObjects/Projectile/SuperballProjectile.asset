@@ -16,7 +16,7 @@ MonoBehaviour:
     Path: QuantumUser/Resources/AssetObjects/Projectile/SuperballProjectile
     Guid:
       Value: 392003488003726786
-  Effect: 7
+  Effect: 0
   Bounce: 1
   Speed:
     RawValue: 367002
@@ -28,16 +28,18 @@ MonoBehaviour:
     Y:
       RawValue: 0
   DestroyOnSecondBounce: 0
-  DestroyOnHit: 1
-  LockTo45Degrees: 1
+  DestroyOnHitTerrain: 0
+  DestroyOnHitPlayers: 1
+  DestroyOnHitEnemies: 1
+  LockTo45Degrees: 0
   InheritShooterVelocity: 0
   HasCollision: 1
   DoesntEffectBlueShell: 1
   BreakBreakableTiles: 0
   CollectCoins: 1
-  MaxProjectiles: 6
-  ProjectileVolleySize: 2
-  ProjectileDelayFrames: 6
+  MaxProjectiles: 3
+  ProjectileVolleySize: 3
+  ProjectileDelayFrames: 3
   ProjectileVolleyFrames: 75
   DestroyParticleEffect: 8
   ShootSound: 121

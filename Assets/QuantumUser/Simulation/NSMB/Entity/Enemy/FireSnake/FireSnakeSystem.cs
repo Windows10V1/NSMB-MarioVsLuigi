@@ -115,7 +115,7 @@ namespace Quantum {
                 f.Unsafe.GetPointer<FireSnake>(fireSnakeEntity)->Kill(f, fireSnakeEntity);
                 hit = true;
             }
-            if (hit || projectileAsset.DestroyOnHit) {
+            if (hit || projectileAsset.DestroyOnHitEnemies) {
                 f.Signals.OnProjectileHitEntity(projectileEntity, fireSnakeEntity);
             }
         }

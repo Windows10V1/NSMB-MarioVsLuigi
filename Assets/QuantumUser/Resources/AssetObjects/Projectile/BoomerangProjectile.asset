@@ -28,7 +28,9 @@ MonoBehaviour:
     Y:
       RawValue: 0
   DestroyOnSecondBounce: 0
-  DestroyOnHit: 0
+  DestroyOnHitTerrain: 0
+  DestroyOnHitPlayers: 0
+  DestroyOnHitEnemies: 0
   LockTo45Degrees: 0
   InheritShooterVelocity: 1
   HasCollision: 1

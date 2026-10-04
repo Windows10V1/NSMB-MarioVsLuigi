@@ -19,8 +19,8 @@ MonoBehaviour:
   ShowAuthorAndComposer: 1
   StageAuthor: Windows10V
   MusicComposer: Windows10V
-  TranslationKey: level.wmm.darkworld
-  GroupingTranslationKey: level.header.wmm
+  TranslationKey: level.wmr.darkworld
+  GroupingTranslationKey: level.header.wmr
   DiscordStageImage: level-wmmdarkworld
   SortOrder: 0
   Icon: {fileID: 21300000, guid: e00eadcdd090bc14aa07e74014d7968f, type: 3}
@@ -80,6 +80,9 @@ MonoBehaviour:
   MegaMushroomMusic:
     Id:
       Value: 451321131049702687
+  SuperBallMusic:
+    Id:
+      Value: 0
   TileData:
   - Tile:
       Id:

@@ -68,6 +68,7 @@ namespace NSMB.Sound {
 
             bool invincible = false;
             bool mega = false;
+            bool superb = false;
             bool speedup = false;
 
             if (f.TryFindAsset(f.Global->Rules.Gamemode, out var gamemode)) {
@@ -79,6 +80,7 @@ namespace NSMB.Sound {
                     speedup |= rules.IsLivesEnabled && mario->Lives == 1;
                     mega |= Settings.Instance.audioSpecialPowerupMusic.HasFlag(Enums.SpecialPowerupMusic.MegaMushroom) && mario->MegaMushroomFrames > 0;
                     invincible |= Settings.Instance.audioSpecialPowerupMusic.HasFlag(Enums.SpecialPowerupMusic.Starman) && mario->IsStarmanInvincible;
+                    superb |= Settings.Instance.audioSpecialPowerupMusic.HasFlag(Enums.SpecialPowerupMusic.SuperBall) && mario->CurrentPowerupState == PowerupState.SuperBallFlower;
                 }
             }
 
@@ -87,6 +89,8 @@ namespace NSMB.Sound {
                 musicPlayer.Play(f.FindAsset(stage.MegaMushroomMusic));
             } else if (invincible) {
                 musicPlayer.Play(f.FindAsset(stage.InvincibleMusic));
+            } else if (superb) {
+                musicPlayer.Play(f.FindAsset(stage.SuperBallMusic));
             } else {
                 musicPlayer.Play(f.FindAsset(stage.GetCurrentMusic(f)));
             }
