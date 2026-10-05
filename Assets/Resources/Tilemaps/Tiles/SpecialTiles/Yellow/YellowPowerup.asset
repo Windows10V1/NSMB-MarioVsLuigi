@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c8963c1eb6bcbe445abee72055f6918d, type: 3}
-  m_Name: YellowFireFlowerStageTile
+  m_Name: YellowPowerupStageTile
   m_EditorClassIdentifier: 
   Identifier:
-    Path: Resources/Tilemaps/Tiles/SpecialTiles/YellowFireFlower|YellowFireFlowerStageTile
+    Path: Resources/Tilemaps/Tiles/SpecialTiles/Yellow/YellowPowerup|YellowPowerupStageTile
     Guid:
-      Value: 1203984060954865196
+      Value: 1223032229101960633
   Tile: {fileID: 11400000}
   CollisionData:
     IsFullTile: 1
@@ -46,7 +46,7 @@ MonoBehaviour:
     Flags: 0
   smallPowerup:
     Id:
-      Value: 296548766860541996
+      Value: 390055422968795145
   largePowerup:
     Id:
       Value: 296548766860541996
@@ -61,7 +61,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13b75c95f34a00d4e8c04f76b73312e6, type: 3}
-  m_Name: YellowFireFlower
+  m_Name: YellowPowerup
   m_EditorClassIdentifier: 
   m_AnimatedSprites:
   - {fileID: -8917260427315313510, guid: f4b7221be8b79c94c9c8919163014cb0, type: 3}

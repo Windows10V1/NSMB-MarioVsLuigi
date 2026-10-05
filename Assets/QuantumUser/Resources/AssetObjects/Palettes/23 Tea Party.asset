@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce8b0cb6c1d54e5428273c6662ede73f, type: 3}
-  m_Name: 23 Cubby Leafy
+  m_Name: 23 Tea Party
   m_EditorClassIdentifier: 
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Palettes/23 Cubby Leafy
+    Path: QuantumUser/Resources/AssetObjects/Palettes/23 Tea Party
     Guid:
       Value: 484478936524730291
   Colors:
@@ -21,19 +21,47 @@ MonoBehaviour:
       Id:
         Value: 532063855470386108
     ShirtColor:
-      R: 107
-      G: 144
+      R: 0
+      G: 90
       B: 255
       A: 255
     OverallsColor:
-      R: 146
-      G: 53
-      B: 53
+      R: 192
+      G: 192
+      B: 192
       A: 255
     HatUsesOverallsColor: 0
   - Character:
       Id:
         Value: 485289843648077326
+    ShirtColor:
+      R: 170
+      G: 51
+      B: 255
+      A: 255
+    OverallsColor:
+      R: 255
+      G: 102
+      B: 85
+      A: 255
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 277767022454256997
+    ShirtColor:
+      R: 255
+      G: 255
+      B: 0
+      A: 255
+    OverallsColor:
+      R: 192
+      G: 192
+      B: 192
+      A: 255
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 308474008876481968
     ShirtColor:
       R: 170
       G: 51

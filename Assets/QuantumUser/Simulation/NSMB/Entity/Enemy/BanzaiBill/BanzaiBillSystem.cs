@@ -71,7 +71,38 @@ namespace Quantum {
                 }
 
                 if (smallestDistance == FP.UseableMax || FPMath.Abs(smallestDistance) > banzaiBill->MaximumShootRadius) {
+                    // Out of range: reset the initial wait, like launchers do.
+                    banzaiBill->TimeToShootFrames = 0;
                     return;
+                }
+
+                if (banzaiBill->TimeToShootFrames == 0) {
+                    // Player just entered range, start the initial wait.
+                    banzaiBill->TimeToShootFrames = banzaiBill->TimeToShoot;
+                    return;
+                }
+
+                if (!QuantumUtils.Decrement(ref banzaiBill->TimeToShootFrames)) {
+                    return;
+                }
+
+                // Hold fire while 2 of our launcher's bills are already live.
+                EntityRef launcher = banzaiBill->BanzaiOwner != EntityRef.None ? banzaiBill->BanzaiOwner : banzaiBill->Owner;
+                if (launcher != EntityRef.None) {
+                    int liveCount = 0;
+                    var bills = f.Filter<BanzaiBill, Enemy>();
+                    while (bills.NextUnsafe(out EntityRef otherEntity, out BanzaiBill* otherBill, out Enemy* otherEnemy)) {
+                        if (otherEntity == filter.Entity || !otherEnemy->IsAlive) {
+                            continue;
+                        }
+                        EntityRef otherLauncher = otherBill->BanzaiOwner != EntityRef.None ? otherBill->BanzaiOwner : otherBill->Owner;
+                        if (otherLauncher == launcher && ++liveCount >= 2) {
+                            break;
+                        }
+                    }
+                    if (liveCount >= 2) {
+                        return;
+                    }
                 }
 
                 bool right = smallestDistance < 0;
@@ -79,7 +110,6 @@ namespace Quantum {
                 banzaiBill->HasFired = true;
 
                 // Cue the linked launcher's shoot animation, if any.
-                EntityRef launcher = banzaiBill->BanzaiOwner != EntityRef.None ? banzaiBill->BanzaiOwner : banzaiBill->Owner;
                 if (launcher != EntityRef.None) {
                     f.Events.BulletBillLauncherShoot(launcher, filter.Entity, right);
                 }
@@ -119,7 +149,8 @@ namespace Quantum {
 
                 f.Events.BanzaiBillHitByProjectile(banzaiBillEntity);
             } else if (!mario->IsCrouchedInShell && mario->IsDamageable(f)) {
-                mario->Powerdown(f, marioEntity, false, banzaiBillEntity);
+                // Bump the player away without powerdown or star drops.
+                mario->DoKnockback(f, marioEntity, theirPos.X < ourPos.X, 0, KnockbackStrength.Groundpound, banzaiBillEntity);
             }
         }
 
@@ -158,9 +189,16 @@ namespace Quantum {
                     // since the hammer asset has Bounce enabled
                     f.Events.BanzaiBillHitByProjectile(banzaiBillEntity);
                 break;
-                case ProjectileEffectType.Boomerang:
-                    // Does nothing, for now.
-                    return;
+                case ProjectileEffectType.Boomerang: {
+                    // Fly off like bouncing off a crouched Hammer Suit Mario.
+                    // The EnemyPierced event below comes from OnProjectileHitEntity.
+                    var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
+                    var projectilePhysics = f.Unsafe.GetPointer<PhysicsObject>(projectileEntity);
+                    projectile->Speed *= Constants._0_85;
+                    projectilePhysics->Gravity *= Constants._0_85;
+                    projectilePhysics->Velocity.Y = projectile->Speed;
+                    break;
+                }
             }
 
             f.Signals.OnProjectileHitEntity(projectileEntity, banzaiBillEntity);
@@ -188,6 +226,9 @@ namespace Quantum {
                 // Come back dormant so we can fire again on proximity.
                 banzaiBill->HasFired = false;
                 banzaiBill->DespawnFrames = 0;
+                banzaiBill->TimeToShootFrames = 0;
+                // Kill disables this and Respawn doesn't restore it.
+                f.Unsafe.GetPointer<Interactable>(entity)->ColliderDisabled = false;
             }
         }
 

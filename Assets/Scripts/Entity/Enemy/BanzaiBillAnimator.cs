@@ -30,6 +30,7 @@ namespace NSMB.Entities.Enemies {
             QuantumEvent.Subscribe<EventPlayComboSound>(this, OnPlayComboSound, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventBanzaiBillHitByProjectile>(this, OnBanzaiBillHitByProjectile, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventEnemyPierced>(this, OnEnemyPierced, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventBulletBillLauncherShoot>(this, OnLauncherShoot, FilterOutReplayFastForward);
         }
 
@@ -45,7 +46,8 @@ namespace NSMB.Entities.Enemies {
             var banzaiBill = f.Unsafe.GetPointer<BanzaiBill>(EntityRef);
             bool frozen = freezable->IsFrozen(f);
 
-            modelRoot.gameObject.SetActive(enemy->IsActive);
+            // Dormant bills stay hidden until their launcher fires them.
+            modelRoot.gameObject.SetActive(enemy->IsActive && banzaiBill->HasFired);
 
             var emission = trailParticles.emission;
             emission.enabled = enemy->IsActive && banzaiBill->HasFired && !frozen;
@@ -114,6 +116,15 @@ namespace NSMB.Entities.Enemies {
             }
 
             sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
+        }
+
+        // MarioPlayerAnimator only plays the pierce sound for the player itself.
+        private void OnEnemyPierced(EventEnemyPierced e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            sfx.PlayOneShot(SoundEffect.Powerup_BoomerangFlower_Pierce);
         }
 
         private void OnPlayComboSound(EventPlayComboSound e) {

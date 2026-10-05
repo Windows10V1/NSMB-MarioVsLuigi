@@ -2,10 +2,12 @@ component BanzaiBill {
 	FP Speed;
 	FP MinimumShootRadius;
 	FP MaximumShootRadius;
+	ushort TimeToShoot;
 	EntityRef BanzaiOwner;
 	[ExcludeFromPrototype] byte DespawnFrames;
 	[ExcludeFromPrototype] EntityRef Owner;
 	[ExcludeFromPrototype] bool HasFired;
+	[ExcludeFromPrototype] ushort TimeToShootFrames;
 }
 
 event BanzaiBillHitByProjectile {

@@ -9,7 +9,7 @@ namespace NSMB.Entities.World {
         [SerializeField] private Animation headAnimation;
         [SerializeField] private SpriteRenderer headRenderer;
         [SerializeField] private Transform headOrigin;
-        [SerializeField] private ParticleSystem bulletBillShoot;
+        [SerializeField] private GameObject bulletBillShoot;
 
         public override void Start() {
             base.Start();
@@ -43,17 +43,51 @@ namespace NSMB.Entities.World {
             headRenderer.enabled = false;
         }
 
+        private Coroutine overlayResetRoutine;
+
         private unsafe void OnBulletBillLauncherShoot(EventBulletBillLauncherShoot e) {
             if (e.Entity != EntityRef) {
                 return;
             }
 
             headAnimation.Play();
+            bool isBanzai = !PredictedFrame.Has<BreakableObject>(e.Entity);
+
+            // Banzai launchers pop in front of the bill only while shooting.
+            // Applied first so the puff below inherits the overlay depth.
+            if (isBanzai && sRenderer) {
+                Vector3 graphicsPos = sRenderer.transform.localPosition;
+                graphicsPos.z = -1.1f;
+                sRenderer.transform.localPosition = graphicsPos;
+
+                if (overlayResetRoutine != null) {
+                    StopCoroutine(overlayResetRoutine);
+                }
+                overlayResetRoutine = StartCoroutine(ResetShootOverlay());
+            }
+
             // Banzai launchers aren't breakable and their mouth sits well above the
             // head pivot, so the puff spawns higher to match the lowered bill.
-            float puffHeight = PredictedFrame.Has<BreakableObject>(e.Entity) ? 0.25f : 1.35f;
-            bulletBillShoot.transform.position = headOrigin.position + (e.Right ? new Vector3(0.25f, puffHeight, 0) : new Vector3(-0.25f, puffHeight, 0));
-            bulletBillShoot.Play();
+            float puffHeight = isBanzai ? 1.35f : 0.25f;
+            if (bulletBillShoot) {
+                bulletBillShoot.transform.position = headOrigin.position + (e.Right ? new Vector3(0.25f, puffHeight, 0) : new Vector3(-0.25f, puffHeight, 0));
+                var puffParticles = bulletBillShoot.GetComponentInChildren<ParticleSystem>();
+                if (puffParticles) {
+                    puffParticles.Play();
+                }
+            }
+        }
+
+        private System.Collections.IEnumerator ResetShootOverlay() {
+            float duration = headAnimation && headAnimation.clip ? headAnimation.clip.length : 0.35f;
+            yield return new UnityEngine.WaitForSeconds(duration);
+
+            if (sRenderer) {
+                Vector3 graphicsPos = sRenderer.transform.localPosition;
+                graphicsPos.z = 0f;
+                sRenderer.transform.localPosition = graphicsPos;
+            }
+            overlayResetRoutine = null;
         }
     }
 }

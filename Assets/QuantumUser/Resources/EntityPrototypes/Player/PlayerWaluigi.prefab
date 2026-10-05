@@ -955,6 +955,10 @@ MonoBehaviour:
     type: 3}
   normalShader: {fileID: -6465566751694194690, guid: 914d964962549de41a603aa0bd374229,
     type: 3}
+  superBallShader: {fileID: -6465566751694194690, guid: b110d8d7eee1bf24b917762eebee5eba,
+    type: 3}
+  goldShader: {fileID: -6465566751694194690, guid: 28e019a5cd0b29141ab73d8a19953f89,
+    type: 3}
   rainbowShader: {fileID: -6465566751694194690, guid: 5d1d727bf3f780a489dbd612a9b28c77,
     type: 3}
   sfx: {fileID: 5377451828833222271}
@@ -1067,10 +1071,10 @@ MonoBehaviour:
     ModelHeightInBlocks: 1
     TextureReplacements:
     - Material: {fileID: 2100000, guid: 39bac5eece1f5994ba2a5478fea4a032, type: 2}
-      AlbedoTexture: {fileID: 2800000, guid: 5d298114d785fbf4ea786e53814f4088, type: 3}
+      AlbedoTexture: {fileID: 2800000, guid: 492b0a5903f6ff74ab5ad494fa38beff, type: 3}
       OverallsMaskTexture: {fileID: 2800000, guid: 089bec90ee4278a45ac87f0602ac8a66,
         type: 3}
-      ShirtMaskTexture: {fileID: 2800000, guid: 5d298114d785fbf4ea786e53814f4088,
+      ShirtMaskTexture: {fileID: 2800000, guid: 471fb2e6e416b524ea152cd095333c5b,
         type: 3}
       CapMaskTexture: {fileID: 0}
       StarmanAlbedoTexture: {fileID: 0}
@@ -1083,8 +1087,9 @@ MonoBehaviour:
       StarmanAlbedoTexture: {fileID: 2800000, guid: 5d5f9ad4948945b4c83685ca4f0933b0,
         type: 3}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
-    AnimatorOverrides: {fileID: 9100000, guid: fa2b2fc953f5f444291d26193e0ac7fb, type: 2}
-  - State: 6
+    AnimatorOverrides: {fileID: 22100000, guid: 7171ae1372081c54fbdd257ef7844478,
+      type: 2}
+  - State: 8
     AdditionalGameObjects:
     - {fileID: 8712194458326895251}
     BaseModel: {fileID: 2209300530651413591}
@@ -1110,7 +1115,7 @@ MonoBehaviour:
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 7171ae1372081c54fbdd257ef7844478,
       type: 2}
-  - State: 7
+  - State: 9
     AdditionalGameObjects:
     - {fileID: 3629787967981286811}
     BaseModel: {fileID: 2209300530651413591}
@@ -1128,7 +1133,7 @@ MonoBehaviour:
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 7171ae1372081c54fbdd257ef7844478,
       type: 2}
-  - State: 8
+  - State: 10
     AdditionalGameObjects:
     - {fileID: 4056376664574429795}
     - {fileID: 880582643022226802}
@@ -1161,12 +1166,36 @@ MonoBehaviour:
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 7171ae1372081c54fbdd257ef7844478,
       type: 2}
-  - State: 9
+  - State: 11
     AdditionalGameObjects: []
     BaseModel: {fileID: 2209300530651413591}
     ModelScale: {x: 3.6, y: 3.6, z: 3.6}
     ModelHeightInBlocks: 1
     TextureReplacements: []
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 7171ae1372081c54fbdd257ef7844478,
+      type: 2}
+  - State: 6
+    AdditionalGameObjects: []
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements: []
+    AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
+    AnimatorOverrides: {fileID: 22100000, guid: 7171ae1372081c54fbdd257ef7844478,
+      type: 2}
+  - State: 7
+    AdditionalGameObjects: []
+    BaseModel: {fileID: 2209300530651413591}
+    ModelScale: {x: 1, y: 1, z: 1}
+    ModelHeightInBlocks: 1
+    TextureReplacements:
+    - Material: {fileID: 2100000, guid: 39bac5eece1f5994ba2a5478fea4a032, type: 2}
+      AlbedoTexture: {fileID: 2800000, guid: f1ea1dc06ad71ea46a3be89548372883, type: 3}
+      OverallsMaskTexture: {fileID: 0}
+      ShirtMaskTexture: {fileID: 0}
+      CapMaskTexture: {fileID: 0}
+      StarmanAlbedoTexture: {fileID: 0}
     AnimationAvatar: {fileID: 9000000, guid: 024ceb223bceebd488dbc425555f4df0, type: 3}
     AnimatorOverrides: {fileID: 22100000, guid: 7171ae1372081c54fbdd257ef7844478,
       type: 2}
@@ -7703,6 +7732,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -7592359134467880492, guid: e984d31e8ed33ad469ffb34b579d6502,
         type: 3}
+    - target: {fileID: -1206874426333947015, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_AABB.m_Center.y
+      value: 0.08432612
+      objectReference: {fileID: 0}
+    - target: {fileID: -1206874426333947015, guid: 024ceb223bceebd488dbc425555f4df0,
+        type: 3}
+      propertyPath: m_AABB.m_Extent.y
+      value: 0.09563973
+      objectReference: {fileID: 0}
     - target: {fileID: -1206874426333947015, guid: 024ceb223bceebd488dbc425555f4df0,
         type: 3}
       propertyPath: m_Materials.Array.size

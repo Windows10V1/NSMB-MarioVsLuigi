@@ -78,6 +78,7 @@ namespace Quantum.Prototypes {
     public FP Speed;
     public FP MinimumShootRadius;
     public FP MaximumShootRadius;
+    public UInt16 TimeToShoot;
     public MapEntityId BanzaiOwner;
     public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
         Quantum.BanzaiBill component = default;
@@ -88,6 +89,7 @@ namespace Quantum.Prototypes {
         result.Speed = this.Speed;
         result.MinimumShootRadius = this.MinimumShootRadius;
         result.MaximumShootRadius = this.MaximumShootRadius;
+        result.TimeToShoot = this.TimeToShoot;
         PrototypeValidator.FindMapEntity(this.BanzaiOwner, in context, out result.BanzaiOwner);
     }
   }

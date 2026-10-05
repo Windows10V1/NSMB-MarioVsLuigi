@@ -102,6 +102,7 @@ namespace Quantum {
             bool wasGroundpoundActive = mario->IsGroundpounding;
             HandlePowerups(f, ref filter, physics, stage);
             HandleBreakingBlocks(f, ref filter, physics, stage);
+            HandleDamagingTiles(f, ref filter, stage);
             HandleCrouching(f, ref filter, physics);
             HandleGroundpound(f, ref filter, physics, stage);
             HandleSliding(f, ref filter, physics);
@@ -1473,7 +1474,13 @@ namespace Quantum {
 
             if (!(inputs.PowerupAction.WasPressed
                 || (state == PowerupState.PropellerMushroom && inputs.PropellerPowerupAction.WasPressed && !physicsObject->IsTouchingGround && !mario->IsWallsliding)
-                || ((state == PowerupState.FireFlower || state == PowerupState.IceFlower || state == PowerupState.HammerSuit || state == PowerupState.BoomerangFlower) && inputs.FireballPowerupAction.WasPressed))) {
+                || ((state == PowerupState.FireFlower
+                || state == PowerupState.IceFlower
+                || state == PowerupState.HammerSuit
+                || state == PowerupState.SuperBallFlower
+                || state == PowerupState.GoldFlower
+                || state == PowerupState.BoomerangFlower)
+                && inputs.FireballPowerupAction.WasPressed))) {
                 return;
             }
 
@@ -1486,6 +1493,8 @@ namespace Quantum {
             case PowerupState.IceFlower:
             case PowerupState.FireFlower:
             case PowerupState.BoomerangFlower:
+            case PowerupState.SuperBallFlower:
+            case PowerupState.GoldFlower:
             case PowerupState.HammerSuit: {
 
                 if (mario->ProjectileDelayFrames > 0 || mario->IsWallsliding || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
@@ -1527,6 +1536,8 @@ namespace Quantum {
                     projectile = ShootHammerProjectile(f, ref filter, physics);
                 } else if (mario->CurrentPowerupState == PowerupState.BoomerangFlower) {
                     projectile = ShootBoomerangProjectile(f, ref filter, physics);
+                } else if (mario->CurrentPowerupState == PowerupState.SuperBallFlower) {
+                    projectile = ShootSuperballProjectile(f, ref filter, physics);
                 } else {
                     projectile = ShootNormalProjectile(f, ref filter, physics);
                 }
@@ -1621,6 +1632,19 @@ namespace Quantum {
             return projectile;
         }
 
+        private Projectile* ShootSuperballProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
+            var mario = filter.MarioPlayer;
+            var physicsObject = filter.PhysicsObject;
+
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35);
+
+            EntityRef newEntity = f.Create(f.SimulationConfig.SuperballPrototype);
+
+            var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            projectile->InitializeSuperball(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
+            return projectile;
+        }
+
         private Projectile* ShootNormalProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
@@ -1629,6 +1653,8 @@ namespace Quantum {
 
             EntityRef newEntity = f.Create(mario->CurrentPowerupState == PowerupState.IceFlower
                 ? f.SimulationConfig.IceballPrototype
+                : mario->CurrentPowerupState == PowerupState.GoldFlower
+                ? f.SimulationConfig.GoldballPrototype
                 : f.SimulationConfig.FireballPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
@@ -2004,6 +2030,31 @@ namespace Quantum {
             }
             if (playBumpSound ?? true) {
                 f.Events.PlayBumpSound(filter.Entity);
+            }
+        }
+
+        private void HandleDamagingTiles(Frame f, ref Filter filter, VersusStageData stage) {
+            var physicsObject = filter.PhysicsObject;
+            if (!f.TryResolveList(physicsObject->Contacts, out QList<PhysicsContact> contacts)) {
+                return;
+            }
+            foreach (var contact in contacts) {
+                if (f.Exists(contact.Entity)) {
+                    continue;
+                }
+                var tileInstance = stage.GetTileRelative(f, contact.Tile);
+                if (f.FindAsset(tileInstance.Tile) is not global::DamagingTile damaging) {
+                    continue;
+                }
+                FP upDot = FPVector2.Dot(contact.Normal, FPVector2.Up);
+                InteractionDirection direction = upDot > Constants.PhysicsGroundMaxAngleCos
+                ? InteractionDirection.Down
+                : upDot < -Constants.PhysicsGroundMaxAngleCos
+                ? InteractionDirection.Up
+                : contact.Normal.X < 0
+                ? InteractionDirection.Right
+                : InteractionDirection.Left;
+                damaging.Interact(f, filter.Entity, direction, contact.Tile, tileInstance, out _);
             }
         }
 

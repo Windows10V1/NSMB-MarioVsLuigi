@@ -18,7 +18,7 @@ MonoBehaviour:
       Value: 407541176103974228
   Prefab:
     Id:
-      Value: 0
+      Value: 1309345935604470246
   SpawnChance:
     RawValue: 131072
   AboveAverageBonus:
@@ -30,7 +30,7 @@ MonoBehaviour:
   MaxNumberOfItems: 0
   CanSpawnAfterSeconds:
     RawValue: 0
-  TranslationKey: coinitem.fireflower
+  TranslationKey: coinitem.goldflower
   CameraSpawnOffset:
     X:
       RawValue: 0
@@ -38,7 +38,7 @@ MonoBehaviour:
       RawValue: 110100
   MaxMatchingPowerStates: 0
   MaxMatchingReserveState: 0
-  State: 6
+  State: 7
   SoundPlaysEverywhere: 0
   SoundEffect: 16
   ReserveSprite: {fileID: 0}
@@ -82,5 +82,5 @@ MonoBehaviour:
   Instant: 0
   ProjectileAsset:
     Id:
-      Value: 392003488003726786
+      Value: 505756156224867182
   SfxOverrides: []

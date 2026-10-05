@@ -418,12 +418,17 @@ namespace Quantum {
             case PowerupState.FireFlower:
             case PowerupState.IceFlower:
             case PowerupState.BoomerangFlower:
+            case PowerupState.SuperBallFlower:
             case PowerupState.PropellerMushroom:
             case PowerupState.BlueShell: {
                 CurrentPowerupState = PowerupState.Mushroom;
                 f.Signals.OnMarioPlayerDropObjective(entity, 1, attacker);
                 break;
             }
+            case PowerupState.GoldFlower:
+                CurrentPowerupState = PowerupState.FireFlower;
+                f.Signals.OnMarioPlayerDropObjective(entity, 1, attacker);
+                break;
             }
 
             IsDrilling &= !IsPropellerFlying;

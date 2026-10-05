@@ -14,20 +14,28 @@ namespace Quantum {
 
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
             // BreakableObject is optional: Banzai Bill launchers aren't breakable.
-            if (f.Unsafe.TryGetPointer(filter.Entity, out BreakableObject* breakable) && breakable->IsBroken) {
-                return;
-            }
-            if (breakable == null) {
-                // Banzai launchers don't spawn: their bills are placed in the scene
-                // and fire themselves, cueing this launcher's animation instead.
-                return;
+            if (f.Unsafe.TryGetPointer(filter.Entity, out BreakableObject* breakable)) {
+                if (breakable->IsBroken) {
+                    return;
+                }
             }
             var launcher = filter.Launcher;
-            // Banzai launchers aren't breakable and only keep 1 bill alive at a
-            // time; regular launchers keep up to 3. A freed slot (kill/destroy)
-            // can shoot again once the cooldown below elapses.
-            byte maxBills = f.Has<BreakableObject>(filter.Entity) ? (byte) 3 : (byte) 1;
-            if (launcher->BulletBillCount >= maxBills) {
+            // Banzai launchers aren't breakable and only keep 2 bills alive at a
+            // time (placed + spawned combined); regular launchers keep up to 3.
+            // A freed slot (kill/destroy) can shoot again once the cooldown elapses.
+            bool isBanzaiLauncher = !f.Has<BreakableObject>(filter.Entity);
+            byte maxBills = isBanzaiLauncher ? (byte) 2 : (byte) 3;
+            int ownedLiveBills = launcher->BulletBillCount;
+            if (isBanzaiLauncher) {
+                // Placed bills aren't tracked in BulletBillCount, count them too.
+                var ownedBills = f.Filter<BanzaiBill, Enemy>();
+                while (ownedBills.NextUnsafe(out _, out BanzaiBill* ownedBill, out Enemy* ownedEnemy)) {
+                    if (ownedEnemy->IsAlive && ownedBill->BanzaiOwner == filter.Entity) {
+                        ownedLiveBills++;
+                    }
+                }
+            }
+            if (ownedLiveBills >= maxBills) {
                 return;
             }
 

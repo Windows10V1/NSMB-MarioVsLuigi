@@ -22,11 +22,11 @@ MonoBehaviour:
   SpawnChance:
     RawValue: 32768
   AboveAverageBonus:
-    RawValue: 65536
+    RawValue: 16384
   BelowAverageBonus:
-    RawValue: -147456
+    RawValue: -196608
   BlockSpawnSoundEffect: 69
-  Flags: 19
+  Flags: 255
   MaxNumberOfItems: 5
   CanSpawnAfterSeconds:
     RawValue: 3932160

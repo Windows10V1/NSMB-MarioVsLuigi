@@ -87,11 +87,13 @@ namespace Quantum {
 
             // Speed
             Speed = asset.Speed;
+            physicsObject->Gravity = FPVector2.Zero;
+            physicsObject->TerminalVelocity = -Speed;
 
             // Physics
-            Combo = 0;
             transform->Position = spawnpoint;
-            physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), -Speed);        }
+            physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), -Speed);
+        }
 
         public void UpdateBoomerang(Frame f, EntityRef thisEntity, PhysicsObject* physicsObject, VersusStageData stage) {
             if (!f.Exists(thisEntity) || f.DestroyPending(thisEntity)) {
@@ -151,19 +153,33 @@ namespace Quantum {
         }
 
         public void UpdateSuperball(Frame f, PhysicsObject* physicsObject) {
-            var asset = f.FindAsset(Asset);
-            var speed = asset.Speed;
+            physicsObject->Gravity = FPVector2.Zero;
+            physicsObject->TerminalVelocity = -Speed;
 
             if (physicsObject->IsTouchingGround) {
-                physicsObject->Gravity = FPVector2.Up * speed;
+                physicsObject->Velocity.Y = Speed;
+                physicsObject->IsTouchingGround = false;
             } else if (physicsObject->IsTouchingCeiling) {
-                physicsObject->Gravity = FPVector2.Down * speed;
+                physicsObject->Velocity.Y = -Speed;
+                physicsObject->IsTouchingCeiling = false;
+            }
+
+            if (physicsObject->Velocity.Y > 0) {
+                physicsObject->Velocity.Y = Speed;
+            } else if (physicsObject->Velocity.Y < 0) {
+                physicsObject->Velocity.Y = -Speed;
+            } else {
+                physicsObject->Velocity.Y = Speed;
             }
 
             if (physicsObject->IsTouchingLeftWall && !FacingRight) {
                 FacingRight = true;
+                physicsObject->Velocity.X = Speed;
             } else if (physicsObject->IsTouchingRightWall && FacingRight) {
                 FacingRight = false;
+                physicsObject->Velocity.X = -Speed;
+            } else {
+                physicsObject->Velocity.X = Speed * (FacingRight ? 1 : -1);
             }
         }
     }

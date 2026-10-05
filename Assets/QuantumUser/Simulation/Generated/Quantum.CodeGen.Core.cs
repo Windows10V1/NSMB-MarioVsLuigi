@@ -1600,41 +1600,50 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct BanzaiBill : Quantum.IComponent {
-    public const Int32 SIZE = 48;
+    public const Int32 SIZE = 56;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(40)]
+    [FieldOffset(48)]
     public FP Speed;
-    [FieldOffset(32)]
+    [FieldOffset(40)]
     public FP MinimumShootRadius;
-    [FieldOffset(24)]
+    [FieldOffset(32)]
     public FP MaximumShootRadius;
-    [FieldOffset(8)]
+    [FieldOffset(2)]
+    public UInt16 TimeToShoot;
+    [FieldOffset(16)]
     public EntityRef BanzaiOwner;
     [FieldOffset(0)]
     [ExcludeFromPrototype()]
     public Byte DespawnFrames;
-    [FieldOffset(16)]
+    [FieldOffset(24)]
     [ExcludeFromPrototype()]
     public EntityRef Owner;
-    [FieldOffset(4)]
+    [FieldOffset(8)]
     [ExcludeFromPrototype()]
     public QBoolean HasFired;
+    [FieldOffset(4)]
+    [ExcludeFromPrototype()]
+    public UInt16 TimeToShootFrames;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 15559;
         hash = hash * 31 + Speed.GetHashCode();
         hash = hash * 31 + MinimumShootRadius.GetHashCode();
         hash = hash * 31 + MaximumShootRadius.GetHashCode();
+        hash = hash * 31 + TimeToShoot.GetHashCode();
         hash = hash * 31 + BanzaiOwner.GetHashCode();
         hash = hash * 31 + DespawnFrames.GetHashCode();
         hash = hash * 31 + Owner.GetHashCode();
         hash = hash * 31 + HasFired.GetHashCode();
+        hash = hash * 31 + TimeToShootFrames.GetHashCode();
         return hash;
       }
     }
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (BanzaiBill*)ptr;
         serializer.Stream.Serialize(&p->DespawnFrames);
+        serializer.Stream.Serialize(&p->TimeToShoot);
+        serializer.Stream.Serialize(&p->TimeToShootFrames);
         QBoolean.Serialize(&p->HasFired, serializer);
         EntityRef.Serialize(&p->BanzaiOwner, serializer);
         EntityRef.Serialize(&p->Owner, serializer);
