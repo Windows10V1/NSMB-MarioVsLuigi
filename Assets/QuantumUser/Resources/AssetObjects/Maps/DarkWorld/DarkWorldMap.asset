@@ -184,6 +184,30 @@ MonoBehaviour:
     - rid: 2487658269162602504
     - rid: 2487658269162602505
     - rid: 2487658269162602506
+  - Components:
+    - rid: 7966697277861396480
+    - rid: 7966697277861396481
+    - rid: 7966697277861396482
+    - rid: 7966697277861396483
+    - rid: 7966697277861396484
+    - rid: 7966697277861396485
+    - rid: 7966697277861396486
+    - rid: 7966697277861396487
+    - rid: 7966697277861396488
+    - rid: 7966697277861396489
+    - rid: 7966697277861396490
+  - Components:
+    - rid: 6051705230410645504
+    - rid: 6051705230410645505
+    - rid: 6051705230410645506
+    - rid: 6051705230410645507
+    - rid: 6051705230410645508
+    - rid: 6051705230410645509
+    - rid: 6051705230410645510
+    - rid: 6051705230410645511
+    - rid: 6051705230410645512
+    - rid: 6051705230410645513
+    - rid: 6051705230410645514
   SerializedTriangleDataUncompressedSize: 8
   references:
     version: 2
@@ -830,11 +854,6 @@ MonoBehaviour:
       data:
         Speed:
           RawValue: 98304
-        MinimumShootRadius:
-          RawValue: 39322
-        MaximumShootRadius:
-          RawValue: 458752
-        TimeToShoot: 240
         BanzaiOwner:
           SceneIndexPlusOne: 14
     - rid: 2487658269162602500
@@ -971,7 +990,7 @@ MonoBehaviour:
         BulletBillPrototype:
           Id:
             Value: 1335950808081396978
-        TimeToShoot: 480
+        TimeToShoot: 240
         MinimumShootRadius:
           RawValue: 39322
         MaximumShootRadius:
@@ -1258,6 +1277,141 @@ MonoBehaviour:
       type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
         _empty_prototype_dummy_field_: 0
+    - rid: 6051705230410645504
+      type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        Position:
+          X:
+            RawValue: -32768
+          Y:
+            RawValue: -344064
+        Rotation:
+          RawValue: 0
+    - rid: 6051705230410645505
+      type: {class: PhysicsCollider2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        ShapeConfig:
+          ShapeType: 4
+          PolygonCollider:
+            Id:
+              Value: 0
+          CircleRadius:
+            RawValue: 0
+          CapsuleSize:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          EdgeExtent:
+            RawValue: 0
+          BoxExtents:
+            X:
+              RawValue: 72090
+            Y:
+              RawValue: 55706
+          PositionOffset:
+            X:
+              RawValue: 6554
+            Y:
+              RawValue: 9830
+          RotationOffset:
+            RawValue: 0
+          UserTag: 0
+          IsPersistent: 1
+          CompoundShapes: []
+        Layer: 9
+        IsTrigger: 0
+        PhysicsMaterial:
+          Id:
+            Value: 0
+    - rid: 6051705230410645506
+      type: {class: PhysicsCallbacks2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        CallbackFlags:
+          Value: 4095
+    - rid: 6051705230410645507
+      type: {class: BanzaiBillPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Speed:
+          RawValue: 98304
+        BanzaiOwner:
+          SceneIndexPlusOne: 13
+    - rid: 6051705230410645508
+      type: {class: CullablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Offset:
+          X:
+            RawValue: 0
+          Y:
+            RawValue: 13107
+        BroadRadius:
+          RawValue: 131072
+    - rid: 6051705230410645509
+      type: {class: EnemyPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Spawnpoint:
+          X:
+            RawValue: -32768
+          Y:
+            RawValue: -344064
+        IgnorePlayerWhenRespawning:
+          Value: 0
+        DisableRespawning:
+          Value: 0
+        StayAtHomeWhenOffscreen:
+          Value: 0
+    - rid: 6051705230410645510
+      type: {class: FreezablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        IceBlockSize:
+          X:
+            RawValue: 122880
+          Y:
+            RawValue: 90112
+        AutoBreakFrames: 90
+        AutoBreakGrabAdditionalFrames: 0
+        AutoBreakWhileHeld:
+          Value: 0
+        Offset:
+          X:
+            RawValue: 16384
+          Y:
+            RawValue: 0
+        IsCarryable:
+          Value: 0
+        IsFlying:
+          Value: 0
+    - rid: 6051705230410645511
+      type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        ColliderDisabled:
+          Value: 0
+    - rid: 6051705230410645512
+      type: {class: InteractionInitiatorPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        _empty_prototype_dummy_field_: 0
+    - rid: 6051705230410645513
+      type: {class: PhysicsObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Gravity:
+          X:
+            RawValue: 0
+          Y:
+            RawValue: 0
+        TerminalVelocity:
+          RawValue: -524288
+        IsFrozen:
+          Value: 0
+        DisableCollision:
+          Value: 1
+        SlowInLiquids:
+          Value: 0
+        IsWaterSolid:
+          Value: 0
+    - rid: 6051705230410645514
+      type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        _empty_prototype_dummy_field_: 0
     - rid: 6889073220037640192
       type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
       data:
@@ -1316,7 +1470,7 @@ MonoBehaviour:
         BulletBillPrototype:
           Id:
             Value: 1335950808081396978
-        TimeToShoot: 480
+        TimeToShoot: 240
         MinimumShootRadius:
           RawValue: 39322
         MaximumShootRadius:
@@ -1610,6 +1764,141 @@ MonoBehaviour:
       data:
         ColliderDisabled:
           Value: 0
+    - rid: 7966697277861396480
+      type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        Position:
+          X:
+            RawValue: 2097152
+          Y:
+            RawValue: -114688
+        Rotation:
+          RawValue: 0
+    - rid: 7966697277861396481
+      type: {class: PhysicsCollider2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        ShapeConfig:
+          ShapeType: 4
+          PolygonCollider:
+            Id:
+              Value: 0
+          CircleRadius:
+            RawValue: 0
+          CapsuleSize:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          EdgeExtent:
+            RawValue: 0
+          BoxExtents:
+            X:
+              RawValue: 72090
+            Y:
+              RawValue: 55706
+          PositionOffset:
+            X:
+              RawValue: 6554
+            Y:
+              RawValue: 9830
+          RotationOffset:
+            RawValue: 0
+          UserTag: 0
+          IsPersistent: 1
+          CompoundShapes: []
+        Layer: 9
+        IsTrigger: 0
+        PhysicsMaterial:
+          Id:
+            Value: 0
+    - rid: 7966697277861396482
+      type: {class: PhysicsCallbacks2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        CallbackFlags:
+          Value: 4095
+    - rid: 7966697277861396483
+      type: {class: BanzaiBillPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Speed:
+          RawValue: 98304
+        BanzaiOwner:
+          SceneIndexPlusOne: 14
+    - rid: 7966697277861396484
+      type: {class: CullablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Offset:
+          X:
+            RawValue: 0
+          Y:
+            RawValue: 13107
+        BroadRadius:
+          RawValue: 131072
+    - rid: 7966697277861396485
+      type: {class: EnemyPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Spawnpoint:
+          X:
+            RawValue: 2097152
+          Y:
+            RawValue: -114688
+        IgnorePlayerWhenRespawning:
+          Value: 0
+        DisableRespawning:
+          Value: 0
+        StayAtHomeWhenOffscreen:
+          Value: 0
+    - rid: 7966697277861396486
+      type: {class: FreezablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        IceBlockSize:
+          X:
+            RawValue: 122880
+          Y:
+            RawValue: 90112
+        AutoBreakFrames: 90
+        AutoBreakGrabAdditionalFrames: 0
+        AutoBreakWhileHeld:
+          Value: 0
+        Offset:
+          X:
+            RawValue: 16384
+          Y:
+            RawValue: 0
+        IsCarryable:
+          Value: 0
+        IsFlying:
+          Value: 0
+    - rid: 7966697277861396487
+      type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        ColliderDisabled:
+          Value: 0
+    - rid: 7966697277861396488
+      type: {class: InteractionInitiatorPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        _empty_prototype_dummy_field_: 0
+    - rid: 7966697277861396489
+      type: {class: PhysicsObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Gravity:
+          X:
+            RawValue: 0
+          Y:
+            RawValue: 0
+        TerminalVelocity:
+          RawValue: -524288
+        IsFrozen:
+          Value: 0
+        DisableCollision:
+          Value: 1
+        SlowInLiquids:
+          Value: 0
+        IsWaterSolid:
+          Value: 0
+    - rid: 7966697277861396490
+      type: {class: WrappingObjectPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        _empty_prototype_dummy_field_: 0
     - rid: 8025955847882407936
       type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
       data:
@@ -1667,11 +1956,6 @@ MonoBehaviour:
       data:
         Speed:
           RawValue: 98304
-        MinimumShootRadius:
-          RawValue: 39322
-        MaximumShootRadius:
-          RawValue: 458752
-        TimeToShoot: 240
         BanzaiOwner:
           SceneIndexPlusOne: 13
     - rid: 8025955847882407940

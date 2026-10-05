@@ -148,8 +148,16 @@ namespace NSMB.Tiles {
         }
 
         private unsafe void OnTileBroken(EventTileBroken e) {
+            if (!tileBreakParticleSystem || ViewContext?.Stage == null) {
+                return;
+            }
+
             ParticleSystem particle = Instantiate(tileBreakParticleSystem,
                 QuantumUtils.RelativeTileToWorld(ViewContext.Stage, e.Position).ToUnityVector2() + (Vector2.one * 0.25f), Quaternion.identity);
+
+            if (!particle) {
+                return;
+            }
 
             if (QuantumUnityDB.GetGlobalAsset(e.Tile.Tile) is BreakableBrickTile bbt) {
                 var main = particle.main;

@@ -52,17 +52,11 @@ namespace Quantum.Prototypes.Unity {
   [System.SerializableAttribute()]
   public unsafe partial class BanzaiBillPrototype : Quantum.QuantumUnityPrototypeAdapter<Quantum.Prototypes.BanzaiBillPrototype> {
     public FP Speed;
-    public FP MinimumShootRadius;
-    public FP MaximumShootRadius;
-    public UInt16 TimeToShoot;
     public Quantum.QuantumEntityPrototype BanzaiOwner;
     partial void ConvertUser(Quantum.QuantumEntityPrototypeConverter converter, ref Quantum.Prototypes.BanzaiBillPrototype prototype);
     public override Quantum.Prototypes.BanzaiBillPrototype Convert(Quantum.QuantumEntityPrototypeConverter converter) {
       var result = new Quantum.Prototypes.BanzaiBillPrototype();
       converter.Convert(this.Speed, out result.Speed);
-      converter.Convert(this.MinimumShootRadius, out result.MinimumShootRadius);
-      converter.Convert(this.MaximumShootRadius, out result.MaximumShootRadius);
-      converter.Convert(this.TimeToShoot, out result.TimeToShoot);
       converter.Convert(this.BanzaiOwner, out result.BanzaiOwner);
       ConvertUser(converter, ref result);
       return result;

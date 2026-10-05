@@ -20,22 +20,10 @@ namespace Quantum {
                 }
             }
             var launcher = filter.Launcher;
-            // Banzai launchers aren't breakable and only keep 2 bills alive at a
-            // time (placed + spawned combined); regular launchers keep up to 3.
-            // A freed slot (kill/destroy) can shoot again once the cooldown elapses.
             bool isBanzaiLauncher = !f.Has<BreakableObject>(filter.Entity);
-            byte maxBills = isBanzaiLauncher ? (byte) 2 : (byte) 3;
-            int ownedLiveBills = launcher->BulletBillCount;
-            if (isBanzaiLauncher) {
-                // Placed bills aren't tracked in BulletBillCount, count them too.
-                var ownedBills = f.Filter<BanzaiBill, Enemy>();
-                while (ownedBills.NextUnsafe(out _, out BanzaiBill* ownedBill, out Enemy* ownedEnemy)) {
-                    if (ownedEnemy->IsAlive && ownedBill->BanzaiOwner == filter.Entity) {
-                        ownedLiveBills++;
-                    }
-                }
-            }
-            if (ownedLiveBills >= maxBills) {
+            // Regular launchers keep up to 3 bills alive at a time. A freed slot
+            // (kill/destroy) can shoot again once the cooldown below elapses.
+            if (!isBanzaiLauncher && launcher->BulletBillCount >= 3) {
                 return;
             }
 
@@ -75,6 +63,36 @@ namespace Quantum {
                 // Attempt a shot
                 var entity = filter.Entity;
                 bool right = smallestDistance < 0;
+
+                if (isBanzaiLauncher) {
+                    // Fire the first dormant owned bill instead of spawning.
+                    // At most 2 owned bills may be live (fired) at once.
+                    EntityRef dormantBill = EntityRef.None;
+                    int flyingBills = 0;
+                    var ownedBills = f.Filter<BanzaiBill, Enemy>();
+                    while (ownedBills.NextUnsafe(out EntityRef billEntity, out BanzaiBill* ownedBill, out Enemy* ownedEnemy)) {
+                        if (ownedBill->BanzaiOwner != entity && ownedBill->Owner != entity) {
+                            continue;
+                        }
+                        if (!ownedEnemy->IsAlive) {
+                            continue;
+                        }
+                        if (ownedBill->HasFired) {
+                            flyingBills++;
+                        } else if (dormantBill == EntityRef.None
+                            && (!f.Unsafe.TryGetPointer(billEntity, out Freezable* billFreezable) || !billFreezable->IsFrozen(f))) {
+                            dormantBill = billEntity;
+                        }
+                    }
+
+                    launcher->TimeToShootFrames = launcher->TimeToShoot;
+                    if (dormantBill != EntityRef.None && flyingBills < 2) {
+                        f.Unsafe.GetPointer<Enemy>(dormantBill)->FacingRight = right;
+                        f.Unsafe.GetPointer<BanzaiBill>(dormantBill)->HasFired = true;
+                        f.Events.BulletBillLauncherShoot(entity, dormantBill, right);
+                    }
+                    return;
+                }
 
                 EntityRef newBillEntity = f.Create(launcher->BulletBillPrototype);
                 var newBillTransform = f.Unsafe.GetPointer<Transform2D>(newBillEntity);

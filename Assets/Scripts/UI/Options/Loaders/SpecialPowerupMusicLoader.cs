@@ -9,7 +9,11 @@ namespace NSMB.UI.Options.Loaders {
             "ui.generic.none",
             "ui.options.audio.specialpowerupmusic.starman",
             "ui.options.audio.specialpowerupmusic.megamushroom",
-            "ui.options.audio.specialpowerupmusic.both"
+            "ui.options.audio.specialpowerupmusic.bothstarandmegamushroom",
+            "ui.options.audio.specialpowerupmusic.superball",
+            "ui.options.audio.specialpowerupmusic.bothstarandsuperball",
+            "ui.options.audio.specialpowerupmusic.bothmegamushroomandsuperball",
+            "ui.options.audio.specialpowerupmusic.all"
         };
 
         //---Private Variables

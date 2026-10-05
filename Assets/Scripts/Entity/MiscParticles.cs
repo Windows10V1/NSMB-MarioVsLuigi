@@ -22,6 +22,7 @@ namespace NSMB.Particles {
             QuantumEvent.Subscribe<EventEnemyPierced>(this, OnEnemyPierced, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyDespawnedOffscreen>(this, OnEnemyDespawnedOffscreen, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerBlueShellStomped>(this, OnMarioPlayerBlueShellStomped, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventBulletBillLauncherShoot>(this, OnBulletBillLauncherShoot, FilterOutReplayFastForward);
         }
 
         private bool TryGetParticlePair(ParticleEffect particleEffect, out ParticlePair particlePair) {
@@ -82,6 +83,32 @@ namespace NSMB.Particles {
                     Enums.PrefabParticle.Enemy_HardKick.GetGameObject(),
                     view.transform.position + (Vector3.back * 5) + (Vector3.up * 0.1f),
                     Quaternion.identity);
+            }
+        }
+
+        private void OnBulletBillLauncherShoot(EventBulletBillLauncherShoot e) {
+            QuantumEntityView view = Updater.GetView(e.Entity);
+            if (!view) {
+                return;
+            }
+
+            Vector3 spawnPosition = view.transform.position + (Vector3.back * 5) + (Vector3.up * 3f);
+            var launcherAnimator = view.GetComponent<NSMB.Entities.World.BulletBillLauncherAnimator>();
+            if (launcherAnimator) {
+                spawnPosition = launcherAnimator.HeadCenter + (Vector3.back * 5);
+            }
+
+            GameObject puff = Instantiate(
+                Enums.PrefabParticle.Enemy_KillPoof.GetGameObject(),
+                spawnPosition,
+                Quaternion.identity);
+            // NOTE: root scale is ignored (systems use Scaling Mode Local),
+            // so each system's own transform is scaled instead.
+            var puffSystems = puff.GetComponentsInChildren<ParticleSystem>(true);
+            foreach (var puffParticles in puffSystems) {
+                if (puffParticles) {
+                    puffParticles.transform.localScale = Vector3.one * 5f;
+                }
             }
         }
 

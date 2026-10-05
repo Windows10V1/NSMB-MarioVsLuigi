@@ -9851,6 +9851,16 @@ PrefabInstance:
       propertyPath: playOnAwake
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2059777663677175449, guid: da75331a116cd3b4f8a6cebc1fb26d88,
+        type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2059777663677175449, guid: da75331a116cd3b4f8a6cebc1fb26d88,
+        type: 3}
+      propertyPath: ShapeModule.m_Position.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8469385762470922254, guid: da75331a116cd3b4f8a6cebc1fb26d88,
         type: 3}
       propertyPath: m_Name
@@ -10102,6 +10112,16 @@ PrefabInstance:
         type: 3}
       propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3094612392314655968, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: ShapeModule.m_Scale.y
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 3094612392314655968, guid: d758aa65baab42b43ba031de88063bb7,
+        type: 3}
+      propertyPath: ShapeModule.m_Position.y
+      value: 0.3
       objectReference: {fileID: 0}
     - target: {fileID: 4113588847912301876, guid: d758aa65baab42b43ba031de88063bb7,
         type: 3}

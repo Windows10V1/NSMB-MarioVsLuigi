@@ -9,7 +9,6 @@ namespace NSMB.Entities.World {
         [SerializeField] private Animation headAnimation;
         [SerializeField] private SpriteRenderer headRenderer;
         [SerializeField] private Transform headOrigin;
-        [SerializeField] private GameObject bulletBillShoot;
 
         public override void Start() {
             base.Start();
@@ -45,16 +44,26 @@ namespace NSMB.Entities.World {
 
         private Coroutine overlayResetRoutine;
 
+        public Vector3 HeadCenter {
+            get {
+                if (headRenderer) {
+                    return headRenderer.bounds.center;
+                }
+                return transform.position;
+            }
+        }
+
         private unsafe void OnBulletBillLauncherShoot(EventBulletBillLauncherShoot e) {
             if (e.Entity != EntityRef) {
                 return;
             }
 
-            headAnimation.Play();
+            if (headAnimation) {
+                headAnimation.Play();
+            }
             bool isBanzai = !PredictedFrame.Has<BreakableObject>(e.Entity);
 
             // Banzai launchers pop in front of the bill only while shooting.
-            // Applied first so the puff below inherits the overlay depth.
             if (isBanzai && sRenderer) {
                 Vector3 graphicsPos = sRenderer.transform.localPosition;
                 graphicsPos.z = -1.1f;
@@ -64,17 +73,6 @@ namespace NSMB.Entities.World {
                     StopCoroutine(overlayResetRoutine);
                 }
                 overlayResetRoutine = StartCoroutine(ResetShootOverlay());
-            }
-
-            // Banzai launchers aren't breakable and their mouth sits well above the
-            // head pivot, so the puff spawns higher to match the lowered bill.
-            float puffHeight = isBanzai ? 1.35f : 0.25f;
-            if (bulletBillShoot) {
-                bulletBillShoot.transform.position = headOrigin.position + (e.Right ? new Vector3(0.25f, puffHeight, 0) : new Vector3(-0.25f, puffHeight, 0));
-                var puffParticles = bulletBillShoot.GetComponentInChildren<ParticleSystem>();
-                if (puffParticles) {
-                    puffParticles.Play();
-                }
             }
         }
 

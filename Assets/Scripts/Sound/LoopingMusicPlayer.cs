@@ -90,6 +90,10 @@ namespace NSMB.Sound {
         }
 
         public void Play(LoopingMusicData song, bool restartIfAlreadyPlaying = false) {
+            if (!song || !song.clip) {
+                return;
+            }
+
             if (currentAudio == song && audioSource.isPlaying && !restartIfAlreadyPlaying) {
                 return;
             }

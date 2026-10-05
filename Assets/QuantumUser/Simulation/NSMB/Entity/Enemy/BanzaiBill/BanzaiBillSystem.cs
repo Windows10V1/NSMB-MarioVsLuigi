@@ -52,67 +52,9 @@ namespace Quantum {
             }
 
             if (!banzaiBill->HasFired) {
-                // Dormant until a player enters firing range, same rules as launchers.
-                FP smallestDistance = FP.UseableMax;
-                var allPlayers = f.Filter<MarioPlayer, Transform2D>();
-                while (allPlayers.NextUnsafe(out _, out _, out Transform2D* marioTransform)) {
-                    QuantumUtils.WrappedDistance(stage, filter.Transform->Position, marioTransform->Position, out FP distance);
-                    FP abs = FPMath.Abs(distance);
-
-                    // Player is too close, hold fire.
-                    if (abs < banzaiBill->MinimumShootRadius) {
-                        smallestDistance = FP.UseableMax;
-                        break;
-                    }
-
-                    if (abs < FPMath.Abs(smallestDistance)) {
-                        smallestDistance = distance;
-                    }
-                }
-
-                if (smallestDistance == FP.UseableMax || FPMath.Abs(smallestDistance) > banzaiBill->MaximumShootRadius) {
-                    // Out of range: reset the initial wait, like launchers do.
-                    banzaiBill->TimeToShootFrames = 0;
-                    return;
-                }
-
-                if (banzaiBill->TimeToShootFrames == 0) {
-                    // Player just entered range, start the initial wait.
-                    banzaiBill->TimeToShootFrames = banzaiBill->TimeToShoot;
-                    return;
-                }
-
-                if (!QuantumUtils.Decrement(ref banzaiBill->TimeToShootFrames)) {
-                    return;
-                }
-
-                // Hold fire while 2 of our launcher's bills are already live.
-                EntityRef launcher = banzaiBill->BanzaiOwner != EntityRef.None ? banzaiBill->BanzaiOwner : banzaiBill->Owner;
-                if (launcher != EntityRef.None) {
-                    int liveCount = 0;
-                    var bills = f.Filter<BanzaiBill, Enemy>();
-                    while (bills.NextUnsafe(out EntityRef otherEntity, out BanzaiBill* otherBill, out Enemy* otherEnemy)) {
-                        if (otherEntity == filter.Entity || !otherEnemy->IsAlive) {
-                            continue;
-                        }
-                        EntityRef otherLauncher = otherBill->BanzaiOwner != EntityRef.None ? otherBill->BanzaiOwner : otherBill->Owner;
-                        if (otherLauncher == launcher && ++liveCount >= 2) {
-                            break;
-                        }
-                    }
-                    if (liveCount >= 2) {
-                        return;
-                    }
-                }
-
-                bool right = smallestDistance < 0;
-                enemy->FacingRight = right;
-                banzaiBill->HasFired = true;
-
-                // Cue the linked launcher's shoot animation, if any.
-                if (launcher != EntityRef.None) {
-                    f.Events.BulletBillLauncherShoot(launcher, filter.Entity, right);
-                }
+                // Dormant until our launcher fires us. Bills without a linked
+                // launcher never fire.
+                return;
             }
 
             var physicsObject = filter.PhysicsObject;
@@ -150,7 +92,10 @@ namespace Quantum {
                 f.Events.BanzaiBillHitByProjectile(banzaiBillEntity);
             } else if (!mario->IsCrouchedInShell && mario->IsDamageable(f)) {
                 // Bump the player away without powerdown or star drops.
-                mario->DoKnockback(f, marioEntity, theirPos.X < ourPos.X, 0, KnockbackStrength.Groundpound, banzaiBillEntity);
+                bool damaged = mario->DoKnockback(f, marioEntity, theirPos.X < ourPos.X, 0, KnockbackStrength.Groundpound, banzaiBillEntity);
+                if (damaged) {
+                    f.Events.PlayKnockbackEffect(marioEntity, banzaiBillEntity, KnockbackStrength.Groundpound, (ourPos + theirPos) / 2, true);
+                }
             }
         }
 
@@ -223,10 +168,9 @@ namespace Quantum {
         }
         public void OnEnemyRespawned(Frame f, EntityRef entity) {
             if (f.Unsafe.TryGetPointer(entity, out BanzaiBill* banzaiBill)) {
-                // Come back dormant so we can fire again on proximity.
+                // Come back dormant so our launcher can fire us again.
                 banzaiBill->HasFired = false;
                 banzaiBill->DespawnFrames = 0;
-                banzaiBill->TimeToShootFrames = 0;
                 // Kill disables this and Respawn doesn't restore it.
                 f.Unsafe.GetPointer<Interactable>(entity)->ColliderDisabled = false;
             }
