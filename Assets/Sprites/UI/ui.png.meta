@@ -2718,6 +2718,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: room_starcoins
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 186
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: eb465f3c49d1d6b48b791b7904e2ae9a
+      internalID: -2085187894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -2826,6 +2848,7 @@ TextureImporter:
       room_smallnumber_8: 442522640
       room_smallnumber_9: -1616819778
       room_spectator: -2077949175
+      room_starcoins: -2085187894
       room_stars: -846454927
       room_teams: 314515511
       room_timer: 309482482

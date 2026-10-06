@@ -1,3 +1,4 @@
+using NSMB.Utilities.Components;
 using Quantum;
 using System.Collections.Generic;
 using UnityEngine;
@@ -28,11 +29,13 @@ namespace NSMB.Quantum {
             if (PoolablePrefabs.Contains(prefab)) {
                 GameObject newObject = base.Create(prefab, parent, activate, createIfEmpty);
                 PooledObjects.Add(newObject);
+                WrappingLight.EnsureAdded(newObject);
                 return newObject;
             } else {
                 GameObject newObject = GameObject.Instantiate(prefab, parent, false);
                 newObject.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
                 newObject.SetActive(activate);
+                WrappingLight.EnsureAdded(newObject);
                 return newObject;
             }
         }
