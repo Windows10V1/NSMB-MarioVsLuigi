@@ -142,6 +142,23 @@ namespace Quantum {
             f.Events.MarioPlayerCollectedCoin(marioEntity, newCoins, spawnedItem, worldLocation, fromBlock, downwards);
         }
 
+        public static void AddCoinsDirect(Frame f, EntityRef marioEntity, int amount) {
+            // Grants coins without firing MarioPlayerCollectedCoin, so no coin
+            // numbers or coin sound play. Uses the exact per-coin rules as normal
+            // collection, so power-up thresholds can't be bypassed.
+            var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
+            int coinsForPowerup = f.Global->Rules.CoinsForPowerup;
+            for (int i = 0; i < amount; i++) {
+                byte newCoins = (byte) (mario->Coins + 1);
+                if (newCoins == coinsForPowerup) {
+                    mario->Coins = 0;
+                    MarioPlayerSystem.SpawnItem(f, marioEntity, mario, default, false);
+                } else {
+                    mario->Coins = newCoins;
+                }
+            }
+        }
+
         public void OnEntityBumped(Frame f, EntityRef coinEntity, FPVector2 position, EntityRef bumpOwner, QBoolean fromBelow) {
             if (!f.Unsafe.TryGetPointer(coinEntity, out Coin* coin)
                 || !f.Unsafe.TryGetPointer(coinEntity, out Transform2D* transform)

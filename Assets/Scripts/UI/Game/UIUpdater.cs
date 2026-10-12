@@ -59,6 +59,8 @@ namespace NSMB.UI.Game {
             MarioPlayerAnimator.MarioPlayerDestroyed += OnMarioDestroyed;
             BigStarAnimator.BigStarInitialized += OnBigStarInitialized;
             BigStarAnimator.BigStarDestroyed += OnBigStarDestroyed;
+            StarCoinAnimator.StarCoinInitialized += OnStarCoinInitialized;
+            StarCoinAnimator.StarCoinDestroyed += OnStarCoinDestroyed;
             TranslationManager.OnLanguageChanged += OnLanguageChanged;
             Settings.Controls.Debug.ToggleHUD.performed += OnToggleHUD;
             OnLanguageChanged(GlobalController.Instance.translationManager);
@@ -70,6 +72,8 @@ namespace NSMB.UI.Game {
             MarioPlayerAnimator.MarioPlayerDestroyed -= OnMarioDestroyed;
             BigStarAnimator.BigStarInitialized -= OnBigStarInitialized;
             BigStarAnimator.BigStarDestroyed -= OnBigStarDestroyed;
+            StarCoinAnimator.StarCoinInitialized -= OnStarCoinInitialized;
+            StarCoinAnimator.StarCoinDestroyed -= OnStarCoinDestroyed;
             TranslationManager.OnLanguageChanged -= OnLanguageChanged;
             Settings.Controls.Debug.ToggleHUD.performed -= OnToggleHUD;
         }
@@ -157,6 +161,14 @@ namespace NSMB.UI.Game {
 
         private void OnBigStarDestroyed(Frame f, BigStarAnimator star) {
             DestroyTrackIcon(star);
+        }
+
+        private void OnStarCoinInitialized(Frame f, StarCoinAnimator starCoin) {
+            entityTrackIcons[starCoin] = CreateStarCoinTrackIcon(Updater, f, starCoin.EntityRef, starCoin.transform);
+        }
+
+        private void OnStarCoinDestroyed(Frame f, StarCoinAnimator starCoin) {
+            DestroyTrackIcon(starCoin);
         }
 
         private void UpdateStoredItemUI(MarioPlayer* mario, bool playAnimation) {
@@ -306,13 +318,27 @@ namespace NSMB.UI.Game {
         public TrackIcon CreateTrackIcon(QuantumEntityViewUpdater evu, Frame f, EntityRef entity, Transform target) {
             TrackIcon icon;
             if (f.Has<BigStar>(entity)) {
-                icon = Instantiate(starTrackTemplate, starTrackTemplate.transform.parent);
+                // StarCoins also carry BigStar- distinguish via MainStarCoin so they
+                // don't share the objective-star minimap icon.
+                if (entity == f.Global->MainStarCoin) {
+                    icon = Instantiate(starCoinTrackTemplate, starCoinTrackTemplate.transform.parent);
+                } else {
+                    icon = Instantiate(starTrackTemplate, starTrackTemplate.transform.parent);
+                }
             } else if (f.Has<MarioPlayer>(entity)) {
                 icon = Instantiate(playerTrackTemplate, playerTrackTemplate.transform.parent);
             } else {
                 return null;
             }
 
+            icon.Updater = evu;
+            icon.Initialize(playerElements, entity, target);
+            icon.gameObject.SetActive(true);
+            return icon;
+        }
+
+        public TrackIcon CreateStarCoinTrackIcon(QuantumEntityViewUpdater evu, Frame f, EntityRef entity, Transform target) {
+            TrackIcon icon = Instantiate(starCoinTrackTemplate, starCoinTrackTemplate.transform.parent);
             icon.Updater = evu;
             icon.Initialize(playerElements, entity, target);
             icon.gameObject.SetActive(true);

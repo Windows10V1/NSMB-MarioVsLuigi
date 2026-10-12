@@ -528,7 +528,7 @@ namespace Quantum.Prototypes {
     public QBoolean DrawOnTimeUp;
     public Quantum.QEnum8<TeamAttackOptions> TeamAttack;
     public Int32 StarFountain;
-    public Int32 CoinDeathPenalty;
+    public QBoolean StarCoinsEnabled;
     [DictionaryAttribute()]
     [DynamicCollectionAttribute()]
     public DictionaryEntry_AssetRefCoinItemAsset_FP[] CoinItemCustomSpawnWeights = {};
@@ -556,7 +556,7 @@ namespace Quantum.Prototypes {
         result.DrawOnTimeUp = this.DrawOnTimeUp;
         result.TeamAttack = this.TeamAttack;
         result.StarFountain = this.StarFountain;
-        result.CoinDeathPenalty = this.CoinDeathPenalty;
+        result.StarCoinsEnabled = this.StarCoinsEnabled;
         if (this.CoinItemCustomSpawnWeights.Length == 0) {
           result.CoinItemCustomSpawnWeights = default;
         } else {
@@ -1052,6 +1052,21 @@ namespace Quantum.Prototypes {
     public void Materialize(Frame frame, ref Quantum.StarChasersData result, in PrototypeMaterializationContext context = default) {
         result.Stars = this.Stars;
         result.DeathStarThreshold = this.DeathStarThreshold;
+        MaterializeUser(frame, ref result, in context);
+    }
+  }
+  [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.StarCoin))]
+  public unsafe partial class StarCoinPrototype : ComponentPrototype<Quantum.StarCoin> {
+    public Byte DespawnCounter;
+    partial void MaterializeUser(Frame frame, ref Quantum.StarCoin result, in PrototypeMaterializationContext context);
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.StarCoin component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.StarCoin result, in PrototypeMaterializationContext context = default) {
+        result.DespawnCounter = this.DespawnCounter;
         MaterializeUser(frame, ref result, in context);
     }
   }

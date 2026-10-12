@@ -1014,26 +1014,26 @@ namespace Quantum {
     public QHashSetPtr<AssetRef<Map>> RandomDisabledStages;
     [FieldOffset(56)]
     public AssetRef<GamemodeAsset> Gamemode;
-    [FieldOffset(20)]
+    [FieldOffset(16)]
     public Int32 StarsToWin;
-    [FieldOffset(8)]
+    [FieldOffset(4)]
     public Int32 CoinsForPowerup;
-    [FieldOffset(12)]
+    [FieldOffset(8)]
     public Int32 Lives;
-    [FieldOffset(24)]
+    [FieldOffset(20)]
     public Int32 TimerMinutes;
     [FieldOffset(36)]
     public QBoolean TeamsEnabled;
-    [FieldOffset(28)]
+    [FieldOffset(24)]
     public QBoolean CustomPowerupsEnabled;
-    [FieldOffset(32)]
+    [FieldOffset(28)]
     public QBoolean DrawOnTimeUp;
     [FieldOffset(1)]
     public TeamAttackOptions TeamAttack;
-    [FieldOffset(16)]
+    [FieldOffset(12)]
     public Int32 StarFountain;
-    [FieldOffset(4)]
-    public Int32 CoinDeathPenalty;
+    [FieldOffset(32)]
+    public QBoolean StarCoinsEnabled;
     [FieldOffset(40)]
     public QDictionaryPtr<AssetRef<CoinItemAsset>, FP> CoinItemCustomSpawnWeights;
     public override readonly Int32 GetHashCode() {
@@ -1052,7 +1052,7 @@ namespace Quantum {
         hash = hash * 31 + DrawOnTimeUp.GetHashCode();
         hash = hash * 31 + (Byte)TeamAttack;
         hash = hash * 31 + StarFountain.GetHashCode();
-        hash = hash * 31 + CoinDeathPenalty.GetHashCode();
+        hash = hash * 31 + StarCoinsEnabled.GetHashCode();
         hash = hash * 31 + CoinItemCustomSpawnWeights.GetHashCode();
         return hash;
       }
@@ -1065,7 +1065,6 @@ namespace Quantum {
         var p = (GameRules*)ptr;
         serializer.Stream.Serialize((Byte*)&p->ChooseMode);
         serializer.Stream.Serialize((Byte*)&p->TeamAttack);
-        serializer.Stream.Serialize(&p->CoinDeathPenalty);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);
         serializer.Stream.Serialize(&p->StarFountain);
@@ -1073,6 +1072,7 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->TimerMinutes);
         QBoolean.Serialize(&p->CustomPowerupsEnabled, serializer);
         QBoolean.Serialize(&p->DrawOnTimeUp, serializer);
+        QBoolean.Serialize(&p->StarCoinsEnabled, serializer);
         QBoolean.Serialize(&p->TeamsEnabled, serializer);
         QDictionary.Serialize(&p->CoinItemCustomSpawnWeights, serializer, Statics.SerializeAssetRef, Statics.SerializeFP);
         QHashSet.Serialize(&p->RandomDisabledStages, serializer, Statics.SerializeAssetRef);
@@ -1355,7 +1355,7 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct _globals_ {
-    public const Int32 SIZE = 3168;
+    public const Int32 SIZE = 3176;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(0)]
     public AssetRef<Map> Map;
@@ -1388,7 +1388,11 @@ namespace Quantum {
     public EntityRef MainBigStar;
     [FieldOffset(1872)]
     public BitSet64 UsedStarSpawns;
-    [FieldOffset(1896)]
+    [FieldOffset(1830)]
+    public UInt16 StarCoinSpawnTimer;
+    [FieldOffset(1888)]
+    public EntityRef MainStarCoin;
+    [FieldOffset(1904)]
     public GameRules Rules;
     [FieldOffset(1818)]
     public GameState GameState;
@@ -1406,7 +1410,7 @@ namespace Quantum {
     public UInt16 AutomaticStageRefreshInterval;
     [FieldOffset(1822)]
     public UInt16 AutomaticStageRefreshTimer;
-    [FieldOffset(1968)]
+    [FieldOffset(1976)]
     [FramePrinter.FixedArrayAttribute(typeof(PlayerInformation), 10)]
     private fixed Byte _PlayerInfo_[1200];
     [FieldOffset(1816)]
@@ -1427,7 +1431,7 @@ namespace Quantum {
     [FieldOffset(1860)]
     [AllocateOnComponentAdded()]
     public QListPtr<BannedPlayerInfo> BannedPlayerIds;
-    [FieldOffset(1888)]
+    [FieldOffset(1896)]
     public FP Timer;
     public readonly FixedArray<Input> input {
       get {
@@ -1457,6 +1461,8 @@ namespace Quantum {
         hash = hash * 31 + BigStarSpawnTimer.GetHashCode();
         hash = hash * 31 + MainBigStar.GetHashCode();
         hash = hash * 31 + UsedStarSpawns.GetHashCode();
+        hash = hash * 31 + StarCoinSpawnTimer.GetHashCode();
+        hash = hash * 31 + MainStarCoin.GetHashCode();
         hash = hash * 31 + Rules.GetHashCode();
         hash = hash * 31 + (Byte)GameState;
         hash = hash * 31 + StartFrame.GetHashCode();
@@ -1510,6 +1516,7 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->BigStarSpawnTimer);
         serializer.Stream.Serialize(&p->GameStartFrames);
         serializer.Stream.Serialize(&p->PlayerLoadFrames);
+        serializer.Stream.Serialize(&p->StarCoinSpawnTimer);
         serializer.Stream.Serialize(&p->StartFrame);
         serializer.Stream.Serialize(&p->TotalGamesPlayed);
         serializer.Stream.Serialize(&p->WinningTeam);
@@ -1521,6 +1528,7 @@ namespace Quantum {
         AssetRef.Serialize(&p->PreviousStage, serializer);
         Quantum.BitSet64.Serialize(&p->UsedStarSpawns, serializer);
         EntityRef.Serialize(&p->MainBigStar, serializer);
+        EntityRef.Serialize(&p->MainStarCoin, serializer);
         FP.Serialize(&p->Timer, serializer);
         Quantum.GameRules.Serialize(&p->Rules, serializer);
         FixedArray.Serialize(p->PlayerInfo, serializer, Statics.SerializePlayerInformation);
@@ -3660,6 +3668,29 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct StarCoin : Quantum.IComponent {
+    public const Int32 SIZE = 16;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(0)]
+    public Byte DespawnCounter;
+    [FieldOffset(8)]
+    [ExcludeFromPrototype()]
+    public EntityRef Collector;
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 17623;
+        hash = hash * 31 + DespawnCounter.GetHashCode();
+        hash = hash * 31 + Collector.GetHashCode();
+        return hash;
+      }
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (StarCoin*)ptr;
+        serializer.Stream.Serialize(&p->DespawnCounter);
+        EntityRef.Serialize(&p->Collector, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct WrappingObject : Quantum.IComponent {
     public const Int32 SIZE = 4;
     public const Int32 ALIGNMENT = 4;
@@ -4302,6 +4333,8 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<Quantum.Projectile>();
       BuildSignalsArrayOnComponentAdded<Quantum.Spinner>();
       BuildSignalsArrayOnComponentRemoved<Quantum.Spinner>();
+      BuildSignalsArrayOnComponentAdded<Quantum.StarCoin>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.StarCoin>();
       BuildSignalsArrayOnComponentAdded<Transform2D>();
       BuildSignalsArrayOnComponentRemoved<Transform2D>();
       BuildSignalsArrayOnComponentAdded<Transform2DVertical>();
@@ -4840,6 +4873,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum.StageTileFlags), 1);
       typeRegistry.Register(typeof(Quantum.StageTileInstance), Quantum.StageTileInstance.SIZE);
       typeRegistry.Register(typeof(Quantum.StarChasersData), Quantum.StarChasersData.SIZE);
+      typeRegistry.Register(typeof(Quantum.StarCoin), Quantum.StarCoin.SIZE);
       typeRegistry.Register(typeof(Quantum.TeamAttackOptions), 1);
       typeRegistry.Register(typeof(Transform2D), Transform2D.SIZE);
       typeRegistry.Register(typeof(Transform2DVertical), Transform2DVertical.SIZE);
@@ -4849,7 +4883,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum._globals_), Quantum._globals_.SIZE);
     }
     static partial void InitComponentTypeIdGen() {
-      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 40)
+      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 41)
         .AddBuiltInComponents()
         .Add<Quantum.BanzaiBill>(Quantum.BanzaiBill.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.BetterPhysicsObject>(Quantum.BetterPhysicsObject.Serialize, Quantum.BetterPhysicsObject.OnAdded, Quantum.BetterPhysicsObject.OnRemoved, ComponentFlags.None)
@@ -4890,6 +4924,7 @@ namespace Quantum {
         .Add<Quantum.Powerup>(Quantum.Powerup.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Projectile>(Quantum.Projectile.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Spinner>(Quantum.Spinner.Serialize, Quantum.Spinner.OnAdded, Quantum.Spinner.OnRemoved, ComponentFlags.None)
+        .Add<Quantum.StarCoin>(Quantum.StarCoin.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.WrappingObject>(Quantum.WrappingObject.Serialize, null, null, ComponentFlags.None)
         .Finish();
     }

@@ -16,7 +16,7 @@ namespace Quantum {
         public bool CustomPowerupsEnabled;
         public bool DrawOnTimeUp;
         public int StarFountain;
-        public int CoinDeathPenalty;
+        public bool StarCoinsEnabled;
         public StageChooseMode ChooseMode;
         public int TeamAttack;
 
@@ -37,7 +37,7 @@ namespace Quantum {
             stream.Serialize(ref CustomPowerupsEnabled);
             stream.Serialize(ref DrawOnTimeUp);
             stream.Serialize(ref StarFountain);
-            stream.Serialize(ref CoinDeathPenalty);
+            stream.Serialize(ref StarCoinsEnabled);
 
             if (stream.Writing) {
                 stream.WriteByte((byte) ChooseMode);
@@ -99,8 +99,8 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.StarFountain)) {
                 rules.StarFountain = StarFountain;
             }
-            if (rulesChanges.HasFlag(Rules.CoinDeathPenalty)) {
-                rules.CoinDeathPenalty = CoinDeathPenalty;
+            if (rulesChanges.HasFlag(Rules.StarCoinsEnabled)) {
+                rules.StarCoinsEnabled = StarCoinsEnabled;
             }
             if (rulesChanges.HasFlag(Rules.StageChooseMode)) {
                 rules.ChooseMode = ChooseMode;
@@ -126,7 +126,7 @@ namespace Quantum {
             CustomPowerupsEnabled = 1 << 7,
             DrawOnTimeUp = 1 << 8,
             StarFountain = 1 << 9, // only for Star Chasers
-            CoinDeathPenalty = 1 << 10, // only for Coin Runners
+            StarCoinsEnabled = 1 << 10, // only for Star Chasers
             StageChooseMode = 1 << 11,
             TeamAttack = 1 << 12,
         }

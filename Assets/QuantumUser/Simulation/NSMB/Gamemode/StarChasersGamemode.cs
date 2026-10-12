@@ -5,19 +5,24 @@ namespace Quantum {
     public unsafe class StarChasersGamemode : GamemodeAsset {
 
         public AssetRef<EntityPrototype> BigStarPrototype;
+        public AssetRef<EntityPrototype> StarCoinPrototype;
 
         public override void EnableGamemode(Frame f) {
             f.SystemEnable<BigStarSystem>();
+            f.SystemEnable<StarCoinSystem>();
             f.Global->AutomaticStageRefreshTimer = f.Global->AutomaticStageRefreshInterval = 0;
         }
 
         public override void DisableGamemode(Frame f) {
             f.SystemDisable<BigStarSystem>();
+            f.SystemDisable<StarCoinSystem>();
         }
 
         public override void OnReturnToRoom(Frame f) {
             f.Global->MainBigStar = EntityRef.None;
             f.Global->BigStarSpawnTimer = 0;
+            f.Global->MainStarCoin = EntityRef.None;
+            f.Global->StarCoinSpawnTimer = 0;
             f.Global->UsedStarSpawns.ClearAll();
         }
 

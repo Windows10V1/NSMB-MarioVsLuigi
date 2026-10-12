@@ -171,7 +171,7 @@ namespace NSMB.Replay {
                         CustomPowerupsEnabled = rules.CustomPowerupsEnabled,
                         TeamsEnabled = rules.TeamsEnabled,
                         StarFountain = rules.StarFountain,
-                        CoinDeathPenalty = rules.CoinDeathPenalty,
+                        StarCoinsEnabled = rules.StarCoinsEnabled,
                         TeamAttack = rules.TeamAttack,
                         CoinItemCustomSpawnWeights = customSpawnWeights,
                     },

@@ -54,7 +54,7 @@ struct GameRules {
 	// these are advanced rules
 	TeamAttackOptions TeamAttack;
 	int StarFountain; // divide this number by 100, options 0, 1/4, 2/4, 3/4, ALL
-	int CoinDeathPenalty; // divide this number by 100. 0 for NONE, 100 for ALL
+	bool StarCoinsEnabled; // only for Star Chasers
 	dictionary<AssetRef<CoinItemAsset>, FP> CoinItemCustomSpawnWeights;
 }
 

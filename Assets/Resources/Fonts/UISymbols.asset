@@ -618,19 +618,9 @@ MonoBehaviour:
     m_Name: flag_jp
   - m_ElementType: 2
     m_Unicode: 65534
-    m_GlyphIndex: 106
-    m_Scale: 1
-    m_Name: flag_us
-  - m_ElementType: 2
-    m_Unicode: 65534
     m_GlyphIndex: 107
     m_Scale: 1
     m_Name: flag_ussc
-  - m_ElementType: 2
-    m_Unicode: 65534
-    m_GlyphIndex: 108
-    m_Scale: 1
-    m_Name: flag_usw
   - m_ElementType: 2
     m_Unicode: 65534
     m_GlyphIndex: 109
@@ -671,6 +661,16 @@ MonoBehaviour:
     m_GlyphIndex: 116
     m_Scale: 1
     m_Name: room_starcoins
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 106
+    m_Scale: 1
+    m_Name: flag_us
+  - m_ElementType: 2
+    m_Unicode: 65534
+    m_GlyphIndex: 108
+    m_Scale: 1
+    m_Name: flag_usw
   m_GlyphTable:
   - m_Index: 0
     m_Metrics:
@@ -2377,15 +2377,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 21
       m_Height: 16
-      m_HorizontalBearingX: -3
-      m_HorizontalBearingY: 14.4
-      m_HorizontalAdvance: 16
+      m_HorizontalBearingX: -10.5
+      m_HorizontalBearingY: 8
+      m_HorizontalAdvance: 21
     m_GlyphRect:
       m_X: 230
       m_Y: 158
       m_Width: 21
       m_Height: 16
-    m_Scale: 1.1
+    m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: 1755903274, guid: 70672da71d9d71a4daaf5f3fc58531e6, type: 3}
@@ -2409,15 +2409,15 @@ MonoBehaviour:
     m_Metrics:
       m_Width: 21
       m_Height: 16
-      m_HorizontalBearingX: -3
-      m_HorizontalBearingY: 14.4
-      m_HorizontalAdvance: 16
+      m_HorizontalBearingX: -10.5
+      m_HorizontalBearingY: 8
+      m_HorizontalAdvance: 21
     m_GlyphRect:
       m_X: 230
       m_Y: 158
       m_Width: 21
       m_Height: 16
-    m_Scale: 1.1
+    m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
     sprite: {fileID: -1015355915, guid: 70672da71d9d71a4daaf5f3fc58531e6, type: 3}

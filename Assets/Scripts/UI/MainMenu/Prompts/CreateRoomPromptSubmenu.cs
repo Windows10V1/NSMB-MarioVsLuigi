@@ -13,9 +13,7 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
         [SerializeField] private TMP_Text sliderValue;
         [SerializeField] private Slider maxPlayerSlider;
         [SerializeField] private Toggle privateToggle;
-        [SerializeField] private TMP_Text addonsText;
-        [SerializeField] private GameObject addonsOption;
-        [SerializeField] private Selectable addonsButton, confirmButton;
+        [SerializeField] private Selectable confirmButton;
 
         //---Private Variables
         private bool creating, createdSuccessfully;
@@ -37,15 +35,6 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
                 MaxPlayerSliderChanged();
                 privateToggle.isOn = false;
             }
-
-            bool addonsEnabled = GlobalController.Instance.addonManager.isActiveAndEnabled;
-            if (addonsEnabled) {
-                int addons = GlobalController.Instance.addonManager.LoadedAddons.Count;
-                addonsText.text = GlobalController.Instance.translationManager.GetTranslationWithReplacements(
-                    addons == 0 ? "ui.addons.manage.notenabled" : "ui.addons.manage.enabled",
-                    "addons", addons.ToString());
-            }
-            addonsOption.SetActive(addonsEnabled);
 
             // private toggle
             var nav = privateToggle.navigation;

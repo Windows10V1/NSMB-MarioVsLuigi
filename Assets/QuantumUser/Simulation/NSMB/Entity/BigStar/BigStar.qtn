@@ -5,6 +5,8 @@ global {
 	ushort BigStarSpawnTimer;
 	EntityRef MainBigStar;
 	bitset[MaxStarSpawns] UsedStarSpawns;
+	ushort StarCoinSpawnTimer;
+	EntityRef MainStarCoin;
 }
 
 component BigStar {

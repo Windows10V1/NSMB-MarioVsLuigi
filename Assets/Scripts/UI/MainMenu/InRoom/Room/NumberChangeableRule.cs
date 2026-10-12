@@ -57,9 +57,6 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
             case CommandChangeRules.Rules.StarFountain:
                 cmd.StarFountain = (int) value;
                 break;
-            case CommandChangeRules.Rules.CoinDeathPenalty:
-                cmd.CoinDeathPenalty = (int) value;
-                break;
             case CommandChangeRules.Rules.TeamAttack:
                 cmd.TeamAttack = (int) value;
                 break;

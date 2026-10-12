@@ -121,7 +121,7 @@ namespace NSMB.Entities.Player {
 
         [Header("Particle Systems")]
         [SerializeField] private ParticleSystem dust;
-        [SerializeField] private ParticleSystem sparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
+        [SerializeField] private ParticleSystem sparkles, goldFlowerSparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
 
         [Header("Powerup Visuals")]
         [SerializeField] private PowerupVisuals fallbackPowerupVisuals;
@@ -280,6 +280,7 @@ namespace NSMB.Entities.Player {
                 modelRoot.SetActive(!mario->IsRespawning && !(mario->IsDead && IsBelowDeathplane));
                 SetParticleEmission(drillParticle, false);
                 SetParticleEmission(sparkles, false);
+                SetParticleEmission(goldFlowerSparkles, false);
                 SetParticleEmission(iceSkiddingParticle, false);
                 SetParticleEmission(waterSkiddingParticle, false);
                 SetParticleEmission(dust, false);
@@ -322,6 +323,7 @@ namespace NSMB.Entities.Player {
             
             SetParticleEmission(drillParticle, !disableParticles && mario->IsDrilling);
             SetParticleEmission(sparkles, !disableParticles && mario->IsStarmanInvincible);
+            SetParticleEmission(goldFlowerSparkles, !disableParticles && mario->CurrentPowerupState == PowerupState.GoldFlower);
             SetParticleEmission(iceSkiddingParticle, !disableParticles && physicsObject->IsOnSlipperyGround && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterSkiddingParticle, !disableParticles && walkingOnWater && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterRunningParticle, !disableParticles && !waterSkiddingParticle.isPlaying && walkingOnWater && FPMath.Abs(physicsObject->Velocity.X) > FP._0_10);

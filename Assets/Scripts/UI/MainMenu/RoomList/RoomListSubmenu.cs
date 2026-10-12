@@ -21,9 +21,9 @@ namespace NSMB.UI.MainMenu.Submenus.RoomList {
         //---Serailized Variables
         [SerializeField] private TMP_Dropdown regionDropdown;
         [SerializeField] private RoomListManager roomManager;
-        [SerializeField] private GameObject reconnectBtn, createRoomBtn, joinPrivateRoomBtn, filterAddonsParent;
+        [SerializeField] private GameObject reconnectBtn, createRoomBtn, joinPrivateRoomBtn;
         [SerializeField] private TMP_InputField usernameField;
-        [SerializeField] private SpriteChangingToggle filterInProgressRooms, filterFullRooms, filterAddons;
+        [SerializeField] private SpriteChangingToggle filterInProgressRooms, filterFullRooms;
         [SerializeField] private MainMenuSubmenu inRoomSubmenu;
         [SerializeField] private ErrorPromptSubmenu errorSubmenu;
         [SerializeField] private RectTransform sideMenu;
@@ -47,7 +47,6 @@ namespace NSMB.UI.MainMenu.Submenus.RoomList {
             // This is needed for some bullshit where the "username" box
             // has zero height in builds. But not in the editor.
             // Because fuck you.
-            filterAddonsParent.SetActive(GlobalController.Instance.addonManager.isActiveAndEnabled);
             LayoutRebuilder.ForceRebuildLayoutImmediate(sideMenu);
         }
 
@@ -69,8 +68,6 @@ namespace NSMB.UI.MainMenu.Submenus.RoomList {
             filterFullRooms.SetIsOnWithoutNotify(Settings.Instance.miscFilterFullRooms);
             roomManager.FilterFullRooms = Settings.Instance.miscFilterFullRooms;
 
-            filterAddons.SetIsOnWithoutNotify(Settings.Instance.miscFilterAddons);
-            roomManager.FilterAddons = Settings.Instance.miscFilterAddons;
 
             if (string.IsNullOrWhiteSpace(Settings.Instance.generalNickname)) {
                 UnityEngine.Random.InitState((int) DateTimeOffset.UtcNow.ToUnixTimeMilliseconds());
@@ -138,12 +135,6 @@ namespace NSMB.UI.MainMenu.Submenus.RoomList {
             roomManager.FilterFullRooms = filterFullRooms.isOn;
         }
 
-        public void ChangeFilterAddons() {
-            Settings.Instance.miscFilterAddons = filterAddons.isOn;
-            Settings.Instance.SaveSettings();
-
-            roomManager.FilterAddons = filterAddons.isOn;
-        }
 
         public void OpenMenuIfUsernameIsValid(MainMenuSubmenu submenu) {
             if (!Settings.Instance.generalNickname.IsValidNickname()) {

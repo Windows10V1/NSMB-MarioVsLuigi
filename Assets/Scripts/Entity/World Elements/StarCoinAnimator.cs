@@ -28,10 +28,12 @@ namespace NSMB.Entities.World {
 
         public void Start() {
             QuantumCallback.Subscribe<CallbackGameResynced>(this, OnGameResynced);
+            QuantumEvent.Subscribe<EventMarioPlayerCollectedStarCoin>(this, OnMarioPlayerCollectedStarCoin, FilterOutReplayFastForward);
             EntityView.OnEntityDestroyed.AddListener(OnEntityDestroyed);
         }
 
         public override unsafe void OnActivate(Frame f) {
+            collected = false;
             if (f.Global->GameState == GameState.Playing && !IsReplayFastForwarding) {
                 sfx.PlayOneShot(SoundEffect.World_Star_Spawn);
             }
@@ -52,6 +54,17 @@ namespace NSMB.Entities.World {
             }
             mRenderer.enabled = false;
             Destroy(gameObject, 2);
+            StarCoinDestroyed?.Invoke(VerifiedFrame, this);
+        }
+
+        private void OnMarioPlayerCollectedStarCoin(EventMarioPlayerCollectedStarCoin e) {
+            if (e.StarCoinEntity != EntityRef) {
+                return;
+            }
+
+            animator.SetTrigger("collected");
+            sfx.PlayOneShot(SoundEffect.World_Starcoin_Collect);
+            collected = true;
             StarCoinDestroyed?.Invoke(VerifiedFrame, this);
         }
 

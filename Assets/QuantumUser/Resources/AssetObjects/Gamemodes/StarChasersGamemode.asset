@@ -74,8 +74,12 @@ MonoBehaviour:
     TeamAttack:
       Value: 1
     StarFountain: 100
-    CoinDeathPenalty: 0
+    StarCoinsEnabled:
+      Value: 1
     CoinItemCustomSpawnWeights: []
   BigStarPrototype:
     Id:
       Value: 1295981493910502871
+  StarCoinPrototype:
+    Id:
+      Value: 1349860830661540207
