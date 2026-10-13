@@ -278,7 +278,6 @@ namespace NSMB.Networking {
                 CustomPowerups = rules.CustomPowerupsEnabled,
                 Teams = rules.TeamsEnabled,
                 DrawOnTimeUp = rules.DrawOnTimeUp,
-                AddonsEnabled = GlobalController.Instance.addonManager.LoadedAddons.Count > 0
             };
 
             string stageGuid;
@@ -348,12 +347,7 @@ namespace NSMB.Networking {
             }
             pingUpdateCoroutine = StartCoroutine(PingUpdateCoroutine());
 
-            if (Client.CurrentRoom.PlayerCount == 1 || !GlobalController.Instance.addonManager.isActiveAndEnabled) {
-                _ = StartQuantum();
-            } else {
-                // Don't start quantum immediately,
-                // Wait for the room list event instead.
-            }
+            _ = StartQuantum();
         }
 
         public void OnJoinRoomFailed(short returnCode, string message) {

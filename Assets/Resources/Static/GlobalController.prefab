@@ -20294,7 +20294,6 @@ GameObject:
   - component: {fileID: 1545507795942949340}
   - component: {fileID: 7634937552315031300}
   - component: {fileID: 4465003512522454241}
-  - component: {fileID: 7662282222624482137}
   - component: {fileID: 6932446485402536007}
   - component: {fileID: 6114239374411719935}
   - component: {fileID: 405963795238578845}
@@ -20343,7 +20342,6 @@ MonoBehaviour:
   translationManager: {fileID: 6974483067213173336}
   rumbleManager: {fileID: 4506347848550621655}
   fader: {fileID: 2520054109870061160}
-  addonManager: {fileID: 7662282222624482137}
   optionsManager: {fileID: 6650708626366051462}
   audioMixerManager: {fileID: 6114239374411719935}
   outlineFeature: {fileID: 8738572190042607270, guid: 5f58d6b1c480f4b4f9c77b6264ddfa5b,
@@ -20419,7 +20417,6 @@ MonoBehaviour:
   controlsAllowGroundpoundWithLeftRight: 0
   miscFilterFullRooms: 0
   miscFilterInProgressRooms: 0
-  miscFilterAddons: 0
 --- !u!114 &6974483067213173336
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -20530,18 +20527,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 508790d4e89299b4b8dfcf84b25ae934, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &7662282222624482137
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4938254683282774592}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4aa18a5e74dbe834385d4f3ca387dde6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6932446485402536007

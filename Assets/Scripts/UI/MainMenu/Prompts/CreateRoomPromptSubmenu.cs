@@ -1,4 +1,3 @@
-using NSMB.Addons;
 using NSMB.Networking;
 using Quantum;
 using TMPro;
@@ -38,18 +37,18 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
 
             // private toggle
             var nav = privateToggle.navigation;
-            nav.selectOnDown = addonsEnabled ? addonsButton : confirmButton;
+            nav.selectOnDown = confirmButton;
             privateToggle.navigation = nav;
 
             // confirm button
             nav = confirmButton.navigation;
-            nav.selectOnUp = addonsEnabled ? addonsButton : privateToggle;
+            nav.selectOnUp = privateToggle;
             confirmButton.navigation = nav;
 
             // back button
             Selectable backSelectable = backButton.GetComponent<Selectable>();
             nav = backSelectable.navigation;
-            nav.selectOnUp = addonsEnabled ? addonsButton : privateToggle;
+            nav.selectOnUp = privateToggle;
             backSelectable.navigation = nav;
         }
 
@@ -87,15 +86,6 @@ namespace NSMB.UI.MainMenu.Submenus.Prompts {
             }
             creating = false;
             createdSuccessfully = false;
-        }
-
-        public class AddonOption : TMP_Dropdown.OptionData {
-            public AddonBuildDefinition definition;
-
-            public AddonOption(AddonBuildDefinition def) {
-                definition = def;
-                text = definition.FullName;
-            }
         }
     }
 }

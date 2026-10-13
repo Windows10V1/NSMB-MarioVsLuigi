@@ -239,7 +239,7 @@ namespace NSMB {
         public RumbleManager.RumbleSetting controlsRumble;
         public bool controlsFireballSprint, controlsAutoSprint, controlsPropellerJump, controlsAllowGroundpoundWithLeftRight;
 
-        public bool miscFilterFullRooms, miscFilterInProgressRooms, miscFilterAddons;
+        public bool miscFilterFullRooms, miscFilterInProgressRooms;
 
         //---Private Variables
         private Action[] VersionUpdaters;
@@ -314,7 +314,6 @@ namespace NSMB {
             // Misc
             PlayerPrefs.SetInt("Misc_FilterFullRooms", miscFilterFullRooms ? 1 : 0);
             PlayerPrefs.SetInt("Misc_FilterInProgressRooms", miscFilterInProgressRooms ? 1 : 0);
-            PlayerPrefs.SetInt("Misc_FilterAddons", miscFilterAddons ? 1 : 0);
 
             PlayerPrefs.Save();
         }
@@ -400,7 +399,6 @@ namespace NSMB {
 
             miscFilterFullRooms = false;
             miscFilterInProgressRooms = false;
-            miscFilterAddons = false;
 
             MassDeleteKeys("Nickname", "ScoreboardAlwaysVisible", "ChatFilter", "Character", "Skin", "NDSResolution",
                 "NDS4by3", "VSync", "volumeMaster", "volumeMusic", "volumeSFX", "FireballFromSprint");
@@ -462,7 +460,6 @@ namespace NSMB {
             // Misc
             TryGetSetting("Misc_FilterFullRooms", ref miscFilterFullRooms);
             TryGetSetting("Misc_FilterInProgressRooms", ref miscFilterInProgressRooms);
-            TryGetSetting("Misc_FilterAddons", ref miscFilterAddons);
         }
 
         private void LoadFromVersion2() {

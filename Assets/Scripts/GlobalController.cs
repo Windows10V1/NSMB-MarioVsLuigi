@@ -1,5 +1,4 @@
-﻿using NSMB.Addons;
-using NSMB.Networking;
+﻿using NSMB.Networking;
 using NSMB.Quantum;
 using NSMB.Sound;
 using NSMB.UI;
@@ -30,7 +29,6 @@ namespace NSMB {
         public TranslationManager translationManager;
         public RumbleManager rumbleManager;
         public AnimatedFader fader;
-        public AddonManager addonManager;
         public PauseOptionMenuManager optionsManager;
         public AudioMixerManager audioMixerManager;
 

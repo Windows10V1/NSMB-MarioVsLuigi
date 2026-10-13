@@ -32,8 +32,8 @@ namespace NSMB.Replay {
         public ReplayPlayerInformation[] PlayerInformation = Array.Empty<ReplayPlayerInformation>();
         public sbyte WinningTeam = -1;
 
-        // Addons
-        public List<Guid> AddonGuids = new();
+        // Legacy (now unused - kept for replay compatibility)
+        public List<Guid> LegacyGuids = new();
 
         internal long WriteToStream(Stream output) {
             using BinaryWriter writer = new(output, Encoding.UTF8, true);
@@ -56,11 +56,11 @@ namespace NSMB.Replay {
             }
             writer.Write(WinningTeam);
 
-            // Addons
+            // Legacy guids (kept for compatibility)
             if (Version >= new GameVersion(2, 1, 0)) {
-                writer.Write(AddonGuids.Count);
-                for (int i = 0; i < AddonGuids.Count; i++) {
-                    writer.Write(AddonGuids[i].ToByteArray());
+                writer.Write(LegacyGuids.Count);
+                for (int i = 0; i < LegacyGuids.Count; i++) {
+                    writer.Write(LegacyGuids[i].ToByteArray());
                 }
             }
 
@@ -100,11 +100,11 @@ namespace NSMB.Replay {
                 }
                 result.WinningTeam = reader.ReadSByte();
 
-                // Addons
+                // Legacy guids (kept for compatibility)
                 if (result.Version >= new GameVersion(2, 1, 0)) {
                     int guids = reader.ReadInt32();
                     for (int i = 0; i < guids; i++) {
-                        result.AddonGuids.Add(new Guid(reader.ReadBytes(16)));
+                        result.LegacyGuids.Add(new Guid(reader.ReadBytes(16)));
                     }
                 }
             } catch {

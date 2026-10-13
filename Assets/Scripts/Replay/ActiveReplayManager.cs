@@ -1,4 +1,3 @@
-using NSMB.Addons;
 using NSMB.Networking;
 using NSMB.UI.MainMenu.Submenus.Replays;
 using NSMB.Utilities;
@@ -177,9 +176,7 @@ namespace NSMB.Replay {
                     },
                     PlayerInformation = playerInformation,
                     WinningTeam = winner,
-                    AddonGuids = GlobalController.Instance.addonManager.LoadedAddons
-                        .Select(la => la.Definition.ReleaseGuid)
-                        .ToList()
+                    LegacyGuids = new()
                 };
 
                 BinaryReplayFile binaryReplay = BinaryReplayFile.FromReplayData(jsonReplay, header);
@@ -240,27 +237,7 @@ namespace NSMB.Replay {
                 await NetworkHandler.Client.DisconnectAsync();
             }
 
-            if (GlobalController.Instance.addonManager.isActiveAndEnabled) {
-                var loadAddonResult = await GlobalController.Instance.addonManager.LoadAllAddons(replay.Header.AddonGuids);
-                if (loadAddonResult.Result == LoadAllAddonsResult.Success) {
-                    _ = StartReplay(replay);
-                } else if (loadAddonResult.Result == LoadAllAddonsResult.DownloadRequired) {
-                    AddonManager.RequestDownloadAddons(loadAddonResult.RequiredDownloads, (result) => {
-                        if (result == AddonManager.AddonDownloadResult.Success) {
-                            _ = StartReplay(replay);
-                        } else if (result == AddonManager.AddonDownloadResult.Cancelled) {
-                            GlobalController.Instance.loadingCanvas.EndAnimation();
-                        } else if (result == AddonManager.AddonDownloadResult.Failure) {
-                            NetworkHandler.ThrowError("ui.error.replay.addons.downloadfailed", false);
-                        }
-                    });
-                } else if (loadAddonResult.Result == LoadAllAddonsResult.Failure) {
-                    NetworkHandler.ThrowError("ui.error.replay.addons.downloadfailed", false);
-                    return;
-                }
-            } else {
-                _ = StartReplay(replay);
-            }
+            _ = StartReplay(replay);
         }
 
         private async Task StartReplay(BinaryReplayFile replay) {

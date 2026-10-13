@@ -25,14 +25,6 @@ namespace NSMB.UI.MainMenu.Submenus.RoomList {
                 RefreshRooms();
             }
         }
-        private bool _filterAddons;
-        public bool FilterAddons {
-            get => _filterAddons;
-            set {
-                _filterAddons = value;
-                RefreshRooms();
-            }
-        }
 
         //---Serialized Variables
         [SerializeField] private MainMenuCanvas canvas;
@@ -64,9 +56,6 @@ namespace NSMB.UI.MainMenu.Submenus.RoomList {
                     room.gameObject.SetActive(false);
                     filtered++;
                 } else if (FilterInProgressRooms && room.HasGameStarted) {
-                    room.gameObject.SetActive(false);
-                    filtered++;
-                } else if (FilterAddons && room.HasAddons) {
                     room.gameObject.SetActive(false);
                     filtered++;
                 } else {

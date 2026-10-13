@@ -1,4 +1,3 @@
-using NSMB.Addons;
 using NSMB.UI.MainMenu.Submenus.Replays;
 using Quantum;
 using System;
@@ -46,11 +45,6 @@ namespace NSMB {
 
             if (keyboard[Key.F7].wasPressedThisFrame && !string.IsNullOrEmpty(ReplayListManager.ReplayDirectory)) {
                 System.Diagnostics.Process.Start(ReplayListManager.ReplayDirectory);
-                PlaySound(SoundEffect.Player_Sound_PowerupCollect);
-            }
-            
-            if (keyboard[Key.F8].wasPressedThisFrame && GlobalController.Instance.addonManager && GlobalController.Instance.addonManager.isActiveAndEnabled && !string.IsNullOrEmpty(AddonManager.LocalFolderPath)) {
-                System.Diagnostics.Process.Start(AddonManager.LocalFolderPath);
                 PlaySound(SoundEffect.Player_Sound_PowerupCollect);
             }
 

@@ -19,12 +19,6 @@ namespace NSMB.UI.MainMenu.Submenus.RoomList {
                 return ((BooleanProperties) boolPropertiesPacked).GameStarted;
             }
         }
-        public bool HasAddons {
-            get {
-                GetCustomProperty(room.CustomProperties, Enums.NetRoomProperties.BoolProperties, out int boolPropertiesPacked);
-                return ((BooleanProperties) boolPropertiesPacked).AddonsEnabled;
-            }
-        }
 
         //---Public Variables
         public RoomInfo room;
@@ -81,10 +75,6 @@ namespace NSMB.UI.MainMenu.Submenus.RoomList {
             }
 
             stringBuilder.Append("<sprite name=room_coins>").Append(Utils.GetSymbolString(intProperties.CoinRequirement.ToString(), Utils.smallSymbols));
-
-            if (boolProperties.AddonsEnabled) {
-                stringBuilder.Append("<sprite name=room_addons>");
-            }
 
             symbolsText.SetText(stringBuilder);
             stringBuilder.Clear();

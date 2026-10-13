@@ -1,4 +1,3 @@
-using NSMB.Addons;
 using Quantum;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +6,6 @@ namespace NSMB.Utilities {
     public static class AssetRepository<T> where T : AssetObject {
 
         static AssetRepository() {
-            AddonManager.OnAddonLoaded += OnAddonListChanged;
-            AddonManager.OnAddonUnloaded += OnAddonListChanged;
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.playModeStateChanged += (_) => {
                 _allAssetRefs = null;
@@ -56,10 +53,6 @@ namespace NSMB.Utilities {
         public static void Invalidate() {
             _allAssetRefs = null;
             _allAssets = null;
-        }
-
-        private static void OnAddonListChanged(LoadedAddon _) {
-            Invalidate();
         }
     }
 }

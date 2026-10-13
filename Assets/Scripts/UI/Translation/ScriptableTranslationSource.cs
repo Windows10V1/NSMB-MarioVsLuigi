@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace NSMB.UI.Translation {
-    [CreateAssetMenu(fileName = "New Translation Source", menuName = "Addon/Translation Source", order = 1)]
+    [CreateAssetMenu(fileName = "New Translation Source", menuName = "Translation Source", order = 1)]
     public class ScriptableTranslationSource : ScriptableObject, ITranslationSource {
 
         public int Priority => SourcePriority;
