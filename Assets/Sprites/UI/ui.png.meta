@@ -2521,50 +2521,6 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: flag_usw
-      rect:
-        serializedVersion: 2
-        x: 230
-        y: 158
-        width: 21
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f176eda0c8dc6f6428ed728d8a9e117c
-      internalID: -1015355915
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: flag_ussc
-      rect:
-        serializedVersion: 2
-        x: 230
-        y: 158
-        width: 21
-        height: 16
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ea5d41a9c912cd342968d7ec56e1dba9
-      internalID: 353410421
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
       name: unlock
       rect:
         serializedVersion: 2
@@ -2727,7 +2683,7 @@ TextureImporter:
         width: 13
         height: 13
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -2736,6 +2692,28 @@ TextureImporter:
       bones: []
       spriteID: eb465f3c49d1d6b48b791b7904e2ae9a
       internalID: -2085187894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: room_characterspecial
+      rect:
+        serializedVersion: 2
+        x: 252
+        y: 243
+        width: 13
+        height: 13
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a3dcb6ce6ef6b4647861a315aa1e4581
+      internalID: -1863626611
       vertices: []
       indices: 
       edges: []
@@ -2829,6 +2807,7 @@ TextureImporter:
       random: -1497189084
       room_addons: -971827560
       room_camera: -1332971411
+      room_characterspecial: -1863626611
       room_coins: 1534273505
       room_create: 1496232669
       room_host: -9005941153719796207

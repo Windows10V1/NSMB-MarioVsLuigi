@@ -77,6 +77,7 @@ namespace Quantum {
             case ProjectileEffectType.Hammer:
             case ProjectileEffectType.Boomerang:
             case ProjectileEffectType.Superball:
+            case ProjectileEffectType.Gold:
             case ProjectileEffectType.Fire: {
                 piranhaPlant->Kill(f, piranhaPlantEntity, projectileEntity, EnemyKillReason.Special);
                 break;

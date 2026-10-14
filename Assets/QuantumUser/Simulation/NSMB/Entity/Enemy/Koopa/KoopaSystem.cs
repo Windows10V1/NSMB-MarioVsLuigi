@@ -416,6 +416,7 @@ namespace Quantum {
             switch (projectileAsset.Effect) {
             case ProjectileEffectType.Hammer:
             case ProjectileEffectType.Superball:
+            case ProjectileEffectType.Gold:
             case ProjectileEffectType.Fire: {
                 koopa->Kill(f, koopaEntity, projectileEntity, EnemyKillReason.Special);
                 break;

@@ -53,6 +53,7 @@ enum JumpState : Byte {
 
 component MarioPlayer {
 	AssetRef<MarioPlayerPhysicsInfo> PhysicsAsset;
+	AssetRef<MarioPlayerPhysicsInfo> SpecialPhysicsAsset;
 	AssetRef<CharacterAsset> CharacterAsset;
 
 	[ExcludeFromPrototype] PlayerRef PlayerRef;

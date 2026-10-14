@@ -2889,10 +2889,12 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct MarioPlayer : Quantum.IComponent {
-    public const Int32 SIZE = 192;
+    public const Int32 SIZE = 200;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(96)]
     public AssetRef<MarioPlayerPhysicsInfo> PhysicsAsset;
+    [FieldOffset(104)]
+    public AssetRef<MarioPlayerPhysicsInfo> SpecialPhysicsAsset;
     [FieldOffset(88)]
     public AssetRef<CharacterAsset> CharacterAsset;
     [FieldOffset(64)]
@@ -2907,13 +2909,13 @@ namespace Quantum {
     [FieldOffset(42)]
     [ExcludeFromPrototype()]
     public PowerupState PreviousPowerupState;
-    [FieldOffset(104)]
+    [FieldOffset(112)]
     [ExcludeFromPrototype()]
     public AssetRef<PowerupAsset> ReserveItem;
-    [FieldOffset(176)]
+    [FieldOffset(184)]
     [ExcludeFromPrototype()]
     public RNGSession RNG;
-    [FieldOffset(152)]
+    [FieldOffset(160)]
     [ExcludeFromPrototype()]
     public GamemodeSpecificData GamemodeData;
     [FieldOffset(1)]
@@ -2946,7 +2948,7 @@ namespace Quantum {
     [FieldOffset(19)]
     [ExcludeFromPrototype()]
     public Byte NoLivesStarDirection;
-    [FieldOffset(112)]
+    [FieldOffset(120)]
     [ExcludeFromPrototype()]
     public BitSet21 Flags;
     [FieldOffset(7)]
@@ -3012,7 +3014,7 @@ namespace Quantum {
     [FieldOffset(14)]
     [ExcludeFromPrototype()]
     public Byte KnockbackGetupFrames;
-    [FieldOffset(144)]
+    [FieldOffset(152)]
     [ExcludeFromPrototype()]
     public EntityRef LastAttacker;
     [FieldOffset(84)]
@@ -3065,16 +3067,16 @@ namespace Quantum {
     [FieldOffset(26)]
     [ExcludeFromPrototype()]
     public Byte PropellerDrillHoldFrames;
-    [FieldOffset(136)]
+    [FieldOffset(144)]
     [ExcludeFromPrototype()]
     public EntityRef HeldEntity;
     [FieldOffset(48)]
     [ExcludeFromPrototype()]
     public Int32 HoldStartFrame;
-    [FieldOffset(120)]
+    [FieldOffset(128)]
     [ExcludeFromPrototype()]
     public EntityRef CurrentPipe;
-    [FieldOffset(160)]
+    [FieldOffset(168)]
     [ExcludeFromPrototype()]
     public FPVector2 PipeDirection;
     [FieldOffset(21)]
@@ -3086,13 +3088,14 @@ namespace Quantum {
     [FieldOffset(35)]
     [ExcludeFromPrototype()]
     public Byte TauntFrames;
-    [FieldOffset(128)]
+    [FieldOffset(136)]
     [ExcludeFromPrototype()]
     public EntityRef CurrentSpinner;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 5503;
         hash = hash * 31 + PhysicsAsset.GetHashCode();
+        hash = hash * 31 + SpecialPhysicsAsset.GetHashCode();
         hash = hash * 31 + CharacterAsset.GetHashCode();
         hash = hash * 31 + PlayerRef.GetHashCode();
         hash = hash * 31 + SpawnpointIndex.GetHashCode();
@@ -3234,6 +3237,7 @@ namespace Quantum {
         QList.Serialize(&p->PowerupTransitionQueue, serializer, Statics.SerializePowerupTransitionAnimation);
         AssetRef.Serialize(&p->CharacterAsset, serializer);
         AssetRef.Serialize(&p->PhysicsAsset, serializer);
+        AssetRef.Serialize(&p->SpecialPhysicsAsset, serializer);
         AssetRef.Serialize(&p->ReserveItem, serializer);
         Quantum.BitSet21.Serialize(&p->Flags, serializer);
         EntityRef.Serialize(&p->CurrentPipe, serializer);

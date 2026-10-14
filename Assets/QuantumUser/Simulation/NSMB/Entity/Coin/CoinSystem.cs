@@ -78,8 +78,18 @@ namespace Quantum {
         }
 
         public void OnStageReset(Frame f, QBoolean full) {
+            VersusStageData stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
             var allCoins = f.Filter<Coin, Interactable>();
             while (allCoins.NextUnsafe(out EntityRef entity, out Coin* coin, out Interactable* interactable)) {
+                if (coin->CoinType.HasFlag(CoinType.BakedInStage)
+                    && f.Unsafe.TryGetPointer(entity, out Transform2D* transform)
+                    && f.Unsafe.TryGetPointer(entity, out PhysicsCollider2D* collider)
+                    && PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape, stage: stage, entity: entity)) {
+                    f.Events.CollectableDespawned(entity, transform->Position, false);
+                    f.Destroy(entity);
+                    continue;
+                }
+
                 if (!full && (!coin->IsCollected || !coin->CoinType.HasFlag(CoinType.BakedInStage))) {
                     continue;
                 }

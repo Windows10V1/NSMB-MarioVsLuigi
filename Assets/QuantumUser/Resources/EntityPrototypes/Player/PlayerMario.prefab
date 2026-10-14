@@ -9287,6 +9287,12 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8279152070748857899}
     m_Modifications:
+    - target: {fileID: 1182742014047523563, guid: 2415a961986808446a9eb67e681fe409,
+        type: 3}
+      propertyPath: currentAudio
+      value: 
+      objectReference: {fileID: 11400000, guid: d678195304dd4f545bda3f4fc8439773,
+        type: 2}
     - target: {fileID: 3094612392314655968, guid: 2415a961986808446a9eb67e681fe409,
         type: 3}
       propertyPath: playOnAwake
@@ -9351,6 +9357,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 17
+      objectReference: {fileID: 0}
+    - target: {fileID: 7061459965320157238, guid: 2415a961986808446a9eb67e681fe409,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.375
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

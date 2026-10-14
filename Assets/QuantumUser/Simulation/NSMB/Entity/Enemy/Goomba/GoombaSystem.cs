@@ -122,6 +122,7 @@ namespace Quantum {
             case ProjectileEffectType.Hammer:
             case ProjectileEffectType.Boomerang:
             case ProjectileEffectType.Superball:
+            case ProjectileEffectType.Gold:
             case ProjectileEffectType.Fire: {
                 f.Unsafe.GetPointer<Goomba>(goombaEntity)->Kill(f, goombaEntity, projectileEntity, EnemyKillReason.Special);
                 break;

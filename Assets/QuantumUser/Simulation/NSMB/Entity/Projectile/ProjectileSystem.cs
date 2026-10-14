@@ -1,4 +1,5 @@
 using Photon.Deterministic;
+using System;
 
 namespace Quantum {
     public unsafe class ProjectileSystem : SystemMainThreadEntityFilter<Projectile, ProjectileSystem.Filter>, ISignalOnProjectileHitEntity {
@@ -81,8 +82,11 @@ namespace Quantum {
                         if (projectile->Frame < 30) {
                             // Ricochet off the wall if not in returning state
                             projectile->Combo = 2;
+                        } else if (projectile->Combo == 2) {
+                            // Avoid getting stuck 24/7
+                            Destroy(f, filter.Entity, asset.DestroyParticleEffect);
+                            return;
                         }
-                        return;
                     }
 
                     if (asset.DestroyOnHitTerrain) {
@@ -107,6 +111,9 @@ namespace Quantum {
 
         private static bool TryBreakTiles(Frame f, EntityRef entity, PhysicsObject* physicsObject, VersusStageData stage) {
             bool broke = false;
+            bool isGoldball = f.Unsafe.TryGetPointer(entity, out Projectile* projectile)
+                && f.FindAsset(projectile->Asset) is ProjectileAsset projectileAsset
+                && projectileAsset.Effect == ProjectileEffectType.Gold;
             var contacts = f.ResolveList(physicsObject->Contacts);
             foreach (var contact in contacts) {
                 if (f.Exists(contact.Entity)) {
@@ -121,9 +128,54 @@ namespace Quantum {
                     : contact.Normal.X > 0 ? InteractionDirection.Left : InteractionDirection.Right;
                 if (tile.Interact(f, entity, direction, contact.Tile, tileInstance, out _)) {
                     broke = true;
+                    if (isGoldball) {
+                        SpawnGoldTileCoin(f, stage, contact.Tile);
+                    }
+                }
+            }
+            if (!broke && contacts.Count == 0 && projectile != null
+                && f.Unsafe.TryGetPointer(entity, out Transform2D* transform)
+                && f.Unsafe.TryGetPointer(entity, out PhysicsCollider2D* collider)) {
+                // No contacts yet (spawned inside a wall): check if tiles inside
+                // its hitbox are breakable, if so break and continue.
+                Span<PhysicsObjectSystem.LocationTilePair> tiles = stackalloc PhysicsObjectSystem.LocationTilePair[16];
+                int count = PhysicsObjectSystem.GetTilesOverlappingHitbox(f, transform->Position, collider->Shape, tiles, stage);
+                InteractionDirection direction = projectile->FacingRight ? InteractionDirection.Left : InteractionDirection.Right;
+                for (int i = 0; i < count; i++) {
+                    IntVector2 tilePos = tiles[i].Position;
+                    var tileInstance = stage.GetTileRelative(f, tilePos);
+                    if (f.FindAsset(tileInstance.Tile) is not IInteractableTile tile) {
+                        continue;
+                    }
+                    if (tile.Interact(f, entity, direction, tilePos, tileInstance, out _)) {
+                        broke = true;
+                        if (isGoldball) {
+                            SpawnGoldTileCoin(f, stage, tilePos);
+                        }
+                    }
                 }
             }
             return broke;
+        }
+
+        private static void SpawnGoldTileCoin(Frame f, VersusStageData stage, IntVector2 tilePosition) {
+            var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+            if (gamemode == null || !gamemode.LooseCoinPrototype.IsValid) {
+                return;
+            }
+
+            EntityRef coinEntity = f.Create(gamemode.LooseCoinPrototype);
+            f.Unsafe.GetPointer<Transform2D>(coinEntity)->Position = QuantumUtils.RelativeTileToWorldRounded(stage, tilePosition);
+
+            var coin = f.Unsafe.GetPointer<Coin>(coinEntity);
+            coin->CoinType |= CoinType.BakedInStage;
+            coin->Lifetime = 0;
+            coin->UncollectableFrames = 0;
+
+            if (f.Unsafe.TryGetPointer(coinEntity, out PhysicsObject* coinPhysics)) {
+                coinPhysics->Velocity = FPVector2.Zero;
+                coinPhysics->IsFrozen = true;
+            }
         }
 
         private void OnProjectileProjectileInteraction(Frame f, EntityRef projectileEntityA, EntityRef projectileEntityB) {

@@ -791,6 +791,7 @@ namespace Quantum.Prototypes {
   [Quantum.Prototypes.Prototype(typeof(Quantum.MarioPlayer))]
   public unsafe partial class MarioPlayerPrototype : ComponentPrototype<Quantum.MarioPlayer> {
     public AssetRef<MarioPlayerPhysicsInfo> PhysicsAsset;
+    public AssetRef<MarioPlayerPhysicsInfo> SpecialPhysicsAsset;
     public AssetRef<CharacterAsset> CharacterAsset;
     partial void MaterializeUser(Frame frame, ref Quantum.MarioPlayer result, in PrototypeMaterializationContext context);
     public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
@@ -800,6 +801,7 @@ namespace Quantum.Prototypes {
     }
     public void Materialize(Frame frame, ref Quantum.MarioPlayer result, in PrototypeMaterializationContext context = default) {
         result.PhysicsAsset = this.PhysicsAsset;
+        result.SpecialPhysicsAsset = this.SpecialPhysicsAsset;
         result.CharacterAsset = this.CharacterAsset;
         MaterializeUser(frame, ref result, in context);
     }

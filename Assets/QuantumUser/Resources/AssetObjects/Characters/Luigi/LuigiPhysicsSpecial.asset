@@ -52,7 +52,7 @@ MonoBehaviour:
   SkiddingMinimumVelocity:
     RawValue: 307200
   SkiddingDeceleration:
-    RawValue: 691200
+    RawValue: 259200
   SkiddingStarmanDeceleration:
     RawValue: 5529600
   CrouchOffEdgeVelocity:
@@ -81,9 +81,9 @@ MonoBehaviour:
   - RawValue: 97200
   - RawValue: 97200
   SkiddingIceDeceleration:
-    RawValue: 259200
-  SlowTurnaroundIceAcceleration:
     RawValue: 172800
+  SlowTurnaroundIceAcceleration:
+    RawValue: 101505
   SmallHitboxHeight:
     RawValue: 24248
   LargeHitboxHeight:
@@ -93,25 +93,25 @@ MonoBehaviour:
   JumpBufferFrames: 12
   CoyoteTimeFrames: 5
   JumpVelocity:
-    RawValue: 433920
+    RawValue: 466688
   JumpSpeedBonusVelocity:
     RawValue: 30720
   JumpTripleBonusVelocity:
     RawValue: 32768
   JumpMegaVelocity:
-    RawValue: 798720
+    RawValue: 870810
   JumpMegaSpeedBonusVelocity:
-    RawValue: 34560
+    RawValue: 41113
   JumpMiniVelocity:
-    RawValue: 354480
+    RawValue: 426570
   JumpMiniSpeedBonusVelocity:
-    RawValue: 28080
+    RawValue: 34634
   WalljumpHorizontalVelocity:
     RawValue: 276480
   WalljumpVerticalVelocity:
-    RawValue: 422400
+    RawValue: 494489
   WalljumpMiniVerticalVelocity:
-    RawValue: 338880
+    RawValue: 410970
   GravityVelocity:
   - RawValue: 272640
   - RawValue: 138240
@@ -239,10 +239,6 @@ MonoBehaviour:
       RawValue: 98304
   GroundpoundStartFrames: 16
   GroundpoundStartMegaFrames: 24
-  ProjectileVolleySize: 2
-  ProjectileVolleyFrames: 75
-  ProjectileDelayFrames: 6
-  MaxProjecitles: 6
   PropellerSpinFrames: 30
   PropellerLaunchVelocity:
     RawValue: 393216

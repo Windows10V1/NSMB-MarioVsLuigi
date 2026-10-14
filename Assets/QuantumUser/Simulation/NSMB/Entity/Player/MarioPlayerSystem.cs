@@ -1648,12 +1648,13 @@ namespace Quantum {
         private Projectile* ShootNormalProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
+            var state = mario->CurrentPowerupState;
 
             FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35);
 
-            EntityRef newEntity = f.Create(mario->CurrentPowerupState == PowerupState.IceFlower
+            EntityRef newEntity = f.Create(state == PowerupState.IceFlower
                 ? f.SimulationConfig.IceballPrototype
-                : mario->CurrentPowerupState == PowerupState.GoldFlower
+                : state == PowerupState.GoldFlower
                 ? f.SimulationConfig.GoldballPrototype
                 : f.SimulationConfig.FireballPrototype);
 
@@ -2243,20 +2244,20 @@ namespace Quantum {
             var hammerXBoomerang = mario->IsCrouching && marioPhysics->IsTouchingGround && state == PowerupState.HammerSuit && asset.Effect == ProjectileEffectType.Boomerang;
 
             // Mario is "damageable" when he's...
-            // not in knockback, not Mega
-            // regular damageable checks (iframes is 0, not starman invincible)
+            // not in knockback, not Mega + projectile isn't Goldball
+            // regular damageable checks (iframes is 0, not starman invincible + projectile is not Goldball
             // not in a powerUP transition while mini (specifically)
-            // Mario is in his Blue Shell and projectile doesn't affect blue Shell
-            // Mario is crouched and grounded with Hammer Suit and projectile isn't a boomerang or fireball
+            // Mario is in his Blue Shell and projectile doesn't affect Blue Shell
+            // Mario is crouched and grounded with Hammer Suit and projectile isn't a Boomerang or Fireball
             // Team attack allows him to get hit
-            // Mario's powerup state is gold flower and projectile isn't a goldball
+            // Mario's powerup state is gold flower and projectile isn't a Fire/Goldball
             bool damageable = !mario->IsInKnockback
-                && state != PowerupState.MegaMushroom
-                && (mario->IsDamageable(f) || (mario->TryGetCurrentPowerTransition(f, out _) && state == PowerupState.MiniMushroom))
+                && (state != PowerupState.MegaMushroom || asset.Effect == ProjectileEffectType.Gold)
+                && (mario->IsDamageable(f) || (asset.Effect == ProjectileEffectType.Gold && mario->IsStarmanInvincible && mario->DamageInvincibilityFrames == 0) || (mario->TryGetCurrentPowerTransition(f, out _) && state == PowerupState.MiniMushroom))
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell)
                 && !hammerXBoomerang
                 && mario->CheckTeamAttack(f, projectile->Owner, out dropStars)
-                && !(state == PowerupState.GoldFlower && asset.Effect != ProjectileEffectType.Gold);
+                && !(state == PowerupState.GoldFlower && (asset.Effect == ProjectileEffectType.Fire || asset.Effect == ProjectileEffectType.Gold));
 
             if (damageable) {
                 bool didKnockback = false;
@@ -2276,9 +2277,18 @@ namespace Quantum {
                     }
                     break;
                 case ProjectileEffectType.Gold:
-                    // Drop 4 loose coins, CollisionBump strength and 2 stars of damage
-                    if (dropStars) {
+                    if (state == PowerupState.MegaMushroom) {
+                        // Knockback without star drop for Mega
+                        didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, 0, KnockbackStrength.FireballBump, projectile->Owner, ignoreInvincibleStates: true);
+                    } else if (mario->IsStarmanInvincible) {
+                        // Weaker knockback with just 1 star drop for starmen
+                        didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 1 : 0, KnockbackStrength.Normal, projectile->Owner, ignoreInvincibleStates: true);
+                    } else {
+                        // Stronger knockback with 2 star drops
                         didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 2 : 0, KnockbackStrength.CollisionBump, projectile->Owner);
+                    }
+                    if (didKnockback) {
+                        DropCoins(f, marioEntity, mario);
                     }
                     break;
                 case ProjectileEffectType.Freeze:
@@ -2306,15 +2316,35 @@ namespace Quantum {
             if (damageable || asset.DestroyOnHitPlayers || ((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell) || hammerXBoomerang) {
                 if (hammerXBoomerang) {
                     // Fly
-                    var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(projectileEntity);
                     projectile->Speed *= Constants._0_85;
-                    physicsObject->Gravity *= Constants._0_85;
-                    physicsObject->Velocity.Y = projectile->Speed;
+                    projectilePhysics->Gravity *= Constants._0_85;
+                    projectilePhysics->Velocity.Y = projectile->Speed;
 
                     f.Events.EnemyPierced(marioEntity);
                 }
 
                 f.Signals.OnProjectileHitEntity(projectileEntity, marioEntity);
+            }
+        }
+
+        private static void DropCoins(Frame f, EntityRef marioEntity, MarioPlayer* mario) {
+            mario->Coins = mario->Coins >= 6 ? (byte) (mario->Coins - 6) : (byte) 0;
+
+            var gamemode = f.FindAsset(f.Global->Rules.Gamemode);
+            if (gamemode == null || !gamemode.LooseCoinPrototype.IsValid) {
+                return;
+            }
+
+            var marioTransform = f.Unsafe.GetPointer<Transform2D>(marioEntity);
+            var marioCollider = f.Unsafe.GetPointer<PhysicsCollider2D>(marioEntity);
+            FPVector2 center = marioTransform->Position + marioCollider->Shape.Centroid;
+
+            for (int i = 0; i < 6; i++) {
+                EntityRef coinEntity = gamemode.SpawnLooseCoin(f, center);
+                f.Unsafe.GetPointer<Coin>(coinEntity)->UncollectableFrames = 60;
+                if (f.Unsafe.TryGetPointer(coinEntity, out PhysicsObject* coinPhysics)) {
+                    coinPhysics->Velocity.X = f.RNG->Next(FP._0_50, Constants._2_50) * ((i & 1) == 0 ? 1 : -1);
+                }
             }
         }
 
