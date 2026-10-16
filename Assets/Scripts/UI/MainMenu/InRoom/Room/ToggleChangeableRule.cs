@@ -5,11 +5,11 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
     public class ToggleChangeableRule : ChangeableRule {
 
         //---Properties
-        public override bool CanIncreaseValue => !(bool) value;
-        public override bool CanDecreaseValue => (bool) value;
+        public override bool CanIncreaseValue => value is bool b && !b;
+        public override bool CanDecreaseValue => value is bool b2 && b2;
 
         protected override void IncreaseValueInternal() {
-            if (!(bool) value) {
+            if (value is bool bv && !bv) {
                 value = true;
                 cursorSfx.Play();
                 SendCommand();
@@ -17,7 +17,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
         }
 
         protected override unsafe void DecreaseValueInternal() {
-            if ((bool) value) {
+            if (value is bool bv && bv) {
                 value = false;
                 cursorSfx.Play();
                 SendCommand();
@@ -29,15 +29,22 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
                 EnabledChanges = ruleType,
             };
 
+            if (value is not bool boolValue) {
+                return;
+            }
+
             switch (ruleType) {
             case CommandChangeRules.Rules.CustomPowerupsEnabled:
-                cmd.CustomPowerupsEnabled = (bool) value;
+                cmd.CustomPowerupsEnabled = boolValue;
                 break;
             case CommandChangeRules.Rules.TeamsEnabled:
-                cmd.TeamsEnabled = (bool) value;
+                cmd.TeamsEnabled = boolValue;
                 break;
             case CommandChangeRules.Rules.StarCoinsEnabled:
-                cmd.StarCoinsEnabled = (bool) value;
+                cmd.StarCoinsEnabled = boolValue;
+                break;
+            case CommandChangeRules.Rules.CharacterSpecialPhysicsEnabled:
+                cmd.CharacterSpecialPhysicsEnabled = boolValue;
                 break;
             }
 

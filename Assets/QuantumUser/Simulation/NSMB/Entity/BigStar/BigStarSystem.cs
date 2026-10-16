@@ -128,7 +128,6 @@ namespace Quantum {
             }
 
             f.Signals.OnMarioPlayerCollectedStar(marioEntity);
-            GameLogicSystem.CheckForGameEnd(f);
 
             f.Events.MarioPlayerCollectedStar(marioEntity, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position, starEntity);
             f.Events.CollectableDespawned(starEntity, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position, true);
@@ -257,7 +256,6 @@ namespace Quantum {
 
             if (droppedStars > 0) {
                 f.Events.MarioPlayerDroppedStar(marioEntity);
-                GameLogicSystem.CheckForGameEnd(f);
             }
         }
     }

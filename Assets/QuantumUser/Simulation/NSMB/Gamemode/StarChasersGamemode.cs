@@ -53,6 +53,18 @@ namespace Quantum {
                 }
             }
 
+            int teamsAtTarget = 0;
+            for (int i = 0; i < objectiveCounts.Length; i++) {
+                if (objectiveCounts[i] >= f.Global->Rules.StarsToWin) {
+                    teamsAtTarget++;
+                }
+            }
+            if (teamsAtTarget >= 2) {
+                // It's a draw
+                GameLogicSystem.EndGame(f, false, null);
+                return;
+            }
+
             // End Condition: team gets to enough stars
             int? winningTeam = GetWinningTeam(f, out int stars);
             if (winningTeam != null && stars >= f.Global->Rules.StarsToWin) {
@@ -63,12 +75,6 @@ namespace Quantum {
 
             // End Condition: timer expires
             if (f.Global->Rules.IsTimerEnabled && f.Global->Timer <= 0) {
-                if (f.Global->Rules.DrawOnTimeUp) {
-                    // It's a draw
-                    GameLogicSystem.EndGame(f, false, null);
-                    return;
-                }
-
                 // Check if one team is winning
                 if (winningTeam != null) {
                     // <team> wins

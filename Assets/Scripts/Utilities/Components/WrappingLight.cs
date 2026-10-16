@@ -270,10 +270,11 @@ namespace NSMB.Utilities.Components {
             to.shadowBias = from.shadowBias;
             to.shadowNormalBias = from.shadowNormalBias;
             to.shadowNearPlane = from.shadowNearPlane;
-#if UNITY_6000_0_OR_NEWER
-            to.shadowRadius = from.shadowRadius;
-            to.shadowAngle = from.shadowAngle;
-#endif
+            // shadowRadius / shadowAngle are Editor-only baked-shadow settings
+            // and don't exist on all Unity versions / render pipelines.
+            // Copy via reflection when present so this compiles everywhere.
+            CopyOptionalFloatProperty(from, to, "shadowRadius");
+            CopyOptionalFloatProperty(from, to, "shadowAngle");
             to.cullingMask = from.cullingMask;
             to.cookie = from.cookie;
             if (to.cookie) {
@@ -281,6 +282,18 @@ namespace NSMB.Utilities.Components {
             }
             to.renderMode = from.renderMode;
             to.bounceIntensity = from.bounceIntensity;
+        }
+
+        private static void CopyOptionalFloatProperty(Light from, Light to, string propertyName) {
+            PropertyInfo prop = typeof(Light).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance);
+            if (prop == null || !prop.CanRead || !prop.CanWrite || prop.PropertyType != typeof(float)) {
+                return;
+            }
+            try {
+                prop.SetValue(to, prop.GetValue(from));
+            } catch {
+                // Ignore version-specific properties that can't be copied.
+            }
         }
 
         private static void CopyAdditionalLightData(GameObject from, GameObject to) {

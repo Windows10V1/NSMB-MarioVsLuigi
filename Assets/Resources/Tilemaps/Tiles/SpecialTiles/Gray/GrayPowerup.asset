@@ -50,7 +50,7 @@ MonoBehaviour:
   FootstepSound: 31
   FootstepParticle: 0
   ParticleColor: {r: 0.42745098, g: 0.42745098, b: 0.42745098, a: 1}
-  BreakingRules: 320
+  BreakingRules: 2368
   BumpIfNotBroken: 0
   BumpSize:
     X:
@@ -74,3 +74,4 @@ MonoBehaviour:
   largePowerup:
     Id:
       Value: 296548766860541996
+  bypassCustomSpawnWeightDisables: 0

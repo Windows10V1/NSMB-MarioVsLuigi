@@ -10,7 +10,21 @@ namespace Quantum {
 
         public static bool TryInteraction(Frame f, EntityRef marioEntity, EntityRef breakableObjectEntity, in PhysicsContact? contact = null) {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
-            if (mario->CurrentPowerupState != PowerupState.MegaMushroom || mario->IsDead) {
+            if (mario->IsDead) {
+                return true;
+            }
+
+            bool isMega = mario->CurrentPowerupState == PowerupState.MegaMushroom;
+            bool isSpecialWarioGroundpound = !isMega && mario->IsGroundpoundActive && mario->IsWario(f) && mario->IsSpecialPhysicsActive(f);
+            if (isSpecialWarioGroundpound) {
+                bool sprintHeld = false;
+                if (mario->PlayerRef.IsValid) {
+                    Input* sprintInput = f.GetPlayerInput(mario->PlayerRef);
+                    sprintHeld = sprintInput != null && sprintInput->Sprint.IsDown;
+                }
+                isSpecialWarioGroundpound &= sprintHeld;
+            }
+            if (!isMega && !isSpecialWarioGroundpound) {
                 return true;
             }
 

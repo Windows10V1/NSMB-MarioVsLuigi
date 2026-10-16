@@ -82,7 +82,7 @@ namespace Quantum {
 
             if (attackedFromAbove) {
                 // Launch the player away at run speed with an upwards bounce, and scale the bill.
-                var physicsInfo = f.FindAsset(mario->PhysicsAsset);
+                var physicsInfo = mario->GetPhysicsInfo(f);
                 FP runSpeed = physicsInfo.WalkMaxVelocity[physicsInfo.RunSpeedStage];
                 int direction = theirPos.X >= ourPos.X ? 1 : -1;
                 marioPhysicsObject->Velocity.X = runSpeed * direction;

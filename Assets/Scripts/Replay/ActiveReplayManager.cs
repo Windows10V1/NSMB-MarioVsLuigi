@@ -171,6 +171,7 @@ namespace NSMB.Replay {
                         TeamsEnabled = rules.TeamsEnabled,
                         StarFountain = rules.StarFountain,
                         StarCoinsEnabled = rules.StarCoinsEnabled,
+                        CharacterSpecialPhysicsEnabled = rules.CharacterSpecialPhysicsEnabled,
                         TeamAttack = rules.TeamAttack,
                         CoinItemCustomSpawnWeights = customSpawnWeights,
                     },
@@ -314,7 +315,7 @@ namespace NSMB.Replay {
 
         private void OnGameEnded(EventGameEnded e) {
             if (e.Game == currentlyRecordingGame) {
-                SaveReplay((sbyte) e.WinningTeam);
+                SaveReplay((sbyte) (e.HasWinner ? e.WinningTeam : -1));
             }
         }
 

@@ -14,9 +14,9 @@ namespace Quantum {
         public int TimerMinutes;
         public bool TeamsEnabled;
         public bool CustomPowerupsEnabled;
-        public bool DrawOnTimeUp;
         public int StarFountain;
         public bool StarCoinsEnabled;
+        public bool CharacterSpecialPhysicsEnabled;
         public StageChooseMode ChooseMode;
         public int TeamAttack;
 
@@ -35,9 +35,9 @@ namespace Quantum {
             stream.Serialize(ref TimerMinutes);
             stream.Serialize(ref TeamsEnabled);
             stream.Serialize(ref CustomPowerupsEnabled);
-            stream.Serialize(ref DrawOnTimeUp);
             stream.Serialize(ref StarFountain);
             stream.Serialize(ref StarCoinsEnabled);
+            stream.Serialize(ref CharacterSpecialPhysicsEnabled);
 
             if (stream.Writing) {
                 stream.WriteByte((byte) ChooseMode);
@@ -93,14 +93,14 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.CustomPowerupsEnabled)) {
                 rules.CustomPowerupsEnabled = CustomPowerupsEnabled;
             }
-            if (rulesChanges.HasFlag(Rules.DrawOnTimeUp)) {
-                rules.DrawOnTimeUp = DrawOnTimeUp;
-            }
             if (rulesChanges.HasFlag(Rules.StarFountain)) {
                 rules.StarFountain = StarFountain;
             }
             if (rulesChanges.HasFlag(Rules.StarCoinsEnabled)) {
                 rules.StarCoinsEnabled = StarCoinsEnabled;
+            }
+            if (rulesChanges.HasFlag(Rules.CharacterSpecialPhysicsEnabled)) {
+                rules.CharacterSpecialPhysicsEnabled = CharacterSpecialPhysicsEnabled;
             }
             if (rulesChanges.HasFlag(Rules.StageChooseMode)) {
                 rules.ChooseMode = ChooseMode;
@@ -124,11 +124,12 @@ namespace Quantum {
             TimerMinutes = 1 << 5,
             TeamsEnabled = 1 << 6,
             CustomPowerupsEnabled = 1 << 7,
-            DrawOnTimeUp = 1 << 8,
+            // 1 << 8 retired (was DrawOnTimeUp)
             StarFountain = 1 << 9, // only for Star Chasers
             StarCoinsEnabled = 1 << 10, // only for Star Chasers
             StageChooseMode = 1 << 11,
             TeamAttack = 1 << 12,
+            CharacterSpecialPhysicsEnabled = 1 << 13, // only for Star Chasers
         }
     }
 }

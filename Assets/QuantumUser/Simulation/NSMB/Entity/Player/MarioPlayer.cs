@@ -96,11 +96,40 @@ namespace Quantum {
         public readonly bool IsStarmanOrMega => IsStarmanInvincible || CurrentPowerupState == PowerupState.MegaMushroom;
         public readonly bool IsValid(Frame f) => !Disconnected && !(f.Global->Rules.IsLivesEnabled && Lives == 0);
         public readonly bool IsDamageable(Frame f) => !IsStarmanInvincible && DamageInvincibilityFrames == 0 && !TryGetCurrentPowerTransition(f, out _);
+        public readonly bool IsSpecialPhysicsActive(Frame f) {
+            if (!f.Global->Rules.CharacterSpecialPhysicsEnabled) {
+                return false;
+            }
+            if (!SpecialPhysicsAsset.Id.IsValid) {
+                return false;
+            }
+            return f.TryFindAsset(SpecialPhysicsAsset, out MarioPlayerPhysicsInfo _);
+        }
 
-        /**
-         * <summary>Outputs a pointer to the current transition animation Mario is in, if he is in one.</summary>
-         * <returns><strong>true</strong> if in a transition otherwise <strong>false</strong>.</returns>
-         */
+        public readonly AssetRef<MarioPlayerPhysicsInfo> GetEffectivePhysicsAsset(Frame f) {
+            return IsSpecialPhysicsActive(f) ? SpecialPhysicsAsset : PhysicsAsset;
+        }
+
+        public readonly MarioPlayerPhysicsInfo GetPhysicsInfo(Frame f) {
+            return f.FindAsset(GetEffectivePhysicsAsset(f));
+        }
+
+        public readonly bool HasSpecialAbilityActive(Frame f) {
+            return IsSpecialPhysicsActive(f);
+        }
+
+        public readonly bool IsLuigi(Frame f) {
+            return f.TryFindAsset(CharacterAsset, out CharacterAsset character) && character.TranslationString == "character.luigi";
+        }
+
+        public readonly bool IsWario(Frame f) {
+            return f.TryFindAsset(CharacterAsset, out CharacterAsset character) && character.TranslationString == "character.wario";
+        }
+
+        public readonly bool IsWaluigi(Frame f) {
+            return f.TryFindAsset(CharacterAsset, out CharacterAsset character) && character.TranslationString == "character.waluigi";
+        }
+
         public readonly bool TryGetCurrentPowerTransition(Frame f, out PowerupTransitionAnimation* transition) {
             transition = null;
             var queue = f.ResolveList(PowerupTransitionQueue);
@@ -359,6 +388,9 @@ namespace Quantum {
             LastAttacker = EntityRef.None;
             TauntFrames = 0;
             DamageInvincibilityFrames = 0;
+            FloatFrames = (byte) (f.UpdateRate / 2);
+            Floating = false;
+            AirJumpsRemaining = 0;
 
             if (f.Unsafe.TryGetPointer(HeldEntity, out Holdable* holdable)) {
                 holdable->DropWithoutThrowing(f, HeldEntity);
@@ -496,6 +528,9 @@ namespace Quantum {
             IsInShell = false;
             IsTurnaround = false;
             ForceJumpTimer = 0;
+            FloatFrames = (byte) (f.UpdateRate / 2);
+            Floating = false;
+            AirJumpsRemaining = 2;
 
             f.ResolveList(PowerupTransitionQueue).Clear();
 
@@ -515,6 +550,9 @@ namespace Quantum {
             CoyoteTimeFrames = 0;
             ForceJumpTimer = 0;
             LastAttacker = EntityRef.None;
+            FloatFrames = (byte) (f.UpdateRate / 2);
+            Floating = false;
+            AirJumpsRemaining = 2;
 
             physicsObject->IsFrozen = false;
             physicsObject->DisableCollision = false;
@@ -575,7 +613,7 @@ namespace Quantum {
 
             knockbackVelocity.X *= fromRight ? -1 : 1;
             if (CurrentPowerupState == PowerupState.MiniMushroom) {
-                var physics = f.FindAsset(PhysicsAsset);
+                var physics = GetPhysicsInfo(f);
                 knockbackVelocity.X *= physics.KnockbackMiniMultiplier.X;
                 knockbackVelocity.Y *= physics.KnockbackMiniMultiplier.Y;
             }
@@ -609,11 +647,19 @@ namespace Quantum {
             WallslideLeft = WallslideRight = false;
             PreviousJumpState = JumpState.None; 
             JumpState = JumpState.None;
+            FloatFrames = 0;
+            Floating = false;
+            AirJumpsRemaining = 0;
 
             if (f.Unsafe.TryGetPointer(attacker, out Projectile* projectile)) {
                 attacker = projectile->Owner;
             }
             LastAttacker = attacker;
+
+            // Special Wario takes reduced star loss from groundpounds.
+            if (strength == KnockbackStrength.Groundpound && starsToDrop == 3 && IsWario(f) && IsSpecialPhysicsActive(f)) {
+                starsToDrop = 2;
+            }
 
             f.Signals.OnMarioPlayerDropObjective(entity, starsToDrop, attacker);
             f.Events.MarioPlayerTookKnockback(entity, attacker, starsToDrop, oldObjectiveCount, strength, projectileEffectType, wasBlueShell);
@@ -655,7 +701,7 @@ namespace Quantum {
                 return;
             }
 
-            var physics = f.FindAsset(f.Unsafe.GetPointer<MarioPlayer>(mario)->PhysicsAsset);
+            var physics = f.Unsafe.GetPointer<MarioPlayer>(mario)->GetPhysicsInfo(f);
             PipeFrames = physics.PipeEnterDuration;
 
             CurrentPipe = pipe;
@@ -677,6 +723,9 @@ namespace Quantum {
             IsSpinnerFlying = false;
             IsInShell = false;
             PipeEntering = true;
+            FloatFrames = 0;
+            Floating = false;
+            AirJumpsRemaining = 0;
 
             if (InvincibilityFrames > 0) {
                 InvincibilityFrames += (ushort) (PipeFrames * 2);

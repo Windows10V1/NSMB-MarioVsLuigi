@@ -525,10 +525,10 @@ namespace Quantum.Prototypes {
     public Int32 TimerMinutes;
     public QBoolean TeamsEnabled;
     public QBoolean CustomPowerupsEnabled;
-    public QBoolean DrawOnTimeUp;
     public Quantum.QEnum8<TeamAttackOptions> TeamAttack;
     public Int32 StarFountain;
     public QBoolean StarCoinsEnabled;
+    public QBoolean CharacterSpecialPhysicsEnabled;
     [DictionaryAttribute()]
     [DynamicCollectionAttribute()]
     public DictionaryEntry_AssetRefCoinItemAsset_FP[] CoinItemCustomSpawnWeights = {};
@@ -553,10 +553,10 @@ namespace Quantum.Prototypes {
         result.TimerMinutes = this.TimerMinutes;
         result.TeamsEnabled = this.TeamsEnabled;
         result.CustomPowerupsEnabled = this.CustomPowerupsEnabled;
-        result.DrawOnTimeUp = this.DrawOnTimeUp;
         result.TeamAttack = this.TeamAttack;
         result.StarFountain = this.StarFountain;
         result.StarCoinsEnabled = this.StarCoinsEnabled;
+        result.CharacterSpecialPhysicsEnabled = this.CharacterSpecialPhysicsEnabled;
         if (this.CoinItemCustomSpawnWeights.Length == 0) {
           result.CoinItemCustomSpawnWeights = default;
         } else {

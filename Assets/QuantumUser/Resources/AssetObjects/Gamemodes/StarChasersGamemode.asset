@@ -46,6 +46,10 @@ MonoBehaviour:
       Value: 315844579913471239
   - Id:
       Value: 378514462062875007
+  - Id:
+      Value: 421291512996345105
+  - Id:
+      Value: 470179860045472402
   FallbackCoinItem:
     Id:
       Value: 390055422968795145
@@ -71,13 +75,13 @@ MonoBehaviour:
       Value: 0
     CustomPowerupsEnabled:
       Value: 1
-    DrawOnTimeUp:
-      Value: 0
     TeamAttack:
       Value: 1
     StarFountain: 100
     StarCoinsEnabled:
       Value: 1
+    CharacterSpecialPhysicsEnabled:
+      Value: 0
     CoinItemCustomSpawnWeights: []
   BigStarPrototype:
     Id:

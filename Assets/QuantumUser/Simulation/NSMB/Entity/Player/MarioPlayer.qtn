@@ -144,6 +144,12 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte TauntFrames;
 
 	[ExcludeFromPrototype] EntityRef CurrentSpinner;
+
+	[ExcludeFromPrototype] byte FloatFrames;
+	[ExcludeFromPrototype] bool Floating;
+
+	// Special Waluigi: remaining mid-air regular jumps (refilled on ground/walljump/bounce).
+	[ExcludeFromPrototype] byte AirJumpsRemaining;
 }
 
 struct StarChasersData {

@@ -88,6 +88,7 @@ namespace NSMB.Entities.Player {
         private static readonly int ParamHeadPickup = Animator.StringToHash("head-pickup");
         private static readonly int ParamFireball = Animator.StringToHash("fireball");
         private static readonly int ParamTaunt = Animator.StringToHash("taunt");
+        private static readonly int ParamLuigiFloat = Animator.StringToHash("luigi_float");
         #endregion
 
         //---Public Variables
@@ -426,7 +427,7 @@ namespace NSMB.Entities.Player {
                 modelRotateInstantly = true;
 
             } else if (animator.GetBool(ParamInShell) && (!f.Exists(mario->CurrentSpinner) || Mathf.Abs(physicsObject->Velocity.X.AsFloat) > 0.3f)) {
-                var physics = f.FindAsset(mario->PhysicsAsset);
+                var physics = mario->GetPhysicsInfo(f);
                 float percentage = Mathf.Abs(physicsObject->Velocity.X.AsFloat) / physics.WalkMaxVelocity[physics.RunSpeedStage].AsFloat * delta;
                 modelRotationTarget *= Quaternion.Euler(0, percentage * 2010.9f * (mario->FacingRight ? -1 : 1), 0);
                 modelRotateInstantly = true;
@@ -553,6 +554,7 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamFrozen, freezable->IsFrozen(f));
             animator.SetBool(ParamKnockforwards, mario->KnockForwards);
             animator.SetBool(ParamTaunt, mario->TauntFrames > 0);
+            animator.SetBool(ParamLuigiFloat, mario->Floating);
                 
             float animatedVelocity = Mathf.Abs(physicsObject->Velocity.X.AsFloat);
             if (mario->IsStuckInBlock) {
@@ -767,7 +769,7 @@ namespace NSMB.Entities.Player {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(EntityRef);
             var marioTransform = f.Unsafe.GetPointer<Transform2D>(EntityRef);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(EntityRef);
-            var physics = f.FindAsset(mario->PhysicsAsset);
+            var physics = mario->GetPhysicsInfo(f);
 
             Input input;
             try {
@@ -786,10 +788,6 @@ namespace NSMB.Entities.Player {
             bool reverse = physicsObject->Velocity.X != 0 && ((left ? 1 : -1) == FPMath.Sign(physicsObject->Velocity.X));
             if (physicsObject->IsOnSlipperyGround && (left ^ right) && reverse) {
                 PlaySound(SoundEffect.World_Ice_Skidding);
-                return;
-            }
-            if (mario->IsPropellerFlying) {
-                PlaySound(SoundEffect.Powerup_PropellerMushroom_Kick);
                 return;
             }
             if (FPMath.Abs(physicsObject->Velocity.X) < physics.WalkMaxVelocity[physics.WalkSpeedStage]) {
@@ -854,6 +852,14 @@ namespace NSMB.Entities.Player {
             PlaySound(SoundEffect.Powerup_MegaMushroom_Walk, variant: footstepCounter++);
             GlobalController.Instance.rumbleManager.RumbleForSeconds(0.5f, 0f, 0.1f, RumbleManager.RumbleSetting.High);
             CameraAnimator.TriggerScreenshake(0.15f);
+        }
+
+        /// <summary>
+        /// Used by animations as an event
+        /// <summary>
+        [Preserve]
+        public void PropellerFootstep() {
+            PlaySound(SoundEffect.Powerup_PropellerMushroom_Kick);
         }
 
         private void OnPlayKnockbackEffect(EventPlayKnockbackEffect e) {

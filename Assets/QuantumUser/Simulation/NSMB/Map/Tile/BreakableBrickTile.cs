@@ -24,30 +24,43 @@ namespace Quantum {
             bool brokenByMega = false;
             EntityRef bumpOwner = default;
             if (f.Unsafe.TryGetPointer(entity, out MarioPlayer* mario)) {
-                // Mario interacting with the block
-                if (mario->CurrentPowerupState < PowerupState.Mushroom) {
-                    doBreak = direction switch {
-                        // Small Mario
-                        InteractionDirection.Down when mario->IsGroundpoundActive => BreakingRules.HasFlag(BreakableBy.SmallMarioGroundpound),
-                        InteractionDirection.Down when mario->IsDrilling => BreakingRules.HasFlag(BreakableBy.SmallMarioDrill),
-                        InteractionDirection.Up => BreakingRules.HasFlag(BreakableBy.SmallMario),
-                        _ => false
-                    };
-                } else if (mario->CurrentPowerupState == PowerupState.MegaMushroom) {
-                    // Mega Mario
-                    doBreak = BreakingRules.HasFlag(BreakableBy.MegaMario);
-                    brokenByMega = true;
-                } else if (mario->IsInShell) {
-                    // Blue Shell
-                    doBreak = BreakingRules.HasFlag(BreakableBy.Shells);
-                } else {
-                    doBreak = direction switch {
-                        // Large Mario
-                        InteractionDirection.Down when mario->IsGroundpoundActive => BreakingRules.HasFlag(BreakableBy.LargeMarioGroundpound),
-                        InteractionDirection.Down when mario->IsDrilling => BreakingRules.HasFlag(BreakableBy.LargeMarioDrill),
-                        InteractionDirection.Up => BreakingRules.HasFlag(BreakableBy.LargeMario),
-                        _ => false
-                    };
+                bool sprintHeld = false;
+                if (mario->PlayerRef.IsValid) {
+                    Input* sprintInput = f.GetPlayerInput(mario->PlayerRef);
+                    sprintHeld = sprintInput != null && sprintInput->Sprint.IsDown;
+                }
+                if (direction == InteractionDirection.Down && mario->IsGroundpoundActive && sprintHeld && mario->IsWario(f)) {
+                    BreakableBy warioRule = mario->CurrentPowerupState < PowerupState.Mushroom ? BreakableBy.SmallWario : BreakableBy.LargeWario;
+                    if (BreakingRules.HasFlag(warioRule)) {
+                        doBreak = true;
+                        brokenByMega = true;
+                    }
+                }
+                if (!doBreak) {
+                    if (mario->CurrentPowerupState < PowerupState.Mushroom) {
+                        doBreak = direction switch {
+                            // Small Mario
+                            InteractionDirection.Down when mario->IsGroundpoundActive => BreakingRules.HasFlag(BreakableBy.SmallMarioGroundpound),
+                            InteractionDirection.Down when mario->IsDrilling => BreakingRules.HasFlag(BreakableBy.SmallMarioDrill),
+                            InteractionDirection.Up => BreakingRules.HasFlag(BreakableBy.SmallMario),
+                            _ => false
+                        };
+                    } else if (mario->CurrentPowerupState == PowerupState.MegaMushroom) {
+                        // Mega Mario
+                        doBreak = BreakingRules.HasFlag(BreakableBy.MegaMario);
+                        brokenByMega = true;
+                    } else if (mario->IsInShell) {
+                        // Blue Shell
+                        doBreak = BreakingRules.HasFlag(BreakableBy.Shells);
+                    } else {
+                        doBreak = direction switch {
+                            // Large Mario
+                            InteractionDirection.Down when mario->IsGroundpoundActive => BreakingRules.HasFlag(BreakableBy.LargeMarioGroundpound),
+                            InteractionDirection.Down when mario->IsDrilling => BreakingRules.HasFlag(BreakableBy.LargeMarioDrill),
+                            InteractionDirection.Up => BreakingRules.HasFlag(BreakableBy.LargeMario),
+                            _ => false
+                        };
+                    }
                 }
                 bumpOwner = entity;
             } else if (f.Unsafe.TryGetPointer(entity, out Koopa* koopa) && koopa->IsKicked) {
@@ -127,6 +140,8 @@ namespace Quantum {
             Shells = 1 << 7,
             Bombs = 1 << 8,
             Projectiles = 1 << 9,
+            [UnityEngine.InspectorName("Small Wario")] SmallWario = 1 << 10,
+            [UnityEngine.InspectorName("Large Wario")] LargeWario = 1 << 11,
         }
     }
 }

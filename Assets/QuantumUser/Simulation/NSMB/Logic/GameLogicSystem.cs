@@ -170,6 +170,8 @@ namespace Quantum {
                 break;
             
             case GameState.Playing:
+                CheckForGameEnd(f);
+
                 if (f.Global->Rules.TimerMinutes > 0 && f.Global->Timer > 0) {
                     if ((f.Global->Timer -= f.DeltaTime) <= 0) {
                         f.Global->Timer = 0;
@@ -261,7 +263,9 @@ namespace Quantum {
         }
 
         public void OnMarioPlayerDied(Frame f, EntityRef entity) {
-            CheckForGameEnd(f);
+            // Intentionally not checking for game end here. End conditions are evaluated
+            // once per tick in Update (see above) so that simultaneous deaths within the
+            // same tick resolve together instead of awarding the win to whoever died last.
         }
 
         public void OnPlayerAdded(Frame f, PlayerRef player, bool firstTime) {

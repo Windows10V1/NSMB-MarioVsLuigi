@@ -204,11 +204,11 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
                 CommandChangeRules.Rules.CoinsForPowerup => rules.CoinsForPowerup,
                 CommandChangeRules.Rules.Lives => rules.Lives,
                 CommandChangeRules.Rules.TimerMinutes => rules.TimerMinutes,
-                CommandChangeRules.Rules.DrawOnTimeUp => rules.DrawOnTimeUp,
                 CommandChangeRules.Rules.CustomPowerupsEnabled => (bool) rules.CustomPowerupsEnabled,
                 CommandChangeRules.Rules.TeamsEnabled => (bool) rules.TeamsEnabled,
                 CommandChangeRules.Rules.StarFountain => rules.StarFountain,
-                CommandChangeRules.Rules.StarCoinsEnabled => rules.StarCoinsEnabled,
+                CommandChangeRules.Rules.StarCoinsEnabled => (bool) rules.StarCoinsEnabled,
+                CommandChangeRules.Rules.CharacterSpecialPhysicsEnabled => (bool) rules.CharacterSpecialPhysicsEnabled,
                 CommandChangeRules.Rules.TeamAttack => (int) rules.TeamAttack,
                 CommandChangeRules.Rules.StageChooseMode => (byte) rules.ChooseMode,
                 _ => null

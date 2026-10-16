@@ -277,7 +277,6 @@ namespace NSMB.Networking {
                 GameStarted = f.Global->GameState != GameState.PreGameRoom,
                 CustomPowerups = rules.CustomPowerupsEnabled,
                 Teams = rules.TeamsEnabled,
-                DrawOnTimeUp = rules.DrawOnTimeUp,
             };
 
             string stageGuid;

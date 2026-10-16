@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 9a8f05fbf24f9d94c8c72662b50a800c
+guid: 2e0cc83a7a945d44ba7ecaec1f494af7
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: wario_all_tx
-    second: {fileID: 2100000, guid: a5c7b963c313ae641997af6aafbc3b10, type: 2}
+    second: {fileID: 2100000, guid: d2eb9fe427c5e574c922f3b605a6ed19, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -3819,14 +3819,14 @@ ModelImporter:
       curves: []
       events:
       - time: 0.12608695
-        functionName: Footstep
+        functionName: PropellerFootstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
         intParameter: 0
         messageOptions: 0
       - time: 0.6347826
-        functionName: Footstep
+        functionName: PropellerFootstep
         data: 
         objectReferenceParameter: {instanceID: 0}
         floatParameter: 0
