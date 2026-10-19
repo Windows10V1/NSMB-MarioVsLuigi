@@ -388,7 +388,7 @@ namespace Quantum {
             LastAttacker = EntityRef.None;
             TauntFrames = 0;
             DamageInvincibilityFrames = 0;
-            FloatFrames = (byte) (f.UpdateRate / 2);
+            FloatFrames = 15;
             Floating = false;
             AirJumpsRemaining = 0;
 
@@ -528,9 +528,8 @@ namespace Quantum {
             IsInShell = false;
             IsTurnaround = false;
             ForceJumpTimer = 0;
-            FloatFrames = (byte) (f.UpdateRate / 2);
+            FloatFrames = 15;
             Floating = false;
-            AirJumpsRemaining = 2;
 
             f.ResolveList(PowerupTransitionQueue).Clear();
 
@@ -550,9 +549,8 @@ namespace Quantum {
             CoyoteTimeFrames = 0;
             ForceJumpTimer = 0;
             LastAttacker = EntityRef.None;
-            FloatFrames = (byte) (f.UpdateRate / 2);
+            FloatFrames = 15;
             Floating = false;
-            AirJumpsRemaining = 2;
 
             physicsObject->IsFrozen = false;
             physicsObject->DisableCollision = false;

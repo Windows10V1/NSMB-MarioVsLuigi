@@ -33,14 +33,10 @@ namespace Quantum {
                         f.Destroy(filter.Entity);
                     }
                 }
-                // Otherwise the EnemySystem delayed respawn revives us.
                 return;
             }
 
             if (filter.Freezable->IsFrozen(f)) {
-                // Banzai Bills stay pinned mid-air while frozen instead of dropping:
-                // keep the ice cube frozen in place until its timer breaks it.
-                // (Skipped while held or sliding so throws still work.)
                 EntityRef iceEntity = filter.Freezable->FrozenCubeEntity;
                 if (f.Unsafe.TryGetPointer(iceEntity, out IceBlock* ice)
                     && ice->TimerEnabled(f, iceEntity)
@@ -52,8 +48,7 @@ namespace Quantum {
             }
 
             if (!banzaiBill->HasFired) {
-                // Dormant until our launcher fires us. Bills without a linked
-                // launcher never fire.
+                // Dormant until our launcher fires us. Bills without a linked launcher never fire.
                 return;
             }
 
@@ -74,7 +69,6 @@ namespace Quantum {
             FPVector2 damageDirection = (theirPos - ourPos).Normalized;
             bool attackedFromAbove = FPVector2.Dot(damageDirection, FPVector2.Up) > 0;
 
-            // Only starman or mega mushroom players can kill it.
             if (mario->IsStarmanOrMega) {
                 banzaiBill->Kill(f, banzaiBillEntity, marioEntity, EnemyKillReason.Special);
                 return;
@@ -89,9 +83,9 @@ namespace Quantum {
                 mario->DoEntityBounce = true;
                 mario->IsDrilling = false;
 
-                f.Events.BanzaiBillHitByProjectile(banzaiBillEntity);
+                f.Events.BanzaiHitByEntity(banzaiBillEntity);
             } else if (!mario->IsCrouchedInShell && mario->IsDamageable(f)) {
-                // Bump the player away without powerdown or star drops.
+                // Knockback, not damage
                 bool damaged = mario->DoKnockback(f, marioEntity, theirPos.X < ourPos.X, 0, KnockbackStrength.Groundpound, banzaiBillEntity);
                 if (damaged) {
                     f.Events.PlayKnockbackEffect(marioEntity, banzaiBillEntity, KnockbackStrength.Groundpound, (ourPos + theirPos) / 2, true);
@@ -117,26 +111,22 @@ namespace Quantum {
 
             switch (projectileAsset.Effect) {
                 case ProjectileEffectType.Freeze:
-                    // Frozen for 30 frames via the Freezable prototype, not killed on break.
                     EntityRef iceEntity = IceBlockSystem.Freeze(f, banzaiBillEntity, true);
                     if (f.Unsafe.TryGetPointer(iceEntity, out IceBlock* ice)) {
-                        // Break in place when the timer expires instead of dropping
-                        // out of the sky like other flying frozen enemies.
+                        // Don't drop but break
                         ice->IsFlying = false;
                     }
                 break;
                 case ProjectileEffectType.Superball:
                 case ProjectileEffectType.Fire:
-                    f.Events.BanzaiBillHitByProjectile(banzaiBillEntity);
+                    f.Events.BanzaiHitByEntity(banzaiBillEntity);
                 break;
                 case ProjectileEffectType.Hammer:
-                    // Hammer bounces off: OnProjectileHitEntity emits EnemyKicked (bounce SFX)
-                    // since the hammer asset has Bounce enabled
-                    f.Events.BanzaiBillHitByProjectile(banzaiBillEntity);
+                    // Bounce
+                    f.Events.BanzaiHitByEntity(banzaiBillEntity);
                 break;
                 case ProjectileEffectType.Boomerang: {
-                    // Fly off like bouncing off a crouched Hammer Suit Mario.
-                    // The EnemyPierced event below comes from OnProjectileHitEntity.
+                    // Hammer X Boomerang effect
                     var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
                     var projectilePhysics = f.Unsafe.GetPointer<PhysicsObject>(projectileEntity);
                     projectile->Speed *= Constants._0_85;
@@ -153,9 +143,9 @@ namespace Quantum {
             var koopa = f.Unsafe.GetPointer<Koopa>(koopaEntity);
             var holdable = f.Unsafe.GetPointer<Holdable>(koopaEntity);
 
-            // A kicked shell bounces off a Banzai Bill instead of killing it.
+            // A kicked shell doesn't kill it either!
             if (koopa->IsKicked || f.Exists(holdable->Holder)) {
-                f.Events.BanzaiBillHitByProjectile(banzaiBillEntity);
+                f.Events.BanzaiHitByEntity(banzaiBillEntity);
             }
         }
         #endregion
@@ -166,6 +156,7 @@ namespace Quantum {
                 banzaiBill->Kill(f, entity, bobomb, EnemyKillReason.Special);
             }
         }
+
         public void OnEnemyRespawned(Frame f, EntityRef entity) {
             if (f.Unsafe.TryGetPointer(entity, out BanzaiBill* banzaiBill)) {
                 // Come back dormant so our launcher can fire us again.
@@ -179,10 +170,8 @@ namespace Quantum {
         public void OnIceBlockBroken(Frame f, EntityRef brokenIceBlock, IceBlockBreakReason breakReason, EntityRef attacker) {
             var iceBlock = f.Unsafe.GetPointer<IceBlock>(brokenIceBlock);
             if (f.Unsafe.TryGetPointer(iceBlock->Entity, out BanzaiBill* banzaiBill)) {
-                // Survives the break (unlike BulletBill): re-enable interactions,
-                // which Freeze disabled, and pop with a scale pulse.
                 f.Unsafe.GetPointer<Interactable>(iceBlock->Entity)->ColliderDisabled = false;
-                f.Events.BanzaiBillHitByProjectile(iceBlock->Entity);
+                f.Events.BanzaiHitByEntity(iceBlock->Entity);
             }
         }
         #endregion

@@ -2,7 +2,7 @@ using Photon.Deterministic;
 
 namespace Quantum {
     public unsafe partial struct Projectile {
-
+        #region Default
         public void Initialize(Frame f, EntityRef thisEntity, EntityRef owner, FPVector2 spawnpoint, bool right) {
             var asset = f.FindAsset(Asset);
             var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
@@ -31,7 +31,8 @@ namespace Quantum {
             transform->Position = spawnpoint;
             physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), -Speed);
         }
-
+        #endregion
+        #region Hammer
         public void InitializeHammer(Frame f, EntityRef thisEntity, EntityRef owner, FPVector2 spawnpoint, bool right, bool playerHoldingUp) {
             var asset = f.FindAsset(Asset);
             var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
@@ -50,7 +51,8 @@ namespace Quantum {
             physicsObject->Velocity = velocity;
             physicsObject->Gravity = FPVector2.Up * (playerHoldingUp ? FP.FromString("-37.512") : FP.FromString("-28.125"));
         }
-
+        #endregion
+        #region Boomerang
         public void InitializeBoomerang(Frame f, EntityRef thisEntity, EntityRef owner, FPVector2 spawnpoint, bool right) {
             var asset = f.FindAsset(Asset);
             var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
@@ -62,37 +64,12 @@ namespace Quantum {
 
             // Speed
             Speed = asset.Speed;
-            if (asset.InheritShooterVelocity
-                && f.Unsafe.TryGetPointer(owner, out PhysicsObject* ownerPhysicsObject)
-                && FPMath.Sign(ownerPhysicsObject->Velocity.X) == 1 == FacingRight)
-            {
-                Speed += FPMath.Abs(ownerPhysicsObject->Velocity.X / 3);
-            }
 
             // Physics
             Combo = 0; // There are 3 phases for Boomerang: 0 = going, 1 = pausing, 2 = returning
             Frame = 0; // Lifetime counter
             transform->Position = spawnpoint;
             physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), 0);
-        }
-
-        public void InitializeSuperball(Frame f, EntityRef thisEntity, EntityRef owner, FPVector2 spawnpoint, bool right) {
-            var asset = f.FindAsset(Asset);
-            var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
-            var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(thisEntity);
-
-            // Vars
-            Owner = owner;
-            FacingRight = right;
-
-            // Speed
-            Speed = asset.Speed;
-            physicsObject->Gravity = FPVector2.Zero;
-            physicsObject->TerminalVelocity = -Speed;
-
-            // Physics
-            transform->Position = spawnpoint;
-            physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), -Speed);
         }
 
         public void UpdateBoomerang(Frame f, EntityRef thisEntity, PhysicsObject* physicsObject, VersusStageData stage) {
@@ -151,6 +128,26 @@ namespace Quantum {
                 physicsObject->Gravity = FPVector2.Zero;
             }
         }
+        #endregion
+        #region Super Ball
+        public void InitializeSuperball(Frame f, EntityRef thisEntity, EntityRef owner, FPVector2 spawnpoint, bool right) {
+            var asset = f.FindAsset(Asset);
+            var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
+            var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(thisEntity);
+
+            // Vars
+            Owner = owner;
+            FacingRight = right;
+
+            // Speed
+            Speed = asset.Speed;
+            physicsObject->Gravity = FPVector2.Zero;
+            physicsObject->TerminalVelocity = -Speed;
+
+            // Physics
+            transform->Position = spawnpoint;
+            physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), -Speed);
+        }
 
         public void UpdateSuperball(Frame f, PhysicsObject* physicsObject) {
             physicsObject->Gravity = FPVector2.Zero;
@@ -182,5 +179,6 @@ namespace Quantum {
                 physicsObject->Velocity.X = Speed * (FacingRight ? 1 : -1);
             }
         }
+        #endregion
     }
 }

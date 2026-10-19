@@ -35,15 +35,35 @@ namespace Quantum {
 
             var physicsObject = filter.PhysicsObject;
 
-            // Check to instant-despawn if spawned inside a wall
-            // Boomerang however gets an exception when it's a breakable tile (WIP)
+            // Normally this whole bit would check to instant-despawn if spawned inside a wall,
             if (!physicsObject->DisableCollision && !projectile->CheckedCollision) {
                 if (PhysicsObjectSystem.BoxInGround(f, transform->Position, collider->Shape)) {
-                    if (asset.DestroyOnHitTerrain) {
+                    bool brokeTile = false;
+                    // but tile-breaking projectiles get an exception when spawned inside breakable tiles.
+                    if (asset.BreakBreakableTiles) {
+                        brokeTile = TryBreakTiles(f, filter.Entity, physicsObject, stage);
+                        if (!brokeTile) {
+                            Span<PhysicsObjectSystem.LocationTilePair> tiles = stackalloc PhysicsObjectSystem.LocationTilePair[64];
+                            int count = PhysicsObjectSystem.GetTilesOverlappingHitbox(f, transform->Position, collider->Shape, tiles, stage);
+                            for (int i = 0; i < count; i++) {
+                                var tilePos = tiles[i].Position;
+                                var tileInstance = tiles[i].Tile;
+                                if (f.FindAsset(tileInstance.Tile) is IInteractableTile interactable && interactable.Interact(f, filter.Entity, InteractionDirection.Left, tilePos, tileInstance, out _)) {
+                                    brokeTile = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (brokeTile) {
+                        // So keep them alive!
+                        return;
+                    } else {
                         Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                         return;
                     }
                 }
+
                 projectile->CheckedCollision = true;
             }
 
@@ -80,8 +100,12 @@ namespace Quantum {
 
                     if (asset.Effect == ProjectileEffectType.Boomerang) {
                         if (projectile->Frame < 30) {
-                            // Ricochet off the wall if not in returning state
-                            projectile->Combo = 2;
+                            if (physicsObject->IsTouchingGround) {
+                                // Slope bug
+                                physicsObject->IsTouchingGround = false;
+                            } else {
+                                projectile->Combo = 2;
+                            }
                         } else if (projectile->Combo == 2) {
                             // Avoid getting stuck 24/7
                             Destroy(f, filter.Entity, asset.DestroyParticleEffect);

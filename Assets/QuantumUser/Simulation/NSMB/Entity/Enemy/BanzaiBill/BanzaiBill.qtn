@@ -6,6 +6,6 @@ component BanzaiBill {
 	[ExcludeFromPrototype] bool HasFired;
 }
 
-event BanzaiBillHitByProjectile {
+event BanzaiHitByEntity {
 	EntityRef Entity;
 }

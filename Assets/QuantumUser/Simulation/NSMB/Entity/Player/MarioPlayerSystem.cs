@@ -728,7 +728,7 @@ namespace Quantum {
             ref var inputs = ref filter.Inputs;
 
             if (physicsObject->IsTouchingGround) {
-                mario->FloatFrames = (byte) (f.UpdateRate / 2);
+                mario->FloatFrames = 15;
                 mario->Floating = false;
                 return;
             }
@@ -983,8 +983,8 @@ namespace Quantum {
             var physicsObject = filter.PhysicsObject;
 
             if (inputs.Down.WasPressed && mario->GroundpoundCooldownFrames == 0 && !mario->IsPropellerFlying && !mario->IsSpinnerFlying) {
-                // 1 frame delay
-                mario->GroundpoundCooldownFrames = 2;
+                // 4 frame delay
+                mario->GroundpoundCooldownFrames = 5;
             }
 
             bool allowGroundpoundStart = mario->GroundpoundCooldownFrames == 1 || mario->IsPropellerFlying || mario->IsSpinnerFlying;

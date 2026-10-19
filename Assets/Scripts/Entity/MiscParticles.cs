@@ -92,15 +92,16 @@ namespace NSMB.Particles {
                 return;
             }
 
-            Vector3 spawnPosition = view.transform.position + (Vector3.back * 5) + (Vector3.up * 3f);
+            // Only Banzai launchers get the scaled puff here; regular launchers
+            // play their own bulletBillShoot particle on the animator.
             var launcherAnimator = view.GetComponent<NSMB.Entities.World.BulletBillLauncherAnimator>();
-            if (launcherAnimator) {
-                spawnPosition = launcherAnimator.HeadCenter + (Vector3.back * 5);
+            if (!launcherAnimator || !launcherAnimator.IsBanzaiLauncher) {
+                return;
             }
 
             GameObject puff = Instantiate(
                 Enums.PrefabParticle.Enemy_KillPoof.GetGameObject(),
-                spawnPosition,
+                launcherAnimator.HeadCenter + (Vector3.back * 5),
                 Quaternion.identity);
             // NOTE: root scale is ignored (systems use Scaling Mode Local),
             // so each system's own transform is scaled instead.

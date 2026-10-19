@@ -9,6 +9,7 @@ namespace NSMB.Entities.World {
         [SerializeField] private Animation headAnimation;
         [SerializeField] private SpriteRenderer headRenderer;
         [SerializeField] private Transform headOrigin;
+        [SerializeField] private ParticleSystem bulletBillShoot;
 
         public override void Start() {
             base.Start();
@@ -26,7 +27,8 @@ namespace NSMB.Entities.World {
 
             // BreakableObject is optional: Banzai Bill launchers aren't breakable,
             // leave the head at its prefab position in that case.
-            if (!f.Unsafe.TryGetPointer(EntityRef, out BreakableObject* breakable)) {
+            _isBanzaiLauncher = !f.Unsafe.TryGetPointer(EntityRef, out BreakableObject* breakable);
+            if (_isBanzaiLauncher) {
                 return;
             }
             headRenderer.enabled = breakable->CurrentHeight > 0;
@@ -43,6 +45,7 @@ namespace NSMB.Entities.World {
         }
 
         private Coroutine overlayResetRoutine;
+        private bool _isBanzaiLauncher;
 
         public Vector3 HeadCenter {
             get {
@@ -53,15 +56,25 @@ namespace NSMB.Entities.World {
             }
         }
 
+        public bool IsBanzaiLauncher => _isBanzaiLauncher;
+
         private unsafe void OnBulletBillLauncherShoot(EventBulletBillLauncherShoot e) {
             if (e.Entity != EntityRef) {
                 return;
             }
 
+            bool isBanzai = !PredictedFrame.Has<BreakableObject>(e.Entity);
+
             if (headAnimation) {
                 headAnimation.Play();
             }
-            bool isBanzai = !PredictedFrame.Has<BreakableObject>(e.Entity);
+
+            // Regular launchers play their own puff particle; Banzai puffs are
+            // spawned centrally by MiscParticles (scaled up).
+            if (!isBanzai && bulletBillShoot) {
+                bulletBillShoot.transform.position = headOrigin.position + (e.Right ? new Vector3(0.25f, 0.25f, 0) : new Vector3(-0.25f, 0.25f, 0));
+                bulletBillShoot.Play();
+            }
 
             // Banzai launchers pop in front of the bill only while shooting.
             if (isBanzai && sRenderer) {

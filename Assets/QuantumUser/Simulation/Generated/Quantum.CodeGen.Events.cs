@@ -61,7 +61,7 @@ namespace Quantum {
       }
       static partial void GetEventTypeCodeGen(Int32 eventID, ref System.Type result) {
         switch (eventID) {
-          case EventBanzaiBillHitByProjectile.ID: result = typeof(EventBanzaiBillHitByProjectile); return;
+          case EventBanzaiHitByEntity.ID: result = typeof(EventBanzaiHitByEntity); return;
           case EventMarioPlayerCollectedStar.ID: result = typeof(EventMarioPlayerCollectedStar); return;
           case EventMarioPlayerDroppedStar.ID: result = typeof(EventMarioPlayerDroppedStar); return;
           case EventCollectableDespawned.ID: result = typeof(EventCollectableDespawned); return;
@@ -154,8 +154,8 @@ namespace Quantum {
           default: break;
         }
       }
-      public EventBanzaiBillHitByProjectile BanzaiBillHitByProjectile(EntityRef Entity) {
-        var ev = _f.Context.AcquireEvent<EventBanzaiBillHitByProjectile>(EventBanzaiBillHitByProjectile.ID);
+      public EventBanzaiHitByEntity BanzaiHitByEntity(EntityRef Entity) {
+        var ev = _f.Context.AcquireEvent<EventBanzaiHitByEntity>(EventBanzaiHitByEntity.ID);
         ev.Entity = Entity;
         _f.AddEvent(ev);
         return ev;
@@ -812,13 +812,13 @@ namespace Quantum {
       }
     }
   }
-  public unsafe partial class EventBanzaiBillHitByProjectile : EventBase {
+  public unsafe partial class EventBanzaiHitByEntity : EventBase {
     public new const Int32 ID = 1;
     public EntityRef Entity;
-    protected EventBanzaiBillHitByProjectile(Int32 id, EventFlags flags) : 
+    protected EventBanzaiHitByEntity(Int32 id, EventFlags flags) : 
         base(id, flags) {
     }
-    public EventBanzaiBillHitByProjectile() : 
+    public EventBanzaiHitByEntity() : 
         base(1, EventFlags.Server|EventFlags.Client) {
     }
     public new QuantumGame Game {

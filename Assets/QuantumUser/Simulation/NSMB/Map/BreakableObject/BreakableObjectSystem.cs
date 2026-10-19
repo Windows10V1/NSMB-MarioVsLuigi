@@ -15,7 +15,7 @@ namespace Quantum {
             }
 
             bool isMega = mario->CurrentPowerupState == PowerupState.MegaMushroom;
-            bool isSpecialWarioGroundpound = !isMega && mario->IsGroundpoundActive && mario->IsWario(f) && mario->IsSpecialPhysicsActive(f);
+            bool isSpecialWarioGroundpound = !isMega && mario->IsGroundpoundActive && mario->IsWario(f);
             if (isSpecialWarioGroundpound) {
                 bool sprintHeld = false;
                 if (mario->PlayerRef.IsValid) {

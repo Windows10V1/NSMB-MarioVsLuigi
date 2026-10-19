@@ -28,7 +28,7 @@ namespace NSMB.Entities.Enemies {
         public void Start() {
             QuantumEvent.Subscribe<EventEnemyKilled>(this, OnEnemyKilled, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventPlayComboSound>(this, OnPlayComboSound, FilterOutReplayFastForward);
-            QuantumEvent.Subscribe<EventBanzaiBillHitByProjectile>(this, OnBanzaiBillHitByProjectile, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventBanzaiHitByEntity>(this, OnBanzaiHitByEntity, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyPierced>(this, OnEnemyPierced, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventBulletBillLauncherShoot>(this, OnLauncherShoot, FilterOutReplayFastForward);
@@ -46,7 +46,6 @@ namespace NSMB.Entities.Enemies {
             var banzaiBill = f.Unsafe.GetPointer<BanzaiBill>(EntityRef);
             bool frozen = freezable->IsFrozen(f);
 
-            // Dormant bills stay hidden until their launcher fires them.
             modelRoot.gameObject.SetActive(enemy->IsActive && banzaiBill->HasFired);
 
             var emission = trailParticles.emission;
@@ -62,19 +61,16 @@ namespace NSMB.Entities.Enemies {
             transform.localScale = Vector3.one * scale;
             fireballScaleTimer = Mathf.Max(0, fireballScaleTimer - Time.deltaTime);
 
-            // Spin the model while flying (paused when frozen or dormant); base
-            // prefab rotation faces left, mirrored for right.
             if (enemy->IsAlive && banzaiBill->HasFired && !frozen) {
                 spinAngle += spinSpeed * Time.deltaTime;
             }
+
             modelRoot.localEulerAngles = new Vector3(0, enemy->FacingRight ? 90 : -90, spinAngle);
             Vector2 pos = trailParticles.transform.localPosition;
             pos.x = Mathf.Abs(pos.x) * (enemy->FacingRight ? -1 : 1);
             trailParticles.transform.localPosition = pos;
         }
 
-        // Fired by our own launcher cue (placed bills) or the launcher spawn
-        // (spawned bills): play the shoot sound and start the trail.
         private void OnLauncherShoot(EventBulletBillLauncherShoot e) {
             if (e.NewBulletBill != EntityRef) {
                 return;
@@ -86,7 +82,7 @@ namespace NSMB.Entities.Enemies {
             trailParticles.Play();
         }
 
-        private void OnBanzaiBillHitByProjectile(EventBanzaiBillHitByProjectile e) {
+        private void OnBanzaiHitByEntity(EventBanzaiHitByEntity e) {
             if (e.Entity != EntityRef) {
                 return;
             }
@@ -108,8 +104,6 @@ namespace NSMB.Entities.Enemies {
             }
         }
 
-        // MarioPlayerAnimator only plays the bounce sound for the player itself,
-        // so hammers bouncing off a Banzai Bill need their own handler.
         private void OnEnemyKicked(EventEnemyKicked e) {
             if (e.Entity != EntityRef) {
                 return;
@@ -118,7 +112,6 @@ namespace NSMB.Entities.Enemies {
             sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
         }
 
-        // MarioPlayerAnimator only plays the pierce sound for the player itself.
         private void OnEnemyPierced(EventEnemyPierced e) {
             if (e.Entity != EntityRef) {
                 return;
