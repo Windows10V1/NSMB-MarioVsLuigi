@@ -144,11 +144,11 @@ namespace Quantum {
                 return;
             }
 
-            // Grant 4 coins toward the next power-up. Applied directly (same
-            // per-coin rules as normal coins) so no coin-collect event fires:
-            // no coin numbers or coin sound. Starcoin feedback (collect + store
-            // sounds, collected spin) is handled view-side by StarCoinAnimator.
-            CoinSystem.AddCoinsDirect(f, marioEntity, 4);
+            int amountToGive = mario->Coins / 2;
+            if (amountToGive == 0 && mario->Coins > 0) {
+                amountToGive = 1;
+            }
+            CoinSystem.AddCoinsDirect(f, marioEntity, amountToGive);
 
             f.Global->StarCoinSpawnTimer = (ushort) ((624 - (f.Global->RealPlayers * 12)) * 2);
             f.Global->MainStarCoin = EntityRef.None;
