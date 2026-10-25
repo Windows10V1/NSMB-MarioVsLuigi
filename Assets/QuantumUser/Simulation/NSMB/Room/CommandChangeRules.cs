@@ -19,6 +19,7 @@ namespace Quantum {
         public bool CharacterSpecialPhysicsEnabled;
         public StageChooseMode ChooseMode;
         public int TeamAttack;
+        public PowerupState StartingPowerup;
 
         public override void Serialize(BitStream stream) {
             if (stream.Writing) {
@@ -46,6 +47,12 @@ namespace Quantum {
             }
 
             stream.Serialize(ref TeamAttack);
+
+            if (stream.Writing) {
+                stream.WriteByte((byte) StartingPowerup);
+            } else {
+                StartingPowerup = (PowerupState) stream.ReadByte();
+            }
         }
 
         public unsafe void Execute(Frame f, PlayerRef sender, PlayerData* playerData) {
@@ -108,6 +115,9 @@ namespace Quantum {
             if (rulesChanges.HasFlag(Rules.TeamAttack)) {
                 rules.TeamAttack = (TeamAttackOptions) TeamAttack;
             }
+            if (rulesChanges.HasFlag(Rules.StartingPowerup)) {
+                rules.StartingPowerup = StartingPowerup;
+            }
 
             f.Global->Rules = rules;
             f.Events.RulesChanged(gamemodeChanged, levelChanged);
@@ -130,6 +140,7 @@ namespace Quantum {
             StageChooseMode = 1 << 11,
             TeamAttack = 1 << 12,
             CharacterSpecialPhysicsEnabled = 1 << 13, // only for Star Chasers
+            StartingPowerup = 1 << 14,
         }
     }
 }

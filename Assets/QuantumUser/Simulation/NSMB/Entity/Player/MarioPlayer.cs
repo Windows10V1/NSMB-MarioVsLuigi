@@ -546,6 +546,23 @@ namespace Quantum {
             f.Events.MarioPlayerPreRespawned(entity, spawnpoint);
         }
 
+        public void ApplyStartingPowerup(Frame f) {
+            PowerupState state = f.Global->Rules.StartingPowerup;
+            if (state == PowerupState.NoPowerup || state == PowerupState.MegaMushroom) {
+                return;
+            }
+
+            if (QuantumUtils.FindPowerupAsset(f, state) == null) {
+                return;
+            }
+
+            PreviousPowerupState = CurrentPowerupState = state;
+            IsPropellerFlying = false;
+            UsedPropellerThisJump = false;
+            PropellerLaunchFrames = 0;
+            IsInShell = false;
+        }
+
         public void Respawn(Frame f, EntityRef entity) {
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(entity);
 

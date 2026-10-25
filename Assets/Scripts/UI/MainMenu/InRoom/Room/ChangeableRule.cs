@@ -211,6 +211,7 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
                 CommandChangeRules.Rules.CharacterSpecialPhysicsEnabled => (bool) rules.CharacterSpecialPhysicsEnabled,
                 CommandChangeRules.Rules.TeamAttack => (int) rules.TeamAttack,
                 CommandChangeRules.Rules.StageChooseMode => (byte) rules.ChooseMode,
+                CommandChangeRules.Rules.StartingPowerup => (byte) rules.StartingPowerup,
                 _ => null
             };
 

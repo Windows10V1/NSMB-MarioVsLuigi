@@ -1027,7 +1027,7 @@ namespace Quantum {
     public QBoolean TeamsEnabled;
     [FieldOffset(28)]
     public QBoolean CustomPowerupsEnabled;
-    [FieldOffset(1)]
+    [FieldOffset(2)]
     public TeamAttackOptions TeamAttack;
     [FieldOffset(12)]
     public Int32 StarFountain;
@@ -1035,6 +1035,8 @@ namespace Quantum {
     public QBoolean StarCoinsEnabled;
     [FieldOffset(24)]
     public QBoolean CharacterSpecialPhysicsEnabled;
+    [FieldOffset(1)]
+    public PowerupState StartingPowerup;
     [FieldOffset(40)]
     public QDictionaryPtr<AssetRef<CoinItemAsset>, FP> CoinItemCustomSpawnWeights;
     public override readonly Int32 GetHashCode() {
@@ -1054,6 +1056,7 @@ namespace Quantum {
         hash = hash * 31 + StarFountain.GetHashCode();
         hash = hash * 31 + StarCoinsEnabled.GetHashCode();
         hash = hash * 31 + CharacterSpecialPhysicsEnabled.GetHashCode();
+        hash = hash * 31 + (Byte)StartingPowerup;
         hash = hash * 31 + CoinItemCustomSpawnWeights.GetHashCode();
         return hash;
       }
@@ -1065,6 +1068,7 @@ namespace Quantum {
     public static void Serialize(void* ptr, FrameSerializer serializer) {
         var p = (GameRules*)ptr;
         serializer.Stream.Serialize((Byte*)&p->ChooseMode);
+        serializer.Stream.Serialize((Byte*)&p->StartingPowerup);
         serializer.Stream.Serialize((Byte*)&p->TeamAttack);
         serializer.Stream.Serialize(&p->CoinsForPowerup);
         serializer.Stream.Serialize(&p->Lives);

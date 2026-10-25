@@ -55,6 +55,7 @@ struct GameRules {
 	int StarFountain; // divide this number by 100, options 0, 1/4, 2/4, 3/4, ALL
 	bool StarCoinsEnabled; // only for Star Chasers
 	bool CharacterSpecialPhysicsEnabled; // only for Star Chasers
+	PowerupState StartingPowerup; // powerup every player starts the round with
 	dictionary<AssetRef<CoinItemAsset>, FP> CoinItemCustomSpawnWeights;
 }
 

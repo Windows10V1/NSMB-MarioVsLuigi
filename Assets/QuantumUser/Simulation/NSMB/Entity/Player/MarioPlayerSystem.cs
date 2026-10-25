@@ -2912,6 +2912,9 @@ namespace Quantum {
             var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
             foreach ((var entity, var mario) in f.Unsafe.GetComponentBlockIterator<MarioPlayer>()) {
                 mario->PreRespawn(f, entity, stage);
+                if (f.Exists(entity)) {
+                    mario->ApplyStartingPowerup(f);
+                }
             }
         }
 

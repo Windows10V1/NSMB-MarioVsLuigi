@@ -529,6 +529,7 @@ namespace Quantum.Prototypes {
     public Int32 StarFountain;
     public QBoolean StarCoinsEnabled;
     public QBoolean CharacterSpecialPhysicsEnabled;
+    public Quantum.QEnum8<PowerupState> StartingPowerup;
     [DictionaryAttribute()]
     [DynamicCollectionAttribute()]
     public DictionaryEntry_AssetRefCoinItemAsset_FP[] CoinItemCustomSpawnWeights = {};
@@ -557,6 +558,7 @@ namespace Quantum.Prototypes {
         result.StarFountain = this.StarFountain;
         result.StarCoinsEnabled = this.StarCoinsEnabled;
         result.CharacterSpecialPhysicsEnabled = this.CharacterSpecialPhysicsEnabled;
+        result.StartingPowerup = this.StartingPowerup;
         if (this.CoinItemCustomSpawnWeights.Length == 0) {
           result.CoinItemCustomSpawnWeights = default;
         } else {
