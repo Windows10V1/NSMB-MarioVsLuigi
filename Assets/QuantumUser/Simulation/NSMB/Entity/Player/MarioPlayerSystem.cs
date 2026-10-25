@@ -1554,6 +1554,7 @@ namespace Quantum {
                 || state == PowerupState.HammerSuit
                 || state == PowerupState.SuperBallFlower
                 || state == PowerupState.GoldFlower
+                || state == PowerupState.DiamondFlower
                 || state == PowerupState.BoomerangFlower)
                 && inputs.FireballPowerupAction.WasPressed))) {
                 return;
@@ -1570,6 +1571,7 @@ namespace Quantum {
             case PowerupState.BoomerangFlower:
             case PowerupState.SuperBallFlower:
             case PowerupState.GoldFlower:
+            case PowerupState.DiamondFlower:
             case PowerupState.HammerSuit: {
 
                 if (mario->ProjectileDelayFrames > 0 || mario->IsWallsliding || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
@@ -1721,6 +1723,8 @@ namespace Quantum {
                 ? f.SimulationConfig.IceballPrototype
                 : state == PowerupState.GoldFlower
                 ? f.SimulationConfig.GoldballPrototype
+                : state == PowerupState.DiamondFlower
+                ? f.SimulationConfig.DiamondballPrototype
                 : f.SimulationConfig.FireballPrototype);
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
@@ -2309,20 +2313,22 @@ namespace Quantum {
             var hammerXBoomerang = mario->IsCrouching && marioPhysics->IsTouchingGround && state == PowerupState.HammerSuit && asset.Effect == ProjectileEffectType.Boomerang;
 
             // Mario is "damageable" when he's...
-            // not in knockback, not Mega + projectile isn't Goldball
-            // regular damageable checks (iframes is 0, not starman invincible + projectile is not Goldball
+            // not in knockback, not Mega + projectile isn't Gold/Diamondball
+            // regular damageable checks (iframes is 0, not starman invincible + projectile is not Gold/Diamondball
             // not in a powerUP transition while mini (specifically)
             // Mario is in his Blue Shell and projectile doesn't affect Blue Shell
             // Mario is crouched and grounded with Hammer Suit and projectile isn't a Boomerang or Fireball
             // Team attack allows him to get hit
-            // Mario's powerup state is gold flower and projectile isn't a Fire/Goldball
+            // Mario's powerup state is Gold Flower and projectile isn't a Fire/Goldball
+            // Mario's powerup state is Diamond Flower and projectile isn't an Ice/Diamondball
             bool damageable = !mario->IsInKnockback
-                && (state != PowerupState.MegaMushroom || asset.Effect == ProjectileEffectType.Gold)
-                && (mario->IsDamageable(f) || (asset.Effect == ProjectileEffectType.Gold && mario->IsStarmanInvincible && mario->DamageInvincibilityFrames == 0) || (mario->TryGetCurrentPowerTransition(f, out _) && state == PowerupState.MiniMushroom))
+                && (state != PowerupState.MegaMushroom || asset.Effect == ProjectileEffectType.Gold || asset.Effect == ProjectileEffectType.FreezeX)
+                && (mario->IsDamageable(f) || (asset.Effect == ProjectileEffectType.Gold && asset.Effect == ProjectileEffectType.FreezeX && mario->IsStarmanInvincible && mario->DamageInvincibilityFrames == 0) || (mario->TryGetCurrentPowerTransition(f, out _) && state == PowerupState.MiniMushroom))
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell)
                 && !hammerXBoomerang
                 && mario->CheckTeamAttack(f, projectile->Owner, out dropStars)
-                && !(state == PowerupState.GoldFlower && (asset.Effect == ProjectileEffectType.Fire || asset.Effect == ProjectileEffectType.Gold));
+                && !(state == PowerupState.GoldFlower && (asset.Effect == ProjectileEffectType.Fire || asset.Effect == ProjectileEffectType.Gold))
+                && !(state == PowerupState.DiamondFlower && (asset.Effect == ProjectileEffectType.Freeze || asset.Effect == ProjectileEffectType.FreezeX));
 
             if (damageable) {
                 bool didKnockback = false;
@@ -2336,20 +2342,21 @@ namespace Quantum {
                     }
                     break;
                 case ProjectileEffectType.Boomerang:
-                    // Same effect, except it's based off it's X velocity
+                    // Same effect, except it's based off it's X velocity + extra hit if homing
                     if (dropStars) {
-                        didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
+                        if (projectile->Combo != 2) {
+                            didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
+                        } else {
+                            didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.Normal, projectile->Owner);
+                        }
                     }
                     break;
                 case ProjectileEffectType.Gold:
                     if (state == PowerupState.MegaMushroom) {
-                        // Knockback without star drop for Mega
                         didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, 0, KnockbackStrength.FireballBump, projectile->Owner, ignoreInvincibleStates: true);
                     } else if (mario->IsStarmanInvincible) {
-                        // Weaker knockback with just 1 star drop for starmen
                         didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 1 : 0, KnockbackStrength.Normal, projectile->Owner, ignoreInvincibleStates: true);
                     } else {
-                        // Stronger knockback with 2 star drops
                         didKnockback = mario->DoKnockback(f, marioEntity, !projectile->FacingRight, dropStars ? 2 : 0, KnockbackStrength.CollisionBump, projectile->Owner);
                     }
                     if (didKnockback) {
@@ -2357,6 +2364,7 @@ namespace Quantum {
                     }
                     break;
                 case ProjectileEffectType.Freeze:
+                case ProjectileEffectType.FreezeX:
                     // opponent projectile
                     if (dropStars) {
                         IceBlockSystem.Freeze(f, marioEntity);

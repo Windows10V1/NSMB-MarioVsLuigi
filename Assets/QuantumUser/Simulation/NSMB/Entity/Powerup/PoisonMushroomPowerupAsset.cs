@@ -15,9 +15,9 @@ public unsafe class PoisonMushroomPowerupAsset : PowerupAsset {
             bool damageable = mario->Lives > 1 && !mario->IsStarmanInvincible && mario->MegaMushroomFrames <= 0;
             if (damageable) {
                 if (f.Global->Rules.IsLivesEnabled) {
-                    mario->Death(f, entity, false, true, EntityRef.None);
-                } else {
                     mario->Powerdown(f, entity, false, EntityRef.None);
+                } else {
+                    mario->Death(f, entity, false, true, EntityRef.None);
                 }
             } else {
                 f.Events.EnemyKicked(entity, false);

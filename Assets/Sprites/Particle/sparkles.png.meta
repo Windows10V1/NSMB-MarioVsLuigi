@@ -114,7 +114,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 48
+        y: 45
         width: 15
         height: 15
       alignment: 0
@@ -136,7 +136,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 18
-        y: 50
+        y: 47
         width: 11
         height: 11
       alignment: 0
@@ -158,7 +158,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 31
-        y: 51
+        y: 48
         width: 9
         height: 9
       alignment: 0
@@ -180,7 +180,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 42
-        y: 53
+        y: 50
         width: 5
         height: 5
       alignment: 0
@@ -202,7 +202,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 49
-        y: 54
+        y: 51
         width: 3
         height: 3
       alignment: 0
@@ -224,7 +224,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 41
+        y: 38
         width: 3
         height: 3
       alignment: 0
@@ -246,7 +246,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 6
-        y: 39
+        y: 36
         width: 7
         height: 7
       alignment: 0
@@ -268,7 +268,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 15
-        y: 41
+        y: 38
         width: 3
         height: 3
       alignment: 0
@@ -290,7 +290,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 30
+        y: 27
         width: 7
         height: 7
       alignment: 0
@@ -312,7 +312,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 10
-        y: 31
+        y: 28
         width: 5
         height: 5
       alignment: 0
@@ -334,7 +334,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 17
-        y: 33
+        y: 30
         width: 1
         height: 1
       alignment: 0
@@ -356,7 +356,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 21
+        y: 18
         width: 7
         height: 7
       alignment: 0
@@ -378,7 +378,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 10
-        y: 22
+        y: 19
         width: 5
         height: 5
       alignment: 0
@@ -400,7 +400,7 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 17
-        y: 24
+        y: 21
         width: 1
         height: 1
       alignment: 0
@@ -422,11 +422,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1
-        y: 12
-        width: 7
-        height: 7
+        y: 1
+        width: 15
+        height: 15
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -443,12 +443,12 @@ TextureImporter:
       name: sparkles_15
       rect:
         serializedVersion: 2
-        x: 10
-        y: 13
-        width: 5
-        height: 5
+        x: 18
+        y: 3
+        width: 11
+        height: 11
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -465,12 +465,12 @@ TextureImporter:
       name: sparkles_16
       rect:
         serializedVersion: 2
-        x: 17
-        y: 15
-        width: 1
-        height: 1
+        x: 31
+        y: 4
+        width: 9
+        height: 9
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -479,6 +479,50 @@ TextureImporter:
       bones: []
       spriteID: 7113efa1c00863c479aae64bbedd28af
       internalID: -1791470953
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkles_17
+      rect:
+        serializedVersion: 2
+        x: 42
+        y: 6
+        width: 5
+        height: 5
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 762cfc249e38a1e4da5833c3d5a9b0cf
+      internalID: -2078052602
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sparkles_18
+      rect:
+        serializedVersion: 2
+        x: 49
+        y: 7
+        width: 3
+        height: 3
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa0e2d8731dd03a4481b4126e6a947e9
+      internalID: 139864395
       vertices: []
       indices: 
       edges: []
@@ -506,6 +550,8 @@ TextureImporter:
       sparkles_14: 343471083
       sparkles_15: -494827367
       sparkles_16: -1791470953
+      sparkles_17: -2078052602
+      sparkles_18: 139864395
       sparkles_2: -1647192220
       sparkles_3: -1245148009
       sparkles_4: 1692892886

@@ -19,7 +19,8 @@ enum PowerupState : Byte {
     PropellerMushroom,
     BlueShell,
 	HammerSuit,
-    MegaMushroom
+    MegaMushroom,
+    DiamondFlower,
 }
 
 enum PowerupSpawnReason : Byte {

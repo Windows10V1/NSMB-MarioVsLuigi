@@ -2718,6 +2718,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: hud_goldenring
+      rect:
+        serializedVersion: 2
+        x: 257
+        y: 220
+        width: 18
+        height: 22
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c78d720e5de016443a5b4f29ffd439a6
+      internalID: 1242507089
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -2763,6 +2785,7 @@ TextureImporter:
       flag_usw: -1015355915
       hud_arrow: 1388684475
       hud_daisy: 837969585
+      hud_goldenring: 1242507089
       hud_luigi: -7975249404588759376
       hud_mario: 7263181891274304025
       hud_peach: -1018355932

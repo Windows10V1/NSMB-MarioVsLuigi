@@ -112,6 +112,7 @@ namespace Quantum {
     BlueShell,
     HammerSuit,
     MegaMushroom,
+    DiamondFlower,
   }
   public enum StageChooseMode : byte {
     Choose,

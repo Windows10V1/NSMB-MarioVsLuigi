@@ -20,16 +20,16 @@ MonoBehaviour:
     Id:
       Value: 1309345935604470246
   SpawnChance:
-    RawValue: -131072
+    RawValue: -65536
   AboveAverageBonus:
     RawValue: 0
   BelowAverageBonus:
-    RawValue: 311296
+    RawValue: 245760
   BlockSpawnSoundEffect: 69
   Flags: 23
   MaxNumberOfItems: 0
   CanSpawnAfterSeconds:
-    RawValue: 0
+    RawValue: 2621440
   TranslationKey: coinitem.goldflower
   CameraSpawnOffset:
     X:
@@ -76,10 +76,10 @@ MonoBehaviour:
     OriginalPreWrapMode: 0
     OriginalPostWrapMode: 0
     Keys: []
-  StatePriority: 2
-  ItemPriority: 2
+  StatePriority: 3
+  ItemPriority: 3
   EnterReserveIfOverridden: 1
-  Instant: 0
+  Instant: 1
   ProjectileAsset:
     Id:
       Value: 505756156224867182

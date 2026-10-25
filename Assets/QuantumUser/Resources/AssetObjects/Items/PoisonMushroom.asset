@@ -20,16 +20,16 @@ MonoBehaviour:
     Id:
       Value: 1468323497649149268
   SpawnChance:
-    RawValue: 32768
-  AboveAverageBonus:
     RawValue: 16384
+  AboveAverageBonus:
+    RawValue: 98304
   BelowAverageBonus:
-    RawValue: -196608
+    RawValue: -131072
   BlockSpawnSoundEffect: 69
   Flags: 255
   MaxNumberOfItems: 5
   CanSpawnAfterSeconds:
-    RawValue: 3932160
+    RawValue: 5242880
   TranslationKey: coinitem.poisonmushroom
   CameraSpawnOffset:
     X:

@@ -18,13 +18,9 @@ namespace NSMB.Quantum {
             // lights next to the loop-point also illuminate the other side.
             if (Stage != null && Stage.IsWrappingLevel) {
                 foreach (Light light in FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None)) {
-                    if (light.type != LightType.Point && light.type != LightType.Spot) {
+                    if (light.type != LightType.Spot) {
                         continue;
                     }
-                    if (light.GetComponent<WrappingLight>() || light.gameObject.name.Contains("(Wrap ")) {
-                        continue;
-                    }
-                    light.gameObject.AddComponent<WrappingLight>();
                 }
             }
         }

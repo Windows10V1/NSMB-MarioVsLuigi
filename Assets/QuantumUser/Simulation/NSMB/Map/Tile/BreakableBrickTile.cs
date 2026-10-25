@@ -8,7 +8,7 @@ namespace Quantum {
         public UnityEngine.Color ParticleColor;
 #endif
 
-        public BreakableBy BreakingRules = BreakableBy.SmallMarioDrill | BreakableBy.LargeMario | BreakableBy.LargeMarioGroundpound | BreakableBy.LargeMarioDrill | BreakableBy.MegaMario | BreakableBy.Shells | BreakableBy.Bombs | BreakableBy.Projectiles;
+        public BreakableBy BreakingRules = BreakableBy.SmallMarioDrill | BreakableBy.LargeMario | BreakableBy.LargeMarioGroundpound | BreakableBy.LargeMarioDrill | BreakableBy.MegaMario | BreakableBy.Shells | BreakableBy.Bombs | BreakableBy.Projectiles | BreakableBy.SmallWario | BreakableBy.LargeWario | BreakableBy.MegaMarioPunch;
         public bool BumpIfNotBroken;
         public FPVector2 BumpSize = new FPVector2(FP._0_50, FP._0_50);
         public FPVector2 BumpOffset = FPVector2.Zero;
@@ -140,8 +140,9 @@ namespace Quantum {
             Shells = 1 << 7,
             Bombs = 1 << 8,
             Projectiles = 1 << 9,
-            [UnityEngine.InspectorName("Small Wario")] SmallWario = 1 << 10,
-            [UnityEngine.InspectorName("Large Wario")] LargeWario = 1 << 11,
+            SmallWario = 1 << 10,
+            LargeWario = 1 << 11,
+            MegaMarioPunch = 1 << 12,
         }
     }
 }

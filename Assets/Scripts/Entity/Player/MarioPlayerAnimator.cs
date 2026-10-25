@@ -110,6 +110,7 @@ namespace NSMB.Entities.Player {
         [SerializeField] private Shader normalShader;
         [SerializeField] private Shader superBallShader;
         [SerializeField] private Shader goldShader;
+        [SerializeField] private Shader diamondShader;
         [SerializeField] private Shader rainbowShader;
 
         [Header("Sound")]
@@ -122,7 +123,7 @@ namespace NSMB.Entities.Player {
 
         [Header("Particle Systems")]
         [SerializeField] private ParticleSystem dust;
-        [SerializeField] private ParticleSystem sparkles, goldFlowerSparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
+        [SerializeField] private ParticleSystem sparkles, goldFlowerSparkles, diamondFlowerSparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
 
         [Header("Powerup Visuals")]
         [SerializeField] private PowerupVisuals fallbackPowerupVisuals;
@@ -282,6 +283,7 @@ namespace NSMB.Entities.Player {
                 SetParticleEmission(drillParticle, false);
                 SetParticleEmission(sparkles, false);
                 SetParticleEmission(goldFlowerSparkles, false);
+                SetParticleEmission(diamondFlowerSparkles, false);
                 SetParticleEmission(iceSkiddingParticle, false);
                 SetParticleEmission(waterSkiddingParticle, false);
                 SetParticleEmission(dust, false);
@@ -325,6 +327,7 @@ namespace NSMB.Entities.Player {
             SetParticleEmission(drillParticle, !disableParticles && mario->IsDrilling);
             SetParticleEmission(sparkles, !disableParticles && mario->IsStarmanInvincible);
             SetParticleEmission(goldFlowerSparkles, !disableParticles && mario->CurrentPowerupState == PowerupState.GoldFlower);
+            SetParticleEmission(diamondFlowerSparkles, !disableParticles && mario->CurrentPowerupState == PowerupState.DiamondFlower);
             SetParticleEmission(iceSkiddingParticle, !disableParticles && physicsObject->IsOnSlipperyGround && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterSkiddingParticle, !disableParticles && walkingOnWater && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterRunningParticle, !disableParticles && !waterSkiddingParticle.isPlaying && walkingOnWater && FPMath.Abs(physicsObject->Velocity.X) > FP._0_10);
@@ -605,7 +608,16 @@ namespace NSMB.Entities.Player {
                 r.SetPropertyBlock(materialBlock);
             }
 
-            var newShader = mario->IsStarmanInvincible ? rainbowShader : (mario->CurrentPowerupState == PowerupState.SuperBallFlower ? superBallShader : (mario->CurrentPowerupState == PowerupState.GoldFlower ? goldShader : normalShader));
+            var newShader = mario->IsStarmanInvincible
+            ? rainbowShader 
+            : (mario->CurrentPowerupState == PowerupState.SuperBallFlower 
+            ? superBallShader 
+            : (mario->CurrentPowerupState == PowerupState.GoldFlower
+            ? goldShader
+            : (mario->CurrentPowerupState == PowerupState.DiamondFlower
+            ? diamondShader
+            : normalShader)));
+
             foreach ((_, var material) in clonedMaterials) {
                 if (material.shader != newShader) {
                     material.shader = newShader;

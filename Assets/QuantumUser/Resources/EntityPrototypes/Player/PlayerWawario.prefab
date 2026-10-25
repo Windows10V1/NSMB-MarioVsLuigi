@@ -1087,6 +1087,7 @@ MonoBehaviour:
     type: 3}
   goldShader: {fileID: -6465566751694194690, guid: 28e019a5cd0b29141ab73d8a19953f89,
     type: 3}
+  diamondShader: {fileID: 0}
   rainbowShader: {fileID: -6465566751694194690, guid: 5d1d727bf3f780a489dbd612a9b28c77,
     type: 3}
   sfx: {fileID: 5377451828833222271}
@@ -1103,6 +1104,7 @@ MonoBehaviour:
   dust: {fileID: 4824223342336871185}
   sparkles: {fileID: 5792148850622185373}
   goldFlowerSparkles: {fileID: 7085735327593179855}
+  diamondFlowerSparkles: {fileID: 0}
   drillParticle: {fileID: 6547395847332199368}
   giantParticle: {fileID: 8077331287960115309}
   fireParticle: {fileID: 5320528148583097166}
@@ -1728,13 +1730,13 @@ MonoBehaviour:
   Prototype:
     PhysicsAsset:
       Id:
-        Value: 531824450078063098
+        Value: 0
     SpecialPhysicsAsset:
       Id:
         Value: 0
     CharacterAsset:
       Id:
-        Value: 519281904546889676
+        Value: 0
 --- !u!114 &8682297443920381521
 MonoBehaviour:
   m_ObjectHideFlags: 0

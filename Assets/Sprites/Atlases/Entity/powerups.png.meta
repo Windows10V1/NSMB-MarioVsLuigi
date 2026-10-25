@@ -467,6 +467,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: DiamondFlower
+      rect:
+        serializedVersion: 2
+        x: 96
+        y: 0
+        width: 16
+        height: 16
+      alignment: 7
+      pivot: {x: 0.5, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0f1c0f7dd7f78ef4baae5b2fd9fd44e6
+      internalID: 1847781447
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -485,6 +507,7 @@ TextureImporter:
       BoomerangFlower: -121831947
       CatSuit: -1629917848
       CloudFlower: 134788981
+      DiamondFlower: 1847781447
       FireFlower: -6090384608550177697
       GoldFlower: -1728297968
       HammerSuit: -1109677166
