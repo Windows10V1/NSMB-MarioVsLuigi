@@ -2637,13 +2637,11 @@ namespace Quantum {
                 // both players hit each other while spinning
                 if (marioAShell && marioBShell) {
                     bool knockbacked = false;
-                    bool marioASpecialWario = marioA->IsWario(f) && marioA->IsSpecialPhysicsActive(f) && !marioA->IsInKnockback;
-                    bool marioBSpecialWario = marioB->IsWario(f) && marioB->IsSpecialPhysicsActive(f) && !marioB->IsInKnockback;
 
-                    if (!marioASpecialWario) {
+                    if (!marioASpecialWario || marioA->IsInKnockback) {
                         knockbacked |= marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, marioBEntity);
                     }
-                    if (!marioBSpecialWario) {
+                    if (!marioBSpecialWario || marioB->IsInKnockback) {
                         knockbacked |= marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, marioAEntity);
                     }
                     if (knockbacked) {
@@ -2732,8 +2730,6 @@ namespace Quantum {
                 // crouched in shell interactions
                 if ((marioA->IsCrouchedInShell && marioB->CurrentPowerupState != PowerupState.MegaMushroom)
                     || (marioB->IsCrouchedInShell && marioA->CurrentPowerupState != PowerupState.MegaMushroom)) {
-                    bool marioASpecialWario = marioA->IsWario(f) && marioA->IsSpecialPhysicsActive(f) && !marioA->IsInKnockback;
-                    bool marioBSpecialWario = marioB->IsWario(f) && marioB->IsSpecialPhysicsActive(f) && !marioB->IsInKnockback;
 
                     // push the other Mario back only if grounded otherwise do knockback
                     if (marioA->IsCrouchedInShell && marioB->IsCrouchedInShell) {
@@ -2744,7 +2740,7 @@ namespace Quantum {
                         marioB->FacingRight = fromRight;
                         marioBPhysics->Velocity.X = marioBPhysicsInfo.WalkMaxVelocity[marioBPhysicsInfo.RunSpeedStage] * (fromRight ? 1 : -1);
                     } else if (marioA->IsCrouchedInShell) {
-                        if (marioBSpecialWario) {
+                        if (marioBSpecialWario && !marioB->IsInKnockback) {
                             marioA->FacingRight = !fromRight;
                             marioAPhysics->Velocity.X = marioAPhysicsInfo.WalkMaxVelocity[marioAPhysicsInfo.RunSpeedStage] * (fromRight ? -1 : 1);
                         } else if (marioAPhysics->IsTouchingGround) {
@@ -2765,7 +2761,7 @@ namespace Quantum {
                             }
                         }
                     } else if (marioB->IsCrouchedInShell) {
-                        if (marioASpecialWario) {
+                        if (marioASpecialWario && !marioA->IsInKnockback) {
                             marioB->FacingRight = fromRight;
                             marioBPhysics->Velocity.X = marioBPhysicsInfo.WalkMaxVelocity[marioBPhysicsInfo.RunSpeedStage] * (fromRight ? 1 : -1);
                         } else if (marioBPhysics->IsTouchingGround) {
@@ -2818,10 +2814,7 @@ namespace Quantum {
                         // Bump
                         bool dealtKnockback = false;
 
-                        bool marioASpecialWario = marioA->IsWario(f) && marioA->IsSpecialPhysicsActive(f) && !marioA->IsInKnockback;
-                        bool marioBSpecialWario = marioB->IsWario(f) && marioB->IsSpecialPhysicsActive(f) && !marioB->IsInKnockback;
-
-                        if (marioASpecialWario && !marioBSpecialWario) {
+                        if (marioASpecialWario && !marioBSpecialWario && !marioA->IsInKnockback) {
                             if (marioBPhysics->IsTouchingGround && !marioBPhysics->IsUnderwater) {
                                 dealtKnockback = marioB->DoKnockback(f, marioBEntity, !fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioAEntity, bypassDamageInvincibility: true);
                             } else {
@@ -2833,7 +2826,7 @@ namespace Quantum {
                             return;
                         }
 
-                        if (marioBSpecialWario && !marioASpecialWario) {
+                        if (marioBSpecialWario && !marioASpecialWario && !marioB->IsInKnockback) {
                             if (marioAPhysics->IsTouchingGround && !marioAPhysics->IsUnderwater) {
                                 dealtKnockback = marioA->DoKnockback(f, marioAEntity, fromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, marioBEntity, bypassDamageInvincibility: true);
                             } else {
@@ -2872,8 +2865,6 @@ namespace Quantum {
             // handle pushing
             if (!eitherDamageInvincible && !marioA->IsInKnockback && !marioB->IsInKnockback
                 && marioA->CurrentPowerupState != PowerupState.MegaMushroom && marioB->CurrentPowerupState != PowerupState.MegaMushroom) {
-                bool marioASpecialWario = marioA->IsWario(f) && marioA->IsSpecialPhysicsActive(f);
-                bool marioBSpecialWario = marioB->IsWario(f) && marioB->IsSpecialPhysicsActive(f);
 
                 if (!(marioASpecialWario && marioBSpecialWario)) {
                     int directionToOtherPlayer = fromRight ? -1 : 1;
@@ -2936,9 +2927,9 @@ namespace Quantum {
             var defenderMario = f.Unsafe.GetPointer<MarioPlayer>(defender);
             var defenderPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(defender);
             var defenderPhysics = defenderMario->GetPhysicsInfo(f);
+            var attackerMario = f.Unsafe.GetPointer<MarioPlayer>(attacker);
 
             if (defenderMario->IsWario(f) && defenderMario->IsSpecialPhysicsActive(f) && !defenderMario->IsInKnockback) {
-                var attackerMario = f.Unsafe.GetPointer<MarioPlayer>(attacker);
                 attackerMario->DoEntityBounce = true;
                 return;
             }
@@ -2968,7 +2959,6 @@ namespace Quantum {
             // move the attacker above the defender so they don't interact
             attackerTransform->Position.Y += defenderCollider->Shape.Box.Extents.Y;
 
-            var attackerMario = f.Unsafe.GetPointer<MarioPlayer>(attacker);
             attackerMario->DoEntityBounce = true;
 
             // a very specific event just for this because EventEnemyStomp is sucky >:(
