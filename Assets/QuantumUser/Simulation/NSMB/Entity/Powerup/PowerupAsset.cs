@@ -121,6 +121,11 @@ public unsafe class PowerupAsset : CoinItemAsset, ISoundOverrideProvider {
         mario->PropellerLaunchFrames = 0;
         mario->IsInShell = false;
 
+        // Start Gold Flower timer
+        if (State == PowerupState.GoldFlower) {
+            mario->GoldFlowerStartFrames = 1;
+        }
+
         // queue a powerUP animation
         if (!Instant) {
             mario->QueuePowerupAnim(f, marioEntity, mario->PreviousPowerupState, mario->CurrentPowerupState, false, this);

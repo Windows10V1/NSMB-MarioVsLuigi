@@ -110,7 +110,6 @@ namespace NSMB.Entities.Player {
         [SerializeField] private Shader normalShader;
         [SerializeField] private Shader superBallShader;
         [SerializeField] private Shader goldShader;
-        [SerializeField] private Shader diamondShader;
         [SerializeField] private Shader rainbowShader;
 
         [Header("Sound")]
@@ -123,7 +122,7 @@ namespace NSMB.Entities.Player {
 
         [Header("Particle Systems")]
         [SerializeField] private ParticleSystem dust;
-        [SerializeField] private ParticleSystem sparkles, goldFlowerSparkles, diamondFlowerSparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
+        [SerializeField] private ParticleSystem sparkles, goldFlowerSparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
 
         [Header("Powerup Visuals")]
         [SerializeField] private PowerupVisuals fallbackPowerupVisuals;
@@ -283,7 +282,6 @@ namespace NSMB.Entities.Player {
                 SetParticleEmission(drillParticle, false);
                 SetParticleEmission(sparkles, false);
                 SetParticleEmission(goldFlowerSparkles, false);
-                SetParticleEmission(diamondFlowerSparkles, false);
                 SetParticleEmission(iceSkiddingParticle, false);
                 SetParticleEmission(waterSkiddingParticle, false);
                 SetParticleEmission(dust, false);
@@ -602,6 +600,17 @@ namespace NSMB.Entities.Player {
                 giantMultiply = new Vector3(v, 1, v);
             }
 
+            float goldFlowerEndRemaining = mario->GoldFlowerEndFrames / 60f;
+            if (goldFlowerEndRemaining > 0) {
+                // Flash green during Gold Flower ending
+                float flash = (Mathf.Sin(goldFlowerEndRemaining * 15f) + 1f) * 0.5f;
+                if (flash > 0.5f) {
+                    giantMultiply = new Vector3(0.5f, 1f, 0.5f); // Green tint
+                } else {
+                    giantMultiply = Vector3.one;
+                }
+            }
+
             materialBlock.SetVector(ParamMultiplyColor, giantMultiply);
 
             foreach (Renderer r in renderers) {
@@ -609,14 +618,12 @@ namespace NSMB.Entities.Player {
             }
 
             var newShader = mario->IsStarmanInvincible
-            ? rainbowShader 
-            : (mario->CurrentPowerupState == PowerupState.SuperBallFlower 
-            ? superBallShader 
-            : (mario->CurrentPowerupState == PowerupState.GoldFlower
+            ? rainbowShader
+            : (mario->CurrentPowerupState == PowerupState.SuperBallFlower
+            ? superBallShader
+            : (mario->CurrentPowerupState == PowerupState.GoldFlower || mario->GoldFlowerEndFrames > 0
             ? goldShader
-            : (mario->CurrentPowerupState == PowerupState.DiamondFlower
-            ? diamondShader
-            : normalShader)));
+            : normalShader));
 
             foreach ((_, var material) in clonedMaterials) {
                 if (material.shader != newShader) {

@@ -120,6 +120,10 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte MegaMushroomEndFrames;
 	[ExcludeFromPrototype] byte MegaMushroomFootstepFrames;
 
+	[ExcludeFromPrototype] byte GoldFlowerStartFrames;
+	[ExcludeFromPrototype] ushort GoldFlowerFrames;
+	[ExcludeFromPrototype] byte GoldFlowerEndFrames;
+
 	[ExcludeFromPrototype] byte ProjectileDelayFrames;
 	[ExcludeFromPrototype] byte ProjectileVolleyFrames;
 	[ExcludeFromPrototype] byte CurrentProjectiles;

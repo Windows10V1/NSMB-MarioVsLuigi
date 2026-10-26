@@ -418,7 +418,7 @@ namespace Quantum {
         }
 
         public bool Powerdown(Frame f, EntityRef entity, bool ignoreInvincible, EntityRef attacker) {
-            if (!ignoreInvincible && (!IsDamageable(f) || CurrentPowerupState == PowerupState.MegaMushroom)) {
+            if (!ignoreInvincible && (!IsDamageable(f) || CurrentPowerupState == PowerupState.MegaMushroom || CurrentPowerupState == PowerupState.GoldFlower)) {
                 return false;
             }
 
@@ -459,11 +459,9 @@ namespace Quantum {
                 }
                 case PowerupState.GoldFlower: {
                     CurrentPowerupState = PowerupState.FireFlower;
-                    f.Signals.OnMarioPlayerDropObjective(entity, 1, attacker);
-                    break;
-                }
-                case PowerupState.DiamondFlower: {
-                    CurrentPowerupState = PowerupState.IceFlower;
+                    GoldFlowerFrames = 0;
+                    GoldFlowerStartFrames = 0;
+                    GoldFlowerEndFrames = 0;
                     f.Signals.OnMarioPlayerDropObjective(entity, 1, attacker);
                     break;
                 }
@@ -525,6 +523,9 @@ namespace Quantum {
             MegaMushroomFrames = 0;
             MegaMushroomStartFrames = 0;
             MegaMushroomEndFrames = 0;
+            GoldFlowerFrames = 0;
+            GoldFlowerStartFrames = 0;
+            GoldFlowerEndFrames = 0;
             IsCrouching = false;
             IsSliding = false;
             IsTurnaround = false;
@@ -600,7 +601,7 @@ namespace Quantum {
             }
 
             var freezable = f.Unsafe.GetPointer<Freezable>(entity);
-            if ((!bypassDamageInvincibility && DamageInvincibilityFrames > 0) || f.Exists(CurrentPipe) || IsDead || MegaMushroomStartFrames > 0 || MegaMushroomEndFrames > 0) {
+            if ((!bypassDamageInvincibility && DamageInvincibilityFrames > 0) || f.Exists(CurrentPipe) || IsDead || MegaMushroomStartFrames > 0 || MegaMushroomEndFrames > 0 || GoldFlowerStartFrames > 0 || GoldFlowerEndFrames > 0) {
                 return false;
             }
 

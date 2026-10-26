@@ -84,6 +84,7 @@ namespace Quantum {
                 HandleCrouching(f, ref filter, physics);
                 HandleFacingDirection(f, ref filter, physics);
                 HandlePowerups(f, ref filter, physics, stage);
+                HandleGoldFlower(f, ref filter, physics);
                 HandleKnockback(f, ref filter);
                 HandleHitbox(f, ref filter, physics);
                 return;
@@ -94,6 +95,7 @@ namespace Quantum {
                 filter.Inputs = default;
                 HandleWalkingRunning(f, ref filter, physics);
                 HandlePowerups(f, ref filter, physics, stage);
+                HandleGoldFlower(f, ref filter, physics);
                 HandleKnockback(f, ref filter);
                 HandleHitbox(f, ref filter, physics);
                 return;
@@ -108,6 +110,7 @@ namespace Quantum {
 
             bool wasGroundpoundActive = mario->IsGroundpounding;
             HandlePowerups(f, ref filter, physics, stage);
+            HandleGoldFlower(f, ref filter, physics);
             HandleBreakingBlocks(f, ref filter, physics, stage);
             HandleDamagingTiles(f, ref filter, stage);
             HandleCrouching(f, ref filter, physics);
@@ -1482,6 +1485,39 @@ namespace Quantum {
             return false;
         }
 
+        private void HandleGoldFlower(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
+            using var profilerScope = HostProfiler.Start("MarioPlayerSystem.HandleGoldFlower");
+            var mario = filter.MarioPlayer;
+            var physicsObject = filter.PhysicsObject;
+
+            if (mario->GoldFlowerStartFrames > 0) {
+                if (QuantumUtils.Decrement(ref mario->GoldFlowerStartFrames)) {
+                    // Started
+                    mario->GoldFlowerFrames = 20 * 60;
+                }
+            }
+
+            if (mario->GoldFlowerFrames > 0) {
+                if (QuantumUtils.Decrement(ref mario->GoldFlowerFrames)) {
+                    // Time's up, start ending animation
+                    mario->GoldFlowerEndFrames = 120;
+                }
+            }
+
+            if (mario->GoldFlowerEndFrames > 0) {
+                if (QuantumUtils.Decrement(ref mario->GoldFlowerEndFrames)) {
+                    // Ended, transition to Fire Flower
+                    mario->PreviousPowerupState = mario->CurrentPowerupState;
+                    mario->CurrentPowerupState = PowerupState.FireFlower;
+                    mario->GoldFlowerFrames = 0;
+                    mario->GoldFlowerStartFrames = 0;
+                    mario->GoldFlowerEndFrames = 0;
+                    mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
+                    mario->QueuePowerupAnim(f, filter.Entity, PowerupState.GoldFlower, PowerupState.FireFlower, true);
+                }
+            }
+        }
+
         private void HandlePowerups(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics, VersusStageData stage) {
             using var profilerScope = HostProfiler.Start("MarioPlayerSystem.HandlePowerups");
             ref var inputs = ref filter.Inputs;
@@ -1554,7 +1590,6 @@ namespace Quantum {
                 || state == PowerupState.HammerSuit
                 || state == PowerupState.SuperBallFlower
                 || state == PowerupState.GoldFlower
-                || state == PowerupState.DiamondFlower
                 || state == PowerupState.BoomerangFlower)
                 && inputs.FireballPowerupAction.WasPressed))) {
                 return;
@@ -1571,7 +1606,6 @@ namespace Quantum {
             case PowerupState.BoomerangFlower:
             case PowerupState.SuperBallFlower:
             case PowerupState.GoldFlower:
-            case PowerupState.DiamondFlower:
             case PowerupState.HammerSuit: {
 
                 if (mario->ProjectileDelayFrames > 0 || mario->IsWallsliding || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
@@ -1723,8 +1757,6 @@ namespace Quantum {
                 ? f.SimulationConfig.IceballPrototype
                 : state == PowerupState.GoldFlower
                 ? f.SimulationConfig.GoldballPrototype
-                : state == PowerupState.DiamondFlower
-                ? f.SimulationConfig.DiamondballPrototype
                 : f.SimulationConfig.FireballPrototype);
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
@@ -2307,28 +2339,29 @@ namespace Quantum {
             var marioPhysics = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
             var asset = f.FindAsset(projectile->Asset);
             var state = mario->CurrentPowerupState;
+            var physics = mario->GetPhysicsInfo(f);
 
             bool dropStars = false;
 
             var hammerXBoomerang = mario->IsCrouching && marioPhysics->IsTouchingGround && state == PowerupState.HammerSuit && asset.Effect == ProjectileEffectType.Boomerang;
 
             // Mario is "damageable" when he's...
-            // not in knockback, not Mega + projectile isn't Gold/Diamondball
-            // regular damageable checks (iframes is 0, not starman invincible + projectile is not Gold/Diamondball
+            // not in knockback, not Mega + projectile isn't Gold
+            // regular damageable checks (iframes is 0, not starman invincible + projectile is not Gold
             // not in a powerUP transition while mini (specifically)
             // Mario is in his Blue Shell and projectile doesn't affect Blue Shell
+            // Mario is Blue Shell hyperspeeding and projectile is a Boomerang
             // Mario is crouched and grounded with Hammer Suit and projectile isn't a Boomerang or Fireball
             // Team attack allows him to get hit
             // Mario's powerup state is Gold Flower and projectile isn't a Fire/Goldball
-            // Mario's powerup state is Diamond Flower and projectile isn't an Ice/Diamondball
             bool damageable = !mario->IsInKnockback
-                && (state != PowerupState.MegaMushroom || asset.Effect == ProjectileEffectType.Gold || asset.Effect == ProjectileEffectType.FreezeX)
-                && (mario->IsDamageable(f) || (asset.Effect == ProjectileEffectType.Gold && asset.Effect == ProjectileEffectType.FreezeX && mario->IsStarmanInvincible && mario->DamageInvincibilityFrames == 0) || (mario->TryGetCurrentPowerTransition(f, out _) && state == PowerupState.MiniMushroom))
+                && (state != PowerupState.MegaMushroom || asset.Effect == ProjectileEffectType.Gold)
+                && (mario->IsDamageable(f) || (asset.Effect == ProjectileEffectType.Gold && mario->IsStarmanInvincible && mario->DamageInvincibilityFrames == 0) || (mario->TryGetCurrentPowerTransition(f, out _) && state == PowerupState.MiniMushroom))
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell)
+                && !((mario->IsCrouchedInShell || mario->IsInShell) && asset.Effect == ProjectileEffectType.Boomerang && mario->ShellSpeedStage == physics.ShellNormalStage)
                 && !hammerXBoomerang
                 && mario->CheckTeamAttack(f, projectile->Owner, out dropStars)
-                && !(state == PowerupState.GoldFlower && (asset.Effect == ProjectileEffectType.Fire || asset.Effect == ProjectileEffectType.Gold))
-                && !(state == PowerupState.DiamondFlower && (asset.Effect == ProjectileEffectType.Freeze || asset.Effect == ProjectileEffectType.FreezeX));
+                && !(state == PowerupState.GoldFlower && (asset.Effect == ProjectileEffectType.Fire || asset.Effect == ProjectileEffectType.Gold));
 
             if (damageable) {
                 bool didKnockback = false;
@@ -2364,7 +2397,6 @@ namespace Quantum {
                     }
                     break;
                 case ProjectileEffectType.Freeze:
-                case ProjectileEffectType.FreezeX:
                     // opponent projectile
                     if (dropStars) {
                         IceBlockSystem.Freeze(f, marioEntity);
@@ -2388,7 +2420,7 @@ namespace Quantum {
 
             if (damageable || asset.DestroyOnHitPlayers || ((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell) || hammerXBoomerang) {
                 if (hammerXBoomerang) {
-                    // Fly
+                    // Projectile Asset's "Bounce" effect
                     projectile->Speed *= Constants._0_85;
                     projectilePhysics->Gravity *= Constants._0_85;
                     projectilePhysics->Velocity.Y = projectile->Speed;
