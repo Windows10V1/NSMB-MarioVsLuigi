@@ -263,7 +263,7 @@ namespace Quantum {
             FP[] arr;
             if (physicsObject->IsUnderwater) {
                 if (physicsObject->IsTouchingGround) {
-                    arr = CurrentPowerupState == PowerupState.BlueShell ? physicsInfo.SwimWalkShellMaxVelocity : physicsInfo.SwimWalkMaxVelocity;
+                    arr = (CurrentPowerupState == PowerupState.BlueShell || CurrentPowerupState == PowerupState.BoomerangFlower) ? physicsInfo.SwimWalkShellMaxVelocity : physicsInfo.SwimWalkMaxVelocity;
                 } else {
                     arr = physicsInfo.SwimMaxVelocity;
                 }
