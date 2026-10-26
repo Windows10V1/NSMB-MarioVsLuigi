@@ -21,3 +21,8 @@ event BobombLit {
 event BobombExploded {
 	EntityRef Entity;
 }
+
+// Special Mario spin jump bounced off this (unlit) bob-omb.
+event BobombSpinBounced {
+	EntityRef Entity;
+}

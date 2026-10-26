@@ -93,6 +93,19 @@ namespace Quantum {
             f.Signals.OnProjectileHitEntity(projectileEntity, piranhaPlantEntity);
         }
 
+        private static bool IsSpinStompedFromAbove(Frame f, EntityRef piranhaPlantEntity, EntityRef marioEntity) {
+            var plantTransform = f.Unsafe.GetPointer<Transform2D>(piranhaPlantEntity);
+            var plantCollider = f.Unsafe.GetPointer<PhysicsCollider2D>(piranhaPlantEntity);
+            var marioTransform = f.Unsafe.GetPointer<Transform2D>(marioEntity);
+            var marioPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
+
+            FPVector2 plantTopPosition = plantTransform->Position + plantCollider->Shape.Centroid + (FPVector2.Up * plantCollider->Shape.Box.Extents.Y);
+            QuantumUtils.UnwrapWorldLocations(f, plantTopPosition, marioTransform->Position, out FPVector2 plantTop, out FPVector2 marioPosition);
+
+            // Mario's feet are on top of the plant and he is not moving upwards.
+            return marioPosition.Y > plantTop.Y - FP._0_25 && marioPhysicsObject->Velocity.Y <= 0;
+        }
+
         public void OnPiranhaPlantMarioInteraction(Frame f, EntityRef piranhaPlantEntity, EntityRef marioEntity) {
             var mario = f.Unsafe.GetPointer<MarioPlayer>(marioEntity);
             var marioPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(marioEntity);
@@ -100,6 +113,12 @@ namespace Quantum {
             if (mario->InstakillsEnemies(marioPhysicsObject, false)) {
                 var piranhaPlant = f.Unsafe.GetPointer<PiranhaPlant>(piranhaPlantEntity);
                 piranhaPlant->Kill(f, piranhaPlantEntity, marioEntity, EnemyKillReason.Special);
+
+            } else if (mario->IsSpinJumping && IsSpinStompedFromAbove(f, piranhaPlantEntity, marioEntity)) {
+                // Special Mario spin jump: bounce off the plant, nobody gets hurt.
+                mario->DoEntityBounce = true;
+                mario->IsGroundpounding = false;
+                mario->IsDrilling = false;
 
             } else if (!mario->IsCrouchedInShell) {
                 mario->Powerdown(f, marioEntity, false, piranhaPlantEntity);

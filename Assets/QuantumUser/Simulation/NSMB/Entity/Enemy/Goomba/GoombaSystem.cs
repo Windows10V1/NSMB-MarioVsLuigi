@@ -78,6 +78,14 @@ namespace Quantum {
                 return;
             }
 
+            if (attackedFromAbove && mario->IsSpinJumping && mario->CurrentPowerupState != PowerupState.MiniMushroom) {
+                // Special Mario spin jump: kills the goomba (drops a coin) and bounces.
+                goomba->Kill(f, goombaEntity, marioEntity, EnemyKillReason.Special);
+                mario->DoEntityBounce = true;
+                mario->IsDrilling = false;
+                return;
+            }
+
             if (attackedFromAbove) {
                 if (mario->CurrentPowerupState == PowerupState.MiniMushroom) {
                     if (mario->IsGroundpounding) {

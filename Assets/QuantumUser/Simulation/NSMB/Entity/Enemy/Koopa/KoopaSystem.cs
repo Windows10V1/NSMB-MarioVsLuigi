@@ -268,7 +268,15 @@ namespace Quantum {
             }
 
             bool groundpounded = attackedFromAbove && mario->IsGroundpoundActive && mario->CurrentPowerupState != PowerupState.MiniMushroom;
+            bool spinStomped = attackedFromAbove && mario->IsSpinJumping && mario->CurrentPowerupState != PowerupState.MiniMushroom;
             if (isSpiny) {
+                if (spinStomped) {
+                    // Special Mario spin jump: bounce off the spiny, nobody gets hurt.
+                    mario->DoEntityBounce = true;
+                    mario->IsGroundpounding = false;
+                    mario->IsDrilling = false;
+                    return;
+                }
                 // Mario is in Blue Shell (not spinning)
                 if (mario->IsCrouchedInShell) {
                     // hip dropping the spiny will cause it to spin identical to a regular Koopa Troopa
@@ -300,7 +308,12 @@ namespace Quantum {
                 return;
             }
 
-            if (groundpounded) {
+            if (groundpounded || spinStomped) {
+                if (spinStomped && !groundpounded) {
+                    // Special Mario spin jump acts like a groundpound on koopas, but bounces.
+                    mario->DoEntityBounce = true;
+                    mario->IsDrilling = false;
+                }
                 if (koopa->SpawnPowerupWhenStomped.IsValid
                     && f.TryFindAsset(koopa->SpawnPowerupWhenStomped, out PowerupAsset powerup)) {
                     // Powerup (for blue koopa): give to mario immediately

@@ -77,7 +77,7 @@ component MarioPlayer {
 	[ExcludeFromPrototype] byte RespawnFrames;
 	[ExcludeFromPrototype] byte NoLivesStarDirection;
 	
-	[ExcludeFromPrototype] bitset[21] Flags;
+	[ExcludeFromPrototype] bitset[24] Flags;
 
 	// Walk/Running
     [ExcludeFromPrototype] byte FastTurnaroundFrames;

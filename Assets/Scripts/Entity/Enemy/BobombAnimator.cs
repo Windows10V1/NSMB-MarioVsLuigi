@@ -18,9 +18,12 @@ namespace NSMB.Entities.Enemies {
         [SerializeField] private SpriteRenderer sRenderer;
         [SerializeField] private Animator animator;
         [SerializeField] private GameObject explosionPrefab;
+        [SerializeField] private float fireballScaleSize = 0.2f;
 
         //---Private Variables
         private MaterialPropertyBlock mpb;
+        private Vector3 originalSpriteScale = Vector3.one;
+        private float fireballScaleTimer;
 
         public void OnValidate() {
             this.SetIfNull(ref sRenderer, UnityExtensions.GetComponentType.Children);
@@ -29,6 +32,8 @@ namespace NSMB.Entities.Enemies {
         }
 
         public void Start() {
+            originalSpriteScale = sRenderer.transform.localScale;
+            QuantumEvent.Subscribe<EventBobombSpinBounced>(this, OnBobombSpinBounced, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventBobombExploded>(this, OnBobombExploded, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventBobombLit>(this, OnBobombLit, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventPlayComboSound>(this, OnPlayComboSound, FilterOutReplayFastForward);
@@ -59,6 +64,11 @@ namespace NSMB.Entities.Enemies {
             var bobomb = f.Unsafe.GetPointer<Bobomb>(EntityRef);
             var enemy = f.Unsafe.GetPointer<Enemy>(EntityRef);
             var holdable = f.Unsafe.GetPointer<Holdable>(EntityRef);
+
+            // Same "got hit" pulse the fireballs cause on other enemies.
+            float pulse = 1 + Mathf.Abs(Mathf.Sin(fireballScaleTimer * 10 * Mathf.PI)) * fireballScaleSize;
+            sRenderer.transform.localScale = originalSpriteScale * pulse;
+            fireballScaleTimer = Mathf.Max(0, fireballScaleTimer - Time.deltaTime);
 
             bool lit = bobomb->CurrentDetonationFrames > 0;
             animator.SetBool(ParamLit, lit);
@@ -116,6 +126,14 @@ namespace NSMB.Entities.Enemies {
 
             Instantiate(explosionPrefab, sRenderer.bounds.center, Quaternion.identity);
             sfx.Stop();
+        }
+
+        private void OnBobombSpinBounced(EventBobombSpinBounced e) {
+            if (e.Entity != EntityRef) {
+                return;
+            }
+
+            fireballScaleTimer = 0.3f;
         }
 
         private void OnBobombLit(EventBobombLit e) {

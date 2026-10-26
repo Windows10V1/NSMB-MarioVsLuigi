@@ -88,6 +88,25 @@ namespace Quantum {
             readonly get => Flags.IsSet(20);
             set => SetValue(ref Flags, 20, value);
         }
+        // Special Mario spin jump
+        public bool IsSpinJumping {
+            readonly get => Flags.IsSet(21);
+            set => SetValue(ref Flags, 21, value);
+        }
+        public bool SpinJumpFirstShotPending {
+            readonly get => Flags.IsSet(22);
+            set => SetValue(ref Flags, 22, value);
+        }
+        public bool SpinJumpSecondShotPending {
+            readonly get => Flags.IsSet(23);
+            set => SetValue(ref Flags, 23, value);
+        }
+
+        public void EndSpinJump() {
+            IsSpinJumping = false;
+            SpinJumpFirstShotPending = false;
+            SpinJumpSecondShotPending = false;
+        }
 
         public readonly bool IsStarmanInvincible => InvincibilityFrames > 0;
         public readonly bool IsWallsliding => WallslideLeft || WallslideRight;
@@ -122,8 +141,21 @@ namespace Quantum {
             return f.TryFindAsset(CharacterAsset, out CharacterAsset character) && character.TranslationString == "character.luigi";
         }
 
+        public readonly bool IsMario(Frame f) {
+            return f.TryFindAsset(CharacterAsset, out CharacterAsset character) && character.TranslationString == "character.mario";
+        }
+
+        /// <summary>Mario with Character Special Physics enabled (the spin jump ability).</summary>
+        public readonly bool IsSpecialMario(Frame f) {
+            return IsMario(f) && IsSpecialPhysicsActive(f);
+        }
+
         public readonly bool IsWario(Frame f) {
             return f.TryFindAsset(CharacterAsset, out CharacterAsset character) && character.TranslationString == "character.wario";
+        }
+
+        public readonly bool IsSpecialWario(Frame f) {
+            return IsWario(f) && IsSpecialPhysicsActive(f);
         }
 
         public readonly bool IsWaluigi(Frame f) {
@@ -569,6 +601,7 @@ namespace Quantum {
 
             IsDead = false;
             IsRespawning = false;
+            EndSpinJump();
             DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
             CoyoteTimeFrames = 0;
             ForceJumpTimer = 0;
@@ -666,6 +699,7 @@ namespace Quantum {
             PropellerSpinFrames = 0;
             IsSliding = false;
             IsDrilling = false;
+            EndSpinJump();
             WallslideLeft = WallslideRight = false;
             PreviousJumpState = JumpState.None; 
             JumpState = JumpState.None;
@@ -764,7 +798,7 @@ namespace Quantum {
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        private static void SetValue(ref BitSet21 bitset, int index, bool value) {
+        private static void SetValue(ref BitSet24 bitset, int index, bool value) {
             ulong mask = 1ul << index;
             bitset.Bits[0] = (bitset.Bits[0] & ~mask) | (value ? mask : 0);
         }

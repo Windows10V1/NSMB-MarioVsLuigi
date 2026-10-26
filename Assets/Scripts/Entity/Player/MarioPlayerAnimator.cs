@@ -66,6 +66,7 @@ namespace NSMB.Entities.Player {
         private static readonly int ParamFlying = Animator.StringToHash("flying");
         private static readonly int ParamDrill = Animator.StringToHash("drill");
         private static readonly int ParamDoubleJump = Animator.StringToHash("doublejump");
+        private static readonly int ParamSpinJump = Animator.StringToHash("spin-jump");
         private static readonly int ParamTripleJump = Animator.StringToHash("triplejump");
         private static readonly int ParamHolding = Animator.StringToHash("holding");
         private static readonly int ParamHeadCarry = Animator.StringToHash("head carry");
@@ -537,6 +538,7 @@ namespace NSMB.Entities.Player {
             animator.SetBool(ParamFlying, mario->IsSpinnerFlying);
             animator.SetBool(ParamDrill, mario->IsDrilling);
             animator.SetBool(ParamDoubleJump, mario->JumpState == JumpState.DoubleJump);
+            animator.SetBool(ParamSpinJump, mario->IsSpinJumping);
             animator.SetBool(ParamTripleJump, mario->JumpState == JumpState.TripleJump);
             animator.SetBool(ParamHolding, f.Exists(mario->HeldEntity));
             animator.SetBool(ParamHeadCarry, heldObject != null && heldObject->HoldAboveHead);

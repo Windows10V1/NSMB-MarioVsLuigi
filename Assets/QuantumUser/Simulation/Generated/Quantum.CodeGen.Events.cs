@@ -52,7 +52,7 @@ namespace Quantum {
   public unsafe partial class Frame {
     public unsafe partial struct FrameEvents {
       static partial void GetEventTypeCountCodeGen(ref Int32 eventCount) {
-        eventCount = 91;
+        eventCount = 92;
       }
       static partial void GetParentEventIDCodeGen(Int32 eventID, ref Int32 parentEventID) {
         switch (eventID) {
@@ -151,6 +151,7 @@ namespace Quantum {
           case EventTileChanged.ID: result = typeof(EventTileChanged); return;
           case EventTileBroken.ID: result = typeof(EventTileBroken); return;
           case EventTimerExpired.ID: result = typeof(EventTimerExpired); return;
+          case EventBobombSpinBounced.ID: result = typeof(EventBobombSpinBounced); return;
           default: break;
         }
       }
@@ -807,6 +808,12 @@ namespace Quantum {
       }
       public EventTimerExpired TimerExpired() {
         var ev = _f.Context.AcquireEvent<EventTimerExpired>(EventTimerExpired.ID);
+        _f.AddEvent(ev);
+        return ev;
+      }
+      public EventBobombSpinBounced BobombSpinBounced(EntityRef Entity) {
+        var ev = _f.Context.AcquireEvent<EventBobombSpinBounced>(EventBobombSpinBounced.ID);
+        ev.Entity = Entity;
         _f.AddEvent(ev);
         return ev;
       }
@@ -3204,6 +3211,31 @@ namespace Quantum {
     public override Int32 GetHashCode() {
       unchecked {
         var hash = 557;
+        return hash;
+      }
+    }
+  }
+  public unsafe partial class EventBobombSpinBounced : EventBase {
+    public new const Int32 ID = 91;
+    public EntityRef Entity;
+    protected EventBobombSpinBounced(Int32 id, EventFlags flags) : 
+        base(id, flags) {
+    }
+    public EventBobombSpinBounced() : 
+        base(91, EventFlags.Server|EventFlags.Client) {
+    }
+    public new QuantumGame Game {
+      get {
+        return (QuantumGame)base.Game;
+      }
+      set {
+        base.Game = value;
+      }
+    }
+    public override Int32 GetHashCode() {
+      unchecked {
+        var hash = 563;
+        hash = hash * 31 + Entity.GetHashCode();
         return hash;
       }
     }

@@ -430,6 +430,15 @@ namespace Quantum {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
 
+            // Special Mario: the spin jump ends on landing or when anything interrupts the jump.
+            if (mario->IsSpinJumping || mario->SpinJumpFirstShotPending || mario->SpinJumpSecondShotPending) {
+                if (physicsObject->IsTouchingGround || physicsObject->IsUnderwater || mario->IsInKnockback || mario->IsGroundpounding
+                    || mario->IsDrilling || mario->IsWallsliding || mario->IsInShell || mario->IsSpinnerFlying || mario->IsPropellerFlying
+                    || mario->IsDead || f.Exists(mario->CurrentPipe) || !mario->IsSpecialMario(f)) {
+                    mario->EndSpinJump();
+                }
+            }
+
             if (inputs.Jump.WasPressed) {
                 // Jump buffer
                 mario->JumpBufferFrames = physics.JumpBufferFrames;
@@ -547,6 +556,19 @@ namespace Quantum {
                 && !mario->IsInShell
                 && (physicsObject->Velocity.X < 0 != mario->FacingRight);
 
+            // Special Mario: jumping while holding Up is a spin jump (plain jump, no double/triple chain).
+            bool startSpinJump = !isAirJump
+                && inputs.Up.IsDown
+                && !inputs.Down.IsDown
+                && mario->CurrentPowerupState != PowerupState.MegaMushroom
+                && !mario->IsInShell
+                && !mario->IsCrouching
+                && !f.Exists(mario->HeldEntity)
+                && mario->IsSpecialMario(f);
+            if (startSpinJump) {
+                canSpecialJump = false;
+            }
+
             mario->IsSkidding = false;
             mario->IsTurnaround = false;
             mario->IsSliding = false;
@@ -599,6 +621,14 @@ namespace Quantum {
             }
 
             physicsObject->Velocity.Y = newY;
+
+            mario->EndSpinJump();
+            if (startSpinJump) {
+                mario->IsSpinJumping = true;
+                mario->SpinJumpFirstShotPending = true;
+                mario->SpinJumpSecondShotPending = true;
+                HandleSpinJumpShots(f, ref filter);
+            }
 
             f.Events.MarioPlayerJumped(filter.Entity, mario->CurrentPowerupState, mario->JumpState, mario->DoEntityBounce, false);
             if (mario->DoEntityBounce) {
@@ -1532,6 +1562,7 @@ namespace Quantum {
             if (QuantumUtils.Decrement(ref mario->ProjectileVolleyFrames)) {
                 mario->CurrentVolley = 0;
             }
+            HandleSpinJumpShots(f, ref filter);
             if (mario->CurrentPowerupState == PowerupState.MegaMushroom && (filter.Inputs.Left || filter.Inputs.Right) && !mario->IsInKnockback && physicsObject->IsTouchingGround) {
                 if (QuantumUtils.Decrement(ref mario->MegaMushroomFootstepFrames)) {
                     mario->MegaMushroomFootstepFrames = physics.MegaMushroomStepInterval;
@@ -1718,13 +1749,108 @@ namespace Quantum {
             }
         }
 
-        private Projectile* ShootHammerProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
+        private static bool TryGetSpinJumpProjectileAsset(Frame f, PowerupState state, out ProjectileAsset projectileAsset) {
+            projectileAsset = null;
+            if (state != PowerupState.FireFlower && state != PowerupState.IceFlower && state != PowerupState.HammerSuit
+                && state != PowerupState.SuperBallFlower && state != PowerupState.GoldFlower && state != PowerupState.BoomerangFlower) {
+                return false;
+            }
+
+            var powerupAsset = QuantumUtils.FindPowerupAsset(f, state);
+            if (powerupAsset == null) {
+                return false;
+            }
+            projectileAsset = f.FindAsset(powerupAsset.ProjectileAsset);
+            return projectileAsset != null;
+        }
+
+        /// <summary>
+        /// Special Mario spin jump: shoots one projectile to the left, then one to the right once the normal
+        /// projectile delay has passed. If the projectile's volley size is below 2, shoots a single one towards
+        /// the direction Mario is moving instead.
+        /// </summary>
+        private void HandleSpinJumpShots(Frame f, ref Filter filter) {
+            var mario = filter.MarioPlayer;
+            if (!mario->SpinJumpFirstShotPending && !mario->SpinJumpSecondShotPending) {
+                return;
+            }
+
+            if (!mario->IsSpinJumping || mario->IsInKnockback || mario->IsDead || f.Exists(mario->HeldEntity)
+                || !TryGetSpinJumpProjectileAsset(f, mario->CurrentPowerupState, out ProjectileAsset projectileAsset)) {
+                // Nothing to shoot (anymore).
+                mario->SpinJumpFirstShotPending = false;
+                mario->SpinJumpSecondShotPending = false;
+                return;
+            }
+
+            if (mario->ProjectileDelayFrames > 0) {
+                // Wait for the normal cooldown between projectiles.
+                return;
+            }
+
+            var physicsObject = filter.PhysicsObject;
+            bool singleShot = projectileAsset.ProjectileVolleySize < 2 || projectileAsset.MaxProjectiles < 2;
+            bool shootRight;
+            if (singleShot) {
+                // Shoot towards the direction we're moving.
+                shootRight = FPMath.Abs(physicsObject->Velocity.X) > FP._0_05 ? physicsObject->Velocity.X > 0 : mario->FacingRight;
+                mario->SpinJumpFirstShotPending = false;
+                mario->SpinJumpSecondShotPending = false;
+            } else if (mario->SpinJumpFirstShotPending) {
+                shootRight = false;
+                mario->SpinJumpFirstShotPending = false;
+            } else {
+                shootRight = true;
+                mario->SpinJumpSecondShotPending = false;
+            }
+
+            // Same volley rules as a normal projectile shot.
+            byte activeProjectiles = mario->CurrentProjectiles;
+            if (activeProjectiles >= projectileAsset.MaxProjectiles) {
+                return;
+            }
+            if (activeProjectiles < projectileAsset.ProjectileVolleySize) {
+                mario->CurrentVolley = (byte) (activeProjectiles + 1);
+            } else if (mario->CurrentVolley < projectileAsset.ProjectileVolleySize) {
+                mario->CurrentVolley++;
+            } else {
+                return;
+            }
+            mario->CurrentProjectiles++;
+            mario->ProjectileDelayFrames = projectileAsset.ProjectileDelayFrames;
+            mario->ProjectileVolleyFrames = projectileAsset.ProjectileVolleyFrames;
+
+            var physics = mario->GetPhysicsInfo(f);
+            bool previousFacingRight = mario->FacingRight;
+            mario->FacingRight = shootRight;
+
+            Projectile* projectile;
+            switch (mario->CurrentPowerupState) {
+            case PowerupState.HammerSuit:
+                projectile = ShootHammerProjectile(f, ref filter, physics, true);
+                break;
+            case PowerupState.BoomerangFlower:
+                projectile = ShootBoomerangProjectile(f, ref filter, physics);
+                break;
+            case PowerupState.SuperBallFlower:
+                projectile = ShootSuperballProjectile(f, ref filter, physics);
+                break;
+            default:
+                projectile = ShootNormalProjectile(f, ref filter, physics);
+                break;
+            }
+
+            mario->FacingRight = previousFacingRight;
+            f.Events.MarioPlayerShotProjectile(filter.Entity, *projectile);
+        }
+
+        private Projectile* ShootHammerProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics, bool forceHorizontal = false) {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
             FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_40);
             EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown);
+            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown && !forceHorizontal);
             return projectile;
         }
 
@@ -2454,6 +2580,10 @@ namespace Quantum {
         }
 
         public void OnMarioMarioInteraction(Frame f, EntityRef marioAEntity, EntityRef marioBEntity) {
+            HandleMarioMarioInteraction(f, marioAEntity, marioBEntity, true);
+        }
+
+        private void HandleMarioMarioInteraction(Frame f, EntityRef marioAEntity, EntityRef marioBEntity, bool allowSpecialWario) {
             var marioA = f.Unsafe.GetPointer<MarioPlayer>(marioAEntity);
             var marioB = f.Unsafe.GetPointer<MarioPlayer>(marioBEntity);
 
@@ -2495,6 +2625,10 @@ namespace Quantum {
             FP yDiff = previousMarioAPosition.Y - previousMarioBPosition.Y;
             bool marioAAbove = dot > Constants._0_66 && FPMath.Abs(yDiff) >= FP._0_10;
             bool marioBAbove = dot < -Constants._0_66 && FPMath.Abs(yDiff) >= FP._0_10;
+
+            if (allowSpecialWario && TrySpecialWarioCollision(f, marioAEntity, marioBEntity, fromRight, dropStars, avgPosition, eitherDamageInvincible, marioAAbove, marioBAbove)) {
+                return;
+            }
 
             // Mega mushroom cases
             bool marioAMega = marioA->CurrentPowerupState == PowerupState.MegaMushroom;
@@ -2814,6 +2948,72 @@ namespace Quantum {
             }
         }
 
+        // If true, Special Wario's own active groundpound/drill onto a player keeps the default behaviour
+        // (Groundpound-strength knockback + bounce) instead of the flat Normal knockback.
+        private const bool SpecialWarioGroundpoundUsesDefault = true;
+
+        /// <summary>
+        /// Special Wario collision ability. Returns true if the interaction was fully handled here,
+        /// false if the default Mario-vs-Mario logic should run instead.
+        /// </summary>
+        private static bool TrySpecialWarioCollision(Frame f, EntityRef marioAEntity, EntityRef marioBEntity, bool fromRight, bool dropStars, FPVector2 avgPosition,
+            bool eitherDamageInvincible, bool marioAAbove, bool marioBAbove) {
+
+            var marioA = f.Unsafe.GetPointer<MarioPlayer>(marioAEntity);
+            var marioB = f.Unsafe.GetPointer<MarioPlayer>(marioBEntity);
+
+            bool aIsSpecialWario = marioA->IsSpecialWario(f);
+            bool bIsSpecialWario = marioB->IsSpecialWario(f);
+            if (aIsSpecialWario == bIsSpecialWario) {
+                // Neither is Special Wario, or both are: default collisions.
+                return false;
+            }
+
+            EntityRef warioEntity = aIsSpecialWario ? marioAEntity : marioBEntity;
+            EntityRef otherEntity = aIsSpecialWario ? marioBEntity : marioAEntity;
+            var wario = aIsSpecialWario ? marioA : marioB;
+            var other = aIsSpecialWario ? marioB : marioA;
+            bool warioAbove = aIsSpecialWario ? marioAAbove : marioBAbove;
+            bool otherFromRight = aIsSpecialWario ? !fromRight : fromRight;
+
+            // Already hit by something else: he can be bumped/stomped/groundpounded like anyone.
+            if (wario->IsInKnockback) {
+                return false;
+            }
+
+            // Invincibility frames: nobody can hurt anybody, default code handles that.
+            if (eitherDamageInvincible) {
+                return false;
+            }
+
+            // Starman, Mega Mushroom and crouched Blue Shell interactions are unchanged.
+            if (wario->IsStarmanOrMega || other->IsStarmanOrMega || wario->IsCrouchedInShell || other->IsCrouchedInShell) {
+                return false;
+            }
+
+            // Power-up transitions use the default rules.
+            if (wario->TryGetCurrentPowerTransition(f, out _) || other->TryGetCurrentPowerTransition(f, out _)) {
+                return false;
+            }
+
+            // Wario spinning in his own Blue Shell keeps attacking normally.
+            if (wario->IsInShell) {
+                return false;
+            }
+
+            // Wario's own groundpound / drill keeps working as an attack.
+            if (SpecialWarioGroundpoundUsesDefault && warioAbove && (wario->IsGroundpoundActive || wario->IsDrilling)) {
+                return false;
+            }
+
+            // Wario is untouched (no knockback, no bounce, no pushing); the other player gets a Normal knockback.
+            bool dealtKnockback = other->DoKnockback(f, otherEntity, otherFromRight, dropStars ? 1 : 0, KnockbackStrength.Normal, warioEntity);
+            if (dealtKnockback) {
+                f.Events.PlayKnockbackEffect(otherEntity, warioEntity, KnockbackStrength.Normal, avgPosition, true);
+            }
+            return true;
+        }
+
         private static void MarioMarioAttackStarman(Frame f, EntityRef attacker, EntityRef defender, bool fromRight, bool dropStars, FPVector2 avgPosition) {
             var attackerMario = f.Unsafe.GetPointer<MarioPlayer>(attacker);
             var defenderMario = f.Unsafe.GetPointer<MarioPlayer>(defender);
@@ -2918,7 +3118,11 @@ namespace Quantum {
                 }
             } else {
                 // Normal knockbacks
-                if (!groundpounded && !dropStars) {
+                if (!groundpounded && dropStars && attackerMario->IsSpinJumping) {
+                    // Special Mario spin jump: takes 2 stars with groundpound knockback.
+                    bool dealtKnockback = defenderMario->DoKnockback(f, defender, !fromRight, 2, KnockbackStrength.Groundpound, attacker);
+                    f.Events.PlayKnockbackEffect(defender, attacker, KnockbackStrength.Groundpound, avgPosition, dealtKnockback);
+                } else if (!groundpounded && !dropStars) {
                     // Bounce
                     f.Events.MarioPlayerStompedByTeammate(defender);
                 } else {
@@ -3133,7 +3337,7 @@ namespace Quantum {
                 // Knockback holder, if we can, and i-frames.
                 var iceBlockHoldable = f.Unsafe.GetPointer<Holdable>(brokenIceBlock);
                 if (f.Has<MarioPlayer>(iceBlockHoldable->Holder)) {
-                    OnMarioMarioInteraction(f, entity, iceBlockHoldable->Holder);
+                    HandleMarioMarioInteraction(f, entity, iceBlockHoldable->Holder, false);
                 }
                 mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
                 break;

@@ -205,6 +205,15 @@ namespace Quantum {
             FPVector2 damageDirection = (theirPos - ourPos).Normalized;
             bool attackedFromAbove = FPVector2.Dot(damageDirection, FPVector2.Up) > FP._0_33;
 
+            // Special Mario spin jump: bounce off an unlit bob-omb, nobody gets hurt.
+            if (attackedFromAbove && bobomb->CurrentDetonationFrames == 0 && mario->IsSpinJumping && mario->CurrentPowerupState != PowerupState.MiniMushroom) {
+                mario->DoEntityBounce = true;
+                mario->IsGroundpounding = false;
+                mario->IsDrilling = false;
+                f.Events.BobombSpinBounced(bobombEntity);
+                return;
+            }
+
             // Normal interactions
             if (bobomb->CurrentDetonationFrames > 0) {
                 if (mario->CanPickupItem(f, marioEntity, bobombEntity)) {
