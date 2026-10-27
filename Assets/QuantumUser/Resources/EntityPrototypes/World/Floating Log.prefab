@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1749140193912383182
+--- !u!1 &5358200799902224531
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,71 +8,39 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4624553357439202091}
+  - component: {fileID: 3692319044774319855}
+  - component: {fileID: 7953467687290656687}
+  - component: {fileID: 3811711165261662913}
   m_Layer: 20
-  m_Name: Graphics
+  m_Name: Floating Log
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4624553357439202091
+--- !u!4 &3692319044774319855
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1749140193912383182}
+  m_GameObject: {fileID: 5358200799902224531}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1709953880347330927}
-  m_Father: {fileID: 1444698985312168731}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &5853946066788006848
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1444698985312168731}
-  - component: {fileID: 6380810389954429617}
-  - component: {fileID: 7054619197044780178}
-  m_Layer: 20
-  m_Name: FloatingLog
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1444698985312168731
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5853946066788006848}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 4624553357439202091}
+  - {fileID: 1628634869468388120}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &6380810389954429617
+--- !u!114 &7953467687290656687
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5853946066788006848}
+  m_GameObject: {fileID: 5358200799902224531}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 836dcb7e0f6259748b850a10912ce727, type: 3}
@@ -109,17 +77,17 @@ MonoBehaviour:
         Y:
           RawValue: 131072
       EdgeExtent:
-        RawValue: 83886
+        RawValue: 32768
       BoxExtents:
         X:
-          RawValue: 83886
+          RawValue: 262144
         Y:
-          RawValue: 10486
+          RawValue: 65536
       PositionOffset:
         X:
           RawValue: 0
         Y:
-          RawValue: 10486
+          RawValue: 0
       RotationOffset:
         RawValue: 0
       UserTag: 0
@@ -157,10 +125,10 @@ MonoBehaviour:
       UserTag: 0
       IsPersistent: 1
       CompoundShapes: []
-    LayerSource: 1
-    Layer: 9
+    LayerSource: 0
+    Layer: 20
     CallbackFlags:
-      Value: 384
+      Value: 0
   PhysicsBody:
     IsEnabled: 0
     Config2D: 116
@@ -299,13 +267,13 @@ MonoBehaviour:
   View:
     Id:
       Value: 0
---- !u!114 &7054619197044780178
+--- !u!114 &3811711165261662913
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5853946066788006848}
+  m_GameObject: {fileID: 5358200799902224531}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0008c51fe3af00b4da5d44f02d9b3dff, type: 3}
@@ -313,7 +281,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Quantum.Unity::Quantum.QuantumEntityView
   BindBehaviour: 0
   ManualDisposal: 0
-  ViewFlags: 4
+  ViewFlags: 0
   InterpolationMode: 0
   ErrorCorrectionRateMin: 3.3
   ErrorCorrectionRateMax: 10
@@ -330,28 +298,60 @@ MonoBehaviour:
   OnEntityDestroyed:
     m_PersistentCalls:
       m_Calls: []
---- !u!1001 &1166503238814019204
+--- !u!1 &7667144324470842728
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1628634869468388120}
+  m_Layer: 0
+  m_Name: Graphics
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1628634869468388120
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7667144324470842728}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 5280275750990637161}
+  m_Father: {fileID: 3692319044774319855}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &5678467026433773442
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 4624553357439202091}
+    m_TransformParent: {fileID: 1628634869468388120}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 34e9c5d7ae6d2634fbc97b759830e5c2,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 1
+      value: 3.125
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 34e9c5d7ae6d2634fbc97b759830e5c2,
         type: 3}
       propertyPath: m_LocalScale.y
-      value: 1
+      value: 3.125
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 34e9c5d7ae6d2634fbc97b759830e5c2,
         type: 3}
       propertyPath: m_LocalScale.z
-      value: 1
+      value: 3.125
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 34e9c5d7ae6d2634fbc97b759830e5c2,
         type: 3}
@@ -403,11 +403,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: -7511558181221131132, guid: 34e9c5d7ae6d2634fbc97b759830e5c2,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 95142f96dc6956c4f846175200e0d7ad, type: 2}
     - target: {fileID: 919132149155446097, guid: 34e9c5d7ae6d2634fbc97b759830e5c2,
         type: 3}
       propertyPath: m_Name
@@ -416,16 +411,16 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 34e9c5d7ae6d2634fbc97b759830e5c2,
         type: 3}
       propertyPath: m_Layer
-      value: 20
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 34e9c5d7ae6d2634fbc97b759830e5c2, type: 3}
---- !u!4 &1709953880347330927 stripped
+--- !u!4 &5280275750990637161 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 34e9c5d7ae6d2634fbc97b759830e5c2,
     type: 3}
-  m_PrefabInstance: {fileID: 1166503238814019204}
+  m_PrefabInstance: {fileID: 5678467026433773442}
   m_PrefabAsset: {fileID: 0}

@@ -326,7 +326,6 @@ namespace NSMB.Entities.Player {
             SetParticleEmission(drillParticle, !disableParticles && mario->IsDrilling);
             SetParticleEmission(sparkles, !disableParticles && mario->IsStarmanInvincible);
             SetParticleEmission(goldFlowerSparkles, !disableParticles && mario->CurrentPowerupState == PowerupState.GoldFlower);
-            SetParticleEmission(diamondFlowerSparkles, !disableParticles && mario->CurrentPowerupState == PowerupState.DiamondFlower);
             SetParticleEmission(iceSkiddingParticle, !disableParticles && physicsObject->IsOnSlipperyGround && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterSkiddingParticle, !disableParticles && walkingOnWater && ((mario->IsSkidding && physicsObject->Velocity.SqrMagnitude.AsFloat > 0.25f) || mario->FastTurnaroundFrames > 0));
             SetParticleEmission(waterRunningParticle, !disableParticles && !waterSkiddingParticle.isPlaying && walkingOnWater && FPMath.Abs(physicsObject->Velocity.X) > FP._0_10);

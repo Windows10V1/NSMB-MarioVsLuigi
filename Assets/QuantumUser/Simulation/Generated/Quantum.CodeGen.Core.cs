@@ -417,20 +417,20 @@ namespace Quantum {
     public readonly Int32 GetSetCount() {
       fixed (UInt64* p = Bits) {
         int result = 0;
-        result += Maths.CountSetBits(p[0] & 0x1FFFFFUL);
+        result += Maths.CountSetBits(p[0] & 0xFFFFFFUL);
         return result;
       }
     }
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public readonly Boolean IsAnySet() {
       fixed (UInt64* p = Bits) {
-        if ((p[0] & 0x1FFFFFUL) != 0) return true;
+        if ((p[0] & 0xFFFFFFUL) != 0) return true;
         return false;
       }
     }
     public override readonly Int32 GetHashCode() {
       unchecked { 
-        var hash = 5749;
+        var hash = 5791;
         fixed (UInt64* p = Bits) hash = hash * 31 + HashCodeUtils.GetArrayHashCode(p, 1);
         return hash;
       }
