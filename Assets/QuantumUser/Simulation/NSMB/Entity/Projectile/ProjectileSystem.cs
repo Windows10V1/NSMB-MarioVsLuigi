@@ -254,12 +254,15 @@ namespace Quantum {
                     physicsObject->Gravity *= Constants._0_85;
                     physicsObject->Velocity.Y = projectile->Speed;
 
-                    f.Events.EnemyKicked(hitEntity, false);
+                    if (projectileAsset.Effect == ProjectileEffectType.Hammer) {
+                        f.Events.EnemyKicked(hitEntity, false);
+                    }
+
                     if (projectile->Speed < 1) {
                         Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
                     }
                 } else {
-                    f.Events.EnemyPierced(hitEntity);
+                    f.Events.BoomerangPierced(hitEntity);
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace NSMB.Particles {
             QuantumEvent.Subscribe<EventProjectileDestroyed>(this, OnProjectileDestroyed, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventCollectableDespawned>(this, OnCollectableDespawned, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
-            QuantumEvent.Subscribe<EventEnemyPierced>(this, OnEnemyPierced, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventBoomerangPierced>(this, OnBoomerangPierced, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyDespawnedOffscreen>(this, OnEnemyDespawnedOffscreen, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventMarioPlayerBlueShellStomped>(this, OnMarioPlayerBlueShellStomped, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventBulletBillLauncherShoot>(this, OnBulletBillLauncherShoot, FilterOutReplayFastForward);
@@ -62,7 +62,7 @@ namespace NSMB.Particles {
             }
         }
 
-        private void OnEnemyPierced(EventEnemyPierced e) {
+        private void OnBoomerangPierced(EventBoomerangPierced e) {
             QuantumEntityView view = Updater.GetView(e.Entity);
             if (view) {
                 Instantiate(
@@ -92,19 +92,15 @@ namespace NSMB.Particles {
                 return;
             }
 
-            // Only Banzai launchers get the scaled puff here; regular launchers
-            // play their own bulletBillShoot particle on the animator.
             var launcherAnimator = view.GetComponent<NSMB.Entities.World.BulletBillLauncherAnimator>();
             if (!launcherAnimator || !launcherAnimator.IsBanzaiLauncher) {
                 return;
             }
 
             GameObject puff = Instantiate(
-                Enums.PrefabParticle.Enemy_KillPoof.GetGameObject(),
+                Enums.PrefabParticle.BulletBillShoot.GetGameObject(),
                 launcherAnimator.HeadCenter + (Vector3.back * 5),
                 Quaternion.identity);
-            // NOTE: root scale is ignored (systems use Scaling Mode Local),
-            // so each system's own transform is scaled instead.
             var puffSystems = puff.GetComponentsInChildren<ParticleSystem>(true);
             foreach (var puffParticles in puffSystems) {
                 if (puffParticles) {

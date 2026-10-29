@@ -30,7 +30,7 @@ namespace NSMB.Entities.Enemies {
             QuantumEvent.Subscribe<EventPlayComboSound>(this, OnPlayComboSound, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventBanzaiHitByEntity>(this, OnBanzaiHitByEntity, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventEnemyKicked>(this, OnEnemyKicked, FilterOutReplayFastForward);
-            QuantumEvent.Subscribe<EventEnemyPierced>(this, OnEnemyPierced, FilterOutReplayFastForward);
+            QuantumEvent.Subscribe<EventBoomerangPierced>(this, OnBoomerangPierced, FilterOutReplayFastForward);
             QuantumEvent.Subscribe<EventBulletBillLauncherShoot>(this, OnLauncherShoot, FilterOutReplayFastForward);
         }
 
@@ -112,7 +112,7 @@ namespace NSMB.Entities.Enemies {
             sfx.PlayOneShot(SoundEffect.Powerup_HammerSuit_Bounce);
         }
 
-        private void OnEnemyPierced(EventEnemyPierced e) {
+        private void OnBoomerangPierced(EventBoomerangPierced e) {
             if (e.Entity != EntityRef) {
                 return;
             }

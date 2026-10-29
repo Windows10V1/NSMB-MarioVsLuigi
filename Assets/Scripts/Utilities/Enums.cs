@@ -31,6 +31,7 @@ namespace NSMB.Utilities {
             [PrefabParticleData("Particle/RedPipe-D")] Pipe_Break_Red_Broken,
 
             [PrefabParticleData("Particle/BulletBillLauncher")] BulletBillLauncher_Break,
+            [PrefabParticleData("Particle/BulletBillShoot")] BulletBillShoot,
 
             [PrefabParticleData("Particle/Puff")] Enemy_Puff,
             [PrefabParticleData("Particle/EnemyHardKick")] Enemy_HardKick,

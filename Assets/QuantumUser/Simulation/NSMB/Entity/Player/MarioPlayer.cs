@@ -681,7 +681,7 @@ namespace Quantum {
             }
 
             CurrentKnockback = strength;
-            IsInWeakKnockback = strength == KnockbackStrength.CollisionBump || (strength == KnockbackStrength.FireballBump && physicsObject->IsTouchingGround);
+            IsInWeakKnockback = IsInWeakKnockback = CurrentPowerupState != PowerupState.MegaMushroom && (strength == KnockbackStrength.CollisionBump || (strength == KnockbackStrength.FireballBump && physicsObject->IsTouchingGround));
 
             physicsObject->Velocity = knockbackVelocity;
             physicsObject->IsTouchingGround = false;
