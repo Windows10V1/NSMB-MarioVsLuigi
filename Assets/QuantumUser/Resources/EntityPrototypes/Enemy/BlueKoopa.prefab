@@ -120,6 +120,16 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5191653714546004373, guid: cb33e5df66c9644458081c1ddef24e6c,
         type: 3}
+    - target: {fileID: 6595738819740232186, guid: 8cf8f49ac0882ed44953ea53ff901f11,
+        type: 3}
+      propertyPath: PhysicsCollider.Shape2D.BoxExtents.Y.RawValue
+      value: 21299
+      objectReference: {fileID: 0}
+    - target: {fileID: 6595738819740232186, guid: 8cf8f49ac0882ed44953ea53ff901f11,
+        type: 3}
+      propertyPath: PhysicsCollider.Shape2D.PositionOffset.Y.RawValue
+      value: 21365
+      objectReference: {fileID: 0}
     - target: {fileID: 7426856683177255952, guid: 8cf8f49ac0882ed44953ea53ff901f11,
         type: 3}
       propertyPath: m_SpriteTilingProperty.pivot.y

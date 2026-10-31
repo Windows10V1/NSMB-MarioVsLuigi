@@ -1221,8 +1221,6 @@ MonoBehaviour:
     type: 3}
   goldShader: {fileID: -6465566751694194690, guid: 28e019a5cd0b29141ab73d8a19953f89,
     type: 3}
-  diamondShader: {fileID: -6465566751694194690, guid: 22b899b7ba402424bb900d7922961751,
-    type: 3}
   rainbowShader: {fileID: -6465566751694194690, guid: 5d1d727bf3f780a489dbd612a9b28c77,
     type: 3}
   sfx: {fileID: 5377451828833222271}
@@ -1239,7 +1237,6 @@ MonoBehaviour:
   dust: {fileID: 4824223342336871185}
   sparkles: {fileID: 5792148850622185373}
   goldFlowerSparkles: {fileID: 3385709257196700749}
-  diamondFlowerSparkles: {fileID: 379988843978732462}
   drillParticle: {fileID: 6547395847332199368}
   giantParticle: {fileID: 8077331287960115309}
   fireParticle: {fileID: 5320528148583097166}
@@ -1449,7 +1446,7 @@ MonoBehaviour:
     - Material: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
       AlbedoTexture: {fileID: 2800000, guid: 5a7f2adc9a2d3784e804dfcbb822353b, type: 3}
       OverallsMaskTexture: {fileID: 0}
-      ShirtMaskTexture: {fileID: 2800000, guid: b17d63742da247248a1024b007e091f3,
+      ShirtMaskTexture: {fileID: 2800000, guid: 84cec8262880e694180990c993de32e1,
         type: 3}
       CapMaskTexture: {fileID: 0}
       StarmanAlbedoTexture: {fileID: 2800000, guid: 290f358be6599584db28453134e4d6a0,
@@ -9267,12 +9264,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2415a961986808446a9eb67e681fe409, type: 3}
---- !u!198 &379988843978732462 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3094612392314655968, guid: 2415a961986808446a9eb67e681fe409,
-    type: 3}
-  m_PrefabInstance: {fileID: 3438419443633973070}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &1630829761666962042 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4113588847912301876, guid: 2415a961986808446a9eb67e681fe409,
@@ -9627,27 +9618,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 8422425992379838804}
     m_Modifications:
-    - target: {fileID: -231537852577957333, guid: e0d3ef6bcff32414dbd34fc6ac031292,
-        type: 3}
-      propertyPath: m_Layer
-      value: 18
-      objectReference: {fileID: 0}
-    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
-        type: 3}
-      propertyPath: m_Mesh
-      value: 
-      objectReference: {fileID: -1107893902141702450, guid: b9c007ad3b94b184fa982b69cd7b6c49,
-        type: 3}
-    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[0]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
-    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
-        type: 3}
-      propertyPath: 'm_Materials.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2100000, guid: 0d584398a31da1a4086cc8a189562938, type: 2}
     - target: {fileID: -9183229118463196454, guid: b9c007ad3b94b184fa982b69cd7b6c49,
         type: 3}
       propertyPath: m_Layer
@@ -10608,6 +10578,27 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 18
       objectReference: {fileID: 0}
+    - target: {fileID: -231537852577957333, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: m_Layer
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: -1107893902141702450, guid: b9c007ad3b94b184fa982b69cd7b6c49,
+        type: 3}
+    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 44b589e71dec4564d8b250647f07fb0a, type: 2}
+    - target: {fileID: 3727956284482021115, guid: e0d3ef6bcff32414dbd34fc6ac031292,
+        type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 0d584398a31da1a4086cc8a189562938, type: 2}
     - target: {fileID: -870108453973568068, guid: 11535680862545e45ac6e9fdbfeee088,
         type: 3}
       propertyPath: m_LocalRotation.z
