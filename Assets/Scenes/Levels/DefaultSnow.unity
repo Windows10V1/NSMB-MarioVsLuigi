@@ -454,7 +454,7 @@ PrefabInstance:
     - target: {fileID: 7682502346014357760, guid: dcdc633a29f212843ae9cbdf4be58fb2,
         type: 3}
       propertyPath: MapEntityReferences.Array.size
-      value: 27
+      value: 28
       objectReference: {fileID: 0}
     - target: {fileID: 7682502346014357760, guid: dcdc633a29f212843ae9cbdf4be58fb2,
         type: 3}
@@ -595,7 +595,7 @@ PrefabInstance:
         type: 3}
       propertyPath: 'MapEntityReferences.Array.data[27]'
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1759328775}
     - target: {fileID: 7682502346014357760, guid: dcdc633a29f212843ae9cbdf4be58fb2,
         type: 3}
       propertyPath: 'MapEntityReferences.Array.data[28]'
@@ -604,7 +604,7 @@ PrefabInstance:
     - target: {fileID: 8642252342915534796, guid: dcdc633a29f212843ae9cbdf4be58fb2,
         type: 3}
       propertyPath: LocalPlayers.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8642252342915534796, guid: dcdc633a29f212843ae9cbdf4be58fb2,
         type: 3}
@@ -22894,6 +22894,86 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15b14052113b8414abfdb2effb52d984, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &1759328774
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -27.390926
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.6266003
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3692319044774319855, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5358200799902224531, guid: a26fd22de0691914e9e164a78cf2841a,
+        type: 3}
+      propertyPath: m_Name
+      value: Floating Log
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a26fd22de0691914e9e164a78cf2841a, type: 3}
+--- !u!114 &1759328775 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3811711165261662913, guid: a26fd22de0691914e9e164a78cf2841a,
+    type: 3}
+  m_PrefabInstance: {fileID: 1759328774}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0008c51fe3af00b4da5d44f02d9b3dff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Quantum.Unity::Quantum.QuantumEntityView
 --- !u!1 &1811538748
 GameObject:
   m_ObjectHideFlags: 0
@@ -33510,3 +33590,4 @@ SceneRoots:
   - {fileID: 603985984}
   - {fileID: 1681203918}
   - {fileID: 491309552}
+  - {fileID: 1759328774}

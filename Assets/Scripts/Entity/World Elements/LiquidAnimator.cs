@@ -2,6 +2,7 @@ using JimmysUnityUtilities;
 using Photon.Deterministic;
 using Quantum;
 using UnityEngine;
+using NSMB.Utilities.Extensions;
 using static NSMB.Utilities.QuantumViewUtils;
 
 namespace NSMB.Entities.World {
@@ -15,6 +16,7 @@ namespace NSMB.Entities.World {
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private QuantumEntityView entity;
         [SerializeField] private ParticleSystem bubbles;
+        [SerializeField] private AudioSource sfx;
 
         //---Private Variables
         private Texture2D heightTex;
@@ -45,6 +47,7 @@ namespace NSMB.Entities.World {
                 Initialize(Mathf.RoundToInt(spriteRenderer.size.x * 2), Mathf.RoundToInt(spriteRenderer.size.y * 2) - 1);
             } else {
                 QuantumEvent.Subscribe<EventLiquidSplashed>(this, OnLiquidSplashed, FilterOutReplayFastForward, onlyIfActiveAndEnabled: true, onlyIfEntityViewBound: true);
+                QuantumEvent.Subscribe<EventFrozenWaterSizzled>(this, OnFrozenWaterSizzled, FilterOutReplayFastForward, onlyIfActiveAndEnabled: true, onlyIfEntityViewBound: true);
             }
         }
 
@@ -178,6 +181,14 @@ namespace NSMB.Entities.World {
 
                 pointVelocities[pointsX] = -splashVelocity * Mathf.Max(minimumSplashStrength, e.Force.AsFloat);
             }
+        }
+
+        private void OnFrozenWaterSizzled(EventFrozenWaterSizzled e) {
+            if (e.Entity != entity.EntityRef || !sfx) {
+                return;
+            }
+
+            sfx.PlayOneShot(SoundEffect.Player_Sound_LavaHiss);
         }
     }
 }

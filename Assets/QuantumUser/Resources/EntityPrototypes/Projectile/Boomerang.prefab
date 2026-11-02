@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: -1924100074386991617}
   - component: {fileID: 3186243950324826537}
   - component: {fileID: 7649982247869733193}
+  - component: {fileID: -4083271985218855243}
   m_Layer: 19
   m_Name: Boomerang
   m_TagString: Untagged
@@ -574,6 +575,37 @@ MonoBehaviour:
   soundOrigin: {fileID: 6226578532214227705}
   soundRange: 12
   maxPanning: 0.8
+--- !u!114 &-4083271985218855243
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6307920351473437675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f09a56673702987429020c58e2d51615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prototype:
+    IceBlockSize:
+      X:
+        RawValue: 65536
+      Y:
+        RawValue: 49152
+    AutoBreakFrames: 90
+    AutoBreakGrabAdditionalFrames: 60
+    AutoBreakWhileHeld:
+      Value: 0
+    Offset:
+      X:
+        RawValue: 0
+      Y:
+        RawValue: 0
+    IsCarryable:
+      Value: 0
+    IsFlying:
+      Value: 0
 --- !u!1 &6817442949190414024
 GameObject:
   m_ObjectHideFlags: 0

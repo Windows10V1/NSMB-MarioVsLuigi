@@ -1,4 +1,4 @@
-﻿using Quantum.Core;
+using Quantum.Core;
 using System.Collections.Generic;
 
 namespace Quantum {
@@ -50,7 +50,8 @@ namespace Quantum {
                     new LiquidSystem(),
                     new MarioBrosPlatformSystem(),
                     new EnterablePipeSystem(),
-                    new InvisibleBlockSystem()
+                    new InvisibleBlockSystem(),
+                    new FloatingLogSystem()
                     // new BetterPhysicsObjectSystem()
                 )
             );

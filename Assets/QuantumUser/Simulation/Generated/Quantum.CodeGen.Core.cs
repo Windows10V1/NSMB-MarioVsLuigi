@@ -2893,13 +2893,13 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct MarioPlayer : Quantum.IComponent {
-    public const Int32 SIZE = 216;
+    public const Int32 SIZE = 224;
     public const Int32 ALIGNMENT = 8;
-    [FieldOffset(112)]
-    public AssetRef<MarioPlayerPhysicsInfo> PhysicsAsset;
     [FieldOffset(120)]
+    public AssetRef<MarioPlayerPhysicsInfo> PhysicsAsset;
+    [FieldOffset(128)]
     public AssetRef<MarioPlayerPhysicsInfo> SpecialPhysicsAsset;
-    [FieldOffset(104)]
+    [FieldOffset(112)]
     public AssetRef<CharacterAsset> CharacterAsset;
     [FieldOffset(72)]
     [ExcludeFromPrototype()]
@@ -2913,13 +2913,13 @@ namespace Quantum {
     [FieldOffset(46)]
     [ExcludeFromPrototype()]
     public PowerupState PreviousPowerupState;
-    [FieldOffset(128)]
+    [FieldOffset(136)]
     [ExcludeFromPrototype()]
     public AssetRef<PowerupAsset> ReserveItem;
-    [FieldOffset(200)]
+    [FieldOffset(208)]
     [ExcludeFromPrototype()]
     public RNGSession RNG;
-    [FieldOffset(176)]
+    [FieldOffset(184)]
     [ExcludeFromPrototype()]
     public GamemodeSpecificData GamemodeData;
     [FieldOffset(2)]
@@ -2928,16 +2928,16 @@ namespace Quantum {
     [FieldOffset(19)]
     [ExcludeFromPrototype()]
     public Byte Lives;
-    [FieldOffset(76)]
-    [ExcludeFromPrototype()]
-    public QBoolean Disconnected;
-    [FieldOffset(88)]
-    [ExcludeFromPrototype()]
-    public QBoolean IsDead;
     [FieldOffset(80)]
     [ExcludeFromPrototype()]
+    public QBoolean Disconnected;
+    [FieldOffset(96)]
+    [ExcludeFromPrototype()]
+    public QBoolean IsDead;
+    [FieldOffset(84)]
+    [ExcludeFromPrototype()]
     public QBoolean FireDeath;
-    [FieldOffset(92)]
+    [FieldOffset(100)]
     [ExcludeFromPrototype()]
     public QBoolean IsRespawning;
     [FieldOffset(7)]
@@ -2952,7 +2952,7 @@ namespace Quantum {
     [FieldOffset(23)]
     [ExcludeFromPrototype()]
     public Byte NoLivesStarDirection;
-    [FieldOffset(136)]
+    [FieldOffset(144)]
     [ExcludeFromPrototype()]
     public BitSet24 Flags;
     [FieldOffset(8)]
@@ -3018,10 +3018,10 @@ namespace Quantum {
     [FieldOffset(18)]
     [ExcludeFromPrototype()]
     public Byte KnockbackGetupFrames;
-    [FieldOffset(168)]
+    [FieldOffset(176)]
     [ExcludeFromPrototype()]
     public EntityRef LastAttacker;
-    [FieldOffset(96)]
+    [FieldOffset(104)]
     [ExcludeFromPrototype()]
     [AllocateOnComponentAdded()]
     [FreeOnComponentRemoved()]
@@ -3080,16 +3080,16 @@ namespace Quantum {
     [FieldOffset(30)]
     [ExcludeFromPrototype()]
     public Byte PropellerDrillHoldFrames;
-    [FieldOffset(160)]
+    [FieldOffset(168)]
     [ExcludeFromPrototype()]
     public EntityRef HeldEntity;
     [FieldOffset(56)]
     [ExcludeFromPrototype()]
     public Int32 HoldStartFrame;
-    [FieldOffset(144)]
+    [FieldOffset(152)]
     [ExcludeFromPrototype()]
     public EntityRef CurrentPipe;
-    [FieldOffset(184)]
+    [FieldOffset(192)]
     [ExcludeFromPrototype()]
     public FPVector2 PipeDirection;
     [FieldOffset(25)]
@@ -3101,18 +3101,24 @@ namespace Quantum {
     [FieldOffset(39)]
     [ExcludeFromPrototype()]
     public Byte TauntFrames;
-    [FieldOffset(152)]
+    [FieldOffset(160)]
     [ExcludeFromPrototype()]
     public EntityRef CurrentSpinner;
     [FieldOffset(9)]
     [ExcludeFromPrototype()]
     public Byte FloatFrames;
-    [FieldOffset(84)]
+    [FieldOffset(88)]
     [ExcludeFromPrototype()]
     public QBoolean Floating;
     [FieldOffset(0)]
     [ExcludeFromPrototype()]
     public Byte AirJumpsRemaining;
+    [FieldOffset(76)]
+    [ExcludeFromPrototype()]
+    public QBoolean DamageOnUnfreeze;
+    [FieldOffset(92)]
+    [ExcludeFromPrototype()]
+    public QBoolean FrozenByFrozenWater;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 5503;
@@ -3189,6 +3195,8 @@ namespace Quantum {
         hash = hash * 31 + FloatFrames.GetHashCode();
         hash = hash * 31 + Floating.GetHashCode();
         hash = hash * 31 + AirJumpsRemaining.GetHashCode();
+        hash = hash * 31 + DamageOnUnfreeze.GetHashCode();
+        hash = hash * 31 + FrozenByFrozenWater.GetHashCode();
         return hash;
       }
     }
@@ -3263,9 +3271,11 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->LandedFrame);
         serializer.Stream.Serialize(&p->LastPushingFrame);
         PlayerRef.Serialize(&p->PlayerRef, serializer);
+        QBoolean.Serialize(&p->DamageOnUnfreeze, serializer);
         QBoolean.Serialize(&p->Disconnected, serializer);
         QBoolean.Serialize(&p->FireDeath, serializer);
         QBoolean.Serialize(&p->Floating, serializer);
+        QBoolean.Serialize(&p->FrozenByFrozenWater, serializer);
         QBoolean.Serialize(&p->IsDead, serializer);
         QBoolean.Serialize(&p->IsRespawning, serializer);
         QList.Serialize(&p->PowerupTransitionQueue, serializer, Statics.SerializePowerupTransitionAnimation);

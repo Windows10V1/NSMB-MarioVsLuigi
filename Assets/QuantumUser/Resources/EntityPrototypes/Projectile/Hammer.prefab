@@ -4869,6 +4869,7 @@ GameObject:
   - component: {fileID: -9113168347366101870}
   - component: {fileID: -5850122481703649106}
   - component: {fileID: -1924100074386991617}
+  - component: {fileID: 7061368278165823911}
   m_Layer: 19
   m_Name: Hammer
   m_TagString: Untagged
@@ -5456,3 +5457,34 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 7806984023966216736}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &7061368278165823911
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6307920351473437675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f09a56673702987429020c58e2d51615, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Prototype:
+    IceBlockSize:
+      X:
+        RawValue: 32768
+      Y:
+        RawValue: 32768
+    AutoBreakFrames: 90
+    AutoBreakGrabAdditionalFrames: 60
+    AutoBreakWhileHeld:
+      Value: 0
+    Offset:
+      X:
+        RawValue: 0
+      Y:
+        RawValue: 0
+    IsCarryable:
+      Value: 0
+    IsFlying:
+      Value: 0

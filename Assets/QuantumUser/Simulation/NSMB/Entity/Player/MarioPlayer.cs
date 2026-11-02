@@ -420,6 +420,8 @@ namespace Quantum {
             LastAttacker = EntityRef.None;
             TauntFrames = 0;
             DamageInvincibilityFrames = 0;
+            FrozenByFrozenWater = false;
+            DamageOnUnfreeze = false;
             FloatFrames = 15;
             Floating = false;
             AirJumpsRemaining = 0;
@@ -551,6 +553,8 @@ namespace Quantum {
             JumpState = JumpState.None;
             PreviousPowerupState = CurrentPowerupState = PowerupState.NoPowerup;
             DamageInvincibilityFrames = 0;
+            FrozenByFrozenWater = false;
+            DamageOnUnfreeze = false;
             InvincibilityFrames = 0;
             MegaMushroomFrames = 0;
             MegaMushroomStartFrames = 0;

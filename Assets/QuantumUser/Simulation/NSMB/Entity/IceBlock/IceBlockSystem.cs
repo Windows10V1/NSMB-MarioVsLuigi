@@ -42,7 +42,7 @@ namespace Quantum {
                 return;
             }
 
-            if (childFreezable->IsCarryable) {
+            if (childFreezable->IsCarryable || f.Has<Projectile>(iceBlock->Entity)) {
                 var childTransform = f.Unsafe.GetPointer<Transform2D>(iceBlock->Entity);
                 FPVector2 newPosition = transform->Position - iceBlock->ChildOffset;
                 if (stage.IsWrappingLevel && FPVector2.Distance(childTransform->Position, newPosition) > stage.TileDimensions.X / (FP) 4) {
@@ -67,7 +67,7 @@ namespace Quantum {
 
             if (physicsObject->IsUnderwater) {
                 iceBlock->IsSliding = false;
-                if (iceBlock->InLiquidType != LiquidType.Water) {
+                if (iceBlock->InLiquidType != LiquidType.Water && iceBlock->InLiquidType != LiquidType.FrozenWater) {
                     physicsObject->Velocity.X *= Constants._0_85;
                     physicsObject->Velocity.Y = FPMath.Max(-FP._0_50, physicsObject->Velocity.Y);
                 } else {
@@ -112,6 +112,10 @@ namespace Quantum {
             var iceBlock = f.Unsafe.GetPointer<IceBlock>(iceBlockEntity);
             if (f.Unsafe.TryGetPointer(iceBlock->Entity, out PhysicsObject* childPhysicsObject)) {
                 childPhysicsObject->IsFrozen = false;
+            }
+            if (f.Unsafe.TryGetPointer(iceBlock->Entity, out Interactable* childInteractable)
+                && (!f.Unsafe.TryGetPointer(iceBlock->Entity, out MarioPlayer* frozenMario) || !frozenMario->IsDead)) {
+                childInteractable->ColliderDisabled = false;
             }
             f.Signals.OnIceBlockBroken(iceBlockEntity, breakReason, attacker);
             f.Destroy(iceBlockEntity);
@@ -257,7 +261,7 @@ namespace Quantum {
                 var liquid = f.Unsafe.GetPointer<Liquid>(liquidEntity);
                 iceBlock->InLiquidType = liquid->LiquidType;
 
-                if (iceBlock->InLiquidType != LiquidType.Water) {
+                if (iceBlock->InLiquidType != LiquidType.Water && iceBlock->InLiquidType != LiquidType.FrozenWater) {
                     f.Events.IceBlockSinking(entity, iceBlock->InLiquidType);
                 }
             } else if (f.Unsafe.TryGetPointer(entity, out Freezable* freezable)) {

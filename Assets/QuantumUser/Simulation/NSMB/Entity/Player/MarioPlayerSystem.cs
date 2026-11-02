@@ -2478,7 +2478,7 @@ namespace Quantum {
             bool boomerangXBlueShell = (mario->IsInShell || mario->IsCrouchedInShell) && !asset.DoesntEffectBlueShell && asset.Effect == ProjectileEffectType.Boomerang;
 
             // Mario is "damageable" when he's...
-            // not in knockback, not Mega + projectile isn't Gold
+            // not in knockback + projectile isn't Boomerang, not Mega + projectile isn't Gold
             // regular damageable checks (iframes is 0, not starman invincible + projectile is not Gold
             // not in a powerUP transition while mini (specifically)
             // Mario is in his Blue Shell and projectile doesn't affect Blue Shell
@@ -2486,7 +2486,7 @@ namespace Quantum {
             // Mario is crouched and grounded with Hammer Suit and projectile isn't a Boomerang or Fireball
             // Team attack allows him to get hit
             // Mario's powerup state is Gold Flower and projectile isn't a Fire/Goldball
-            bool damageable = !mario->IsInKnockback
+            bool damageable = !(mario->IsInKnockback && asset.Effect != ProjectileEffectType.Boomerang)
                 && (state != PowerupState.MegaMushroom || asset.Effect == ProjectileEffectType.Gold)
                 && (mario->IsDamageable(f) || (asset.Effect == ProjectileEffectType.Gold && mario->IsStarmanInvincible && mario->DamageInvincibilityFrames == 0) || (mario->TryGetCurrentPowerTransition(f, out _) && state == PowerupState.MiniMushroom))
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell)
@@ -2510,7 +2510,7 @@ namespace Quantum {
                 case ProjectileEffectType.Boomerang:
                     // Same effect, except it's based off it's X velocity + extra hit if homing
                     if (dropStars) {
-                        if (projectile->Combo != 2) {
+                        if (projectile->Combo < 2) {
                             didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
                         } else {
                             didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.Normal, projectile->Owner);
@@ -2551,7 +2551,7 @@ namespace Quantum {
                 }
             }
 
-            if (damageable || asset.DestroyOnHitPlayers || ((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell) || boomerangXHammer || boomerangXBlueShell) {
+            if (damageable || asset.DestroyOnHitPlayers || ((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell) || hammerDeflect || boomerangXHammer || boomerangXBlueShell) {
 
                 if (hammerDeflect && asset.Effect == ProjectileEffectType.Hammer) {
                     f.Events.EnemyKicked(projectileEntity, false);

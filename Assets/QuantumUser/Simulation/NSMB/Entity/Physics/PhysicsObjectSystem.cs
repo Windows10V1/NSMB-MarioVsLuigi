@@ -424,7 +424,13 @@ namespace Quantum {
                                 continue;
                             }
                             if (f.Unsafe.TryGetPointer(hit.Entity, out Liquid* liquid)) {
-                                if (liquid->LiquidType != LiquidType.Water || !physicsObject->IsWaterSolid || FPVector2.Dot(hit.Normal, FPVector2.Up) < Constants.PhysicsGroundMaxAngleCos) {
+                                // Iceballs treat frozen water as a solid surface to bounce off of.
+                                bool frozenWaterIceball = liquid->LiquidType == LiquidType.FrozenWater
+                                    && f.Unsafe.TryGetPointer(filter.Entity, out Projectile* liquidHitProjectile)
+                                    && f.FindAsset(liquidHitProjectile->Asset).Effect == ProjectileEffectType.Freeze;
+
+                                if (!frozenWaterIceball
+                                    && (liquid->LiquidType != LiquidType.Water || !physicsObject->IsWaterSolid || FPVector2.Dot(hit.Normal, FPVector2.Up) < Constants.PhysicsGroundMaxAngleCos)) {
                                     // Colliding with water and we cant interact
                                     continue;
                                 }
@@ -662,7 +668,13 @@ namespace Quantum {
                                 continue;
                             }
                             if (f.Unsafe.TryGetPointer(hit.Entity, out Liquid* liquid)) {
-                                if (liquid->LiquidType != LiquidType.Water || !physicsObject->IsWaterSolid || FPVector2.Dot(hit.Normal, FPVector2.Up) < Constants.PhysicsGroundMaxAngleCos) {
+                                // Iceballs treat frozen water as a solid surface to bounce off of.
+                                bool frozenWaterIceball = liquid->LiquidType == LiquidType.FrozenWater
+                                    && f.Unsafe.TryGetPointer(filter.Entity, out Projectile* liquidHitProjectile)
+                                    && f.FindAsset(liquidHitProjectile->Asset).Effect == ProjectileEffectType.Freeze;
+
+                                if (!frozenWaterIceball
+                                    && (liquid->LiquidType != LiquidType.Water || !physicsObject->IsWaterSolid || FPVector2.Dot(hit.Normal, FPVector2.Up) < Constants.PhysicsGroundMaxAngleCos)) {
                                     // Colliding with water and we cant interact
                                     continue;
                                 }

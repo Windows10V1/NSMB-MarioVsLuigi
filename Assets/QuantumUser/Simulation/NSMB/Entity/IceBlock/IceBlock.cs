@@ -8,7 +8,7 @@ namespace Quantum {
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(iceBlockEntity);
             
             return childFreezable->AutoBreakWhileHeld
-                || ((!physicsObject->IsUnderwater || InLiquidType == LiquidType.Water) && !IsSliding && !f.Exists(holdable->Holder));
+                || ((!physicsObject->IsUnderwater || InLiquidType == LiquidType.Water || InLiquidType == LiquidType.FrozenWater) && !IsSliding && !f.Exists(holdable->Holder));
         }
 
         public void Initialize(Frame f, EntityRef iceBlockEntity, EntityRef childEntity) {

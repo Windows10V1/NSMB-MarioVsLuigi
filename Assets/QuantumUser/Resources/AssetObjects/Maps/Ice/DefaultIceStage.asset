@@ -241,6 +241,11 @@ MonoBehaviour:
     - rid: 247642381153730564
     - rid: 247642381153730565
     - rid: 247642381153730566
+  - Components:
+    - rid: 8627047634185486336
+    - rid: 8627047634185486337
+    - rid: 8627047634185486338
+    - rid: 8627047634185486339
   SerializedTriangleDataUncompressedSize: 8
   references:
     version: 2
@@ -2170,6 +2175,85 @@ MonoBehaviour:
       data:
         ColliderDisabled:
           Value: 0
+    - rid: 8627047634185486336
+      type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        Position:
+          X:
+            RawValue: -1795091
+          Y:
+            RawValue: 41064
+        Rotation:
+          RawValue: 0
+    - rid: 8627047634185486337
+      type: {class: PhysicsCollider2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        ShapeConfig:
+          ShapeType: 4
+          PolygonCollider:
+            Id:
+              Value: 0
+          CircleRadius:
+            RawValue: 32768
+          CapsuleSize:
+            X:
+              RawValue: 65536
+            Y:
+              RawValue: 131072
+          EdgeExtent:
+            RawValue: 32768
+          BoxExtents:
+            X:
+              RawValue: 262144
+            Y:
+              RawValue: 32768
+          PositionOffset:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 32768
+          RotationOffset:
+            RawValue: 0
+          UserTag: 0
+          IsPersistent: 1
+          CompoundShapes: []
+        Layer: 20
+        IsTrigger: 0
+        PhysicsMaterial:
+          Id:
+            Value: 0
+    - rid: 8627047634185486338
+      type: {class: PhysicsCallbacks2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        CallbackFlags:
+          Value: 4095
+    - rid: 8627047634185486339
+      type: {class: FloatingLogPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        SpinAcceleration:
+          RawValue: 19660800
+        SpinDeceleration:
+          RawValue: 9830400
+        MaxSpinSpeed:
+          RawValue: 13107200
+        MaxSpinSpeedPerExtraRider:
+          RawValue: 6553600
+        AbsoluteMaxSpinSpeed:
+          RawValue: 26214400
+        GroundpoundAcceleration:
+          RawValue: 0
+        GroundpoundMaxSpinSpeed:
+          RawValue: 65536000
+        SinkRate:
+          RawValue: 65536
+        GroundpoundSinkRate:
+          RawValue: 196608
+        SinkStartSpinSpeed:
+          RawValue: 3276800
+        DropSinkDepth:
+          RawValue: 65536
+        JumpableSinkDepth:
+          RawValue: 49152
     - rid: 8707424676512530432
       type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
       data:

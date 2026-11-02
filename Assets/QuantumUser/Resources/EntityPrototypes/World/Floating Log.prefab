@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 3692319044774319855}
   - component: {fileID: 7953467687290656687}
   - component: {fileID: 3811711165261662913}
+  - component: {fileID: 2914750386543901234}
+  - component: {fileID: 5102938476129830567}
+  - component: {fileID: 3100101052819706227}
   m_Layer: 20
   m_Name: Floating Log
   m_TagString: Untagged
@@ -82,12 +85,12 @@ MonoBehaviour:
         X:
           RawValue: 262144
         Y:
-          RawValue: 65536
+          RawValue: 32768
       PositionOffset:
         X:
           RawValue: 0
         Y:
-          RawValue: 0
+          RawValue: 32768
       RotationOffset:
         RawValue: 0
       UserTag: 0
@@ -128,7 +131,7 @@ MonoBehaviour:
     LayerSource: 0
     Layer: 20
     CallbackFlags:
-      Value: 0
+      Value: 4095
   PhysicsBody:
     IsEnabled: 0
     Config2D: 116
@@ -294,10 +297,84 @@ MonoBehaviour:
   ErrorRotationTeleportDistance: 0.5
   OnEntityInstantiated:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5102938476129830567}
+        m_TargetAssemblyTypeName: NSMB.Entities.World.FloatingLogAnimator, Assembly-CSharp
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   OnEntityDestroyed:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2914750386543901234
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5358200799902224531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8268326be6e0eef43a45fc8f87bfeb28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Quantum.Unity::QPrototypeFloatingLog
+  Prototype:
+    SpinAcceleration:
+      RawValue: 19660800
+    SpinDeceleration:
+      RawValue: 9830400
+    MaxSpinSpeed:
+      RawValue: 13107200
+    MaxSpinSpeedPerExtraRider:
+      RawValue: 6553600
+    AbsoluteMaxSpinSpeed:
+      RawValue: 26214400
+    GroundpoundAcceleration:
+      RawValue: 0
+    GroundpoundMaxSpinSpeed:
+      RawValue: 65536000
+    SinkRate:
+      RawValue: 65536
+    GroundpoundSinkRate:
+      RawValue: 196608
+    SinkStartSpinSpeed:
+      RawValue: 3276800
+    DropSinkDepth:
+      RawValue: 65536
+    JumpableSinkDepth:
+      RawValue: 49152
+--- !u!114 &5102938476129830567
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5358200799902224531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f3d8c24b7e9056c3e2f1a08d5b4762, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logModel: {fileID: 5280275750990637161}
+--- !u!114 &3100101052819706227
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5358200799902224531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8da789e029dba6943bc7e24a87d12c48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FreezeZ
 --- !u!1 &7667144324470842728
 GameObject:
   m_ObjectHideFlags: 0

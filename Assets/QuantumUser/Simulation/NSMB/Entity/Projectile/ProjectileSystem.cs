@@ -17,6 +17,11 @@ namespace Quantum {
         }
 
         public override void Update(Frame f, ref Filter filter, VersusStageData stage) {
+            if (f.Unsafe.TryGetPointer(filter.Entity, out Freezable* freezable) && freezable->IsFrozen(f)) {
+                // Frozen projectiles are encased in an ice block; pause their lifetime and movement.
+                return;
+            }
+
             var collider = filter.PhysicsCollider;
             var transform = filter.Transform;
 
@@ -254,10 +259,7 @@ namespace Quantum {
                     physicsObject->Gravity *= Constants._0_85;
                     physicsObject->Velocity.Y = projectile->Speed;
 
-                    if (projectileAsset.Effect == ProjectileEffectType.Hammer) {
-                        f.Events.EnemyKicked(hitEntity, false);
-                    }
-
+                    f.Events.EnemyKicked(hitEntity, false);
                     if (projectile->Speed < 1) {
                         Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
                     }

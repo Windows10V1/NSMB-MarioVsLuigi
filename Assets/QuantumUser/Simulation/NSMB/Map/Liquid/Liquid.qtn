@@ -19,3 +19,8 @@ event LiquidSplashed {
 	nothashed FPVector2 Position;
 	bool Exit;
 }
+
+event FrozenWaterSizzled {
+	EntityRef Entity;
+	nothashed FPVector2 Position;
+}
