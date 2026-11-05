@@ -20,6 +20,8 @@ global {
 	AssetRef<Map> PreviousStage;
 	int WinningTeam;
 	bool HasWinner;
+
+	bitset[MaxPlayers] BotPlayers;
 }
 
 struct PlayerInformation {

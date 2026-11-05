@@ -1353,7 +1353,7 @@ namespace Quantum {
   }
   [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct _globals_ {
-    public const Int32 SIZE = 3168;
+    public const Int32 SIZE = 3176;
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(0)]
     public AssetRef<Map> Map;
@@ -1382,11 +1382,11 @@ namespace Quantum {
     public BitSet10 PlayerLastConnectionState;
     [FieldOffset(1824)]
     public UInt16 BigStarSpawnTimer;
-    [FieldOffset(1880)]
+    [FieldOffset(1888)]
     public EntityRef MainBigStar;
-    [FieldOffset(1872)]
+    [FieldOffset(1880)]
     public BitSet64 UsedStarSpawns;
-    [FieldOffset(1896)]
+    [FieldOffset(1904)]
     public GameRules Rules;
     [FieldOffset(1818)]
     public GameState GameState;
@@ -1404,7 +1404,7 @@ namespace Quantum {
     public UInt16 AutomaticStageRefreshInterval;
     [FieldOffset(1822)]
     public UInt16 AutomaticStageRefreshTimer;
-    [FieldOffset(1968)]
+    [FieldOffset(1976)]
     [FramePrinter.FixedArrayAttribute(typeof(PlayerInformation), 10)]
     private fixed Byte _PlayerInfo_[1200];
     [FieldOffset(1816)]
@@ -1417,6 +1417,8 @@ namespace Quantum {
     public Int32 WinningTeam;
     [FieldOffset(1848)]
     public QBoolean HasWinner;
+    [FieldOffset(1872)]
+    public BitSet10 BotPlayers;
     [FieldOffset(1844)]
     public PlayerRef Host;
     [FieldOffset(1856)]
@@ -1425,7 +1427,7 @@ namespace Quantum {
     [FieldOffset(1860)]
     [AllocateOnComponentAdded()]
     public QListPtr<BannedPlayerInfo> BannedPlayerIds;
-    [FieldOffset(1888)]
+    [FieldOffset(1896)]
     public FP Timer;
     public readonly FixedArray<Input> input {
       get {
@@ -1470,6 +1472,7 @@ namespace Quantum {
         hash = hash * 31 + PreviousStage.GetHashCode();
         hash = hash * 31 + WinningTeam.GetHashCode();
         hash = hash * 31 + HasWinner.GetHashCode();
+        hash = hash * 31 + BotPlayers.GetHashCode();
         hash = hash * 31 + Host.GetHashCode();
         hash = hash * 31 + PlayerDatas.GetHashCode();
         hash = hash * 31 + BannedPlayerIds.GetHashCode();
@@ -1517,6 +1520,7 @@ namespace Quantum {
         QDictionary.Serialize(&p->PlayerDatas, serializer, Statics.SerializePlayerRef, Statics.SerializeEntityRef);
         QList.Serialize(&p->BannedPlayerIds, serializer, Statics.SerializeBannedPlayerInfo);
         AssetRef.Serialize(&p->PreviousStage, serializer);
+        Quantum.BitSet10.Serialize(&p->BotPlayers, serializer);
         Quantum.BitSet64.Serialize(&p->UsedStarSpawns, serializer);
         EntityRef.Serialize(&p->MainBigStar, serializer);
         FP.Serialize(&p->Timer, serializer);
@@ -3352,7 +3356,7 @@ namespace Quantum {
     public const Int32 ALIGNMENT = 8;
     [FieldOffset(20)]
     public PlayerRef PlayerRef;
-    [FieldOffset(28)]
+    [FieldOffset(32)]
     public QBoolean IsLoaded;
     [FieldOffset(56)]
     public AssetRef<CharacterAsset> Character;
@@ -3360,13 +3364,13 @@ namespace Quantum {
     public AssetRef<PaletteSet> Palette;
     [FieldOffset(1)]
     public Byte RequestedTeam;
-    [FieldOffset(36)]
-    public QBoolean IsSpectator;
-    [FieldOffset(44)]
-    public QBoolean ManualSpectator;
-    [FieldOffset(48)]
-    public QBoolean VotedToContinue;
     [FieldOffset(40)]
+    public QBoolean IsSpectator;
+    [FieldOffset(48)]
+    public QBoolean ManualSpectator;
+    [FieldOffset(52)]
+    public QBoolean VotedToContinue;
+    [FieldOffset(44)]
     public QBoolean IsTeamLocked;
     [FieldOffset(16)]
     public Int32 Wins;
@@ -3374,14 +3378,16 @@ namespace Quantum {
     public Byte RealTeam;
     [FieldOffset(8)]
     public Int32 LastChatMessage;
-    [FieldOffset(32)]
+    [FieldOffset(36)]
     public QBoolean IsReady;
-    [FieldOffset(24)]
+    [FieldOffset(28)]
     public QBoolean IsInSettings;
     [FieldOffset(4)]
     public Int32 JoinTick;
     [FieldOffset(12)]
     public Int32 Ping;
+    [FieldOffset(24)]
+    public QBoolean IsBot;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 10271;
@@ -3401,6 +3407,7 @@ namespace Quantum {
         hash = hash * 31 + IsInSettings.GetHashCode();
         hash = hash * 31 + JoinTick.GetHashCode();
         hash = hash * 31 + Ping.GetHashCode();
+        hash = hash * 31 + IsBot.GetHashCode();
         return hash;
       }
     }
@@ -3413,6 +3420,7 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->Ping);
         serializer.Stream.Serialize(&p->Wins);
         PlayerRef.Serialize(&p->PlayerRef, serializer);
+        QBoolean.Serialize(&p->IsBot, serializer);
         QBoolean.Serialize(&p->IsInSettings, serializer);
         QBoolean.Serialize(&p->IsLoaded, serializer);
         QBoolean.Serialize(&p->IsReady, serializer);
