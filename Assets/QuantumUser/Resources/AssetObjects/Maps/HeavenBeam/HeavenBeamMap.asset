@@ -204,6 +204,27 @@ MonoBehaviour:
     - rid: 5391207947550326788
     - rid: 5391207947550326789
   - Components:
+    - rid: 1068695501567688704
+    - rid: 1068695501567688705
+    - rid: 1068695501567688706
+    - rid: 1068695501567688707
+    - rid: 1068695501567688708
+    - rid: 1068695501567688709
+  - Components:
+    - rid: 5745785773752320
+    - rid: 5745785773752321
+    - rid: 5745785773752322
+    - rid: 5745785773752323
+    - rid: 5745785773752324
+    - rid: 5745785773752325
+  - Components:
+    - rid: 1142779690956619776
+    - rid: 1142779690956619777
+    - rid: 1142779690956619778
+    - rid: 1142779690956619779
+    - rid: 1142779690956619780
+    - rid: 1142779690956619781
+  - Components:
     - rid: 8528323168027279360
     - rid: 8528323168027279361
     - rid: 8528323168027279362
@@ -240,6 +261,10 @@ MonoBehaviour:
     - rid: 5320451110127796225
     - rid: 5320451110127796226
   - Components:
+    - rid: 3684417033933422592
+    - rid: 3684417033933422593
+    - rid: 3684417033933422594
+  - Components:
     - rid: 2427440443965833216
     - rid: 2427440443965833217
     - rid: 2427440443965833218
@@ -265,6 +290,80 @@ MonoBehaviour:
   references:
     version: 2
     RefIds:
+    - rid: 5745785773752320
+      type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        Position:
+          X:
+            RawValue: 1015808
+          Y:
+            RawValue: -393216
+        Rotation:
+          RawValue: 0
+    - rid: 5745785773752321
+      type: {class: PhysicsCollider2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        ShapeConfig:
+          ShapeType: 4
+          PolygonCollider:
+            Id:
+              Value: 0
+          CircleRadius:
+            RawValue: 0
+          CapsuleSize:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          EdgeExtent:
+            RawValue: 0
+          BoxExtents:
+            X:
+              RawValue: 14336
+            Y:
+              RawValue: 16384
+          PositionOffset:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          RotationOffset:
+            RawValue: 0
+          UserTag: 0
+          IsPersistent: 1
+          CompoundShapes: []
+        Layer: 9
+        IsTrigger: 1
+        PhysicsMaterial:
+          Id:
+            Value: 0
+    - rid: 5745785773752322
+      type: {class: PhysicsCallbacks2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        CallbackFlags:
+          Value: 0
+    - rid: 5745785773752323
+      type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        CoinType:
+          Value: 1
+        Lifetime: 0
+        UncollectableFrames: 0
+    - rid: 5745785773752324
+      type: {class: CullablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Offset:
+          X:
+            RawValue: 0
+          Y:
+            RawValue: 0
+        BroadRadius:
+          RawValue: 26214
+    - rid: 5745785773752325
+      type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        ColliderDisabled:
+          Value: 0
     - rid: 322588757310046208
       type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
       data:
@@ -400,12 +499,86 @@ MonoBehaviour:
       data:
         ColliderDisabled:
           Value: 0
+    - rid: 1068695501567688704
+      type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        Position:
+          X:
+            RawValue: 983040
+          Y:
+            RawValue: -360448
+        Rotation:
+          RawValue: 0
+    - rid: 1068695501567688705
+      type: {class: PhysicsCollider2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        ShapeConfig:
+          ShapeType: 4
+          PolygonCollider:
+            Id:
+              Value: 0
+          CircleRadius:
+            RawValue: 0
+          CapsuleSize:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          EdgeExtent:
+            RawValue: 0
+          BoxExtents:
+            X:
+              RawValue: 14336
+            Y:
+              RawValue: 16384
+          PositionOffset:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          RotationOffset:
+            RawValue: 0
+          UserTag: 0
+          IsPersistent: 1
+          CompoundShapes: []
+        Layer: 9
+        IsTrigger: 1
+        PhysicsMaterial:
+          Id:
+            Value: 0
+    - rid: 1068695501567688706
+      type: {class: PhysicsCallbacks2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        CallbackFlags:
+          Value: 0
+    - rid: 1068695501567688707
+      type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        CoinType:
+          Value: 1
+        Lifetime: 0
+        UncollectableFrames: 0
+    - rid: 1068695501567688708
+      type: {class: CullablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Offset:
+          X:
+            RawValue: 0
+          Y:
+            RawValue: 0
+        BroadRadius:
+          RawValue: 26214
+    - rid: 1068695501567688709
+      type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        ColliderDisabled:
+          Value: 0
     - rid: 1094242557602299904
       type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
       data:
         Position:
           X:
-            RawValue: 573440
+            RawValue: 606208
           Y:
             RawValue: -147456
         Rotation:
@@ -544,6 +717,80 @@ MonoBehaviour:
         BroadRadius:
           RawValue: 26214
     - rid: 1115471760607674373
+      type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        ColliderDisabled:
+          Value: 0
+    - rid: 1142779690956619776
+      type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        Position:
+          X:
+            RawValue: 1048576
+          Y:
+            RawValue: -425984
+        Rotation:
+          RawValue: 0
+    - rid: 1142779690956619777
+      type: {class: PhysicsCollider2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        ShapeConfig:
+          ShapeType: 4
+          PolygonCollider:
+            Id:
+              Value: 0
+          CircleRadius:
+            RawValue: 0
+          CapsuleSize:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          EdgeExtent:
+            RawValue: 0
+          BoxExtents:
+            X:
+              RawValue: 14336
+            Y:
+              RawValue: 16384
+          PositionOffset:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          RotationOffset:
+            RawValue: 0
+          UserTag: 0
+          IsPersistent: 1
+          CompoundShapes: []
+        Layer: 9
+        IsTrigger: 1
+        PhysicsMaterial:
+          Id:
+            Value: 0
+    - rid: 1142779690956619778
+      type: {class: PhysicsCallbacks2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        CallbackFlags:
+          Value: 0
+    - rid: 1142779690956619779
+      type: {class: CoinPrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        CoinType:
+          Value: 1
+        Lifetime: 0
+        UncollectableFrames: 0
+    - rid: 1142779690956619780
+      type: {class: CullablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
+      data:
+        Offset:
+          X:
+            RawValue: 0
+          Y:
+            RawValue: 0
+        BroadRadius:
+          RawValue: 26214
+    - rid: 1142779690956619781
       type: {class: InteractablePrototype, ns: Quantum.Prototypes, asm: Quantum.Simulation}
       data:
         ColliderDisabled:
@@ -1423,6 +1670,58 @@ MonoBehaviour:
       data:
         ColliderDisabled:
           Value: 0
+    - rid: 3684417033933422592
+      type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        Position:
+          X:
+            RawValue: 966656
+          Y:
+            RawValue: -180224
+        Rotation:
+          RawValue: 0
+    - rid: 3684417033933422593
+      type: {class: PhysicsCollider2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        ShapeConfig:
+          ShapeType: 8
+          PolygonCollider:
+            Id:
+              Value: 0
+          CircleRadius:
+            RawValue: 0
+          CapsuleSize:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          EdgeExtent:
+            RawValue: 81920
+          BoxExtents:
+            X:
+              RawValue: 0
+            Y:
+              RawValue: 0
+          PositionOffset:
+            X:
+              RawValue: 81920
+            Y:
+              RawValue: 22938
+          RotationOffset:
+            RawValue: 0
+          UserTag: 0
+          IsPersistent: 1
+          CompoundShapes: []
+        Layer: 0
+        IsTrigger: 0
+        PhysicsMaterial:
+          Id:
+            Value: 0
+    - rid: 3684417033933422594
+      type: {class: PhysicsCallbacks2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
+      data:
+        CallbackFlags:
+          Value: 0
     - rid: 3707322874059554816
       type: {class: Transform2DPrototype, ns: Quantum.Prototypes, asm: Quantum.Engine}
       data:
@@ -1528,12 +1827,12 @@ MonoBehaviour:
             X:
               RawValue: 9830
             Y:
-              RawValue: 14746
+              RawValue: 21299
           PositionOffset:
             X:
               RawValue: 0
             Y:
-              RawValue: 14811
+              RawValue: 21365
           RotationOffset:
             RawValue: 0
           UserTag: 0
@@ -1789,7 +2088,7 @@ MonoBehaviour:
       data:
         Position:
           X:
-            RawValue: 606208
+            RawValue: 671744
           Y:
             RawValue: -147456
         Rotation:
@@ -2451,12 +2750,12 @@ MonoBehaviour:
             X:
               RawValue: 9830
             Y:
-              RawValue: 14746
+              RawValue: 21299
           PositionOffset:
             X:
               RawValue: 0
             Y:
-              RawValue: 14811
+              RawValue: 21365
           RotationOffset:
             RawValue: 0
           UserTag: 0

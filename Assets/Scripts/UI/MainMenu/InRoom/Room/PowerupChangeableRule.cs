@@ -125,7 +125,8 @@ namespace NSMB.UI.MainMenu.Submenus.InRoom {
                     }
 
                     if (!found.ContainsKey((byte) powerup.State)) {
-                        found.Add((byte) powerup.State, new PowerupOption(powerup.State, powerup.TranslationKey));
+                        string translationKey = $"coinitem.{powerup.State.ToString().ToLower()}";
+                        found.Add((byte) powerup.State, new PowerupOption(powerup.State, translationKey));
                     }
                 }
                 options.AddRange(found.Values);

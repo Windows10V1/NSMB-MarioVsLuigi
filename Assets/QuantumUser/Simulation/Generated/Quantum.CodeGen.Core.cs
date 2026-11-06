@@ -3341,6 +3341,54 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct POWBlock : Quantum.IComponent {
+    public const Int32 SIZE = 32;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(0)]
+    public Byte MaxUses;
+    [FieldOffset(1)]
+    [ExcludeFromPrototype()]
+    public Byte Uses;
+    [FieldOffset(24)]
+    [ExcludeFromPrototype()]
+    public EntityRef SpawnOwner;
+    [FieldOffset(16)]
+    [ExcludeFromPrototype()]
+    public EntityRef Activator;
+    [FieldOffset(12)]
+    [ExcludeFromPrototype()]
+    public QBoolean WasThrown;
+    [FieldOffset(4)]
+    [ExcludeFromPrototype()]
+    public QBoolean CanGroundActivate;
+    [FieldOffset(8)]
+    [ExcludeFromPrototype()]
+    public QBoolean HasSpawnLanded;
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 3373;
+        hash = hash * 31 + MaxUses.GetHashCode();
+        hash = hash * 31 + Uses.GetHashCode();
+        hash = hash * 31 + SpawnOwner.GetHashCode();
+        hash = hash * 31 + Activator.GetHashCode();
+        hash = hash * 31 + WasThrown.GetHashCode();
+        hash = hash * 31 + CanGroundActivate.GetHashCode();
+        hash = hash * 31 + HasSpawnLanded.GetHashCode();
+        return hash;
+      }
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (POWBlock*)ptr;
+        serializer.Stream.Serialize(&p->MaxUses);
+        serializer.Stream.Serialize(&p->Uses);
+        QBoolean.Serialize(&p->CanGroundActivate, serializer);
+        QBoolean.Serialize(&p->HasSpawnLanded, serializer);
+        QBoolean.Serialize(&p->WasThrown, serializer);
+        EntityRef.Serialize(&p->Activator, serializer);
+        EntityRef.Serialize(&p->SpawnOwner, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct PhysicsObject : Quantum.IComponent {
     public const Int32 SIZE = 144;
     public const Int32 ALIGNMENT = 8;
@@ -4353,6 +4401,8 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<NavMeshPathfinder>();
       BuildSignalsArrayOnComponentAdded<NavMeshSteeringAgent>();
       BuildSignalsArrayOnComponentRemoved<NavMeshSteeringAgent>();
+      BuildSignalsArrayOnComponentAdded<Quantum.POWBlock>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.POWBlock>();
       BuildSignalsArrayOnComponentAdded<PhysicsBody2D>();
       BuildSignalsArrayOnComponentRemoved<PhysicsBody2D>();
       BuildSignalsArrayOnComponentAdded<PhysicsBody3D>();
@@ -4878,6 +4928,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(NullableFPVector2), NullableFPVector2.SIZE);
       typeRegistry.Register(typeof(NullableFPVector3), NullableFPVector3.SIZE);
       typeRegistry.Register(typeof(NullableNonNegativeFP), NullableNonNegativeFP.SIZE);
+      typeRegistry.Register(typeof(Quantum.POWBlock), Quantum.POWBlock.SIZE);
       typeRegistry.Register(typeof(ParticleEffect), 1);
       typeRegistry.Register(typeof(PhysicsBody2D), PhysicsBody2D.SIZE);
       typeRegistry.Register(typeof(PhysicsBody3D), PhysicsBody3D.SIZE);
@@ -4931,7 +4982,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum._globals_), Quantum._globals_.SIZE);
     }
     static partial void InitComponentTypeIdGen() {
-      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 41)
+      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 42)
         .AddBuiltInComponents()
         .Add<Quantum.BanzaiBill>(Quantum.BanzaiBill.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.BetterPhysicsObject>(Quantum.BetterPhysicsObject.Serialize, Quantum.BetterPhysicsObject.OnAdded, Quantum.BetterPhysicsObject.OnRemoved, ComponentFlags.None)
@@ -4966,6 +5017,7 @@ namespace Quantum {
         .Add<Quantum.MarioBrosPlatform>(Quantum.MarioBrosPlatform.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.MarioPlayer>(Quantum.MarioPlayer.Serialize, Quantum.MarioPlayer.OnAdded, Quantum.MarioPlayer.OnRemoved, ComponentFlags.None)
         .Add<Quantum.MovingPlatform>(Quantum.MovingPlatform.Serialize, Quantum.MovingPlatform.OnAdded, Quantum.MovingPlatform.OnRemoved, ComponentFlags.None)
+        .Add<Quantum.POWBlock>(Quantum.POWBlock.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PhysicsObject>(Quantum.PhysicsObject.Serialize, Quantum.PhysicsObject.OnAdded, Quantum.PhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.PiranhaPlant>(Quantum.PiranhaPlant.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.PlayerData>(Quantum.PlayerData.Serialize, null, null, ComponentFlags.None)

@@ -2477,6 +2477,8 @@ namespace Quantum {
             bool boomerangXHammer = mario->IsCrouching && marioPhysics->IsTouchingGround && state == PowerupState.HammerSuit && asset.Effect == ProjectileEffectType.Boomerang;
             bool boomerangXBlueShell = (mario->IsInShell || mario->IsCrouchedInShell) && !asset.DoesntEffectBlueShell && asset.Effect == ProjectileEffectType.Boomerang;
 
+            KnockbackStrength strength = KnockbackStrength.Normal;
+
             // Mario is "damageable" when he's...
             // not in knockback + projectile isn't Boomerang, not Mega + projectile isn't Gold
             // regular damageable checks (iframes is 0, not starman invincible + projectile is not Gold
@@ -2510,10 +2512,12 @@ namespace Quantum {
                 case ProjectileEffectType.Boomerang:
                     // Same effect, except it's based off it's X velocity + extra hit if homing
                     if (dropStars) {
-                        if (projectile->Combo < 2) {
+                        if (projectile->Combo < 2 && (strength != KnockbackStrength.Normal || strength != KnockbackStrength.Groundpound)) {
                             didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
                         } else {
-                            didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.Normal, projectile->Owner);
+                            if (strength != KnockbackStrength.Groundpound) {
+                                didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.Normal, projectile->Owner);
+                            }
                         }
                     }
                     break;

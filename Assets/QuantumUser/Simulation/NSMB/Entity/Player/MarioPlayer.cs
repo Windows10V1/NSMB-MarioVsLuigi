@@ -728,8 +728,7 @@ namespace Quantum {
 
         private static bool IsImmuneFromKnockbackStrength(KnockbackStrength currentStrength, KnockbackStrength newStrength) {
             return currentStrength == newStrength
-                || (currentStrength == KnockbackStrength.Groundpound && newStrength == KnockbackStrength.Normal)
-                || (currentStrength == KnockbackStrength.Normal && newStrength == KnockbackStrength.Groundpound);
+                || (currentStrength == KnockbackStrength.Groundpound && newStrength == KnockbackStrength.Normal);
         }
 
         public void GetupKnockback(Frame f, EntityRef entity) {

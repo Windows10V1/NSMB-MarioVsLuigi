@@ -66,7 +66,7 @@ namespace NSMB.Particles {
             QuantumEntityView view = Updater.GetView(e.Entity);
             if (view) {
                 Instantiate(
-                    Enums.PrefabParticle.BulletBillShoot.GetGameObject(),
+                    Enums.PrefabParticle.Enemy_BulletBill_Shoot.GetGameObject(),
                     view.transform.position + (Vector3.back * 5) + (Vector3.up * 0.1f),
                     Quaternion.identity);
             }
@@ -98,7 +98,7 @@ namespace NSMB.Particles {
             }
 
             GameObject puff = Instantiate(
-                Enums.PrefabParticle.BulletBillShoot.GetGameObject(),
+                Enums.PrefabParticle.Enemy_BulletBill_Shoot.GetGameObject(),
                 launcherAnimator.HeadCenter + (Vector3.back * 5),
                 Quaternion.identity);
             var puffSystems = puff.GetComponentsInChildren<ParticleSystem>(true);
