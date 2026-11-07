@@ -20,17 +20,14 @@ MonoBehaviour:
     Id:
       Value: 1307582256079712543
   SpawnChance:
-    RawValue: 61440
+    RawValue: 65536
   AboveAverageBonus:
-    RawValue: -98304
+    RawValue: -65536
   BelowAverageBonus:
     RawValue: 65536
   BlockSpawnSoundEffect: 69
   Flags: 23
   MaxNumberOfItems: 0
-  CanSpawnAfterSeconds:
-    RawValue: 0
-  TranslationKey: coinitem.boomerangflower
   CameraSpawnOffset:
     X:
       RawValue: 0

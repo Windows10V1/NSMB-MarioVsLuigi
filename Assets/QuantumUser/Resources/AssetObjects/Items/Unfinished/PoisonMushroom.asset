@@ -13,24 +13,21 @@ MonoBehaviour:
   m_Name: PoisonMushroom
   m_EditorClassIdentifier: Quantum.Simulation::PoisonMushroomPowerupAsset
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Items/PoisonMushroom
+    Path: QuantumUser/Resources/AssetObjects/Items/Unfinished/PoisonMushroom
     Guid:
       Value: 470179860045472402
   Prefab:
     Id:
       Value: 1468323497649149268
   SpawnChance:
-    RawValue: 16384
+    RawValue: 0
   AboveAverageBonus:
-    RawValue: 98304
+    RawValue: 0
   BelowAverageBonus:
-    RawValue: -131072
+    RawValue: 0
   BlockSpawnSoundEffect: 69
   Flags: 255
   MaxNumberOfItems: 5
-  CanSpawnAfterSeconds:
-    RawValue: 5242880
-  TranslationKey: coinitem.poisonmushroom
   CameraSpawnOffset:
     X:
       RawValue: 0

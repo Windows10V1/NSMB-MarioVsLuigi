@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: 5f2d8ce488662404ca916c6eff899054
+guid: ade105027770d9d47b0cb6b7eb43d1b6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5044454487727322650
-    second: mario_tx_propellerhat_albedo_starman_0
+      213: 8964793235069229660
+    second: toadette_tx_all_iceflower_mask_shirt_0
+  - first:
+      213: -7006709206837647515
+    second: toadette_tx_all_iceflower_mask_shirt_1
+  - first:
+      213: 6533487841726344558
+    second: toadette_tx_all_iceflower_mask_shirt_2
+  - first:
+      213: -1174831400355328285
+    second: toadette_tx_all_iceflower_mask_shirt_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,56 +105,17 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: Android
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: WebGL
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
-  - serializedVersion: 4
-    buildTarget: iOS
-    maxTextureSize: 2048
-    resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-    ignorePlatformSupport: 0
-    androidETC2FallbackOverride: 0
-    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: mario_tx_propellerhat_albedo_starman_0
+      name: toadette_tx_all_iceflower_mask_shirt_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 256
-        height: 128
+        x: 3
+        y: 38
+        width: 10
+        height: 20
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -154,8 +124,74 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a16bc9241a0810640800000000000000
-      internalID: 5044454487727322650
+      spriteID: c5a502523f7596c70800000000000000
+      internalID: 8964793235069229660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: toadette_tx_all_iceflower_mask_shirt_1
+      rect:
+        serializedVersion: 2
+        x: 51
+        y: 31
+        width: 6
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 567abf9791b23ce90800000000000000
+      internalID: -7006709206837647515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: toadette_tx_all_iceflower_mask_shirt_2
+      rect:
+        serializedVersion: 2
+        x: 59
+        y: 31
+        width: 6
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e6dae6e739c9baa50800000000000000
+      internalID: 6533487841726344558
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: toadette_tx_all_iceflower_mask_shirt_3
+      rect:
+        serializedVersion: 2
+        x: 111
+        y: 31
+        width: 17
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ee88ded01922bfe0800000000000000
+      internalID: -1174831400355328285
       vertices: []
       indices: 
       edges: []
@@ -174,7 +210,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      mario_tx_propellerhat_albedo_starman_0: 5044454487727322650
+      toadette_tx_all_iceflower_mask_shirt_0: 8964793235069229660
+      toadette_tx_all_iceflower_mask_shirt_1: -7006709206837647515
+      toadette_tx_all_iceflower_mask_shirt_2: 6533487841726344558
+      toadette_tx_all_iceflower_mask_shirt_3: -1174831400355328285
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

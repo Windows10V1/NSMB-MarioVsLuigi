@@ -1,5 +1,6 @@
 using NSMB.Entities.Player;
 using NSMB.UI.Game;
+using NSMB.Utilities;
 using NSMB.Utilities.Components;
 using NSMB.Utilities.Extensions;
 using Quantum;
@@ -36,6 +37,7 @@ namespace NSMB.Entities.CoinItems {
         //---Private Variables
         private CharacterSpecificPalette skin;
         private EntityRef owner;
+        private bool ownerIsHammerSuit;
         private MaterialPropertyBlock materialBlock;
         private readonly List<Renderer> renderers = new();
         private readonly Dictionary<Material, Material> clonedMaterials = new();
@@ -154,7 +156,11 @@ namespace NSMB.Entities.CoinItems {
             }
             materialBlock ??= new();
             materialBlock.SetColor(OverallsColor, skin?.OverallsColor.AsColor ?? Color.clear);
-            materialBlock.SetColor(ShirtColor, skin?.ShirtColor.AsColor ?? Color.clear);
+            Color shirtColor = skin?.ShirtColor.AsColor ?? Color.clear;
+            if (ownerIsHammerSuit) {
+                shirtColor = Utils.HueShift(shirtColor, 50f);
+            }
+            materialBlock.SetColor(ShirtColor, shirtColor);
             materialBlock.SetFloat(CapUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
             foreach (Renderer r in renderers) {
                 if (r) {
@@ -178,9 +184,11 @@ namespace NSMB.Entities.CoinItems {
 
         private unsafe void ResolveOwnerPalette(Frame f) {
             skin = null;
+            ownerIsHammerSuit = false;
             if (!f.Exists(owner) || !f.Unsafe.TryGetPointer(owner, out MarioPlayer* ownerMario)) {
                 return;
             }
+            ownerIsHammerSuit = ownerMario->CurrentPowerupState == PowerupState.HammerSuit;
             var playerData = QuantumUtils.GetPlayerData(f, ownerMario->PlayerRef);
             if (playerData == null || !f.TryFindAsset(playerData->Palette, out PaletteSet palette)) {
                 return;

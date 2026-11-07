@@ -13,24 +13,21 @@ MonoBehaviour:
   m_Name: 1-Up
   m_EditorClassIdentifier: 
   Identifier:
-    Path: QuantumUser/Resources/AssetObjects/Items/1-Up
+    Path: QuantumUser/Resources/AssetObjects/Items/Unfinished/1-Up
     Guid:
       Value: 421291512996345105
   Prefab:
     Id:
       Value: 1365421339623582075
   SpawnChance:
-    RawValue: 8192
+    RawValue: 0
   AboveAverageBonus:
     RawValue: 0
   BelowAverageBonus:
-    RawValue: 8192
+    RawValue: 0
   BlockSpawnSoundEffect: 69
   Flags: 27
   MaxNumberOfItems: 0
-  CanSpawnAfterSeconds:
-    RawValue: 6553600
-  TranslationKey: coinitem.1up
   CameraSpawnOffset:
     X:
       RawValue: 0

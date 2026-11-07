@@ -11,6 +11,9 @@ namespace Quantum {
             public PhysicsCollider2D* PhysicsCollider;
         }
 
+        // Hammers restart their despawn timer every time they bounce.
+        private const byte HammerLifetimeFrames = 60;
+
         public override void OnInit(Frame f) {
             f.Context.Interactions.Register<Projectile, Projectile>(f, OnProjectileProjectileInteraction);
             f.Context.Interactions.Register<Projectile, Coin>(f, OnProjectileCoinInteraction);
@@ -135,6 +138,9 @@ namespace Quantum {
                 physicsObject->Velocity.Y = asset.BounceStrength + boost;
                 physicsObject->IsTouchingGround = false;
                 projectile->HasBounced = true;
+                if (asset.Effect == ProjectileEffectType.Hammer) {
+                    projectile->Lifetime = HammerLifetimeFrames;
+                }
             }
         }
 
@@ -260,6 +266,9 @@ namespace Quantum {
                     physicsObject->Velocity.Y = projectile->Speed;
 
                     f.Events.EnemyKicked(hitEntity, false);
+                    if (projectileAsset.Effect == ProjectileEffectType.Hammer) {
+                        projectile->Lifetime = HammerLifetimeFrames;
+                    }
                     if (projectile->Speed < 1) {
                         Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
                     }

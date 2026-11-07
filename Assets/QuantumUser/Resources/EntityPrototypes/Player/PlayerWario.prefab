@@ -1089,8 +1089,6 @@ MonoBehaviour:
     type: 3}
   goldShader: {fileID: -6465566751694194690, guid: 28e019a5cd0b29141ab73d8a19953f89,
     type: 3}
-  diamondShader: {fileID: -6465566751694194690, guid: 22b899b7ba402424bb900d7922961751,
-    type: 3}
   rainbowShader: {fileID: -6465566751694194690, guid: 5d1d727bf3f780a489dbd612a9b28c77,
     type: 3}
   sfx: {fileID: 5377451828833222271}
@@ -1107,7 +1105,6 @@ MonoBehaviour:
   dust: {fileID: 4824223342336871185}
   sparkles: {fileID: 5792148850622185373}
   goldFlowerSparkles: {fileID: 7085735327593179855}
-  diamondFlowerSparkles: {fileID: 1193682334804064876}
   drillParticle: {fileID: 6547395847332199368}
   giantParticle: {fileID: 8077331287960115309}
   fireParticle: {fileID: 5320528148583097166}
@@ -1752,7 +1749,7 @@ MonoBehaviour:
         Value: 510690902463186837
     SpecialPhysicsAsset:
       Id:
-        Value: 506776086179816240
+        Value: 0
     CharacterAsset:
       Id:
         Value: 277767022454256997
@@ -9049,12 +9046,6 @@ PrefabInstance:
 --- !u!4 &249084542354873272 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4113588847912301876, guid: 2415a961986808446a9eb67e681fe409,
-    type: 3}
-  m_PrefabInstance: {fileID: 4207077084524736140}
-  m_PrefabAsset: {fileID: 0}
---- !u!198 &1193682334804064876 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 3094612392314655968, guid: 2415a961986808446a9eb67e681fe409,
     type: 3}
   m_PrefabInstance: {fileID: 4207077084524736140}
   m_PrefabAsset: {fileID: 0}
