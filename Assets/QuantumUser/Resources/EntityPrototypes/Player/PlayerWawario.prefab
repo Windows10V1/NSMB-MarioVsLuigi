@@ -1068,7 +1068,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cf9d71929a202541b352e506ca0197e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  character: {fileID: 11400000, guid: 8a94f03e90fadba479db17b4edcb670b, type: 2}
+  character: {fileID: 0}
   modelRoot: {fileID: 8422425992379838812}
   animator: {fileID: 2254935152879088866}
   largeShellExclude: {fileID: 3420139859563457220}
@@ -1087,7 +1087,6 @@ MonoBehaviour:
     type: 3}
   goldShader: {fileID: -6465566751694194690, guid: 28e019a5cd0b29141ab73d8a19953f89,
     type: 3}
-  diamondShader: {fileID: 0}
   rainbowShader: {fileID: -6465566751694194690, guid: 5d1d727bf3f780a489dbd612a9b28c77,
     type: 3}
   sfx: {fileID: 5377451828833222271}
@@ -1104,7 +1103,6 @@ MonoBehaviour:
   dust: {fileID: 4824223342336871185}
   sparkles: {fileID: 5792148850622185373}
   goldFlowerSparkles: {fileID: 7085735327593179855}
-  diamondFlowerSparkles: {fileID: 0}
   drillParticle: {fileID: 6547395847332199368}
   giantParticle: {fileID: 8077331287960115309}
   fireParticle: {fileID: 5320528148583097166}
