@@ -1393,6 +1393,7 @@ MonoBehaviour:
   iceSkiddingParticle: {fileID: 5251921966134561398}
   waterRunningParticle: {fileID: 8602803811170997306}
   waterSkiddingParticle: {fileID: 3878221348697021963}
+  hammerBonkParticle: {fileID: 7420466671467246604}
   fallbackPowerupVisuals:
     State: 2
     AdditionalGameObjects:
@@ -9341,6 +9342,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3651976017564712856, guid: 38e03d86039b4ed44b8f07b7b065a7ce,
+        type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6594242454448397274, guid: 38e03d86039b4ed44b8f07b7b065a7ce,
         type: 3}
       propertyPath: looping
@@ -9369,6 +9375,12 @@ PrefabInstance:
 --- !u!4 &1207768483134575293 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3295338075021540715, guid: 38e03d86039b4ed44b8f07b7b065a7ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 4429782317591719894}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &7420466671467246604 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6594242454448397274, guid: 38e03d86039b4ed44b8f07b7b065a7ce,
     type: 3}
   m_PrefabInstance: {fileID: 4429782317591719894}
   m_PrefabAsset: {fileID: 0}

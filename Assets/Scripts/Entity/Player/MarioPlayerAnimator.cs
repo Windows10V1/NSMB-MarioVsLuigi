@@ -123,7 +123,7 @@ namespace NSMB.Entities.Player {
 
         [Header("Particle Systems")]
         [SerializeField] private ParticleSystem dust;
-        [SerializeField] private ParticleSystem sparkles, goldFlowerSparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle;
+        [SerializeField] private ParticleSystem sparkles, goldFlowerSparkles, drillParticle, giantParticle, fireParticle, bubblesParticle, iceSkiddingParticle, waterRunningParticle, waterSkiddingParticle, hammerBonkParticle;
 
         [Header("Powerup Visuals")]
         [SerializeField] private PowerupVisuals fallbackPowerupVisuals;
@@ -889,6 +889,14 @@ namespace NSMB.Entities.Player {
 
             if (e.AttackerPosition.HasValue) {
                 SpawnParticle(Enums.PrefabParticle.Player_PlayerBump.GetGameObject(), e.AttackerPosition.Value.ToUnityVector3());
+            }
+
+            if (hammerBonkParticle) {
+                Frame f = PredictedFrame;
+                if (f.TryGet(e.Attacker, out Projectile attackerProjectile)
+                    && f.FindAsset(attackerProjectile.Asset).Effect == ProjectileEffectType.Hammer) {
+                    hammerBonkParticle.Play();
+                }
             }
 
             KnockbackStrength strength = e.Strength;
