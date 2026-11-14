@@ -2510,14 +2510,13 @@ namespace Quantum {
                     }
                     break;
                 case ProjectileEffectType.Boomerang:
-                    // Same effect, except it's based off it's X velocity + extra hit if homing
                     if (dropStars) {
-                        if (projectile->Combo < 2 && (strength != KnockbackStrength.Normal || strength != KnockbackStrength.Groundpound)) {
+                        if (projectile->Combo < 2 && !mario->IsInKnockback) {
+                            // Comboable strength if not in knockback already
                             didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
-                        } else {
-                            if (strength != KnockbackStrength.Groundpound) {
-                                didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.Normal, projectile->Owner);
-                            }
+                        } else if (strength != KnockbackStrength.CollisionBump) {
+                            // Uncomboable strength if hit while homing
+                            didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, projectile->Owner);
                         }
                     }
                     break;

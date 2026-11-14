@@ -122,8 +122,9 @@ namespace Quantum {
                     f.Events.BanzaiHitByEntity(banzaiBillEntity);
                 break;
                 case ProjectileEffectType.Hammer:
-                    // Bounce
-                    f.Events.BanzaiHitByEntity(banzaiBillEntity);
+                    if (f.Unsafe.TryGetPointer(banzaiBillEntity, out BanzaiBill* banzaiBill)) {
+                        banzaiBill->Kill(f, projectileEntity, banzaiBillEntity, EnemyKillReason.Special);
+                    }
                 break;
                 case ProjectileEffectType.Boomerang: {
                     // Hammer X Boomerang effect

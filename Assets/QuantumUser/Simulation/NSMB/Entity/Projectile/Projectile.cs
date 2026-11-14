@@ -38,15 +38,21 @@ namespace Quantum {
             var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(thisEntity);
 
-            // Vars
             Owner = owner;
             FacingRight = right;
 
             // Initial Velocity
-            FPVector2 velocity = playerHoldingUp ? new FPVector2(FP.FromString("3.8822"), FP.FromString("14.4888")) : new FPVector2(FP.FromString("6.25"), FP.FromString("7.5"));
+            FPVector2 velocity = playerHoldingUp ? new FPVector2(FP.FromString("1.8811"), FP.FromString("14.4888")) : new FPVector2(FP.FromString("6.25"), FP.FromString("7.5"));
+            
             Speed = velocity.X;
+            if (asset.InheritShooterVelocity
+                && f.Unsafe.TryGetPointer(owner, out PhysicsObject* ownerPhysicsObject)
+                // Moving in same direction
+                && FPMath.Sign(ownerPhysicsObject->Velocity.X) == 1 == FacingRight) {
 
-            // Apply
+                Speed += FPMath.Abs(ownerPhysicsObject->Velocity.X / 3);
+            }
+
             transform->Position = spawnpoint;
             physicsObject->Velocity = velocity;
             physicsObject->Gravity = FPVector2.Up * (playerHoldingUp ? FP.FromString("-37.512") : FP.FromString("-28.125"));
@@ -58,15 +64,11 @@ namespace Quantum {
             var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(thisEntity);
 
-            // Vars
             Owner = owner;
             FacingRight = right;
-
-            // Speed
             Speed = asset.Speed;
 
-            // Physics
-            Combo = 0; // There are 3 phases for Boomerang: 0 = going, 1 = pausing, 2 = returning
+            Combo = 0; // There are 3 phases for Boomerang: 0 = going, 1 = pause, 2 = return
             Frame = 0; // Lifetime counter
             transform->Position = spawnpoint;
             physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), 0);
@@ -80,28 +82,19 @@ namespace Quantum {
             Frame++;
             var asset = f.FindAsset(Asset);
 
-            // Going phase
             if (Combo == 0) {
-                if (Frame >= 15) {
-                    // Proceed to the next phase upon 15 frames of lifetime
+                if (Frame >= 25) {
                     Combo = 1;
-                    // Reset frame counter
                     Frame = 0;
                 }
-                // Pausing phase
             } else if (Combo == 1) {
-                // Slowdown
-                Speed = asset.Speed * (15 - Frame) / 15;
-                if (Frame >= 15) {
-                    // Next phase
+                Speed = 0;
+                if (Frame >= 20) {
                     Combo = 2;
                     Frame = 0;
-                    Speed = 0;
                 }
-                // Returning phase
             } else if (Combo == 2) {
-                // Speed up
-                Speed = Frame >= 15 ? asset.Speed : asset.Speed * Frame / 15;
+                Speed = asset.Speed;
 
                 if (!f.Unsafe.TryGetPointer(thisEntity, out Transform2D* transform)
                     || !f.Unsafe.TryGetPointer(thisEntity, out PhysicsCollider2D* collider)) {
@@ -118,7 +111,7 @@ namespace Quantum {
                 }
 
                 if (f.Unsafe.TryGetPointer(Owner, out Transform2D* ownerTransform) && f.Unsafe.TryGetPointer(Owner, out PhysicsCollider2D* ownerCollider)) {
-                    // Fix Mario's toes and fix loop points.
+                    // Target owner
                     FPVector2 ownerCenter = ownerTransform->Position + ownerCollider->Shape.Centroid + new FPVector2(0, ownerCollider->Shape.Box.Extents.Y / 2);
                     QuantumUtils.UnwrapWorldLocations(stage, transform->Position, ownerCenter, out _, out FPVector2 closestOwner);
                     FPVector2 direction = (closestOwner - transform->Position).Normalized;

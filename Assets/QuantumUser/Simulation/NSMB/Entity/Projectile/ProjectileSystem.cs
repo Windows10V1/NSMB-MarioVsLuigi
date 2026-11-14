@@ -11,7 +11,6 @@ namespace Quantum {
             public PhysicsCollider2D* PhysicsCollider;
         }
 
-        // Hammers restart their despawn timer every time they bounce.
         private const byte HammerLifetimeFrames = 60;
 
         public override void OnInit(Frame f) {
