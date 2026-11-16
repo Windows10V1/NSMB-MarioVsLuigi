@@ -38,13 +38,15 @@ namespace Quantum {
             var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(thisEntity);
 
+            // Vars
             Owner = owner;
             FacingRight = right;
 
-            // Initial Velocity
+            // Initial Velocity & Speed
             FPVector2 velocity = playerHoldingUp ? new FPVector2(FP.FromString("1.8811"), FP.FromString("14.4888")) : new FPVector2(FP.FromString("6.25"), FP.FromString("7.5"));
-            
             Speed = velocity.X;
+
+            // Hammers inherit shooter's velocity in SMB3... kinda too strong but who cares
             if (asset.InheritShooterVelocity
                 && f.Unsafe.TryGetPointer(owner, out PhysicsObject* ownerPhysicsObject)
                 // Moving in same direction
@@ -53,6 +55,7 @@ namespace Quantum {
                 Speed += FPMath.Abs(ownerPhysicsObject->Velocity.X / 3);
             }
 
+            // Apply
             transform->Position = spawnpoint;
             physicsObject->Velocity = velocity;
             physicsObject->Gravity = FPVector2.Up * (playerHoldingUp ? FP.FromString("-37.512") : FP.FromString("-28.125"));
@@ -64,10 +67,14 @@ namespace Quantum {
             var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
             var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(thisEntity);
 
+            // Vars
             Owner = owner;
             FacingRight = right;
+
+            // Speed
             Speed = asset.Speed;
 
+            // Physics
             Combo = 0; // There are 3 phases for Boomerang: 0 = going, 1 = pause, 2 = return
             Frame = 0; // Lifetime counter
             transform->Position = spawnpoint;
@@ -75,26 +82,31 @@ namespace Quantum {
         }
 
         public void UpdateBoomerang(Frame f, EntityRef thisEntity, PhysicsObject* physicsObject, VersusStageData stage) {
+            var asset = f.FindAsset(Asset);
+            Frame++;
+
             if (!f.Exists(thisEntity) || f.DestroyPending(thisEntity)) {
                 return;
             }
 
-            Frame++;
-            var asset = f.FindAsset(Asset);
-
             if (Combo == 0) {
-                if (Frame >= 25) {
+                if (Frame >= 15) {
+                    // Next phase upon 15 frames of lifetime
                     Combo = 1;
                     Frame = 0;
                 }
             } else if (Combo == 1) {
-                Speed = 0;
-                if (Frame >= 20) {
+                // Slowdown
+                Speed = asset.Speed * (15 - Frame) / 15;
+
+                if (Frame >= 15) {
+                    // Next phase
                     Combo = 2;
                     Frame = 0;
                 }
             } else if (Combo == 2) {
-                Speed = asset.Speed;
+                // Speed up
+                Speed = Frame >= 15 ? asset.Speed : asset.Speed * Frame / 15;
 
                 if (!f.Unsafe.TryGetPointer(thisEntity, out Transform2D* transform)
                     || !f.Unsafe.TryGetPointer(thisEntity, out PhysicsCollider2D* collider)) {
@@ -147,29 +159,22 @@ namespace Quantum {
             physicsObject->TerminalVelocity = -Speed;
 
             if (physicsObject->IsTouchingGround) {
+                // Ricochet upwards
                 physicsObject->Velocity.Y = Speed;
                 physicsObject->IsTouchingGround = false;
             } else if (physicsObject->IsTouchingCeiling) {
+                // Ricochet downwards
                 physicsObject->Velocity.Y = -Speed;
                 physicsObject->IsTouchingCeiling = false;
             }
 
-            if (physicsObject->Velocity.Y > 0) {
-                physicsObject->Velocity.Y = Speed;
-            } else if (physicsObject->Velocity.Y < 0) {
-                physicsObject->Velocity.Y = -Speed;
-            } else {
-                physicsObject->Velocity.Y = Speed;
-            }
-
+            // Turn around upon touching a wall
             if (physicsObject->IsTouchingLeftWall && !FacingRight) {
                 FacingRight = true;
                 physicsObject->Velocity.X = Speed;
             } else if (physicsObject->IsTouchingRightWall && FacingRight) {
                 FacingRight = false;
                 physicsObject->Velocity.X = -Speed;
-            } else {
-                physicsObject->Velocity.X = Speed * (FacingRight ? 1 : -1);
             }
         }
         #endregion

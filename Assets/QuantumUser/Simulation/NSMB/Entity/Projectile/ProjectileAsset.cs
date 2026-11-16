@@ -19,6 +19,7 @@ public class ProjectileAsset : AssetObject, ISoundOverrideProvider {
     public bool DoesntEffectBlueShell = true;
     public bool BreakBreakableTiles = false;
     public bool CollectCoins = false;
+    public bool CollectBigStars = false;
 
     public byte MaxProjectiles = 6;
     public byte ProjectileVolleySize = 2;

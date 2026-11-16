@@ -104,6 +104,37 @@ namespace Quantum {
             physicsObject->Velocity.X = bigStar->Speed * (bigStar->FacingRight ? 1 : -1);
         }
 
+        public void OnBigStarProjectileInteraction(Frame f, EntityRef starEntity, EntityRef projectileEntity) {
+            var star = f.Unsafe.GetPointer<BigStar>(starEntity);
+            var projectile = f.Unsafe.GetPointer<Projectile>(projectileEntity);
+            var asset = f.FindAsset(projectile->Asset);
+            var owner = projectile->Owner;
+            var stage = f.FindAsset<VersusStageData>(f.Map.UserAsset);
+
+            // Null check for both Big Star and Projectile
+            if ((!f.Exists(starEntity) || !f.Exists(projectileEntity)) || (f.DestroyPending(starEntity) || f.DestroyPending(projectileEntity))) {
+                return;
+            }
+
+            if (star->UncollectableFrames > 0) {
+                return;
+            }
+
+            owner.GamemodeData.StarChasers->Stars++;
+
+            if (star->IsStationary) {
+                stage.ResetStage(f, false);
+                f.Global->BigStarSpawnTimer = (ushort) (624 - (f.Global->RealPlayers * 12));
+            }
+
+            if (asset.CollectBigStars) {
+                f.Signals.OnMarioPlayerCollectedStar(projectile->Owner);
+                f.Events.MarioPlayerCollectedStar(projectile->Owner, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position, starEntity);
+                f.Events.CollectableDespawned(starEntity, f.Unsafe.GetPointer<Transform2D>(starEntity)->Position, true);
+                f.Destroy(starEntity);
+            }
+        }
+
         public void OnBigStarMarioInteraction(Frame f, EntityRef starEntity, EntityRef marioEntity) {
             if (!f.Exists(starEntity) || f.DestroyPending(starEntity)) {
                 return;

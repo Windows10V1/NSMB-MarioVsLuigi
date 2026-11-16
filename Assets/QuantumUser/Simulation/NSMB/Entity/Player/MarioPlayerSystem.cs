@@ -1857,7 +1857,7 @@ namespace Quantum {
         private Projectile* ShootBoomerangProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
             var mario = filter.MarioPlayer;
             var physicsObject = filter.PhysicsObject;
-            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP._0_50);
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, FP.FromString("0.55"));
             EntityRef newEntity = f.Create(f.SimulationConfig.BoomerangPrototype);
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             projectile->InitializeBoomerang(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
@@ -2514,7 +2514,7 @@ namespace Quantum {
                         if (projectile->Combo < 2 && !mario->IsInKnockback) {
                             // Comboable strength if not in knockback already
                             didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
-                        } else if (strength != KnockbackStrength.CollisionBump) {
+                        } else if (projectile->Combo == 2 && strength != KnockbackStrength.CollisionBump) {
                             // Uncomboable strength if hit while homing
                             didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, projectile->Owner);
                         }
