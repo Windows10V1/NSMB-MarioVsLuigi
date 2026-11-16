@@ -67,8 +67,6 @@ namespace NSMB.Tiles {
                     };
 
                     tilemap.SetTile(coords, unityTile);
-                    Matrix4x4 mat = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, tileInstance.Rotation / (float) (ushort.MaxValue / 360f)), scale);
-                    tilemap.SetTransformMatrix(coords, mat);
                     tilemap.RefreshTile(coords);
                     if (unityTile is AnimatedTile at) {
                         tilemap.SetAnimationTime(coords, (float) (Time.timeAsDouble - startTime) * at.m_MaxSpeed % at.m_AnimatedSprites.Length);
@@ -95,7 +93,6 @@ namespace NSMB.Tiles {
             if (undoData.Count == 1) {
                 // This is a cancelled tile change event.
                 tilemap.SetTile(coords, undoData[0].tile);
-                tilemap.SetTransformMatrix(coords, undoData[0].transform);
                 tilemap.RefreshTile(coords);
                 if (undoData[0].tile is AnimatedTile at) {
                     tilemap.SetAnimationTime(coords, (float) (Time.timeAsDouble - startTime) * at.m_MaxSpeed % at.m_AnimatedSprites.Length);
@@ -130,7 +127,6 @@ namespace NSMB.Tiles {
 
             var tile = QuantumUnityDB.GetGlobalAsset(e.NewTile.Tile);
             TileBase unityTile = tile ? tile.Tile : null;
-            Matrix4x4 mat = Matrix4x4.TRS(Vector3.zero, Quaternion.Euler(0, 0, e.NewTile.Rotation / (float) (ushort.MaxValue / 360f)), scale);
 
             tilePositionData[e] = coords;
 
@@ -140,11 +136,9 @@ namespace NSMB.Tiles {
             list.Add(new TileChangeData {
                 position = coords,
                 tile = tilemap.GetTile(coords),
-                transform = tilemap.GetTransformMatrix(coords),
             });
 
             tilemap.SetTile(coords, unityTile);
-            tilemap.SetTransformMatrix(coords, mat);
             tilemap.RefreshTile(coords);
             if (unityTile is AnimatedTile at) {
                 tilemap.SetAnimationTime(coords, (float) (Time.timeAsDouble - startTime) * at.m_MaxSpeed % at.m_AnimatedSprites.Length);

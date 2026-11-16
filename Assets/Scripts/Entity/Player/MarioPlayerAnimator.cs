@@ -585,7 +585,12 @@ namespace NSMB.Entities.Player {
             materialBlock.SetFloat(ParamEyeState, (int) (mario->IsDead || mario->IsInKnockback ? Enums.PlayerEyeState.Death : eyeState));
             materialBlock.SetFloat(ParamModelScale, modelRoot.transform.lossyScale.x * (mario->CurrentPowerupState >= PowerupState.Mushroom ? 1f : 0.5f));
             materialBlock.SetColor(ParamOverallsColor, skin?.OverallsColor.AsColor ?? Color.clear);
-            materialBlock.SetColor(ParamShirtColor, skin?.ShirtColor.AsColor ?? Color.clear);
+            // Hammer Suit shirt hue shift. It's weird, but it's cool.
+            Color shirtColor = skin?.ShirtColor.AsColor ?? Color.clear;
+            if (DisplayPowerupState(mario, f) == PowerupState.HammerSuit) {
+                shirtColor = Utils.HueShift(shirtColor, 50f);
+            }
+            materialBlock.SetColor(ParamShirtColor, shirtColor);
             materialBlock.SetFloat(ParamCapUsesOverallsColor, (skin?.HatUsesOverallsColor ?? false) ? 1 : 0);
 
             Vector3 giantMultiply = Vector3.one;

@@ -19,16 +19,30 @@ MonoBehaviour:
   Colors:
   - Character:
       Id:
-        Value: 0
+        Value: 532063855470386108
     ShirtColor:
       R: 255
-      G: 155
+      G: 90
       B: 0
       A: 255
     OverallsColor:
-      R: 144
-      G: 255
-      B: 112
+      R: 20
+      G: 200
+      B: 0
+      A: 255
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 485289843648077326
+    ShirtColor:
+      R: 10
+      G: 100
+      B: 255
+      A: 255
+    OverallsColor:
+      R: 100
+      G: 64
+      B: 32
       A: 255
     HatUsesOverallsColor: 0
   TranslationKey: skin.orange

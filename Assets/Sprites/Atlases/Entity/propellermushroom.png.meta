@@ -152,10 +152,10 @@ TextureImporter:
       name: propellermushroom_0
       rect:
         serializedVersion: 2
-        x: 1
-        y: 69
-        width: 18
-        height: 19
+        x: 0
+        y: 0
+        width: 22
+        height: 26
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -174,10 +174,10 @@ TextureImporter:
       name: propellermushroom_1
       rect:
         serializedVersion: 2
-        x: 1
-        y: 46
-        width: 18
-        height: 20
+        x: 22
+        y: 0
+        width: 22
+        height: 26
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -196,10 +196,10 @@ TextureImporter:
       name: propellermushroom_2
       rect:
         serializedVersion: 2
-        x: 1
-        y: 23
-        width: 18
-        height: 20
+        x: 44
+        y: 0
+        width: 22
+        height: 26
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -218,10 +218,10 @@ TextureImporter:
       name: propellermushroom_3
       rect:
         serializedVersion: 2
-        x: 1
+        x: 66
         y: 0
-        width: 18
-        height: 20
+        width: 22
+        height: 26
       alignment: 7
       pivot: {x: 0.5, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -232,94 +232,6 @@ TextureImporter:
       bones: []
       spriteID: e109e647bf4483446ad68e8a80078069
       internalID: -872383749
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: propellermushroom_4
-      rect:
-        serializedVersion: 2
-        x: 21
-        y: 69
-        width: 18
-        height: 19
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 815e778424071b443a97ddcc5ba4fbe6
-      internalID: -74796952
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: propellermushroom_5
-      rect:
-        serializedVersion: 2
-        x: 21
-        y: 46
-        width: 18
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: f7213e15b7469c74faa345385b9260f4
-      internalID: -404099666
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: propellermushroom_6
-      rect:
-        serializedVersion: 2
-        x: 21
-        y: 23
-        width: 18
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: ffb4a220b02823c48947f006e3f6ad32
-      internalID: 1339308990
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: propellermushroom_7
-      rect:
-        serializedVersion: 2
-        x: 21
-        y: 0
-        width: 18
-        height: 20
-      alignment: 7
-      pivot: {x: 0.5, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3cd315e2b2494d64f9314b3c3e9f2360
-      internalID: 2093605636
       vertices: []
       indices: 
       edges: []
@@ -336,16 +248,14 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     spriteCustomMetadata:
-      entries: []
+      entries:
+      - key: SpriteEditor.SliceSettings
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":1.0,"y":1.0},"gridSpriteSize":{"x":22.0,"y":26.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":1,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
       propellermushroom_0: 974339405
       propellermushroom_1: 94257346
       propellermushroom_2: 896499514
       propellermushroom_3: -872383749
-      propellermushroom_4: -74796952
-      propellermushroom_5: -404099666
-      propellermushroom_6: 1339308990
-      propellermushroom_7: 2093605636
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -19,18 +19,32 @@ MonoBehaviour:
   Colors:
   - Character:
       Id:
-        Value: 0
+        Value: 532063855470386108
     ShirtColor:
-      R: 253
-      G: 200
-      B: 0
+      R: 0
+      G: 0
+      B: 255
       A: 255
     OverallsColor:
-      R: 13
-      G: 54
-      B: 174
+      R: 255
+      G: 255
+      B: 0
       A: 255
-    HatUsesOverallsColor: 1
+    HatUsesOverallsColor: 0
+  - Character:
+      Id:
+        Value: 485289843648077326
+    ShirtColor:
+      R: 0
+      G: 0
+      B: 255
+      A: 255
+    OverallsColor:
+      R: 128
+      G: 0
+      B: 255
+      A: 255
+    HatUsesOverallsColor: 0
   TranslationKey: skin.anime
   Order: 800
   IsLegacy: 1
