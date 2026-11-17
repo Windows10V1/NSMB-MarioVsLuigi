@@ -144,13 +144,16 @@ namespace Quantum {
                 return;
             }
 
-            // StarCoin collection: grant half of the current coin item
-            // progression (integer division: 7 -> 3, 15 -> 7). Applied directly
-            // through the same per-coin rules as normal coins, so no coin-collect
-            // event fires: no coin numbers or coin sound. Starcoin feedback
-            // (collect + store sounds, collected spin) is handled view-side by
-            // StarCoinAnimator.
-            int amountToGive = mario->Coins / 2;
+            // StarCoin collection: grant half of the coins needed for a powerup
+            // (CoinsForPowerup / 2, minimum 1), regardless of how many coins the
+            // player currently holds. Applied directly through the same per-coin
+            // rules as normal coins, so no coin-collect event fires: no coin
+            // numbers or coin sound. Starcoin feedback (collect + store sounds,
+            // collected spin) is handled view-side by StarCoinAnimator.
+            int amountToGive = f.Global->Rules.CoinsForPowerup / 2;
+            if (amountToGive < 1) {
+                amountToGive = 1;
+            }
             CoinSystem.AddCoinsDirect(f, marioEntity, amountToGive);
 
             f.Global->StarCoinSpawnTimer = (ushort) ((624 - (f.Global->RealPlayers * 12)) * 2);
