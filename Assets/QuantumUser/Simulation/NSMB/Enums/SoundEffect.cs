@@ -1,5 +1,6 @@
 public enum SoundEffect : byte {
-    //CURRENT HIGHEST NUMBER: 120 (use 121 next)
+    //CURRENT HIGHEST NUMBER: 122 (use 123 next)
+    Empty = 121,
     //Enemy
     Enemy_Generic_Freeze = 0,
     Enemy_Generic_FreezeShatter = 1,
@@ -84,6 +85,8 @@ public enum SoundEffect : byte {
     Powerup_PropellerMushroom_Start = 59,
     Powerup_HammerSuit_Throw = 106, //HARDCODED: DO NOT CHANGE WITHOUT CHANGING POWERUPS SCRIPTABLES
     Powerup_HammerSuit_Bounce = 109,
+    Powerup_BoomerangFlower_Throw = 122,
+    Powerup_BoomerangFlower_Pierce = 123,
 
     //UI Sounds / Songs / Jingles
     UI_HurryUp = 60,

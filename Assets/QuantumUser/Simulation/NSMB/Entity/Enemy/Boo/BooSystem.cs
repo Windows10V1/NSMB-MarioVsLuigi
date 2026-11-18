@@ -133,13 +133,12 @@ namespace Quantum {
         }
 
         public void OnBooProjectileInteraction(Frame f, EntityRef booEntity, EntityRef projectileEntity) {
-            var projectileAsset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
+            var asset = f.FindAsset(f.Unsafe.GetPointer<Projectile>(projectileEntity)->Asset);
 
-            if (projectileAsset.DestroyOnHit) {
-                ProjectileSystem.Destroy(f, projectileEntity, projectileAsset.DestroyParticleEffect);
-            } else {
-                var boo = f.Unsafe.GetPointer<Boo>(booEntity);
-                boo->Kill(f, booEntity, projectileEntity, EnemyKillReason.Special);
+            if (asset.DestroyOnHit) {
+                ProjectileSystem.Destroy(f, projectileEntity, asset.DestroyParticleEffect);
+            } else if (asset.Effect != ProjectileEffectType.Boomerang) {
+                f.Unsafe.GetPointer<Boo>(booEntity)->Kill(f, booEntity, projectileEntity, EnemyKillReason.Special);
                 f.Signals.OnProjectileHitEntity(projectileEntity, booEntity);
             }
         }

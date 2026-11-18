@@ -28,6 +28,15 @@ namespace Quantum {
                 return false;
             }
 
+            if (mario == null && f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
+                var asset = f.FindAsset(projectile->Asset);
+
+                if (asset.Effect == ProjectileEffectType.Boomerang && f.Exists(projectile->Owner) && f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* owner)) {
+                    mario = owner;
+                    entity = projectile->Owner;
+                }
+            }
+
             CoinItemAsset powerupToSpawn = GetItemAsset(f, entity, mario);
             Bump(f, null, tilePosition, resultTile, direction, entity, allowSelfDamage, powerupToSpawn.Prefab);
             playBumpSound = false;

@@ -27,6 +27,15 @@ public unsafe class CoinTile : BreakableBrickTile {
             return false;
         }
 
+        if (mario == null && f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
+            var asset = f.FindAsset(projectile->Asset);
+
+            if (asset.CollectCoins && f.Exists(projectile->Owner) && f.Unsafe.TryGetPointer(projectile->Owner, out MarioPlayer* owner)) {
+                mario = owner;
+                entity = projectile->Owner;
+            }
+        }
+
         // Give coin to player
         f.Signals.OnMarioPlayerCollectedCoin(entity, EntityRef.None, QuantumUtils.RelativeTileToWorld(f, tilePosition) + FPVector2.One * FP._0_25, true, direction == InteractionDirection.Down);
         Bump(f, null, tilePosition, resultTile, direction, entity, allowSelfDamage);

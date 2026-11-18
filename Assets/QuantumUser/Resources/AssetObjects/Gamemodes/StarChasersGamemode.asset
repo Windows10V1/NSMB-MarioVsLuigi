@@ -40,6 +40,8 @@ MonoBehaviour:
       Value: 315844579913471239
   - Id:
       Value: 378514462062875007
+  - Id:
+      Value: 272410938094904676
   FallbackCoinItem:
     Id:
       Value: 390055422968795145
@@ -71,6 +73,8 @@ MonoBehaviour:
       Value: 1
     StarFountain: 100
     CoinDeathPenalty: 0
+    CoinItemCustomSpawnWeights: []
+  RequireTimer: 0
   BigStarPrototype:
     Id:
       Value: 1295981493910502871
