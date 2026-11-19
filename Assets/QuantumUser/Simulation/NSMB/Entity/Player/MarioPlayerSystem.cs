@@ -2210,7 +2210,7 @@ namespace Quantum {
             var boomerangXBlueShell = asset.Effect == ProjectileEffectType.Boomerang && !asset.DoesntEffectBlueShell && (mario->IsInShell || mario->IsCrouchedInShell);
 
             // Mario is "damageable" when he's...
-            // not in knockback, not Mega
+            // not in knockback (Boomerang skips it), not Mega
             // regular damageable checks (iframes is 0, not starman invincible)
             // not in a powerUP transition while mini (specifically)
             // Mario is in his Blue Shell and projectile doesn't affect blue Shell
@@ -2242,10 +2242,10 @@ namespace Quantum {
                         if (state == PowerupState.MiniMushroom) {
                             mario->Powerdown(f, marioEntity, false, projectileEntity);
                         } else {
-                            if (projectile->Combo < 2 && !mario->IsInKnockback) {
+                            if (!mario->IsInKnockback) {
                                 // Comboable strength
                                 didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
-                            } else if (projectile->Combo == 2 && mario->CurrentKnockback != KnockbackStrength.CollisionBump) {
+                            } else if (mario->IsInKnockback && mario->CurrentKnockback != KnockbackStrength.CollisionBump) {
                                 // Extra hit: Uncomboable strength + i-frames
                                 didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.CollisionBump, projectile->Owner);
                             }
