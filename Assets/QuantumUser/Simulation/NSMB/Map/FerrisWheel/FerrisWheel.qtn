@@ -1,0 +1,8 @@
+component FerrisWheel {
+    FP BaseSpeed;
+    FP DistanceFromCenter;
+
+    [ExcludeFromPrototype] FP Rotation;
+
+    [AllocateOnComponentAdded, FreeOnComponentRemoved] list<EntityRef> Platforms;
+}

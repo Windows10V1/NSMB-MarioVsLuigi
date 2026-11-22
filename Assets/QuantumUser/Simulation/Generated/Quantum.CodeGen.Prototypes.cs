@@ -397,6 +397,35 @@ namespace Quantum.Prototypes {
     }
   }
   [System.SerializableAttribute()]
+  [Quantum.Prototypes.Prototype(typeof(Quantum.FerrisWheel))]
+  public unsafe class FerrisWheelPrototype : ComponentPrototype<Quantum.FerrisWheel> {
+    public FP BaseSpeed;
+    public FP DistanceFromCenter;
+    [AllocateOnComponentAdded()]
+    [FreeOnComponentRemoved()]
+    [DynamicCollectionAttribute()]
+    public MapEntityId[] Platforms = {};
+    public override Boolean AddToEntity(FrameBase f, EntityRef entity, in PrototypeMaterializationContext context) {
+        Quantum.FerrisWheel component = default;
+        Materialize((Frame)f, ref component, in context);
+        return f.Set(entity, component) == SetResult.ComponentAdded;
+    }
+    public void Materialize(Frame frame, ref Quantum.FerrisWheel result, in PrototypeMaterializationContext context = default) {
+        result.BaseSpeed = this.BaseSpeed;
+        result.DistanceFromCenter = this.DistanceFromCenter;
+        if (this.Platforms.Length == 0) {
+          result.Platforms = default;
+        } else {
+          var list = frame.AllocateList(out result.Platforms, this.Platforms.Length);
+          for (int i = 0; i < this.Platforms.Length; ++i) {
+            EntityRef tmp = default;
+            PrototypeValidator.FindMapEntity(this.Platforms[i], in context, out tmp);
+            list.Add(tmp);
+          }
+        }
+    }
+  }
+  [System.SerializableAttribute()]
   [Quantum.Prototypes.Prototype(typeof(Quantum.FireSnake))]
   public unsafe partial class FireSnakePrototype : ComponentPrototype<Quantum.FireSnake> {
     public AssetRef<EntityPrototype> SegmentPrototype;

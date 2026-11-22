@@ -69,6 +69,24 @@ namespace Quantum.Prototypes.Unity {
     }
   }
   [System.SerializableAttribute()]
+  public unsafe partial class FerrisWheelPrototype : Quantum.QuantumUnityPrototypeAdapter<Quantum.Prototypes.FerrisWheelPrototype> {
+    public FP BaseSpeed;
+    public FP DistanceFromCenter;
+    [AllocateOnComponentAdded()]
+    [FreeOnComponentRemoved()]
+    [DynamicCollectionAttribute()]
+    public Quantum.QuantumEntityPrototype[] Platforms = {};
+    partial void ConvertUser(Quantum.QuantumEntityPrototypeConverter converter, ref Quantum.Prototypes.FerrisWheelPrototype prototype);
+    public override Quantum.Prototypes.FerrisWheelPrototype Convert(Quantum.QuantumEntityPrototypeConverter converter) {
+      var result = new Quantum.Prototypes.FerrisWheelPrototype();
+      converter.Convert(this.BaseSpeed, out result.BaseSpeed);
+      converter.Convert(this.DistanceFromCenter, out result.DistanceFromCenter);
+      converter.Convert(this.Platforms, out result.Platforms);
+      ConvertUser(converter, ref result);
+      return result;
+    }
+  }
+  [System.SerializableAttribute()]
   public unsafe partial class PhysicsContactPrototype : Quantum.QuantumUnityPrototypeAdapter<Quantum.Prototypes.PhysicsContactPrototype> {
     public FPVector2 Position;
     public FPVector2 Normal;

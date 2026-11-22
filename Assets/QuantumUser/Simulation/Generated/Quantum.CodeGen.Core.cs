@@ -2261,6 +2261,53 @@ namespace Quantum {
     }
   }
   [StructLayout(LayoutKind.Explicit)]
+  public unsafe partial struct FerrisWheel : Quantum.IComponent {
+    public const Int32 SIZE = 32;
+    public const Int32 ALIGNMENT = 8;
+    [FieldOffset(8)]
+    public FP BaseSpeed;
+    [FieldOffset(16)]
+    public FP DistanceFromCenter;
+    [FieldOffset(24)]
+    [ExcludeFromPrototype()]
+    public FP Rotation;
+    [FieldOffset(0)]
+    [AllocateOnComponentAdded()]
+    [FreeOnComponentRemoved()]
+    public QListPtr<EntityRef> Platforms;
+    public override readonly Int32 GetHashCode() {
+      unchecked { 
+        var hash = 4621;
+        hash = hash * 31 + BaseSpeed.GetHashCode();
+        hash = hash * 31 + DistanceFromCenter.GetHashCode();
+        hash = hash * 31 + Rotation.GetHashCode();
+        hash = hash * 31 + Platforms.GetHashCode();
+        return hash;
+      }
+    }
+    public void ClearPointers(FrameBase f, EntityRef entity) {
+      if (Platforms != default) f.FreeList(ref Platforms);
+    }
+    public static void OnRemoved(FrameBase frame, EntityRef entity, void* ptr) {
+      var p = (Quantum.FerrisWheel*)ptr;
+      p->ClearPointers((Frame)frame, entity);
+    }
+    public void AllocatePointers(FrameBase f, EntityRef entity) {
+      f.TryAllocateList(ref Platforms);
+    }
+    public static void OnAdded(FrameBase frame, EntityRef entity, void* ptr) {
+      var p = (Quantum.FerrisWheel*)ptr;
+      p->AllocatePointers((Frame)frame, entity);
+    }
+    public static void Serialize(void* ptr, FrameSerializer serializer) {
+        var p = (FerrisWheel*)ptr;
+        QList.Serialize(&p->Platforms, serializer, Statics.SerializeEntityRef);
+        FP.Serialize(&p->BaseSpeed, serializer);
+        FP.Serialize(&p->DistanceFromCenter, serializer);
+        FP.Serialize(&p->Rotation, serializer);
+    }
+  }
+  [StructLayout(LayoutKind.Explicit)]
   public unsafe partial struct FireSnake : Quantum.IComponent {
     public const Int32 SIZE = 80;
     public const Int32 ALIGNMENT = 8;
@@ -4158,6 +4205,8 @@ namespace Quantum {
       BuildSignalsArrayOnComponentRemoved<Quantum.Enemy>();
       BuildSignalsArrayOnComponentAdded<Quantum.EnterablePipe>();
       BuildSignalsArrayOnComponentRemoved<Quantum.EnterablePipe>();
+      BuildSignalsArrayOnComponentAdded<Quantum.FerrisWheel>();
+      BuildSignalsArrayOnComponentRemoved<Quantum.FerrisWheel>();
       BuildSignalsArrayOnComponentAdded<Quantum.FireSnake>();
       BuildSignalsArrayOnComponentRemoved<Quantum.FireSnake>();
       BuildSignalsArrayOnComponentAdded<Quantum.FireSnakeSegment>();
@@ -4675,6 +4724,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(FPQuaternion), FPQuaternion.SIZE);
       typeRegistry.Register(typeof(FPVector2), FPVector2.SIZE);
       typeRegistry.Register(typeof(FPVector3), FPVector3.SIZE);
+      typeRegistry.Register(typeof(Quantum.FerrisWheel), Quantum.FerrisWheel.SIZE);
       typeRegistry.Register(typeof(Quantum.FireSnake), Quantum.FireSnake.SIZE);
       typeRegistry.Register(typeof(Quantum.FireSnakeSegment), Quantum.FireSnakeSegment.SIZE);
       typeRegistry.Register(typeof(FrameMetaData), FrameMetaData.SIZE);
@@ -4780,7 +4830,7 @@ namespace Quantum {
       typeRegistry.Register(typeof(Quantum._globals_), Quantum._globals_.SIZE);
     }
     static partial void InitComponentTypeIdGen() {
-      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 41)
+      ComponentTypeId.Reset(ComponentTypeId.BuiltInComponentCount + 42)
         .AddBuiltInComponents()
         .Add<Quantum.BetterPhysicsObject>(Quantum.BetterPhysicsObject.Serialize, Quantum.BetterPhysicsObject.OnAdded, Quantum.BetterPhysicsObject.OnRemoved, ComponentFlags.None)
         .Add<Quantum.BigStar>(Quantum.BigStar.Serialize, null, null, ComponentFlags.None)
@@ -4798,6 +4848,7 @@ namespace Quantum {
         .Add<Quantum.DonutBlock>(Quantum.DonutBlock.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Enemy>(Quantum.Enemy.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.EnterablePipe>(Quantum.EnterablePipe.Serialize, null, null, ComponentFlags.None)
+        .Add<Quantum.FerrisWheel>(Quantum.FerrisWheel.Serialize, Quantum.FerrisWheel.OnAdded, Quantum.FerrisWheel.OnRemoved, ComponentFlags.None)
         .Add<Quantum.FireSnake>(Quantum.FireSnake.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.FireSnakeSegment>(Quantum.FireSnakeSegment.Serialize, null, null, ComponentFlags.None)
         .Add<Quantum.Freezable>(Quantum.Freezable.Serialize, null, null, ComponentFlags.None)
