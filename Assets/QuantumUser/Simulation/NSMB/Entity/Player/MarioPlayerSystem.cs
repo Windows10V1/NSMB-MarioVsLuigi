@@ -2238,23 +2238,16 @@ namespace Quantum {
                     }
                     break;
                 case ProjectileEffectType.Boomerang:
+                    // Opponent projectile
                     if (dropStars) {
                         if (state == PowerupState.MiniMushroom) {
+                            // Kill mini
                             mario->Powerdown(f, marioEntity, false, projectileEntity);
                         } else {
                             if (projectile->Combo < 2) {
-                                if (!mario->IsInKnockback) {
-                                    didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
-                                } else {
-                                    return;
-                                }
-                            } else if (projectile->Combo == 2) {
-                                if (!mario->IsInKnockback) {
-                                    didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
-                                } else if (mario->CurrentKnockback != KnockbackStrength.CollisionBump) {
-                                    didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.Normal, projectile->Owner);
-                                    mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
-                                }
+                                didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.FireballBump, projectile->Owner);
+                            } else {
+                                didKnockback = mario->DoKnockback(f, marioEntity, projectilePhysics->Velocity.X < 0, dropStars ? 1 : 0, KnockbackStrength.Normal, projectile->Owner);
                             }
                         }
                     }

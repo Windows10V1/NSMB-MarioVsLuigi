@@ -23,11 +23,6 @@ namespace Quantum {
                 allowSelfDamage = true;
             }
 
-            if (mario == null) {
-                playBumpSound = true;
-                return false;
-            }
-
             if (mario == null && f.Unsafe.TryGetPointer(entity, out Projectile* projectile)) {
                 var asset = f.FindAsset(projectile->Asset);
 
@@ -35,6 +30,11 @@ namespace Quantum {
                     mario = owner;
                     entity = projectile->Owner;
                 }
+            }
+
+            if (mario == null) {
+                playBumpSound = true;
+                return false;
             }
 
             CoinItemAsset powerupToSpawn = GetItemAsset(f, entity, mario);
