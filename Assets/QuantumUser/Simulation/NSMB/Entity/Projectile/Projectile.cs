@@ -42,8 +42,15 @@ namespace Quantum {
             FacingRight = right;
 
             // Initial Velocity
-            FPVector2 velocity = playerHoldingUp ? new FPVector2(FP.FromString("3.8822"), FP.FromString("14.4888")) : new FPVector2(FP.FromString("6.25"), FP.FromString("7.5"));
+            FPVector2 velocity = playerHoldingUp ? new FPVector2(FP.FromString("1.9411"), FP.FromString("14.4888")) : new FPVector2(FP.FromString("6.25"), FP.FromString("7.5"));
             Speed = velocity.X;
+            if (asset.InheritShooterVelocity
+                && f.Unsafe.TryGetPointer(owner, out PhysicsObject* ownerPhysicsObject)
+                // Moving in same direction
+                && FPMath.Sign(ownerPhysicsObject->Velocity.X) == 1 == FacingRight) { 
+
+                Speed += FPMath.Abs(ownerPhysicsObject->Velocity.X / 3);
+            }
             
             // Apply
             transform->Position = spawnpoint;

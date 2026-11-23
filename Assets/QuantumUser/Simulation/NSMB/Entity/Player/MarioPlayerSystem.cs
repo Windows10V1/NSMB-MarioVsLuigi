@@ -1620,7 +1620,7 @@ namespace Quantum {
             EntityRef newEntity = f.Create(f.SimulationConfig.HammerPrototype);
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
-            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, false /* filter.Inputs.Up.IsDown */);
+            projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown);
             return projectile;
         }
 
@@ -2206,7 +2206,7 @@ namespace Quantum {
 
             bool dropStars = false;
 
-            var boomerangXHammer = mario->IsCrouching && marioPhysics->IsTouchingGround && state == PowerupState.HammerSuit && asset.Effect == ProjectileEffectType.Boomerang;
+            var hammerX = state == PowerupState.HammerSuit && mario->IsCrouching && marioPhysics->IsTouchingGround && (asset.Effect == ProjectileEffectType.Fire || asset.Effect == ProjectileEffectType.Boomerang);
             var boomerangXBlueShell = asset.Effect == ProjectileEffectType.Boomerang && !asset.DoesntEffectBlueShell && (mario->IsInShell || mario->IsCrouchedInShell);
 
             // Mario is "damageable" when he's...
@@ -2214,14 +2214,15 @@ namespace Quantum {
             // regular damageable checks (iframes is 0, not starman invincible)
             // not in a powerUP transition while mini (specifically)
             // Mario is in his Blue Shell and projectile doesn't affect blue Shell
-            // Mario is crouched and touching the ground with Hammer Suit and projectile isn't a Boomerang
+            // Mario is crouched and touching the ground with Hammer Suit and projectile isn't a Fireball or Boomerang
             // Team attack allows him to get hit
             bool damageable = (asset.Effect == ProjectileEffectType.Boomerang || !mario->IsInKnockback)
                 && state != PowerupState.MegaMushroom
                 && (mario->IsDamageable(f) || (mario->TryGetCurrentPowerTransition(f, out _) && state == PowerupState.MiniMushroom))
                 && !((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell)
                 && mario->CheckTeamAttack(f, projectile->Owner, out dropStars)
-                && !boomerangXHammer
+                && !(state == PowerupState.HammerSuit && mario->IsCrouching && marioPhysics->IsTouchingGround && asset.Effect == ProjectileEffectType.Fire)
+                && !hammerX
                 && !boomerangXBlueShell;
 
             if (damageable) {
@@ -2280,8 +2281,8 @@ namespace Quantum {
                 }
             }
 
-            if (damageable || asset.DestroyOnHit || ((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell) || boomerangXHammer || boomerangXBlueShell) {
-                if (boomerangXHammer) {
+            if (damageable || asset.DestroyOnHit || ((mario->IsCrouchedInShell || mario->IsInShell) && asset.DoesntEffectBlueShell) || hammerX || boomerangXBlueShell) {
+                if (hammerX) {
                     // Projectile asset's "Bounce" effect
                     projectile->Speed *=Constants._0_85;
                     projectilePhysics->Gravity *= Constants._0_85;
@@ -2784,32 +2785,12 @@ namespace Quantum {
                 if (didKnockback) {
                     f.Events.PlayKnockbackEffect(defender, attacker, strength, avgPosition, didKnockback);
                 }
-            } else if (defenderMario->CurrentPowerupState == PowerupState.HammerSuit && defenderPhysicsObject->IsTouchingGround && defenderMario->IsCrouching && !groundpounded) {
-                // Bounce
-                var attackerPhysicsObject = f.Unsafe.GetPointer<PhysicsObject>(attacker);
-                if (FPMath.Abs(attackerPhysicsObject->Velocity.X) < 2) {
-                    attackerPhysicsObject->Velocity.X = fromRight ? -2 : 2;
-                }
-                attackerPhysicsObject->Velocity.Y = 4;
-                attackerMario->DoEntityBounce = false;
-                if (attackerMario->IsInKnockback) {
-                    // Prevents softlocks
-                    attackerMario->ResetKnockback(f, attacker);
-                }
-                f.Events.EnemyKicked(defender, false);
             } else {
                 // Normal knockbacks
                 if (!groundpounded && !dropStars) {
                     // Bounce
                     f.Events.MarioPlayerStompedByTeammate(defender);
                 } else {
-                    if (attackerMario->IsPropellerFlying && attackerMario->IsDrilling) {
-                        attackerMario->IsDrilling = false;
-                        attackerMario->DoEntityBounce = true;
-                        if (!attackerMario->IsSpinnerFlying && !attackerMario->IsPropellerFlying) {
-                            attackerMario->ForceJumpTimer = 8;
-                        }
-                    }
                     KnockbackStrength strength = groundpounded ? KnockbackStrength.Groundpound : KnockbackStrength.Normal;
                     bool dealtKnockback = defenderMario->DoKnockback(f, defender, !fromRight, dropStars ? (groundpounded ? 3 : 1) : 0, strength, attacker);
                     if (dealtKnockback || !groundpounded) {
@@ -2990,9 +2971,6 @@ namespace Quantum {
                         physicsObject->Velocity.Y = Constants._6_00;
                         mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
                         mario->KnockbackTick -= 15;
-                    } else {
-                        // Normal hitstun duration
-                        mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
                     }
                     break;
 
@@ -3006,7 +2984,6 @@ namespace Quantum {
                     // Hard knockback, i-frames.
                     strength = KnockbackStrength.Groundpound;
                     damaged = mario->DoKnockback(f, entity, hitFromRight, dropObjectives ? 2 : 0, strength, attacker);
-                    mario->DamageInvincibilityFrames = Constants.DamageInvincibilityFrames;
                     break;
 
                 case IceBlockBreakReason.Shell:
