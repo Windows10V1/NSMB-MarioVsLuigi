@@ -50,7 +50,8 @@ namespace Quantum {
                     new LiquidSystem(),
                     new MarioBrosPlatformSystem(),
                     new EnterablePipeSystem(),
-                    new InvisibleBlockSystem()
+                    new InvisibleBlockSystem(),
+                    new FerrisWheelSystem()
                     // new BetterPhysicsObjectSystem()
                 )
             );

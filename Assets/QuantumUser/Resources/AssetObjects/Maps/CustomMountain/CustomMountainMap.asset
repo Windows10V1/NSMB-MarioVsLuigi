@@ -25,8 +25,8 @@ MonoBehaviour:
   WorldSize: 16
   BucketsCount: 8
   BucketsSubdivisions: 8
-  BucketingAxis: 0
-  SortingAxis: 1
+  BucketingAxis: 1
+  SortingAxis: 0
   SceneMeshCellSize:
     RawValue: 262144
   TriangleMeshCellSize: -1
@@ -1905,7 +1905,7 @@ MonoBehaviour:
       data:
         Position:
           X:
-            RawValue: 540672
+            RawValue: 507904
           Y:
             RawValue: 966656
         Rotation:
@@ -1961,7 +1961,7 @@ MonoBehaviour:
           RawValue: 245760
         Origin:
           X:
-            RawValue: 540672
+            RawValue: 507904
           Y:
             RawValue: 966656
     - rid: 5080940927426494464
@@ -2085,7 +2085,7 @@ MonoBehaviour:
       data:
         Position:
           X:
-            RawValue: -475136
+            RawValue: -507904
           Y:
             RawValue: 966656
         Rotation:
@@ -2141,7 +2141,7 @@ MonoBehaviour:
           RawValue: 245760
         Origin:
           X:
-            RawValue: -475136
+            RawValue: -507904
           Y:
             RawValue: 966656
     - rid: 5583989888946012160
@@ -2149,7 +2149,7 @@ MonoBehaviour:
       data:
         Position:
           X:
-            RawValue: 507904
+            RawValue: 475136
           Y:
             RawValue: 966656
         Rotation:
@@ -2205,7 +2205,7 @@ MonoBehaviour:
           RawValue: 245760
         Origin:
           X:
-            RawValue: 507904
+            RawValue: 475136
           Y:
             RawValue: 966656
     - rid: 5885120336810213376
