@@ -134,5 +134,48 @@ namespace Quantum {
                 physicsObject->Gravity = FPVector2.Zero;
             }
         }
+
+        public void InitializeSuperball(Frame f, EntityRef thisEntity, EntityRef owner, FPVector2 spawnpoint, bool right) {
+            var asset = f.FindAsset(Asset);
+            var transform = f.Unsafe.GetPointer<Transform2D>(thisEntity);
+            var physicsObject = f.Unsafe.GetPointer<PhysicsObject>(thisEntity);
+
+            // Vars
+            Owner = owner;
+            FacingRight = right;
+
+            // Speed
+            Speed = asset.Speed;
+            physicsObject->Gravity = FPVector2.Zero;
+            physicsObject->TerminalVelocity = -Speed;
+
+            // Physics
+            transform->Position = spawnpoint;
+            physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), -Speed);
+        }
+
+        public void UpdateSuperball(Frame f, PhysicsObject* physicsObject) {
+            physicsObject->Gravity = FPVector2.Zero;
+            physicsObject->TerminalVelocity = -Speed;
+
+            if (physicsObject->IsTouchingGround) {
+                // Ricochet upwards
+                physicsObject->Velocity.Y = Speed;
+                physicsObject->IsTouchingGround = false;
+            } else if (physicsObject->IsTouchingCeiling) {
+                // Ricochet downwards
+                physicsObject->Velocity.Y = -Speed;
+                physicsObject->IsTouchingCeiling = false;
+            }
+
+            // Turn around upon touching a wall
+            if (physicsObject->IsTouchingLeftWall && !FacingRight) {
+                FacingRight = true;
+                physicsObject->Velocity.X = Speed;
+            } else if (physicsObject->IsTouchingRightWall && FacingRight) {
+                FacingRight = false;
+                physicsObject->Velocity.X = -Speed;
+            }
+        }
     }
 }

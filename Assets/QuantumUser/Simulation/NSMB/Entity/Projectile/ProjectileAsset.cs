@@ -49,6 +49,8 @@ public enum ProjectileEffectType : byte {
     Freeze,
     KillEnemiesAndSoftKnockbackPlayers,
     Boomerang,
+    Superball,
+    Goldball,
 
     None = 0xff,
 }

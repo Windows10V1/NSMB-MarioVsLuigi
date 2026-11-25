@@ -76,6 +76,8 @@ namespace Quantum {
 
             if (asset.Effect == ProjectileEffectType.Boomerang) {
                 projectile->UpdateBoomerang(f, filter.Entity, physicsObject, stage);
+            } else if (asset.Effect == ProjectileEffectType.Superball) {
+                projectile->UpdateSuperball(f, physicsObject);
             }
         }
 

@@ -1489,7 +1489,12 @@ namespace Quantum {
 
             if (!(inputs.PowerupAction.WasPressed
                 || (state == PowerupState.PropellerMushroom && inputs.PropellerPowerupAction.WasPressed && !physicsObject->IsTouchingGround && !mario->IsWallsliding)
-                || ((state == PowerupState.FireFlower || state == PowerupState.IceFlower || state == PowerupState.BoomerangFlower || state == PowerupState.HammerSuit) && inputs.FireballPowerupAction.WasPressed))) {
+                || ((state == PowerupState.FireFlower
+                || state == PowerupState.IceFlower
+                || state == PowerupState.BoomerangFlower
+                || state == PowerupState.SuperballFlower
+                || state == PowerupState.GoldFlower
+                || state == PowerupState.HammerSuit)&& inputs.FireballPowerupAction.WasPressed))) {
                 return;
             }
 
@@ -1502,6 +1507,8 @@ namespace Quantum {
             case PowerupState.IceFlower:
             case PowerupState.FireFlower:
             case PowerupState.BoomerangFlower:
+            case PowerupState.SuperballFlower:
+            case PowerupState.GoldFlower:
             case PowerupState.HammerSuit: {
 
                 if (mario->ProjectileDelayFrames > 0 || mario->IsWallsliding || (mario->JumpState == JumpState.TripleJump && !physicsObject->IsTouchingGround)
@@ -1543,6 +1550,8 @@ namespace Quantum {
                     projectile = ShootHammerProjectile(f, ref filter, physics);
                 } else if (mario->CurrentPowerupState == PowerupState.BoomerangFlower) {
                     projectile = ShootBoomerangProjectile(f, ref filter, physics);
+                } else if (mario->CurrentPowerupState == PowerupState.SuperballFlower) {
+                    projectile = ShootSuperballProjectile(f, ref filter, physics);
                 } else {
                     projectile = ShootNormalProjectile(f, ref filter, physics);
                 }
@@ -1621,6 +1630,19 @@ namespace Quantum {
 
             var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
             projectile->InitializeHammer(f, newEntity, filter.Entity, spawnPos, mario->FacingRight, filter.Inputs.Up.IsDown);
+            return projectile;
+        }
+
+        private Projectile* ShootSuperballProjectile(Frame f, ref Filter filter, MarioPlayerPhysicsInfo physics) {
+            var mario = filter.MarioPlayer;
+            var physicsObject = filter.PhysicsObject;
+
+            FPVector2 spawnPos = filter.Transform->Position + new FPVector2(mario->FacingRight ? FP._0_25 : -FP._0_25, Constants._0_35);
+
+            EntityRef newEntity = f.Create(f.SimulationConfig.SuperballPrototype);
+
+            var projectile = f.Unsafe.GetPointer<Projectile>(newEntity);
+            projectile->Initialize(f, newEntity, filter.Entity, spawnPos, mario->FacingRight);
             return projectile;
         }
 
