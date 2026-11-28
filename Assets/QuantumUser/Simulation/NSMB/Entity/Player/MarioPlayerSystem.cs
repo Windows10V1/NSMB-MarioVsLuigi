@@ -2300,7 +2300,7 @@ namespace Quantum {
                         projectile->Combo = 2;
                         projectile->Frame = 0;
                         projectilePhysics->Velocity.X = asset.Speed * (hitFromRight ? 1 : -1);
-                    } else if (projectile->Combo == 2) {
+                    } else {
                         projectile->Combo = 0;
                         projectile->Frame = 0;
                         projectilePhysics->Velocity.X = asset.Speed * (hitFromRight ? 1 : -1);

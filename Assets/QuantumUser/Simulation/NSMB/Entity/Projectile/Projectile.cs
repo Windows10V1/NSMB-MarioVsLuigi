@@ -72,9 +72,12 @@ namespace Quantum {
             }
 
             // Physics
-            Combo = 0; // There are 3 phases for Boomerang: 0 = going, 1 = pause, 2 = return.
+            Combo = 0; // There are 4 phases for Boomerang: 0 = going, 1 = pause, 2 = return, 3 = overshoot.
             Frame = 0; // Lifetime frames counter
+            OvershootFrames = 20; // Length of the next overshoot, halves after every overshoot
             transform->Position = spawnpoint;
+            // The prefab's terminal velocity is 0, which clamps any downward velocity to 0 after every physics step
+            physicsObject->TerminalVelocity = -asset.Speed;
             physicsObject->Velocity = new(Speed * (FacingRight ? 1 : -1), 0);
         }
 
@@ -98,8 +101,9 @@ namespace Quantum {
                 if (Frame >= 20) {
                     Combo = 2;
                     Frame = 0;
+                    UpdateBoomerangHeight(f, thisEntity, physicsObject);
                 }
-            } else if (Combo == 2) {
+            } else {
                 Speed = asset.Speed;
 
                 if (!f.Unsafe.TryGetPointer(thisEntity, out Transform2D* transform) || !f.Unsafe.TryGetPointer(thisEntity, out PhysicsCollider2D* collider)) {
@@ -110,21 +114,68 @@ namespace Quantum {
                 var hits = f.Physics2D.OverlapShape(transform->Position, 0, collider->Shape, f.Context.PlayerOnlyMask);
                 for (int i = 0; i < hits.Count; i++) {
                     if (hits[i].Entity == Owner) {
-                        ProjectileSystem.Destroy(f, thisEntity, asset.DestroyParticleEffect);
+                        ProjectileSystem.Destroy(f, thisEntity, ParticleEffect.None);
                         return;
                     }
                 }
 
-                if (f.Unsafe.TryGetPointer(Owner, out Transform2D* ownerTransform) && f.Unsafe.TryGetPointer(Owner, out PhysicsCollider2D* ownerCollider)) {
-                    // Target owner
-                    FPVector2 ownerCenter = ownerTransform->Position + ownerCollider->Shape.Centroid + new FPVector2(0, ownerCollider->Shape.Box.Extents.Y / 2);
-                    QuantumUtils.UnwrapWorldLocations(stage, transform->Position, ownerCenter, out _, out FPVector2 closestOwner);
-                    FPVector2 direction = (closestOwner - transform->Position).Normalized;
+                physicsObject->Gravity = FPVector2.Zero;
 
-                    physicsObject->Velocity = direction * Speed;
+                if (Combo == 3) {
+                    // Keep flying past the owner (FacingRight isn't changed), then hover again
+                    if (Frame >= OvershootFrames) {
+                        OvershootFrames /= 2;
+                        Combo = 1;
+                        Frame = 0;
+                    }
+                    return;
                 }
 
-                physicsObject->Gravity = FPVector2.Zero;
+                if (f.Unsafe.TryGetPointer(Owner, out Transform2D* ownerTransform)) {
+                    QuantumUtils.UnwrapWorldLocations(stage, transform->Position, ownerTransform->Position, out _, out FPVector2 closestOwner);
+                    FP distanceX = closestOwner.X - transform->Position.X;
+
+                    if (FPMath.Abs(distanceX) > Speed * f.DeltaTime) {
+                        // Keep track of the owner's X position
+                        FacingRight = distanceX > 0;
+                    } else if (OvershootFrames < 5) {
+                        // Reached the owner's X, and there's no overshoot left
+                        ProjectileSystem.Destroy(f, thisEntity, asset.DestroyParticleEffect);
+                        return;
+                    } else {
+                        // Reached the owner's X, fly past it
+                        Combo = 3;
+                        Frame = 0;
+                        UpdateBoomerangHeight(f, thisEntity, physicsObject);
+                    }
+                }
+
+                physicsObject->Velocity.X = Speed * (FacingRight ? 1 : -1);
+            }
+        }
+
+        // Checks if the owner is decently above/below the boomerang, and sets its vertical velocity (up, down or none)
+        private void UpdateBoomerangHeight(Frame f, EntityRef thisEntity, PhysicsObject* physicsObject) {
+            var asset = f.FindAsset(Asset);
+
+            physicsObject->Velocity.Y = 0;
+
+            if (!f.Unsafe.TryGetPointer(thisEntity, out Transform2D* transform)
+                || !f.Unsafe.TryGetPointer(thisEntity, out PhysicsCollider2D* collider)
+                || !f.Unsafe.TryGetPointer(Owner, out Transform2D* ownerTransform)
+                || !f.Unsafe.TryGetPointer(Owner, out PhysicsCollider2D* ownerCollider)) {
+                return;
+            }
+
+            FP heightDifference = (ownerTransform->Position.Y + ownerCollider->Shape.Centroid.Y) - (transform->Position.Y + collider->Shape.Centroid.Y);
+
+            // "Decent" = the hitboxes can't overlap vertically
+            FP threshold = ownerCollider->Shape.Box.Extents.Y + collider->Shape.Box.Extents.Y;
+
+            if (heightDifference > threshold) {
+                physicsObject->Velocity.Y = asset.Speed / 2;
+            } else if (heightDifference < -threshold) {
+                physicsObject->Velocity.Y = -asset.Speed / 2;
             }
         }
     }

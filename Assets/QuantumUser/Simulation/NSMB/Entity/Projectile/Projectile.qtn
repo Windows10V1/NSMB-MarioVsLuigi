@@ -11,6 +11,9 @@ component Projectile {
 	[ExcludeFromPrototype] bool CheckedCollision;
 	[ExcludeFromPrototype] byte Combo;
 	[ExcludeFromPrototype] byte Frame;
+
+	// Specific thing for boomerang
+	[ExcludeFromPrototype] byte OvershootFrames;
 }
 
 signal OnProjectileHitEntity(EntityRef projectile, EntityRef hitEntity);

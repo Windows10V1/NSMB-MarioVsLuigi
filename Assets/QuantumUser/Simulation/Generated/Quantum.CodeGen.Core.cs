@@ -3481,6 +3481,9 @@ namespace Quantum {
     [FieldOffset(1)]
     [ExcludeFromPrototype()]
     public Byte Frame;
+    [FieldOffset(3)]
+    [ExcludeFromPrototype()]
+    public Byte OvershootFrames;
     public override readonly Int32 GetHashCode() {
       unchecked { 
         var hash = 16141;
@@ -3493,6 +3496,7 @@ namespace Quantum {
         hash = hash * 31 + CheckedCollision.GetHashCode();
         hash = hash * 31 + Combo.GetHashCode();
         hash = hash * 31 + Frame.GetHashCode();
+        hash = hash * 31 + OvershootFrames.GetHashCode();
         return hash;
       }
     }
@@ -3501,6 +3505,7 @@ namespace Quantum {
         serializer.Stream.Serialize(&p->Combo);
         serializer.Stream.Serialize(&p->Frame);
         serializer.Stream.Serialize(&p->Lifetime);
+        serializer.Stream.Serialize(&p->OvershootFrames);
         QBoolean.Serialize(&p->CheckedCollision, serializer);
         QBoolean.Serialize(&p->FacingRight, serializer);
         QBoolean.Serialize(&p->HasBounced, serializer);

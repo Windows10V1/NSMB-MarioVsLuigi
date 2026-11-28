@@ -104,7 +104,7 @@ namespace Quantum {
                                 // "Ricochet" effect if not in return state
                                 projectile->Combo = 2;
                             }
-                        } else if (projectile->Combo == 2) {
+                        } else {
                             Destroy(f, filter.Entity, asset.DestroyParticleEffect);
                             return;
                         }
